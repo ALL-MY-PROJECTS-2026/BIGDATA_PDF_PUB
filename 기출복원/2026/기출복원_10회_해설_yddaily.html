@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>제10회 필기 복원 해설 (YD Daily) · 빅데이터분석기사</title>
+<style>:root{
+  --accent:#2E8B7A; --accent-soft:#BBDDD5; --accent-pale:#EAF4F1;
+  --navy:#1F3A63; --ink:#222; --line:#DDD; --side-bg:#FAFAF9; --sidebar-w:270px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;color:var(--ink);
+  font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",system-ui,sans-serif;
+  font-size:15px;line-height:1.75;word-break:keep-all}
+
+#layout{display:flex;align-items:flex-start}
+#sidebar{width:var(--sidebar-w);flex:0 0 var(--sidebar-w);position:sticky;top:0;
+  height:100vh;overflow-y:auto;background:var(--side-bg);
+  border-right:1px solid var(--line);padding:16px 0 60px}
+.side-head{padding:0 16px 12px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.side-head a{display:block;font-size:14px;font-weight:700;color:var(--accent);text-decoration:none}
+.side-head span{display:block;font-size:11.5px;color:#777;margin-top:2px}
+ul.parts,#toc{list-style:none;margin:0;padding:0;font-size:13px}
+ul.parts li.grp{padding:12px 16px 4px;font-size:11.5px;font-weight:700;
+  color:#999;letter-spacing:.03em}
+ul.parts a{display:flex;justify-content:space-between;gap:8px;
+  padding:5px 16px;color:#444;text-decoration:none;border-left:3px solid transparent}
+ul.parts a span{color:#aaa;font-size:11.5px;flex:0 0 auto}
+ul.parts a:hover{background:#F0F0EE;color:var(--accent)}
+ul.parts a.on{background:var(--accent-pale);color:var(--accent);
+  border-left-color:var(--accent);font-weight:700}
+.toc-head{padding:16px 16px 6px;margin-top:8px;border-top:1px solid var(--line);
+  font-size:11.5px;font-weight:700;color:#999}
+#toc a{display:block;padding:4px 16px;color:#555;text-decoration:none;
+  border-left:3px solid transparent;line-height:1.4}
+#toc a:hover{background:#F0F0EE;color:var(--accent)}
+#toc a.active{background:var(--accent-pale);color:var(--accent);
+  border-left-color:var(--accent);font-weight:700}
+#toc .l2 a{padding-left:28px;font-size:12.5px}
+#toc .l3 a{padding-left:40px;font-size:12px;color:#777}
+
+#main{flex:1 1 auto;min-width:0;padding:34px 40px 120px}
+.wrap{max-width:880px;margin:0 auto}
+
+.crumb{font-size:12.5px;color:#888;margin:0 0 4px;letter-spacing:.02em}
+h1{font-size:26px;margin:0 0 6px;color:var(--accent)}
+.src{font-size:12.5px;color:#888;margin:0 0 28px}
+
+.page-mark{margin:30px 0 10px;padding:1px 0 1px 9px;border-left:3px solid var(--accent-soft);
+  font-size:11.5px;color:#bbb;letter-spacing:.04em}
+h3{font-size:19px;margin:34px 0 14px;padding:9px 14px;background:var(--accent);
+  color:#fff;border-radius:4px;border-left:7px solid var(--navy)}
+h4{font-size:16.5px;margin:26px 0 10px;padding-bottom:6px;
+  border-bottom:2px solid var(--accent-soft)}
+h5{font-size:15px;margin:20px 0 8px;color:var(--accent)}
+h5::before{content:"● ";font-size:10px;vertical-align:2px}
+
+p{margin:0 0 9px}
+ul{list-style:none;margin:0 0 12px;padding:0}
+ul.dash>li{position:relative;padding-left:14px;margin:3px 0}
+ul.dash>li::before{content:"·";position:absolute;left:3px;color:var(--accent)}
+ul.numlist>li{margin:3px 0;padding-left:4px}
+
+p.note{background:#F6F6F4;border-left:3px solid #D6D6D2;border-radius:0 4px 4px 0;
+  padding:9px 13px;margin:10px 0;font-size:13.5px;color:#4A4A4A}
+p.mnemo{display:inline-block;background:#FFF6D9;border:1px solid #EBD9A0;border-radius:14px;
+  padding:3px 14px;margin:8px 0;font-size:13.5px;font-weight:700;color:#7A5E12}
+p.mnemo::before{content:"☞ "}
+
+figure{margin:16px 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid #EEE;border-radius:4px}
+
+/* index */
+.index{padding:44px 24px 100px}
+.index h2{font-size:17px;margin:34px 0 12px;padding:8px 14px;background:var(--accent-pale);
+  color:#26705F;border-radius:4px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.card{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:8px;
+  text-decoration:none;color:var(--ink);background:#fff;transition:.15s}
+.card:hover{border-color:var(--accent);box-shadow:0 2px 10px rgba(46,139,122,.13)}
+.card b{display:block;font-size:15px;margin-bottom:4px}
+.card span{font-size:12px;color:#999}
+
+@media(max-width:900px){
+  #layout{display:block}
+  #sidebar{position:static;width:auto;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+  #main{padding:22px 16px 70px}
+}
+
+details.ov{margin:0 0 14px;border:1px solid var(--line);border-radius:6px;padding:10px 14px;background:#fff}
+details.ov summary{cursor:pointer;font-size:13px;color:var(--accent);font-weight:700;user-select:none}
+details.ov img{display:block;max-width:100%;margin-top:12px;border:1px solid #EEE;border-radius:4px}
+
+/* 수식 — 원문 이미지 그대로 */
+img.eq{display:inline-block;vertical-align:middle;max-width:100%;
+  height:auto;margin:2px 0 2px 4px}
+p.eqline{margin:6px 0 6px 14px}
+
+/* ---------- 확인 문제 ---------- */
+.quiz{margin:26px 0;border:1px solid var(--accent-soft);border-radius:8px;
+  background:#FCFEFD;overflow:hidden}
+.qtoggle{display:flex;align-items:center;gap:8px;width:100%;
+  padding:12px 16px;border:0;background:var(--accent-pale);color:#26705F;
+  font:700 14px/1.4 inherit;text-align:left;cursor:pointer}
+.qtoggle:hover{background:#DDEDE8}
+.qtoggle .arw{display:inline-block;transition:transform .18s;font-size:12px}
+.qtoggle[aria-expanded="true"] .arw{transform:rotate(180deg)}
+.qtoggle .score{margin-left:auto;font-size:12.5px;font-weight:700}
+.qbody{padding:6px 18px 18px}
+ol.qlist{list-style:none;margin:0;padding:0;counter-reset:none}
+li.q{padding:16px 0;border-bottom:1px dashed #DDE7E4}
+li.q:last-child{border-bottom:0}
+.qt{margin:0 0 9px;font-size:14.8px;line-height:1.6}
+.qt b{color:var(--accent);margin-right:4px}
+.opts{display:flex;flex-direction:column;gap:2px}
+label.opt{display:flex;gap:7px;align-items:flex-start;padding:5px 9px;
+  border-radius:5px;cursor:pointer;font-size:14.2px;line-height:1.55}
+label.opt:hover{background:#F1F7F5}
+label.opt input{margin:5px 0 0;flex:0 0 auto}
+label.opt .mk{flex:0 0 auto;color:#666}
+/* 채점 결과 표시 */
+.quiz.graded label.opt{cursor:default}
+.quiz.graded label.opt input{pointer-events:none}
+label.opt.correct{background:#E8F6EC;box-shadow:inset 0 0 0 1px #9FD3AE}
+label.opt.wrong{background:#FDECEC;box-shadow:inset 0 0 0 1px #E3A6A6}
+label.opt.correct .mk::after{content:" ✔";color:#1E7A3C;font-weight:700}
+label.opt.wrong .mk::after{content:" ✘";color:#C0392B;font-weight:700}
+li.q.ok  > .qt::after{content:" 정답";color:#1E7A3C;font-size:12px;font-weight:700;margin-left:6px}
+li.q.ng  > .qt::after{content:" 오답";color:#C0392B;font-size:12px;font-weight:700;margin-left:6px}
+li.q.na  > .qt::after{content:" 미응답";color:#999;font-size:12px;font-weight:700;margin-left:6px}
+.exp{display:none;margin:9px 0 0;padding:10px 13px;background:#F6F6F4;
+  border-left:3px solid var(--accent-soft);border-radius:0 4px 4px 0;
+  font-size:13.4px;color:#444;line-height:1.65}
+.quiz.graded .exp{display:block}
+.exp b{color:var(--accent)}
+.qbar{display:flex;align-items:center;gap:8px;margin-top:16px;
+  padding-top:14px;border-top:1px solid #E6EFEC}
+.btn{padding:7px 16px;border-radius:5px;border:1px solid var(--accent);
+  background:var(--accent);color:#fff;font:700 13px inherit;cursor:pointer}
+.btn.reset{background:#fff;color:var(--accent)}
+.btn:hover{opacity:.88}
+.qbar .result{font-size:13.5px;font-weight:700;color:#26705F}
+
+/* ---------- 수식 (원문을 직접 옮겨 적은 텍스트) ---------- */
+.eqbox{margin:12px 0 12px 14px;padding:10px 16px;
+  background:#FAFBFB;border-left:3px solid var(--accent-soft);border-radius:0 4px 4px 0;
+  font-size:15.5px;line-height:2.4;overflow-x:auto}
+.eqbox i,.eqtext i{font-family:"Cambria Math","Cambria","Times New Roman",serif;
+  font-style:italic}
+.eqtext{margin:8px 0 10px 14px;line-height:1.95}
+.eqline{margin:4px 0}
+/* 분수 */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;
+  text-align:center;margin:0 3px;line-height:1.25}
+.fr>.nu{padding:0 5px 1px;border-bottom:1.3px solid currentColor}
+.fr>.de{padding:1px 5px 0}
+/* 제곱근 */
+.sq{border-top:1.3px solid currentColor;padding:1px 3px 0 2px;margin-left:1px}
+.sq::before{content:"√";border-top:0;margin-left:-11px;padding-right:1px;
+  display:inline-block;transform:translateY(-1px)}
+.eqbox sup,.eqtext sup,.eqbox sub,.eqtext sub{font-size:.72em}
+
+/* ---------- 인쇄 / PDF ---------- */
+@media print{
+  @page{size:A4;margin:14mm 12mm}
+  body{font-size:10.6pt;line-height:1.62}
+  #sidebar{display:none !important}
+  #layout{display:block}
+  #main{padding:0}
+  .wrap{max-width:none}
+  .crumb{font-size:9pt}
+  h1{font-size:19pt;margin-bottom:2mm}
+  .src{font-size:9pt;margin-bottom:6mm}
+  h3{font-size:13.5pt;margin:7mm 0 3mm;-webkit-print-color-adjust:exact;
+     print-color-adjust:exact;break-after:avoid}
+  h4{font-size:12pt;margin:5mm 0 2mm;break-after:avoid}
+  h5{font-size:11pt;margin:4mm 0 1.5mm;break-after:avoid}
+  ul,figure,table,.eqbox,.eqtext{break-inside:avoid}
+  figure img{max-height:88mm}
+  .page-mark{font-size:8pt;color:#bbb}
+  p.note,p.mnemo,.eqbox{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  /* 문제는 펼친 상태로, 해설까지 함께 인쇄 */
+  .quiz{break-inside:auto;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .qtoggle{cursor:default}
+  .qtoggle .arw,.qtoggle .score{display:none}
+  .qbody{display:block !important}
+  .qbar{display:none}
+  li.q{break-inside:avoid}
+  .exp{display:block !important}
+  label.opt input{display:none}
+  label.opt{padding:2px 6px}
+  a{color:inherit;text-decoration:none}
+}
+
+
+.yd-note{margin:0 0 22px;padding:12px 15px;background:#FCF6F3;
+  border:1.5px dashed #C0846F;border-radius:8px;font-size:13.5px;color:#6B4132;line-height:1.75}
+.yd-note b{color:#8C4A2F}
+.yd-q{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:0 0 14px}
+.yd-h{display:flex;align-items:baseline;gap:10px;margin:0 0 6px}
+.yd-no{font-weight:700;color:var(--accent);font-size:15px}
+.yd-ans{margin-left:auto;font-size:12px;color:#2E7D4F;background:#E9F6EE;
+  border:1px solid #B6DCC4;border-radius:10px;padding:1px 9px;white-space:nowrap}
+.yd-body{margin:0 0 10px;line-height:1.75}
+.yd-opts{list-style:none;margin:0;padding:0}
+.yd-opts li{margin:0 0 5px;padding:6px 9px;border:1px solid transparent;
+  border-radius:7px;line-height:1.6}
+.yd-opts li.yd-ok{border-color:#7BC49A;background:#E9F6EE}
+.yd-opts .mk{color:#aaa;margin-right:4px}
+.yd-opts li.yd-ok .mk{color:#2E7D4F;font-weight:700}
+.yd-exp{margin:10px 0 0;padding:10px 13px;border-radius:0 6px 6px 0;
+  border-left:3px solid var(--accent-soft);background:#F6F8F7;
+  font-size:13.5px;line-height:1.75}
+.yd-exp b{color:var(--accent);margin-right:5px}
+.yd-exp.yd-none{color:#aaa;border-left-color:#DDD;background:#FAFAFA}
+.yd-part{margin:26px 0 12px;padding:9px 14px;border-radius:8px;font-size:16px;
+  background:var(--accent-pale);color:var(--navy);border:1px solid var(--accent-soft)}
+.yd-part:first-of-type{margin-top:4px}
+
+/* ================= 휴대폰 대응 (시험지) =================
+   900px 이하에서는 사이드바가 이미 서랍으로 바뀐다. 여기서는 그보다 좁은
+   실제 휴대폰(≤640px)에서 문제를 끝까지 풀 수 있게 다듬는다.
+
+     1) 가로 스크롤을 없앤다 — 표가 화면 밖으로 밀려 나가 문서 전체가 옆으로 흔들렸다
+     2) 채점하기·남은 시간을 화면 아래 고정 — 80문항을 다 풀고 맨 위로 올라갈 필요가 없다
+     3) 손가락으로 눌리는 크기(44px)로 보기와 단추를 키운다
+     4) 머리말·모드 바가 첫 화면을 다 먹지 않게 줄인다
+     5) 연습장은 아래에서 올라오는 시트로 바꾼다
+--------------------------------------------------------------------------- */
+
+@media(max-width:640px){
+
+  /* ── 1) 가로 넘침 차단 ──
+     문제 안의 표는 폭이 고정이라 좁은 화면에서 본문 밖으로 밀려 나간다.
+     표만 따로 옆으로 밀어 볼 수 있게 하고, 문서 자체는 흔들리지 않게 한다. */
+  html, body{overflow-x:hidden}
+  .ex-body, .ex-exp, .q-spec, .ex-concept .cbody, #ex-result{
+    overflow-x:auto; -webkit-overflow-scrolling:touch}
+  .ex-body table, .q-spec table, .ex-concept .cbody table, #ex-result table{
+    max-width:none}
+  .ex-body img, .ex-body svg, .ex-concept .cbody img{max-width:100%;height:auto}
+
+  /* ── 2) 머리말 줄이기 ── */
+  #main{padding:16px 12px 96px}          /* 아래 고정 막대에 가리지 않게 여백 */
+  h1{font-size:20px;line-height:1.35}
+  h1 small{display:block;margin-top:3px;font-size:12.5px;font-weight:400;color:#888}
+  .crumb, .src{font-size:11.5px;line-height:1.55;margin-bottom:10px}
+  .ex-head{padding:11px 12px;margin-bottom:12px;border-radius:8px}
+  .ex-head .ex-meta{font-size:12px;line-height:1.6;margin-bottom:8px}
+  #ex-hist{font-size:11.5px;margin-top:8px}
+
+  /* 모드 바 — 두 줄 안에 들어가게 */
+  .ex-bar{gap:6px}
+  .ex-bar button{font-size:12.5px;padding:0 10px;min-height:40px;border-radius:8px}
+  .ex-sep{display:none}
+
+  /* ── 3) 아래 고정 : 남은 시간 · 채점하기 ──
+     둘 다 모드 바 안에 있어 맨 위에서만 눌렸다. 화면 아래로 내려 항상 닿게 한다.
+     화면 아래에는 이미 '☰ 문항'(왼쪽)과 펜 바(오른쪽)가 있으므로 두 단으로 나눈다.
+
+       아래 단  ☰ 문항 ····························· ✎ 펜
+       위  단  남은 시간 ··························· 채점하기 */
+  #ex-timer{position:fixed;left:12px;bottom:64px;z-index:930;
+    font-size:13px;padding:8px 12px;border-radius:20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.14)}
+  .ex-bar #ex-submit{position:fixed;right:12px;bottom:64px;z-index:930;
+    min-height:42px;padding:0 18px;font-size:14px;border-radius:22px;
+    box-shadow:0 4px 14px rgba(31,58,99,.34)}
+
+  /* ── 4) 손가락 크기 ── */
+  .ex-q{padding:12px 13px;border-radius:9px}
+  .ex-q .ex-body{font-size:14.5px}
+  .ex-opts li{margin-bottom:7px}
+  .ex-opts label{min-height:44px;align-items:center;padding:9px 11px;
+    border:1px solid #ECEFEE;border-radius:9px;font-size:14.5px}
+  .ex-opts label:hover{background:#fff}          /* 손가락에는 hover 가 없다 */
+  .ex-opts label.picked{border-color:var(--accent-soft)}
+  .ex-opts .mk{font-size:15px}
+
+  .ex-nav{padding-bottom:8px}
+  .ex-nav a{flex:0 0 42px;padding:10px 0;font-size:13px}
+  #sb-toggle{min-height:42px;border-radius:22px;padding:0 15px}
+
+  .ex-exp{font-size:13px;padding:9px 11px}
+  .ex-concept summary{padding:6px 0;font-size:13.5px}
+
+  /* 채점 결과 */
+  #ex-result{padding:12px}
+  #ex-result table{width:100%;font-size:12.5px}
+
+  /* ── 5) 연습장은 아래에서 올라오는 시트로 ── */
+  #sc-pad{left:0 !important;right:0 !important;bottom:0 !important;
+    top:auto !important;width:auto !important;height:56vh !important;
+    border-radius:12px 12px 0 0;border-bottom:0;z-index:940}
+  #sc-pad.mini{height:auto !important}
+  .sc-head{cursor:default;padding:8px 10px}      /* 시트는 끌어 옮기지 않는다 */
+  .sc-head button{min-height:34px}
+  .sc-pen{width:26px;height:26px;min-height:0 !important}
+  .sc-grip{display:none}                          /* 크기는 시트가 정한다 */
+  .sc-foot button{min-height:32px}
+  /* 연습장을 펼치면 아래 고정 것들이 시트에 깔려 눌리지 않는다 — 잠시 감춘다 */
+  body.sc-open #sb-toggle,
+  body.sc-open #ex-timer,
+  body.sc-open #an-bar,
+  body.sc-open .ex-bar #ex-submit{display:none}
+}
+
+/* 아주 좁은 화면(360px 이하) — 모드 이름을 줄여 두 줄을 지킨다 */
+@media(max-width:360px){
+  .ex-bar button{font-size:12px;padding:0 8px}
+  .ex-opts label{font-size:14px}
+  h1{font-size:18.5px}
+}
+
+/* 손가락 입력 기기 — hover 로만 보이던 것을 항상 보이게 */
+@media(hover:none){
+  .ex-bar button:hover{border-color:var(--line);color:#444}
+  .ex-bar button.on:hover{border-color:var(--accent);color:#fff}
+  .ex-bar .ex-primary:hover{background:var(--navy);color:#fff}
+}
+
+@media print{
+  #ex-timer,#ex-submit{position:static !important;box-shadow:none !important}
+}
+</style></head><body>
+<div id="layout">
+<nav id="sidebar">
+  <div class="side-head"><a href="index.html">빅데이터분석기사 기출 복원</a>
+    <span>제10회 해설본 (YD Daily)</span></div>
+  <ul class="parts">
+    <li class="grp">과목 바로가기</li>
+    <li><a href="#p1">1과목 빅데이터 분석 기획 <span>20문항</span></a></li>
+    <li><a href="#p2">2과목 빅데이터 탐색 <span>20문항</span></a></li>
+    <li><a href="#p3">3과목 빅데이터 모델링 <span>20문항</span></a></li>
+    <li><a href="#p4">4과목 빅데이터 결과 해석 <span>20문항</span></a></li>
+    <li class="grp">함께 보기</li>
+    <li><a href="기출복원_10회_필기_80문항.html">제10회 시험지 (꿈라CBT 복원)</a></li>
+    <li><a href="index.html">기출복원 목차</a></li>
+  </ul>
+</nav>
+<main id="main"><div class="wrap">
+<p class="crumb">기출 복원 · 제10회 해설본 (개인 학습용 · 재배포 금지)</p>
+<h1>제10회 필기 복원 해설 <small>2025-04-05 시행 · YD Daily 복원본</small></h1>
+<p class="src">출처: 1과목 <a href="YD Daily (https://yddaily.com/big-data-analysis-engineer-exam-questions-part1-10th/)" rel="noreferrer">원문</a> · 2과목 <a href="YD Daily (https://yddaily.com/bigdata-analyst-10th-exam-2/)" rel="noreferrer">원문</a> · 3과목 <a href="YD Daily (https://yddaily.com/bigdata-analyst-10th-exam-3/)" rel="noreferrer">원문</a> · 4과목 <a href="YD Daily (https://yddaily.com/bigdata-analyst-subject4-interpretation/)" rel="noreferrer">원문</a></p>
+
+<div class="yd-note">
+<b>이 페이지는 시험지와 다른 복원본입니다.</b><br>
+제10회 시험지(꿈라CBT 복원)에는 해설이 없습니다. 원 사이트가 해설을 로그인 뒤에만
+보여 주기 때문입니다. 그래서 같은 회차를 따로 복원해 해설까지 적어 둔 이 글을 함께
+싣습니다. 다만 두 복원본은 <b>서로 다른 사람이 기억으로 되살린 다른 문제 세트</b>라,
+80문항 가운데 같은 문제로 볼 만한 것이 14개뿐이었고 그중 10개는 정답 번호마저
+달랐습니다(보기 순서가 다르거나 묻는 방향이 반대). 그래서 시험지 문항에 이 해설을
+붙이지 않았습니다. <b>번호를 맞대어 보지 말고</b> 같은 범위를 다룬 별도 문제로 푸세요.
+</div>
+
+<p class="src">문항 80개 · 해설이 달린 문항 72개</p>
+<h2 class="yd-part" id="p1">1과목 · 빅데이터 분석 기획<small style="float:right;font-weight:400;color:#888;font-size:12.5px;padding-top:3px">20문항</small></h2>
+<section class="yd-q" id="y1"><div class="yd-h"><span class="yd-no">1.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">빅데이터분석과 관련된 내용 중 옳지 않은 것은?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> JDBC는 자바 애플리케이션에서 데이터베이스에 접근하기 위한 인터페이스이다</li><li><span class="mk">②</span> OLAP는 분석을 위한 툴이다</li><li><span class="mk">③</span> NoSQL은 관계형 데이터베이스가 아닌 데이터 저장 기술이다</li><li><span class="mk">④</span> 하둡은 대용량 데이터 처리를 위한 분산 컴퓨팅 프레임워크이다</li></ul><div class="yd-exp"><b>해설</b> JDBC는 자바 애플리케이션에서 관계형 데이터베이스에 접근하기 위한 표준 API로, 기술적으로는 정확한 설명입니다. 하지만 OLAP(온라인 분석 처리), NoSQL(빅데이터 저장), 하둡(분산 처리)은 모두 빅데이터 분석 및 처리에 특화된 기술인 반면, JDBC는 빅데이터 분석 기술 자체라기보다는 전통적인 데이터베이스 연결 기술에 가깝습니다. 따라서 빅데이터 분석과의 직접적 연관성이 상대적으로 낮습니다.</div></section>
+<section class="yd-q" id="y2"><div class="yd-h"><span class="yd-no">2.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">분석조직의 유형 중 집중형 구조의 특징이 아닌 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 중앙 집중식 데이터 관리가 가능하다</li><li class="yd-ok"><span class="mk">②</span> 분석결과를 집약해 가장 빠르게 저장 가능하다</li><li><span class="mk">③</span> 시스템 확장성이 제한적이다</li><li><span class="mk">④</span> 단일 장애점(SPOF) 위험이 존재한다</li></ul><div class="yd-exp"><b>해설</b> 분석조직의 집중형 구조는 중앙 집중식 관리의 장점이 있지만, 분석결과를 가장 빠르게 저장한다는 것은 틀린 설명입니다. 오히려 분산형 구조에서 병렬 처리를 통해 더 빠른 저장과 처리가 가능합니다. 집중형 구조는 확장성 제한과 SPOF 위험이 있는 것이 특징입니다. 집중형 데이터 분석조직 구조의 장단점</div></section>
+<section class="yd-q" id="y3"><div class="yd-h"><span class="yd-no">3.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">개인정보에 대한 설명 중 틀린 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 개인정보는 살아있는 개인에 관한 정보를 말한다</li><li><span class="mk">②</span> 가명처리된 정보도 개인정보에 해당한다</li><li><span class="mk">③</span> 개인정보는 최소한으로 수집해야 한다</li><li class="yd-ok"><span class="mk">④</span> CCTV 영상정보는 개인정보에 해당하지 않는다</li></ul><div class="yd-exp"><b>해설</b> CCTV 영상정보는 특정 개인을 식별할 수 있는 정보로 개인정보보호법상 개인정보에 해당합니다. 개인의 얼굴, 행동 등이 기록되어 개인 식별이 가능하므로 개인정보로 분류되며, 처리 시 적법한 근거와 적절한 보호조치가 필요합니다. 참고로 주민등록번호, 운전면허번호 등도 고유식별정보로 개인정보에 포함됩니다.</div></section>
+<section class="yd-q" id="y4"><div class="yd-h"><span class="yd-no">4.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">빅데이터의 문제점 중 책임원칙에 해당하는 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 사생활 침해로 인한 프라이버시 문제</li><li><span class="mk">②</span> 빅브라더의 현실 감시 문제</li><li class="yd-ok"><span class="mk">③</span> 데이터 분석 결과에 대한 책임 소재 불분명</li><li><span class="mk">④</span> 알고리즘 편향으로 인한 차별 문제</li></ul><div class="yd-exp"><b>해설</b> 빅데이터의 3대 위기요인은 ①사생활 침해(개인정보 침해), ②책임원칙 훼손(책임 소재 불분명), ③알고리즘 오용(결과 편향)입니다. 보기 3)의 ‘데이터 분석 결과에 대한 책임 소재 불분명’은 알고리즘이 복잡해지면서 의사결정 과정이 블랙박스화되어 결과에 대한 책임을 누가 져야 하는지 불분명해지는 책임원칙 훼손 문제에 해당합니다. 빅데이터 3대 위기요인과 사회적 영향, 대응 방안</div></section>
+<section class="yd-q" id="y5"><div class="yd-h"><span class="yd-no">5.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">비즈니스 분석방법 절차 중 분석기획의 순서로 맞는 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 문제 정의 → 현황 분석 → 목표 설정 → 성과 측정</li><li class="yd-ok"><span class="mk">②</span> 비즈니스 이해 → 프로젝트 정의 → 수행 계획 → 위험 계획 수립</li><li><span class="mk">③</span> 데이터 수집 → 전처리 → 모델링 → 평가</li><li><span class="mk">④</span> 요구사항 분석 → 설계 → 구현 → 테스트</li></ul><div class="yd-exp"><b>해설</b> 비즈니스 분석방법에서 분석기획 단계는 ①비즈니스 이해 → ②프로젝트 정의 → ③수행 계획 → ④위험 계획 수립 순서로 진행됩니다. 이는 체계적인 프로젝트 접근 방식을 따르는 것으로, CRISP-DM이나 KDD Process와 같은 실무 방법론에서도 유사한 순서를 제시합니다. 분석기획 4단계 프로세스: 비즈니스 이해, 프로젝트 정의, 수행 계획, 위험 계획 수립</div></section>
+<section class="yd-q" id="y6"><div class="yd-h"><span class="yd-no">6.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">개인정보를 익명처리했을 경우 틀린 설명은?</p><ul class="yd-opts"><li><span class="mk">①</span> 익명처리는 개인을 더 이상 식별할 수 없도록 하는 조치이다</li><li><span class="mk">②</span> 익명처리된 정보는 개인정보보호법 적용 대상이 아니다</li><li><span class="mk">③</span> 통계 작성이나 학술연구 목적으로 활용 가능하다</li><li class="yd-ok"><span class="mk">④</span> 재식별이 절대 불가능하므로 추가 관리가 불필요하다</li></ul><div class="yd-exp"><b>해설</b> 익명처리된 정보는 원칙적으로 개인정보보호법의 적용 대상이 아니며, 통계 작성이나 학술연구 등에 자유롭게 활용할 수 있습니다. 하지만 보기 4)는 틀린 설명입니다. 기술 발전과 다른 데이터와의 결합을 통해 재식별될 위험이 항상 존재하므로, 지속적인 모니터링과 관리가 필요합니다. 특히 빅데이터 환경에서는 재식별 위험이 더욱 높아집니다.</div></section>
+<section class="yd-q" id="y7"><div class="yd-h"><span class="yd-no">7.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">다음 중 데이터에 대한 설명으로 틀린 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 데이터는 일반적으로 정형, 비정형, 반정형 데이터로 구분된다</li><li><span class="mk">②</span> 비정형 데이터는 텍스트, 음성, 영상 등 특정한 구조가 없는 데이터이다</li><li class="yd-ok"><span class="mk">③</span> 반정형 데이터는 구조화 형태를 발견할 수 없다</li><li><span class="mk">④</span> 관계형 데이터베이스는 정형 데이터를 저장한다</li></ul><div class="yd-exp"><b>해설</b> 반정형 데이터는 XML, JSON처럼 일정한 구조나 스키마는 가지고 있지만 관계형 데이터베이스와 같은 완전한 구조를 갖지 않은 데이터입니다. ‘구조화 형태를 발견할 수 없다’는 것은 비정형 데이터의 특징입니다.</div></section>
+<section class="yd-q" id="y8"><div class="yd-h"><span class="yd-no">8.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">빅데이터 플랫폼의 처리 매체 노드 모듈, 저장소 관리는 어떤 계층에 해당하는가?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> 인프라스트럭처 계층</li><li><span class="mk">②</span> 플랫폼 계층</li><li><span class="mk">③</span> 소프트웨어 계층</li><li><span class="mk">④</span> 애플리케이션 계층</li></ul><div class="yd-exp"><b>해설</b> 빅데이터 플랫폼의 3계층 구조에서 인프라스트럭처 계층은 물리적/가상적 컴퓨팅 자원(노드), 네트워크, 스토리지 관리 등 하드웨어 자원을 제공하는 최하위 계층입니다. 플랫폼 계층은 Hadoop, Spark 같은 분산 처리 프레임워크가, 소프트웨어 계층은 분석 도구와 애플리케이션이 위치합니다. 3계층 아키텍처: 클라이언트, 애플리케이션 서버, 데이터베이스 서버</div></section>
+<section class="yd-q" id="y9"><div class="yd-h"><span class="yd-no">9.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">다음 중 웹 데이터를 수집하는 방법과 그 설명이 잘못된 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 로그 분석: 웹 서버 로그를 분석하여 사용자 행동 파악</li><li><span class="mk">②</span> 웹 크롤링: 웹사이트를 자동으로 탐색하여 데이터 수집</li><li class="yd-ok"><span class="mk">③</span> FTP: 웹 로그 데이터 수집 방법</li><li><span class="mk">④</span> API: 소셜미디어나 웹 서비스에서 제공하는 인터페이스 활용</li></ul><div class="yd-exp"><b>해설</b> FTP(File Transfer Protocol)는 파일 전송 프로토콜로 웹 데이터 수집 방법이 아닙니다. 웹 데이터 수집은 주로 웹 크롤링, API 활용, 로그 분석, 웹 스크래핑 등을 통해 이루어집니다.</div></section>
+<section class="yd-q" id="y10"><div class="yd-h"><span class="yd-no">10.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">데이터 특징 아닌 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 일관성: 동일한 데이터가 시스템 전반에서 일관되게 처리되어야 한다</li><li><span class="mk">②</span> 정확성: 데이터가 현실 세계의 정확한 상황을 올바르게 표현되어야 한다</li><li><span class="mk">③</span> 적시성: 데이터를 사용자가 필요한 시점에 적절하게 제공되어야 한다</li><li class="yd-ok"><span class="mk">④</span> 완전성: 전체 대류 용량 특성에 대한 설명이 시청되어 있어야 한다</li></ul><div class="yd-exp"><b>해설</b> 데이터 품질의 핵심 특성은 정확성(Accuracy), 완전성(Completeness), 일관성(Consistency), 적시성(Timeliness), 유효성(Validity) 등입니다. 보기 4)는 문장 자체가 어색하고 의미가 불분명합니다. 완전성은 누락된 데이터 없이 모든 필요한 데이터가 존재해야 함을 의미합니다.</div></section>
+<section class="yd-q" id="y11"><div class="yd-h"><span class="yd-no">11.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">정보를 추가하거나 결합해야만 개인을 식별할 수 있는 정보는 무엇인가?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> 가명정보</li><li><span class="mk">②</span> 개인식별정보</li><li><span class="mk">③</span> 민감정보</li><li><span class="mk">④</span> 고유식별정보</li></ul><div class="yd-exp"><b>해설</b> 가명정보는 추가 정보의 사용·결합 없이는 특정 개인을 알아볼 수 없도록 처리한 정보를 말합니다. 다른 정보와 결합하면 개인 식별이 가능하지만, 단독으로는 개인을 식별할 수 없는 정보입니다. 가명정보는 개인정보의 한 유형으로 개인정보보호법의 적용을 받습니다. 개인정보, 가명정보, 익명정보의 정의와 활용범위 비교</div></section>
+<section class="yd-q" id="y12"><div class="yd-h"><span class="yd-no">12.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">빅데이터 활용을 업무와 서비스로 구분할 때 서비스에 해당하는 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 업무 프로세스 개선</li><li><span class="mk">②</span> 의사결정 지원</li><li class="yd-ok"><span class="mk">③</span> 데이터 정보 제공</li><li><span class="mk">④</span> 내부 효율성 향상</li></ul><div class="yd-exp"><b>해설</b> 빅데이터 활용을 업무와 서비스로 구분할 때, 데이터 정보 제공은 외부 고객이나 사용자에게 제공하는 서비스에 해당합니다. 나머지 선택지들은 모두 조직 내부의 업무 개선에 해당합니다.</div></section>
+<section class="yd-q" id="y13"><div class="yd-h"><span class="yd-no">13.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">분석 과제의 성격에 따른 4가지 분석 주제 유형에 대한 설명으로 가장 거리가 먼 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 최적화 (Optimization): 분석 대상과 방법을 모두 명확히 알고 있을 때, 최적의 결과를 도출하는 것을 목표로 한다.</li><li><span class="mk">②</span> 통찰 (Insight): 분석 대상은 명확하지만 방법을 모를 때, 새로운 관점이나 패턴을 발견하고자 한다.</li><li><span class="mk">③</span> 발견 (Discovery): 분석 대상은 모르지만 분석 방법은 알고 있을 때, 해당 방법을 적용할 새로운 대상을 탐색한다.</li><li class="yd-ok"><span class="mk">④</span> 탐색 (Exploration): 분석 대상과 방법을 모두 알고 있을 때, 광범위한 탐색을 통해 유의미한 관계를 찾는다.</li></ul><div class="yd-exp"><b>해설</b> 분석 주제의 4가지 유형은 분석 대상(What)과 방법(How)을 알고 있는지에 따라 나뉩니다. 최적화 (Optimization): 대상(O), 방법(O) 통찰 (Insight): 대상(O), 방법(X) 발견 (Discovery): 대상(X), 방법(O) 탐색 (Exploration): 대상(X), 방법(X) 4번 보기는탐색(Exploration)에 대한 설명이 틀렸습니다. 탐색은 분석 대상과 방법을 모두 모를 때 광범위하게 접근하여 문제 자체를 정의하는 단계입니다. “대상과 방법을 모두 알고 있을 때”는 최적화(Optimization)에 해당합니다.</div></section>
+<section class="yd-q" id="y14"><div class="yd-h"><span class="yd-no">14.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">데이터레이크의 특징이 아닌 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 확장성이 뛰어나다</li><li><span class="mk">②</span> 유연한 데이터 저장이 가능하다</li><li><span class="mk">③</span> 비용 효율성이 높다</li><li class="yd-ok"><span class="mk">④</span> 구조화된 스키마가 필요하다</li></ul><div class="yd-exp"><b>해설</b> 데이터레이크는 원시 데이터를 스키마 없이 저장하는 스키마 온 리드(Schema on Read) 방식을 사용합니다. 미리 정의된 구조화된 스키마는 데이터웨어하우스의 특징(스키마 온 라이트)입니다. 데이터레이크는 유연성, 확장성, 비용 효율성이 장점입니다.</div></section>
+<section class="yd-q" id="y15"><div class="yd-h"><span class="yd-no">15.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">사전에 훈련된 모델을 재사용하는 방식은?</p><ul class="yd-opts"><li><span class="mk">①</span> 지도학습</li><li><span class="mk">②</span> 비지도학습</li><li><span class="mk">③</span> 강화학습</li><li class="yd-ok"><span class="mk">④</span> 전이학습</li></ul><div class="yd-exp"><b>해설</b> 전이학습(Transfer Learning)은 하나의 도메인에서 학습된 모델을 다른 도메인에 적용하는 기계학습 방법입니다. 사전 훈련된 모델의 지식을 새로운 작업에 전이하여 활용하는 방식으로, 학습 시간과 데이터 양을 크게 줄일 수 있습니다.</div></section>
+<section class="yd-q" id="y16"><div class="yd-h"><span class="yd-no">16.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">개인정보 보호로 옳지 않은 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 목적을 명확히 해야 한다</li><li><span class="mk">②</span> 최소한으로 수집해야 한다</li><li class="yd-ok"><span class="mk">③</span> 개인정보를 최대한 수집해야 한다</li><li><span class="mk">④</span> 정확성을 보장해야 한다</li></ul><div class="yd-exp"><b>해설</b> 개인정보보호법의 기본 원칙 중 하나는 ‘최소수집 원칙’으로, 수집 목적에 필요한 최소한의 개인정보만 수집해야 합니다. ‘개인정보를 최대한 수집’하는 것은 개인정보보호법 위반입니다. 목적 명확화, 최소 수집, 정확성 보장은 모두 개인정보 처리 원칙입니다.</div></section>
+<section class="yd-q" id="y17"><div class="yd-h"><span class="yd-no">17.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">데이터사이언티스트의 역할이 아닌 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 데이터분석과 연구관리</li><li><span class="mk">②</span> 비즈니스 문제 해결</li><li><span class="mk">③</span> 모델 개발 및 구현</li><li class="yd-ok"><span class="mk">④</span> 하드웨어 인프라 구축</li></ul><div class="yd-exp"><b>해설</b> 데이터사이언티스트는 데이터 분석, 모델링, 비즈니스 문제 해결, 연구 관리가 주요 역할입니다. 하드웨어 인프라 구축은 시스템 엔지니어나 인프라 팀의 역할로, 데이터사이언티스트의 직접적인 업무 영역이 아닙니다.</div></section>
+<section class="yd-q" id="y18"><div class="yd-h"><span class="yd-no">18.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">WBS는 어떤 단계에 해당되는가?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> 프로젝트 분석 계획수립</li><li><span class="mk">②</span> 요구사항 분석</li><li><span class="mk">③</span> 시스템 설계</li><li><span class="mk">④</span> 구현 및 테스트</li></ul><div class="yd-exp"><b>해설</b> WBS(Work Breakdown Structure, 작업분해구조)는 프로젝트의 전체 작업을 계층적으로 세분화하여 관리 가능한 단위로 나누는 것으로, 프로젝트 계획수립 단계에서 사용되는 핵심 기법입니다.</div></section>
+<section class="yd-q" id="y19"><div class="yd-h"><span class="yd-no">19.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">아래 내용 중 옳은 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> FGI는 전문가들을 통하여 도출을 하져 한다</li><li class="yd-ok"><span class="mk">②</span> 브레인스토밍은 자유로운 발상을 통한 아이디어 도출이다</li><li><span class="mk">③</span> 델파이 기법은 면대면 토론을 통한 합의이다</li><li><span class="mk">④</span> 로드맵 기법은 과거 데이터 분석을 통한 예측이다</li></ul><div class="yd-exp"><b>해설</b> 브레인스토밍은 자유로운 분위기에서 창의적 아이디어를 도출하는 기법입니다. FGI(Focus Group Interview)는 특정 주제에 대한 소그룹 인터뷰, 델파이 기법은 전문가들의 익명 의견 수렴(면대면이 아님), 로드맵은 전략적 계획 수립 기법입니다.</div></section>
+<section class="yd-q" id="y20"><div class="yd-h"><span class="yd-no">20.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">인공지능에 대한 설명 잘못된 것은?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> 인공지능은 추상적인 학습이 필요하다</li><li><span class="mk">②</span> 기계학습은 데이터로부터 패턴을 학습한다</li><li><span class="mk">③</span> 딥러닝은 신경망을 활용한 학습 방법이다</li><li><span class="mk">④</span> 인공지능은 인간의 지능을 모방하려는 기술이다</li></ul><div class="yd-exp"><b>해설</b> 인공지능은 ‘추상적인’ 학습이 아니라 구체적인 데이터와 알고리즘을 통한 학습이 필요합니다. 머신러닝은 실제 데이터를 기반으로 경험적 학습 과정을 거치며, 명확한 수치 데이터나 패턴을 통해 모델을 구축합니다. 추상적 학습보다는 데이터 기반의 구체적 학습이 핵심입니다.</div></section>
+<h2 class="yd-part" id="p2">2과목 · 빅데이터 탐색<small style="float:right;font-weight:400;color:#888;font-size:12.5px;padding-top:3px">20문항</small></h2>
+<section class="yd-q" id="y21"><div class="yd-h"><span class="yd-no">21.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">다른 변수에 영향을 주어 원인의 역할을 하는 변수는 무엇인가?</p><ul class="yd-opts"><li><span class="mk">①</span> 상수값</li><li><span class="mk">②</span> 상관관계</li><li class="yd-ok"><span class="mk">③</span> 독립변수</li><li><span class="mk">④</span> 종속변수</li></ul><div class="yd-exp"><b>해설</b> 변수(Variable)는 분석 과정에서 값이 변할 수 있는 요소를 의미하며, 다른 변수에 영향을 주는 독립변수(Independent Variable)와 영향을 받는 종속변수(Dependent Variable) 모두 분석에 사용됩니다. 이 문제에서는 원인이 되는 변수를 묻고 있으므로 독립변수가 정답입니다. 상수값은 변하지 않는 값이며, 상관관계는 변수 간의 관계를 나타내는 지표이므로 변수에 해당하지 않습니다. 햇빛의 양(독립변수)에 따라 꽃의 성장(종속변수)이 달라지는 관계를 나타낸 그림</div></section>
+<section class="yd-q" id="y22"><div class="yd-h"><span class="yd-no">22.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">성공 확률이 p인 베르누이 시행을 n번 독립적으로 반복할 때, 성공 횟수를 나타내는 이항분포 B(n,p)에서 수식 np(1-p)가 의미하는 통계량은 무엇인가?</p><ul class="yd-opts"><li><span class="mk">①</span> 평균 (Mean)</li><li class="yd-ok"><span class="mk">②</span> 분산 (Variance)</li><li><span class="mk">③</span> 표준편차 (Standard Deviation)</li><li><span class="mk">④</span> 최빈값 (Mode)</li></ul><div class="yd-exp"><b>해설</b> 이항분포 B(n,p)에서 분산은 np(1-p)로 계산됩니다. 참고로 평균은 np, 표준편차는 √np(1-p) 입니다. 이항분포에서 평균, 분산, 표준편차, 최빈값을 정리한 공식</div></section>
+<section class="yd-q" id="y23"><div class="yd-h"><span class="yd-no">23.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">모평균이 μ, 모분산이 σ²인 모집단에서 크기가 n(≥2)인 표본을 추출할 때, 다음 중 올바른 것은?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> 표본평균의 기댓값은 모평균과 항상 같다</li><li><span class="mk">②</span> 표본분산은 모분산보다 항상 크다</li><li><span class="mk">③</span> 표본평균의 분산은 모분산과 같다</li><li><span class="mk">④</span> 분모가 n인 표본분산은 불편추정량이다</li></ul><div class="yd-exp"><b>해설</b> 표본평균 X̄의 기댓값은 E[X̄] = μ로 모평균과 항상 같습니다. 이는 표본평균이 모평균의 불편추정량임을 의미합니다. 표본평균의 기댓값, 분산, 불편표본분산, 편향표본분산 공식 정리</div></section>
+<section class="yd-q" id="y24"><div class="yd-h"><span class="yd-no">24.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">데이터 100, 200, 300을 Z-score로 변환하는 과정을 선형함수 f(x) = ax + b로 나타낼 때, a + b의 값은?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> -1.99</li><li><span class="mk">②</span> 0</li><li><span class="mk">③</span> 1</li><li><span class="mk">④</span> 99</li></ul><div class="yd-exp"><b>해설</b> 이 문제의 핵심은 주어진 데이터 [100, 200, 300]을 모집단이 아닌 표본(sample)으로 간주하고 표본 표준편차를 구하는 것입니다. 1단계: 평균(μ) 계산 μ = (100 + 200 + 300) / 3 = 600 / 3 = 200 2단계: 표본 표준편차(s) 계산 표본 분산(s²) = [(100-200)² + (200-200)² + (300-200)²] / (3-1) ← (n이 아닌 n-1로 나눔) s² = [(-100)² + 0² + 100²] / 2 s² = [10000 + 0 + 10000] / 2 = 20000 / 2 = 10000 표본 표준편차(s) = √10000 = 100 3단계: Z-score 공식을 선형함수로 변환 Z-score 공식: Z = (x - μ) / s 이 공식을 f(x) = ax + b 형태로 바꾸면: Z = (1/s)x - (μ/s) 따라서, a = 1/s 이고 b = -μ/s 입니다. 4단계: a + b 계산 a + b = (1/s) + (-μ/s) = (1 – μ) / s 위에서 구한 값을 대입하면: a + b = (1 – 200) / 100 = -199 / 100 = -1.99 따라서 정답은 -1.99 입니다. 이 문제는 Z-score 공식과 표본 표준편차 공식을 모두 정확히 알고 있는지 확인하는 문제입니다..</div></section>
+<section class="yd-q" id="y25"><div class="yd-h"><span class="yd-no">25.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">포아송분포에 대한 내용으로 올바른 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 정규분포와 동일한 형태이다</li><li><span class="mk">②</span> 대칭분포이다</li><li class="yd-ok"><span class="mk">③</span> 평균과 분산이 같다</li><li><span class="mk">④</span> 연속확률분포이다</li></ul><div class="yd-exp"><b>해설</b> 포아송분포는 평균과 분산이 λ로 같은 것이 특징입니다. 포아송분포는 단위 시간이나 단위 공간에서 발생하는 사건의 횟수를 나타내는 이산확률분포입니다. λ가 작을 때는 오른쪽으로 치우친 분포이며, λ가 커질수록 정규분포에 근사합니다. 포아송분포의 정의, 수학적 공식, 실생활 사례, 주요 성질을 정리한 이미지</div></section>
+<section class="yd-q" id="y26"><div class="yd-h"><span class="yd-no">26.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">P(X=1)=p, P(X=-1)=1-p일 때 이는 어떤 분포인가?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> 베르누이분포의 변형</li><li><span class="mk">②</span> 이항분포</li><li><span class="mk">③</span> 정규분포</li><li><span class="mk">④</span> 균등분포</li></ul><div class="yd-exp yd-none">이 문항은 해설이 없습니다.</div></section>
+<section class="yd-q" id="y27"><div class="yd-h"><span class="yd-no">27.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">다음 중 문서 분석을 위해 특이값분해(SVD)를 핵심 원리로 사용하는 분석 기법은 무엇인가?</p><ul class="yd-opts"><li><span class="mk">①</span> PCA (주성분분석)</li><li class="yd-ok"><span class="mk">②</span> LSA (Latent Semantic Analysis)</li><li><span class="mk">③</span> ICA (독립성분분석)</li><li><span class="mk">④</span> LDA (선형판별분석)</li></ul><div class="yd-exp yd-none">이 문항은 해설이 없습니다.</div></section>
+<section class="yd-q" id="y28"><div class="yd-h"><span class="yd-no">28.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">상자그림 IQR에 대한 설명 중 틀린 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> Q3 – Q1이다</li><li><span class="mk">②</span> 중간 50%의 데이터 범위이다</li><li><span class="mk">③</span> 이상치 탐지에 사용된다</li><li class="yd-ok"><span class="mk">④</span> Q1 – Q3이다</li></ul><div class="yd-exp yd-none">이 문항은 해설이 없습니다.</div></section>
+<section class="yd-q" id="y29"><div class="yd-h"><span class="yd-no">29.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">다음 중 집단 내에는 동질적(유사한 특성), 집단 간에는 이질적(서로 다른 특성)이 되도록 그룹을 나누는 분석 모형은 무엇인가?</p><ul class="yd-opts"><li><span class="mk">①</span> 회귀분석</li><li><span class="mk">②</span> 판별분석</li><li class="yd-ok"><span class="mk">③</span> 군집분석</li><li><span class="mk">④</span> 주성분분석</li></ul><div class="yd-exp yd-none">이 문항은 해설이 없습니다.</div></section>
+<section class="yd-q" id="y30"><div class="yd-h"><span class="yd-no">30.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">회귀 모델의 가정 및 평가 지표에 대한 설명으로 잘못된 것은?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> 과소적합이 과적합보다 좋다</li><li><span class="mk">②</span> 결정계수가 높을수록 좋다</li><li><span class="mk">③</span> 잔차의 분산이 일정해야 한다</li><li><span class="mk">④</span> 다중공선성이 없어야 한다</li></ul><div class="yd-exp"><b>해설</b> 과소적합(underfitting)과 과적합(overfitting) 모두 바람직하지 않은 현상입니다. 과소적합은 모델이 너무 단순해서 훈련 데이터조차 제대로 학습하지 못하는 상태이고, 과적합은 훈련 데이터에만 특화되어 새로운 데이터에 대한 예측 성능이 떨어지는 상태입니다. 적절한 복잡도의 모델이 가장 좋습니다.</div></section>
+<section class="yd-q" id="y31"><div class="yd-h"><span class="yd-no">31.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">다음 중 구간추정에 대한 내용 중 맞는 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 구간추정은 점추정보다 항상 정확하다</li><li><span class="mk">②</span> 신뢰구간이 넓을수록 좋다</li><li><span class="mk">③</span> 신뢰수준이 높아지면 신뢰구간이 좁아진다</li><li class="yd-ok"><span class="mk">④</span> 표본크기가 클수록 신뢰구간이 좁아진다</li></ul><div class="yd-exp"><b>해설</b> 표본크기가 클수록 표준오차가 작아져 신뢰구간이 좁아집니다. 이는 추정의 정확도가 높아짐을 의미합니다. 반면 3번은 틀린 설명입니다. 신뢰수준이 높아지면 신뢰구간은 넓어집니다. 예를 들어, 95% 신뢰구간보다 99% 신뢰구간이 더 넓습니다. 신뢰도를 높이기 위해서는 더 넓은 범위를 예측해야 하기 때문입니다. 구간추정은 모수가 포함될 것으로 예상되는 구간을 제시하는 방법입니다.</div></section>
+<section class="yd-q" id="y32"><div class="yd-h"><span class="yd-no">32.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">오른쪽으로 꼬리가 긴(치우친) 분포에 대한 설명으로 맞는 것은?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> 최빈값 &lt; 중앙값 &lt; 평균</li><li><span class="mk">②</span> 평균 &lt; 중앙값 &lt; 최빈값</li><li><span class="mk">③</span> 중앙값 &lt; 평균 &lt; 최빈값</li><li><span class="mk">④</span> 최빈값 &lt; 평균 &lt; 중앙값</li></ul><div class="yd-exp"><b>해설</b> 오른쪽으로 치우친 분포(positive skew)에서는 최빈값 &lt; 중앙값 &lt; 평균 순서입니다. 극값들이 평균을 오른쪽으로 끌어당기기 때문입니다. 반대로 왼쪽 치우친 분포에서는 평균 &lt; 중앙값 &lt; 최빈값 순서가 됩니다.</div></section>
+<section class="yd-q" id="y33"><div class="yd-h"><span class="yd-no">33.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">초기하분포(Hypergeometric Distribution)에 대한 설명으로 옳은 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 복원추출에서 사용된다</li><li class="yd-ok"><span class="mk">②</span> 비복원추출에서 사용된다</li><li><span class="mk">③</span> 정규분포의 근사이다</li><li><span class="mk">④</span> 이산분포가 아니다</li></ul><div class="yd-exp"><b>해설</b> 초기하분포는 비복원추출 상황에서 사용되는 확률분포입니다. 유한한 모집단에서 복원하지 않고 표본을 추출할 때 성공의 개수를 나타냅니다. 각 시행이 종속적인 것이 특징으로, 이는 이항분포(독립시행)와의 주요 차이점입니다.</div></section>
+<section class="yd-q" id="y34"><div class="yd-h"><span class="yd-no">34.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">상관계수의 특징에 대해서 옳지 않은 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> -1과 1 사이의 값을 가진다</li><li><span class="mk">②</span> 단위에 영향을 받지 않는다</li><li class="yd-ok"><span class="mk">③</span> 피어슨 계수는 이상치에 강하다</li><li><span class="mk">④</span> 0에 가까우면 선형관계가 약하다</li></ul><div class="yd-exp"><b>해설</b> 피어슨 상관계수는 이상치에 민감합니다. 극값이 있으면 상관계수가 크게 영향을 받을 수 있습니다. 이상치에 강한 상관계수로는 스피어만 순위 상관계수가 있습니다.</div></section>
+<section class="yd-q" id="y35"><div class="yd-h"><span class="yd-no">35.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">로지스틱 회귀에 관한 설명으로 옳지 않은 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 종속변수는 범주형이다</li><li><span class="mk">②</span> 시그모이드 함수를 사용한다</li><li class="yd-ok"><span class="mk">③</span> 독립변수는 정규성을 가져야 한다</li><li><span class="mk">④</span> 분류 문제에 사용된다</li></ul><div class="yd-exp"><b>해설</b> 로지스틱 회귀에서 독립변수는 정규성을 만족할 필요가 없습니다. 로지스틱 회귀는 선형회귀와 달리 종속변수가 범주형일 때 사용하며, 시그모이드 함수를 통해 확률을 모델링합니다.</div></section>
+<section class="yd-q" id="y36"><div class="yd-h"><span class="yd-no">36.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">요약 변수와 관련된 내용으로 옳은 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 일시적, 파상 변수는 계속 사용 가능</li><li class="yd-ok"><span class="mk">②</span> 더미변수는 범주형 변수를 수치화한 것</li><li><span class="mk">③</span> 교호작용은 고려하지 않는다</li><li><span class="mk">④</span> 연속형 변수만 사용한다</li></ul><div class="yd-exp"><b>해설</b> 더미변수(가변수)는 범주형 변수를 0과 1의 수치로 변환한 변수입니다. 예를 들어, ‘성별’을 남성=1, 여성=0으로 코딩하는 것입니다. 이를 통해 회귀분석에서 범주형 변수를 사용할 수 있습니다.</div></section>
+<section class="yd-q" id="y37"><div class="yd-h"><span class="yd-no">37.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">변수 선택에서 모델 성능 평가에 사용되는 방법은?</p><ul class="yd-opts"><li><span class="mk">①</span> 전진선택법 (Forward Selection)</li><li><span class="mk">②</span> 후진제거법 (Backward Elimination)</li><li><span class="mk">③</span> 단계적 방법 (Stepwise)</li><li class="yd-ok"><span class="mk">④</span> 교차검증법 (Cross Validation)</li></ul><div class="yd-exp"><b>해설</b> 교차검증법은 데이터를 훈련세트와 검증세트로 나누어 모델의 성능을 평가하는 방법입니다. 변수 선택 과정에서 과적합을 방지하고 모델의 일반화 성능을 평가하는 데 사용됩니다. 전진선택법, 후진제거법, 단계적 방법은 변수 선택 기법이고, 교차검증은 모델 평가 기법입니다.</div></section>
+<section class="yd-q" id="y38"><div class="yd-h"><span class="yd-no">38.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">데이터의 품질을 향상하기 위해 데이터의 이상치, 결측치를 탐지하고 처리하는 과정은?</p><ul class="yd-opts"><li><span class="mk">①</span> 데이터 수집</li><li><span class="mk">②</span> 데이터 변환</li><li class="yd-ok"><span class="mk">③</span> 데이터 정제</li><li><span class="mk">④</span> 데이터 통합</li></ul><div class="yd-exp"><b>해설</b> 데이터 정제(Data Cleaning)는 이상치, 결측치, 중복값, 오류값 등을 탐지하고 처리하여 데이터 품질을 향상시키는 과정입니다. 데이터 전처리의 핵심 단계 중 하나입니다.</div></section>
+<section class="yd-q" id="y39"><div class="yd-h"><span class="yd-no">39.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">3개 이상 그룹의 표본 평균을 검정 하는 방법은?</p><ul class="yd-opts"><li><span class="mk">①</span> t-검정</li><li><span class="mk">②</span> 카이제곱검정</li><li class="yd-ok"><span class="mk">③</span> 분산분석</li><li><span class="mk">④</span> 회귀분석</li></ul><div class="yd-exp"><b>해설</b> 3개 이상의 그룹 평균을 동시에 비교할 때는 분산분석(ANOVA)을 사용합니다. t-검정은 2개 그룹 비교에만 사용되며, 여러 그룹을 여러 번 t-검정하면 1종 오류가 누적됩니다.</div></section>
+<section class="yd-q" id="y40"><div class="yd-h"><span class="yd-no">40.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">두 확률변수 X와 Y의 독립성과 공분산의 관계에 대한 설명 중 항상 참인 명제는?</p><ul class="yd-opts"><li><span class="mk">①</span> 공분산이 0이면 두 변수는 독립이다</li><li><span class="mk">②</span> 공분산이 0이면 두 변수는 선형관계가 없다</li><li><span class="mk">③</span> 공분산이 0이면 완전한 양의 상관관계이다</li><li class="yd-ok"><span class="mk">④</span> 두 변수가 독립이면 공분산은 0이다</li></ul><div class="yd-exp"><b>해설</b> 두 변수 X, Y가 독립이면 공분산 Cov(X, Y) = 0입니다. 하지만 역은 성립하지 않습니다. 즉, 공분산이 0이라고 해서 두 변수가 반드시 독립인 것은 아닙니다. 공분산이 0이라는 것은 두 변수 간에 선형 관계가 없음을 의미할 뿐, 비선형 관계는 존재할 수 있습니다. 따라서 “독립 → 공분산=0″은 참이지만, “공분산=0 → 독립”은 거짓입니다.</div></section>
+<h2 class="yd-part" id="p3">3과목 · 빅데이터 모델링<small style="float:right;font-weight:400;color:#888;font-size:12.5px;padding-top:3px">20문항</small></h2>
+<section class="yd-q" id="y41"><div class="yd-h"><span class="yd-no">41.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">다음 hierarchical clustering dendrogram에서 distance가 7.3일 때 몇 개의 군집으로 나누어지는가?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> 데이터 간 거리 기반으로 형성된 계층적 군집 분석 결과 도식</li><li><span class="mk">②</span> 2개</li><li><span class="mk">③</span> 3개</li><li><span class="mk">④</span> 4개</li><li><span class="mk">⑤</span> 5개</li></ul><div class="yd-exp"><b>해설</b> 덴드로그램에서 군집 개수를 결정하는 방법은 절단선(cut-off line)을 설정하여 교차하는 수직선의 개수를 세는 것입니다. 절단선 위치: Distance = 7.3 절단선과 교차하는 수직선: 2개 첫 번째 클러스터: 왼쪽 큰 클러스터 두 번째 클러스터: 오른쪽 클러스터 💡 핵심: 덴드로그램에서 군집 개수는 항상 절단선과 교차하는 수직선의 개수와 같습니다!</div></section>
+<section class="yd-q" id="y42"><div class="yd-h"><span class="yd-no">42.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">ARIMA 모형에 대한 설명으로 옳은 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 비정상성 시계열 데이터에도 직접 적용할 수 있다.</li><li><span class="mk">②</span> AR(자기회귀) + I(차분) + MA(이동평균) 모형의 조합이다.</li><li><span class="mk">③</span> 계절성을 가진 데이터에는 사용할 수 없다.</li><li class="yd-ok"><span class="mk">④</span> 정상성 시계열 데이터에만 적용 가능하다.</li></ul><div class="yd-exp"><b>해설</b> ARIMA (AutoRegressive Integrated Moving Average)의 핵심 전제조건은 정상성입니다. AR(p): 자기회귀 모형 – 과거 값들의 선형결합 I(d): 차분(Integrated) – 비정상성을 정상성으로 변환 MA(q): 이동평균 모형 – 과거 오차들의 선형결합 비정상성 데이터는 차분(I)을 통해 정상화한 후 적용해야 합니다. 💡 핵심: ARIMA는 정상성이 생명! 비정상성 데이터는 차분으로 정상화 후 적용해야 합니다.</div></section>
+<section class="yd-q" id="y43"><div class="yd-h"><span class="yd-no">43.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">인공신경망에서 과적합을 해결하는 방법은?</p><ul class="yd-opts"><li><span class="mk">①</span> Sigmoid 함수 사용</li><li class="yd-ok"><span class="mk">②</span> ReLU 함수 사용 ✅</li><li><span class="mk">③</span> 배치정규화 적용</li><li><span class="mk">④</span> 은닉층 개수 증가</li></ul><div class="yd-exp"><b>해설</b> ReLU 함수가 과적합을 해결하는 이유: 희소성(Sparsity): 음수 값을 0으로 만들어 일부 뉴런을 비활성화 단순한 구조: 복잡한 비선형성을 줄여 모델을 단순화 기울기 유지: Sigmoid 대비 안정적인 학습으로 과학습 방지 다른 선택지들: Sigmoid: 기울기 소실 문제 배치정규화: 주로 학습률 저하 문제 해결 은닉층 증가: 모델 복잡도 증가로 과적합 악화 💡 핵심: ReLU 함수는 기울기 소실 문제를, 배치정규화는 학습률 문제를 해결합니다!</div></section>
+<section class="yd-q" id="y44"><div class="yd-h"><span class="yd-no">44.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">앙상블(Ensemble) 기법에 대한 설명으로 옳은 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 배깅은 편향을 감소시키고, 부스팅은 분산을 감소시킨다.</li><li><span class="mk">②</span> 배깅과 부스팅 모두 편향을 감소시킨다.</li><li><span class="mk">③</span> 배깅과 부스팅 모두 분산을 감소시킨다.</li><li class="yd-ok"><span class="mk">④</span> 배깅은 분산을 감소시키고, 부스팅은 편향을 감소시킨다.</li></ul><div class="yd-exp"><b>해설</b> 배깅(Bagging) – 분산 감소 Bootstrap Aggregating 병렬 처리로 여러 모델을 독립적으로 학습 예측 결과를 평균내어 분산 감소 대표 예시: Random Forest 부스팅(Boosting) – 편향 감소 순차적 학습으로 약한 학습기를 강한 학습기로 변환 이전 모델의 오류를 다음 모델이 보완 편향 감소, 분산은 증가할 수 있음 대표 예시: AdaBoost, XGBoost 💡 기억법: 배깅은 Bagging → Bias 아닌 분산 감소! 부스팅은 편향 감소!</div></section>
+<section class="yd-q" id="y45"><div class="yd-h"><span class="yd-no">45.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">주성분분석(PCA)에 대한 설명 중 옳지 않은 것은?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> 분산이 낮은 것부터 주성분을 선택한다.</li><li><span class="mk">②</span> 차원 축소 기법 중 하나이다.</li><li><span class="mk">③</span> 변수들 간의 상관관계를 이용한다.</li><li><span class="mk">④</span> 고유값이 큰 순서대로 주성분을 선택한다.</li></ul><div class="yd-exp"><b>해설</b> PCA는 분산이 높은 것부터 주성분을 선택합니다. PCA의 핵심 원리 데이터의 분산이 최대인 방향을 찾음 → 제1주성분 제1주성분과 직교하면서 분산이 최대인 방향 → 제2주성분 순차적으로 분산이 큰 순서대로 주성분 선택 올바른 설명들 차원 축소 기법 중 하나 ✓ 변수들 간의 상관관계(공분산 행렬) 이용 ✓ 고유값이 큰 순서대로 선택 (고유값 = 해당 주성분의 분산) ✓ 💡 핵심: PCA는 높은 분산을 가진 주성분부터 선택하여 정보 손실을 최소화합니다!</div></section>
+<section class="yd-q" id="y46"><div class="yd-h"><span class="yd-no">46.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">빅데이터 분석 프로젝트 진행 시 단계별 수행 작업에 대한 설명 중 옳지 않은 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 데이터 수집 단계에서는 분석 목적에 따라 다양한 소스에서 데이터를 확보하며, 가급적 데이터 중복이나 노이즈를 줄이는 방향으로 진행한다.</li><li class="yd-ok"><span class="mk">②</span> 데이터 전처리에서는 결측치 대치, 이상치 탐색, 변수 변환을 수행하지만, 복잡한 데이터 변환 기법은 모델 성능 향상을 위해 반드시 적용해야 한다.</li><li><span class="mk">③</span> 탐색적 데이터 분석(EDA) 단계는 단순 통계 요약과 시각화에 그치지 않고, 데이터 분포 및 변수 간 관계를 심도 있게 분석하여 분석 방향성을 결정한다.</li><li><span class="mk">④</span> 최종 결과 도출 및 보고서 작성 단계에서는 단순 결과 전달을 넘어, 실제 비즈니스 적용 시 고려해야 할 이슈들을 충분히 반영한다.</li></ul><div class="yd-exp"><b>해설</b> 선택지 2번의 “반드시 적용해야 한다”는 절대적 표현이 잘못되었습니다. 올바른 데이터 전처리 접근 선택적이고 적절한 변환 기법 적용 검증을 통한 효과 확인 후 적용 결정 복잡한 변환이 항상 성능 향상을 보장하지 않음 과적합 위험 및 해석력 저하 가능성 고려 KISS 원칙 : Keep It Simple, Stupid 목적에 맞는 변환 효과 검증 후 적용 해석 가능성 고려 단순함과 성능의 균형 💡 핵심 : 복잡한 변환이 항상 좋은 것은 아닙니다. 적절한 변환과 검증이 성공의 열쇠!</div></section>
+<section class="yd-q" id="y47"><div class="yd-h"><span class="yd-no">47.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">다음 중 초매개변수와 매개변수에 대한 설명으로 옳은 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 인공신경망의 가중치는 사용자가 학습 전에 설정하는 초매개변수로, 모델 학습 과정에서 변하지 않는다.</li><li class="yd-ok"><span class="mk">②</span> 인공신경망의 가중치는 학습 데이터로부터 학습되어 자동으로 조정되는 매개변수이다.</li><li><span class="mk">③</span> KNN의 이웃 수(K)는 매개변수이며, 학습 과정에서 자동으로 최적화된다.</li><li><span class="mk">④</span> 초매개변수는 학습 후 평가 단계에서 결정되는 값으로, 가중치와 편향에 포함된다.</li></ul><div class="yd-exp"><b>해설</b> 구분매개변수(Parameter)초매개변수(Hyperparameter) 정의모델이 학습을 통해 자동으로 조정하는 값사용자가 직접 설정하는 값 학습 과정학습 중 자동 업데이트학습 전 사전 설정 결정 주체알고리즘사용자 변화 여부학습 중 지속적 변화학습 중 고정 매개변수 예시 인공신경망: 가중치(Weight), 편향(Bias) ✓ 선형회귀: 회귀계수 β₀, β₁, β₂… 초매개변수 예시 인공신경망: 은닉층 수, 학습률, 배치 크기, 에포크 수 KNN: 이웃 수(K), 거리 측도 Random Forest: 트리 개수, 최대 깊이 💡 기억법: 매개변수는 컴퓨터가 자동으로 학습하는 “컴매개”, 초매개변수는 사용자가 직접 설정하는 “사초매”</div></section>
+<section class="yd-q" id="y48"><div class="yd-h"><span class="yd-no">48.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">의사결정나무(Decision Tree) 모델의 단점으로 옳은 것은?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> 데이터의 양이 많아지면 적합하지 않음</li><li><span class="mk">②</span> 의사결정나무는 변수 간 상호작용을 매우 잘 반영함</li><li><span class="mk">③</span> 모델 복잡도가 낮을수록 과적합 위험이 커짐</li><li><span class="mk">④</span> 의사결정나무는 데이터 전처리가 반드시 필요하다.</li></ul><div class="yd-exp"><b>해설</b> 의사결정나무의 대규모 데이터에서의 한계 데이터 증가 → 트리 깊이 증가 → 모델 복잡도 증가 계산 효율성 문제: 노드 분할 계산량 급격히 증가 과적합 위험 증가: 깊고 복잡한 트리 구조 생성 메모리 사용량 증가 다른 선택지들 변수 간 상호작용 반영: 제한적 (단점) 모델 복잡도와 과적합: 높을수록 과적합 위험 증가 데이터 전처리: 상대적으로 적음 (장점) 대용량 데이터 처리 대안 앙상블 기법: Random Forest, XGBoost 분산 처리: Apache Spark MLlib 💡 핵심: 의사결정나무는 해석력과 사용 편의성은 뛰어나지만, 대용량 데이터에서는 효율성과 과적합 문제로 한계가 있습니다!</div></section>
+<section class="yd-q" id="y49"><div class="yd-h"><span class="yd-no">49.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">다음 중 다중공선성 문제를 해결하는 방법으로 가장 옳은 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 독립 변수 간 상관계수를 높인다</li><li class="yd-ok"><span class="mk">②</span> 다중공선성 문제를 일으키는 독립 변수를 제거한다.</li><li><span class="mk">③</span> 종속 변수와 상관관계가 높은 독립 변수를 제거한다.</li><li><span class="mk">④</span> 모델의 복잡도를 인위적으로 낮춘다.</li></ul><div class="yd-exp"><b>해설</b> 다중공선성(Multicollinearity): 독립변수들 간에 강한 선형 관계가 존재하는 현상 문제점 회귀계수 추정의 불안정성 표준오차 증가 → 통계적 유의성 판단 어려움 해석의 어려움 해결 방법 변수 제거 (1순위): VIF &gt; 10인 변수 단계적 제거 차원 축소: PCA, 요인분석 정규화 기법: Ridge, Lasso, Elastic Net 데이터 수집 개선: 표본 크기 증가 진단 방법 상관계수: |r| &gt; 0.8 VIF(분산팽창인자): VIF &gt; 10 조건지수: CI &gt; 30 💡 핵심: 다중공선성은 독립변수 간 높은 상관관계가 원인이므로, 문제가 되는 변수를 제거하는 것이 가장 직접적인 해결책입니다!</div></section>
+<section class="yd-q" id="y50"><div class="yd-h"><span class="yd-no">50.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">데이터 전처리 과정에서 정규화 후 특정 변수에 대한 두 집단 평균 차이 검정을 수행하려고 한다. 다음 중 올바른 순서로 작업을 나열한 것은?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> 선택지</li><li><span class="mk">②</span> 정규화 → 정규성 검정 → t-검정 실시</li><li><span class="mk">③</span> t-검정 → 데이터 정규화 → 정규성 검정</li><li><span class="mk">④</span> 정규성 검정 → t-검정 → 정규화</li><li><span class="mk">⑤</span> t-검정 → 정규성 검정 → 데이터 정규화</li></ul><div class="yd-exp"><b>해설</b> 올바른 데이터 분석 순서: 전처리 → 가정 확인 → 분석 1단계 : 데이터 정규화 변수들 간 스케일 차이 해결 분석 결과의 객관성 확보 Min-Max 정규화, Z-score 표준화 등 2단계 : 정규성 검정 정규화된 데이터의 분포 형태 확인 t-검정의 전제조건 검증 Shapiro-Wilk Test, K-S Test 등 3단계 : 적절한 검정 실시 정규분포 만족: t-검정 정규분포 위반: Mann-Whitney U Test (비모수 검정) 💡 핵심 : 전처리 → 가정 확인 → 분석 순서가 기본 원칙입니다!</div></section>
+<section class="yd-q" id="y51"><div class="yd-h"><span class="yd-no">51.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">Boosting 기법에 대한 설명으로 옳은 것은?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> Boosting은 약한 학습기(Weak Learner)들을 순차적으로 학습시켜 강한 학습기를 만드는 앙상블 기법이다.</li><li><span class="mk">②</span> Boosting은 모든 학습기에 동일한 가중치를 부여해 병렬로 학습하는 방식이다.</li><li><span class="mk">③</span> Boosting은 하나의 결정트리를 깊게 만들어 과적합을 방지한다.</li><li><span class="mk">④</span> Boosting 기법은 부트스트랩 샘플링을 사용하여 각각의 학습기를 독립적으로 학습한다.</li></ul><div class="yd-exp"><b>해설</b> Boosting의 핵심 특징: 순차적 학습: 이전 모델의 오류를 다음 모델이 보완 가중치 조정: 잘못 분류된 데이터에 높은 가중치 부여 점진적 개선: 단계별로 성능 향상 편향 감소: 약한 학습기의 한계 극복 Boosting vs Bagging: 구분BoostingBagging 학습 방식순차적병렬적 가중치동적 조정동일 가중치 샘플링가중치 기반부트스트랩 목표편향 감소분산 감소 대표 알고리즘AdaBoost, XGBoostRandom Forest 주요 Boosting 알고리즘 AdaBoost: 가중치 조정을 통한 성능 향상 Gradient Boosting: 잔차 학습 XGBoost: 최적화된 구현 💡 핵심: Boosting은 약한 학습기들을 순차적으로 결합하여 점진적으로 성능을 개선하는 기법입니다!</div></section>
+<section class="yd-q" id="y52"><div class="yd-h"><span class="yd-no">52.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">다음 중 ReLU 함수와 관련된 설명으로 옳은 것은?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> ReLU는 기울기 소실 문제가 자주 발생한다.</li><li><span class="mk">②</span> ReLU 함수는 음수 입력값에서도 항상 양의 기울기를 가진다.</li><li><span class="mk">③</span> ReLU는 활성화 함수 중 계산이 가장 느린 함수이다.</li><li><span class="mk">④</span> ReLU는 역전파 과정에서 기울기가 0으로 수렴하는 문제가 없다.</li></ul><div class="yd-exp"><b>해설</b> ReLU 함수: f(x) = max(0, x) 죽어가는 ReLU (Dying ReLU) 현상: 음수 입력 → ReLU가 0 출력 출력 0 → 역전파 시 미분값 0 기울기 0 → 가중치 업데이트 안됨 뉴런이 “죽어서” 다시 활성화되지 않음 각 선택지 분석 기울기 소실 문제: 음수 영역에서 발생 ✓ 음수에서 양의 기울기: 음수에서 기울기는 0 ❌ 계산 속도: 가장 빠른 함수 중 하나 ❌ 기울기 0 수렴 없음: 음수 영역에서 정확히 0 ❌ 해결 방법 Leaky ReLU: f(x) = max(αx, x) (α=0.01) ELU, PReLU, Swish 등 💡 핵심: ReLU는 빠르지만 음수 영역에서 기울기가 0이 되어 죽어가는 ReLU 문제가 발생할 수 있습니다!</div></section>
+<section class="yd-q" id="y53"><div class="yd-h"><span class="yd-no">53.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">다음 나이와 최대심박수 산점도 분석에 대해 맞게 설명한 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 남성과 여성의 연령 증가에 따른 최대 심박수 감소 추세를 보여주는 그래프</li><li class="yd-ok"><span class="mk">②</span> 주어진 정보</li><li><span class="mk">③</span> 남성: y = 209.6 – 0.72x, r = -0.79</li><li><span class="mk">④</span> 여성: y = 207.2 – 0.65x, r = -0.73</li><li><span class="mk">⑤</span> 남성과 여성 모두 나이와 최대심박수 간에 양의 상관관계를 보인다</li></ul><div class="yd-exp"><b>해설</b> 상관계수 비교 남성: |r| = 0.79 여성: |r| = 0.73 0.79 &gt; 0.73 → 남성이 더 강한 음의 상관관계 각 선택지 분석 양의 상관관계: 두 그룹 모두 음의 상관계수 ❌ 남성이 더 강한 음의 상관관계: 절댓값 비교 시 맞음 ✓ 여성 기울기가 더 가파름: |−0.72| &gt; |−0.65| 남성이 더 가파름 ❌ 0.8 이상 양의 상관관계: 음수이고 절댓값도 0.8 미만 ❌ 생리학적 해석 일반적 공식: 최대심박수 ≈ 220 – 나이 남성: 나이에 따른 최대심박수 감소가 더 뚜렷 여성: 상대적으로 완만한 감소 💡 핵심: 상관계수의 절댓값이 클수록 변수 간 관계가 강합니다!</div></section>
+<section class="yd-q" id="y54"><div class="yd-h"><span class="yd-no">54.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">서포트 벡터 머신(SVM) 설명으로 옳은 것은?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> 커널 함수(트릭)를 사용하면 비선형 분류가 가능하다 ✅</li><li><span class="mk">②</span> 독립변수를 비선형 변환하면 분류 효율이 올라간다</li><li><span class="mk">③</span> 모든 데이터 포인트가 결정 경계 형성에 동일하게 기여한다</li><li><span class="mk">④</span> 선형 분리만 가능하여 단순한 문제에만 적용된다</li></ul><div class="yd-exp"><b>해설</b> 커널 트릭의 핵심: 저차원 비선형 데이터 → 고차원 공간에서 선형 분리 직접 고차원 계산 없이 커널 함수로 효율적 처리 복잡한 비선형 분류 문제를 선형 방법으로 해결 각 선택지 분석: 커널로 비선형 분류 가능: 완벽한 설명 ✓ 독립변수 임의 변환: 중복 작업, 비효율적 ❌ 모든 데이터 포인트 기여: 서포트 벡터만 기여 ❌ 선형 분리만 가능: 커널 사용 시 비선형 분류 가능 ❌ 커널 종류: Linear: 선형 분리 가능한 경우 RBF: 가장 범용적 Polynomial: 중간 복잡도 Sigmoid: 신경망 유사 형태 SVM의 핵심 특징 서포트 벡터만 결정 경계 형성에 기여 마진 최대화로 일반화 성능 향상 💡 핵심: 커널 트릭은 SVM이 비선형 문제를 효율적으로 해결할 수 있게 하는 혁신적 기법입니다!</div></section>
+<section class="yd-q" id="y55"><div class="yd-h"><span class="yd-no">55.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">Attention 메커니즘에 관한 설명 중 옳은 것만을 모두 고른 것은?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> ㄱ. Attention은 고정된 크기의 벡터에 모든 정보를 압축하려고 하기 때문에 정보 손실이 발생한다</li><li><span class="mk">②</span> ㄴ. Attention은 디코더가 출력 단어를 예측할 때 인코더의 모든 입력 단어 정보를 참조한다</li><li><span class="mk">③</span> ㄷ. Attention 스코어는 인코더와 디코더의 은닉 상태를 내적하여 계산한다</li><li><span class="mk">④</span> ㄹ. Attention은 입력 데이터 중 모든 부분을 동일한 비율로 참고한다</li><li><span class="mk">⑤</span> ㄱ, ㄴ, ㄷ</li></ul><div class="yd-exp yd-none">이 문항은 해설이 없습니다.</div></section>
+<section class="yd-q" id="y56"><div class="yd-h"><span class="yd-no">56.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">다음 중 다중분산분석(MANOVA)을 통해 분석할 수 있는 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 성별에 따른 키의 차이</li><li><span class="mk">②</span> 교육 방법에 따른 수학 점수의 차이</li><li class="yd-ok"><span class="mk">③</span> 학년(1학년, 2학년)에 따른 수학 점수와 국어 점수의 차이</li><li><span class="mk">④</span> 나이와 소득 간의 상관관계</li></ul><div class="yd-exp"><b>해설</b> MANOVA 적용 조건 ✅ 독립 변수: 범주형 (집단 구분) ✅ 종속 변수: 연속형 2개 이상 ✅ 목적: 집단 간 다중 종속 변수의 평균 차이 검정 각 선택지 분석 성별 → 키: 종속변수 1개 → ANOVA 적용 교육법 → 수학점수: 종속변수 1개 → ANOVA 적용 학년 → (수학점수, 국어점수): 완벽한 MANOVA 사례 ✓ 나이-소득 관계: 상관분석 적용 선택지 3번 상세 독립변수: 학년 (1학년, 2학년) – 범주형 ✓ 종속변수: 수학점수, 국어점수 – 연속형 2개 ✓ 검정: 학년에 따른 (수학, 국어) 점수 평균 벡터 차이 MANOVA vs ANOVA MANOVA: 여러 종속변수 동시 검정 → 1종 오류율 통제 개별 ANOVA: 각각 검정 → 1종 오류율 증가 위험 💡 핵심: MANOVA는 여러 종속 변수의 집단 간 차이를 동시에 검정하는 다변량 분석 기법입니다!</div></section>
+<section class="yd-q" id="y57"><div class="yd-h"><span class="yd-no">57.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">성공 확률을 선형 함수로 변환하여 회귀모형에 적용하는 데 사용되는 변환 기법은 무엇인가?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> 로짓 변환 (logit transformation)</li><li><span class="mk">②</span> 오즈비 변환 (odds ratio)</li><li><span class="mk">③</span> 로그 변환 (log transformation)</li><li><span class="mk">④</span> 제곱근 변환 (square root transformation)</li></ul><div class="yd-exp"><b>해설</b> 로짓 변환 공식 logit(p) = log(p / (1-p)) = log(odds) 변환의 목적 확률 p (0~1) → 실수 전체 (-∞ ~ +∞) 비선형 확률 → 선형 함수로 변환 회귀분석에서 선형 관계 가정 만족 로지스틱 회귀에서의 활용 선형 회귀: Y = β₀ + β₁X₁ + β₂X₂ + … + ε 로지스틱 회귀: logit(p) = β₀ + β₁X₁ + β₂X₂ + … 각 선택지 분석: 로짓 변환: 완벽한 정답 ✓ 오즈비: 변환 기법이 아닌 해석 도구 ❌ 로그 변환: 일반적 변환, 확률 변환 부적절 ❌ 제곱근 변환: 분산 안정화 목적, 로지스틱 회귀 무관 ❌ 확률 예측 과정 선형 조합: η = β₀ + β₁X₁ + β₂X₂ + … 로짓 역변환: p = e^η / (1 + e^η) = 1 / (1 + e^(-η)) 확률 해석: 0 &lt; p &lt; 1 오즈비 (Odds Ratio) OR = e^β (독립변수 1단위 증가 시 오즈 변화율) 회귀계수 해석의 핵심 도구 💡 핵심: 로짓 변환은 0~1 범위의 확률을 -∞~+∞ 범위의 실수로 변환하여 선형 회귀의 틀에서 확률을 모델링할 수 있게 하는 핵심 기법입니다!</div></section>
+<section class="yd-q" id="y58"><div class="yd-h"><span class="yd-no">58.</span><span class="yd-ans">정답 ①</span></div><p class="yd-body">다음 중 교차검증(Cross-Validation)에 대한 설명으로 옳은 것은?</p><ul class="yd-opts"><li class="yd-ok"><span class="mk">①</span> 교차검증은 데이터를 여러 개의 부분집합으로 나누어 모델의 일반화 성능을 평가하는 방법이다</li><li><span class="mk">②</span> 교차검증은 모델 학습 속도를 빠르게 하는 데 가장 큰 목적이 있다</li><li><span class="mk">③</span> 교차검증은 과적합 방지를 위해 항상 데이터를 증강하는 기법이다</li><li><span class="mk">④</span> 교차검증은 테스트 데이터와 훈련 데이터를 분리하지 않고 사용하는 방법이다</li></ul><div class="yd-exp yd-none">이 문항은 해설이 없습니다.</div></section>
+<section class="yd-q" id="y59"><div class="yd-h"><span class="yd-no">59.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">베이지안 정리에서 사전 확률이 사후 확률에 미치는 영향에 대한 설명으로 옳은 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 사전 확률이 높을수록 사후 확률은 항상 낮아진다.</li><li><span class="mk">②</span> 사전 확률과 사후 확률은 독립적이다.</li><li class="yd-ok"><span class="mk">③</span> 사전 확률이 사후 확률 계산에 직접적으로 영향을 미친다.</li><li><span class="mk">④</span> 사전 확률은 우도(likelihood)와 동일한 개념이다.</li></ul><div class="yd-exp yd-none">이 문항은 해설이 없습니다.</div></section>
+<section class="yd-q" id="y60"><div class="yd-h"><span class="yd-no">60.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">시계열 데이터의 구성 요소 중 불규칙적이고 예측 불가능한 변동을 의미하는 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 추세(Trend)</li><li><span class="mk">②</span> 계절성(Seasonality)</li><li><span class="mk">③</span> 순환성(Cyclical)</li><li class="yd-ok"><span class="mk">④</span> 불규칙성(Irregular)</li></ul><div class="yd-exp yd-none">이 문항은 해설이 없습니다.</div></section>
+<h2 class="yd-part" id="p4">4과목 · 빅데이터 결과 해석<small style="float:right;font-weight:400;color:#888;font-size:12.5px;padding-top:3px">20문항</small></h2>
+<section class="yd-q" id="y61"><div class="yd-h"><span class="yd-no">61.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">분석 모델의 안정성을 평가하기 위해 훈련 데이터를 여러 서브셋으로 나누어 모델을 반복적으로 검증하는 방법론은?</p><ul class="yd-opts"><li><span class="mk">①</span> 그리드 탐색 (Grid Search)</li><li class="yd-ok"><span class="mk">②</span> 교차 검증 (Cross-Validation)</li><li><span class="mk">③</span> 앙상블 학습 (Ensemble Learning)</li><li><span class="mk">④</span> 정규화 (Regularization)</li></ul><div class="yd-exp"><b>해설</b> 교차 검증은 데이터를 여러 부분으로 나누어 일부는 훈련용으로, 일부는 검증용으로 사용하여 모델의 일반화 성능과 안정성을 평가하는 기법입니다.</div></section>
+<section class="yd-q" id="y62"><div class="yd-h"><span class="yd-no">62.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">그리드 탐색(Grid Search)을 이용한 하이퍼파라미터 최적화에 대한 설명으로 가장 옳은 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 랜덤하게 선택된 일부 조합만 탐색하여 최적의 파라미터를 찾는다.</li><li class="yd-ok"><span class="mk">②</span> 모든 가능한 하이퍼파라미터 조합을 시도하여 가장 좋은 성능을 내는 조합을 찾는다.</li><li><span class="mk">③</span> 이전 탐색 결과를 바탕으로 더 나은 성능을 보일 가능성이 있는 영역을 예측하여 탐색한다.</li><li><span class="mk">④</span> 경사 하강법을 사용하여 최적의 하이퍼파라미터 조합을 찾는다.</li></ul><div class="yd-exp"><b>해설</b> 그리드 탐색은 사용자가 지정한 하이퍼파라미터 값들의 모든 조합에 대해 성능을 평가하는 전역 탐색(Exhaustive Search) 방법입니다.</div></section>
+<section class="yd-q" id="y63"><div class="yd-h"><span class="yd-no">63.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">다음 중 학습 곡선(Learning Curve)에 대한 해석으로 가장 적절한 것은? (문제 예시: 학습 곡선 그래프가 주어지며, 훈련 오차와 검증 오차가 모두 낮은 수준에서 수렴하고 더 이상 개선되지 않는 형태)</p><ul class="yd-opts"><li><span class="mk">①</span> 모델이 과대적합(Overfitting) 상태이므로 규제(Regularization)를 강화해야 한다.</li><li><span class="mk">②</span> 모델이 과소적합(Underfitting) 상태이므로 더 복잡한 모델을 사용해야 한다. ③ 훈련 데이터가 더 많이 필요하며, 추가 데이터를 확보하면 성능이 개선될 것이다.</li><li><span class="mk">③</span> 모델이 최적으로 수렴하여 더 이상 훈련 데이터가 추가되어도 성능 개선이 거의 불가능하다.</li></ul><div class="yd-exp"><b>해설</b> 훈련 오차와 검증 오차가 모두 낮고 수평적으로 수렴했다면, 모델이 현재 데이터에서 충분히 학습했음을 의미합니다. 이 상태에서는 데이터를 더 추가해도 성능 향상을 기대하기 어렵습니다.</div></section>
+<section class="yd-q" id="y64"><div class="yd-h"><span class="yd-no">64.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">모델 훈련 과정에서 훈련 오차(Training Error)는 계속 감소하지만, 검증 오차(Validation Error)는 특정 시점부터 감소하다가 다시 증가하는 현상이 나타났다. 이 현상을 무엇이라고 하는가?</p><ul class="yd-opts"><li><span class="mk">①</span> 과소적합 (Underfitting)</li><li class="yd-ok"><span class="mk">②</span> 과대적합 (Overfitting)</li><li><span class="mk">③</span> 경사 소실 (Vanishing Gradient)</li><li><span class="mk">④</span> 지역 최솟값 (Local Minimum)</li></ul><div class="yd-exp"><b>해설</b> 훈련 데이터에만 너무 잘 맞춰져 새로운 데이터(검증 데이터)에 대한 예측 성능이 떨어지는 현상으로, 과대적합의 전형적인 특징입니다.</div></section>
+<section class="yd-q" id="y65"><div class="yd-h"><span class="yd-no">65.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">확률적 경사 하강법(Stochastic Gradient Descent, SGD)의 특징으로 거리가 먼 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 전체 데이터가 아닌 일부 샘플(미니배치)을 사용하여 파라미터를 업데이트한다.</li><li><span class="mk">②</span> 학습 속도가 빠르고 대용량 데이터 처리에 적합하다.</li><li><span class="mk">③</span> 파라미터 업데이트 시 노이즈가 있어 전역 최솟값(Global Minimum)을 지나칠 수 있다.</li><li class="yd-ok"><span class="mk">④</span> 항상 전역 최솟값으로 수렴하는 것을 보장한다.</li></ul><div class="yd-exp"><b>해설</b> SGD는 학습 과정의 노이즈(불확실성) 때문에 지역 최솟값(Local Minimum)에 빠질 위험이 있으며, 전역 최솟값으로의 수렴을 항상 보장하지는 않습니다.</div></section>
+<section class="yd-q" id="y66"><div class="yd-h"><span class="yd-no">66.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">하이퍼파라미터(Hyperparameter)에 대한 설명으로 틀린 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 모델 학습 전에 사용자가 직접 설정해야 하는 값이다.</li><li><span class="mk">②</span> 딥러닝 모델의 은닉층 수나 학습률(learning rate)이 이에 해당한다.</li><li class="yd-ok"><span class="mk">③</span> 모델이 학습 과정에서 스스로 학습하고 업데이트하는 파라미터이다.</li><li><span class="mk">④</span> 그리드 탐색(Grid Search)이나 랜덤 탐색(Random Search)을 통해 최적화할 수 있다.</li></ul><div class="yd-exp"><b>해설</b> 모델이 학습 과정에서 스스로 학습하는 파라미터는 가중치(weight)나 편향(bias)과 같은 모델 파라미터(Model Parameter)입니다. 하이퍼파라미터는 학습에 영향을 주는 외부 변수입니다.</div></section>
+<section class="yd-q" id="y67"><div class="yd-h"><span class="yd-no">67.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">교차 검증(Cross-Validation) 방법 중, 전체 데이터에서 단 하나의 샘플만을 검증용으로 사용하고 나머지를 훈련용으로 사용하는 과정을 모든 데이터에 대해 반복하는 기법은?</p><ul class="yd-opts"><li><span class="mk">①</span> 홀드아웃 (Hold-out)</li><li><span class="mk">②</span> K-폴드 교차 검증 (K-Fold Cross-Validation)</li><li class="yd-ok"><span class="mk">③</span> LOOCV (Leave-One-Out Cross-Validation)</li><li><span class="mk">④</span> 부트스트래핑 (Bootstrapping)</li></ul><div class="yd-exp"><b>해설</b> LOOCV는 데이터의 수(n)만큼 모델을 훈련 및 평가하는 교차 검증 방식으로, 데이터셋이 작을 때 주로 사용됩니다.</div></section>
+<section class="yd-q" id="y68"><div class="yd-h"><span class="yd-no">68.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">10개의 하이퍼파라미터 조합에 대해 최적의 조합을 찾기 위해 10-겹 교차 검증(10-fold cross-validation)을 적용할 경우, 모델은 총 몇 번 훈련되는가?</p><ul class="yd-opts"><li><span class="mk">①</span> 10번 ② 20번 ③ 100번 ④ 1000번</li></ul><div class="yd-exp"><b>해설</b> 각 하이퍼파라미터 조합마다 10번의 훈련(10-fold)을 수행해야 하므로, 총 훈련 횟수는 (하이퍼파라미터 조합 수) x (폴드 수) = 10 x 10 = 100번입니다.</div></section>
+<section class="yd-q" id="y69"><div class="yd-h"><span class="yd-no">69.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">데이터 시각화 방법 중, 표현하려는 수치의 크기에 따라 지도의 행정구역 면적이 왜곡되어 표현되는 시각화 기법은?</p><ul class="yd-opts"><li><span class="mk">①</span> 등치선도 (Isoline Map)</li><li><span class="mk">②</span> 점묘도 (Dot Density Map)</li><li><span class="mk">③</span> 단계 구분도 (Choropleth Map)</li><li class="yd-ok"><span class="mk">④</span> 카토그램 (Cartogram)</li></ul><div class="yd-exp"><b>해설</b> 카토그램은 인구, GDP 등 특정 데이터 값의 크기에 비례하여 지리적 영역의 크기를 왜곡하여 표현하는 지도 시각화 방법입니다.</div></section>
+<section class="yd-q" id="y70"><div class="yd-h"><span class="yd-no">70.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">공간 데이터 시각화에 대한 설명으로 틀린 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 단계 구분도(Choropleth Map)는 지역별 통계치를 색상의 농도나 패턴으로 표현한다.</li><li><span class="mk">②</span> 카토그램(Cartogram)은 통계 값에 따라 지역의 면적을 변형시켜 표현한다.</li><li><span class="mk">③</span> 등치선도(Isoline Map)는 기온이나 고도처럼 연속적인 값을 가진 지점들을 선으로 연결하여 표현한다.</li><li class="yd-ok"><span class="mk">④</span> 단계 구분도(Choropleth Map)는 특정 지점의 정확한 위치 정보를 표현하는 데 가장 적합하다.</li></ul><div class="yd-exp"><b>해설</b> 단계 구분도는 행정구역과 같은 폴리곤(polygon) 단위의 집계 데이터를 표현하는 데 적합하며, 특정 지점의 정확한 위치를 나타내기에는 부적합합니다.</div></section>
+<section class="yd-q" id="y71"><div class="yd-h"><span class="yd-no">71.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">회귀 모델의 평가지표에 대한 수식으로 틀린 것은? (N: 데이터 수, yi​: 실제값, y^​i​: 예측값)</p><ul class="yd-opts"><li><span class="mk">①</span> 회귀 모델의 주요 평가 지표: MAE, MSE, RMSE, R² 공식 비교</li></ul><div class="yd-exp"><b>해설</b> MSE(Mean Squared Error)는 오차의 ‘제곱’ 평균을 의미합니다. 보기 ②번의 수식에는 오차에 대한 제곱(²)이 빠져 있으므로 잘못된 수식입니다. 정확한 수식은 MSE(평균 제곱 오차)는 예측값과 실제값의 차이를 제곱해 평균한 지표 입니다.</div></section>
+<section class="yd-q" id="y72"><div class="yd-h"><span class="yd-no">72.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">분류 모델의 평가지표인 F1 Score를 계산하기 위해 필요한 두 가지 구성요소는?</p><ul class="yd-opts"><li><span class="mk">①</span> 정확도(Accuracy), 특이도(Specificity)</li><li><span class="mk">②</span> 민감도(Sensitivity), ROC Curve</li><li><span class="mk">③</span> 정밀도(Precision), AUC</li><li class="yd-ok"><span class="mk">④</span> 정밀도(Precision), 재현율(Recall)</li></ul><div class="yd-exp"><b>해설</b> F1 Score는 정밀도와 재현율의 조화 평균으로 계산되는 지표입니다. (F1=2⋅Precision+RecallPrecision⋅Recall​)</div></section>
+<section class="yd-q" id="y73"><div class="yd-h"><span class="yd-no">73.</span><span class="yd-ans">정답 ③</span></div><p class="yd-body">분류 모델의 성능 평가에서 ‘실제 값이 참(True)인 데이터 중에서 모델이 참(True)으로 예측한 데이터의 비율’을 나타내는 지표는?</p><ul class="yd-opts"><li><span class="mk">①</span> 정확도 (Accuracy)</li><li><span class="mk">②</span> 정밀도 (Precision)</li><li class="yd-ok"><span class="mk">③</span> 재현율 (Recall) 또는 민감도 (Sensitivity)</li><li><span class="mk">④</span> 특이도 (Specificity)</li></ul><div class="yd-exp"><b>해설</b> 이는 재현율(Recall) 또는 민감도(Sensitivity)의 정의입니다. (TP / (TP + FN)) 분류 모델의 대표적 성능 지표: 정확도(Accuracy), 정밀도(Precision), 재현율(Recall), 특이도(Specificity)</div></section>
+<section class="yd-q" id="y74"><div class="yd-h"><span class="yd-no">74.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">다음 중 홀드아웃(Hold-out) 데이터 검증 방법에 대한 설명으로 가장 적절한 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 전체 데이터를 K개의 부분집합으로 나누어 K번 검증을 수행한다.</li><li class="yd-ok"><span class="mk">②</span> 전체 데이터를 훈련(train), 검증(validation), 시험(test) 데이터셋으로 분리하여 모델을 평가한다.</li><li><span class="mk">③</span> 데이터에서 1개의 샘플만 테스트용으로 사용하고 나머지는 훈련용으로 사용하는 것을 반복한다.</li><li><span class="mk">④</span> 원본 데이터에서 중복을 허용하여 샘플을 뽑아 훈련 데이터를 구성한다.</li></ul><div class="yd-exp"><b>해설</b> 홀드아웃은 전체 데이터를 보통 2개 또는 3개의 집합으로 나누어, 훈련에 사용되지 않은 데이터로 모델의 성능을 검증하는 가장 단순한 방식의 검증 기법입니다.</div></section>
+<section class="yd-q" id="y75"><div class="yd-h"><span class="yd-no">75.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">모델의 과대적합(Overfitting)에 대한 설명으로 옳은 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 데이터의 수가 많을수록 발생하기 쉽다.</li><li><span class="mk">②</span> 모델의 복잡도가 낮을 때 주로 발생한다.</li><li><span class="mk">③</span> 훈련 데이터에 대한 성능은 낮지만, 검증 데이터에 대한 성능은 높게 나타난다. ④ 데이터의 수가 적거나 모델이 너무 복잡할 때 발생할 수 있다.</li></ul><div class="yd-exp"><b>해설</b> 데이터의 수가 적으면 모델이 데이터의 특정 패턴이나 노이즈까지 학습하게 되어 과대적합이 발생하기 쉽습니다.</div></section>
+<section class="yd-q" id="y76"><div class="yd-h"><span class="yd-no">76.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">로지스틱 회귀분석 결과표를 해석한 내용으로 틀린 것은? (가상의 결과표 제시 가정) (예시 결과: 변수 ‘자격증 유무’의 p-value=0.01, coef=1.5 / 변수 ‘나이’의 p-value=0.25, coef=0.2)</p><ul class="yd-opts"><li><span class="mk">①</span> 유의수준 5%에서 ‘자격증 유무’는 직업 전환에 유의한 영향을 미친다.</li><li><span class="mk">②</span> 자격증을 가진 사람은 가지지 않은 사람보다 직업을 전환할 가능성이 높다.</li><li><span class="mk">③</span> ‘나이’는 직업 전환에 유의한 영향을 미친다고 보기 어렵다.</li><li class="yd-ok"><span class="mk">④</span> ‘나이’가 한 살 증가할수록 직업을 전환할 확률이 0.2% 증가한다.</li></ul><div class="yd-exp"><b>해설</b> 로지스틱 회귀의 계수(coefficient)는 로짓(logit) 변환된 값으로, 직접적으로 확률의 변화를 의미하지 않습니다. 계수 값에 지수함수(ecoef)를 적용하여 오즈비(Odds Ratio)로 변환해야 해석이 가능합니다. 예를 들어, 계수가 0.2일 때 오즈비는 e0.2≈1.22로, ‘나이’가 한 살 증가할수록 직업 전환에 대한 오즈(odds)가 약 1.22배(22%) 증가한다고 해석해야 합니다. 따라서 확률이 0.2% 증가한다는 해석은 명백히 잘못되었습니다.</div></section>
+<section class="yd-q" id="y77"><div class="yd-h"><span class="yd-no">77.</span><span class="yd-ans">정답 ②</span></div><p class="yd-body">Lasso 회귀분석이 변수 선택(feature selection) 효과를 가지는 이유로 가장 적절한 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> L2 페널티 항을 사용하여 변수 간의 상관관계를 줄이기 때문이다.</li><li class="yd-ok"><span class="mk">②</span> L1 페널티 항이 일부 변수의 회귀계수를 정확히 0으로 만들기 때문이다.</li><li><span class="mk">③</span> 모든 변수의 회귀계수 크기를 동일한 비율로 감소시키기 때문이다.</li><li><span class="mk">④</span> 결정나무 기반으로 중요하지 않은 변수를 제거하기 때문이다.</li></ul><div class="yd-exp"><b>해설</b> Lasso 회귀는 손실 함수에 L1 규제(계수들의 절댓값 합)를 추가하며, 이로 인해 덜 중요한 변수들의 계수가 0이 되어 해당 변수들이 모델에서 제외되는 효과가 있습니다.</div></section>
+<section class="yd-q" id="y78"><div class="yd-h"><span class="yd-no">78.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">데이터 품질(Data Quality)의 주요 관리 차원(Dimension)으로 볼 수 없는 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 완전성 (Completeness) ② 유효성 (Validity) ③ 일관성 (Consistency) ④ 다양성 (Diversity)</li></ul><div class="yd-exp"><b>해설</b> 데이터 품질의 주요 차원에는 완전성, 유효성, 일관성, 정확성(Accuracy), 적시성(Timeliness), 유일성(Uniqueness) 등이 있습니다. 다양성은 데이터의 특징일 수는 있으나, 품질을 측정하는 관리 차원으로 보기는 어렵습니다. 데이터 품질 관리 주요 차원 중 완전성, 유효성, 일관성은 핵심 지표이며, 다양성은 품질 관리 차원이 아님</div></section>
+<section class="yd-q" id="y79"><div class="yd-h"><span class="yd-no">79.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">인포그래픽(Infographic)에 대한 설명으로 가장 거리가 먼 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 정보, 데이터, 지식을 시각적으로 표현한 것이다.</li><li><span class="mk">②</span> 복잡한 정보를 빠르고 명확하게 전달하는 것을 목적으로 한다.</li><li><span class="mk">③</span> 차트, 지도, 다이어그램, 이미지 등 다양한 시각적 요소를 포함한다.</li><li class="yd-ok"><span class="mk">④</span> 데이터 시각화와는 완전히 다른 개념으로, 데이터 분석 결과를 포함하지 않는다.</li></ul><div class="yd-exp"><b>해설</b> 인포그래픽은 데이터 시각화를 포함하는 더 넓은 개념으로 볼 수 있으며, 종종 데이터 분석 결과를 스토리텔링 형식으로 전달하기 위해 사용됩니다. 데이터 시각화와 완전히 다른 개념이라고 보기는 어렵습니다.</div></section>
+<section class="yd-q" id="y80"><div class="yd-h"><span class="yd-no">80.</span><span class="yd-ans">정답 ④</span></div><p class="yd-body">다음 중 변수 간의 관계(Relationship)를 파악하기 위한 시각화 방법으로 가장 거리가 먼 것은?</p><ul class="yd-opts"><li><span class="mk">①</span> 산점도 (Scatter Plot) ② 히트맵 (Heatmap) ③ 네트워크 그래프 (Network Graph) ④ 히스토그램 (Histogram)</li></ul><div class="yd-exp"><b>해설</b> 히스토그램은 단일 변수의 데이터 분포(Distribution)를 확인하기 위한 시각화 방법입니다. 산점도, 히트맵, 네트워크 그래프 등은 두 개 이상의 변수 간 관계를 나타내는 데 사용됩니다. 대표적인 데이터 시각화 그래프 4가지 유형: 산점도, 히트맵, 네트워크 그래프, 히스토그램 빅데이터분석기사 10회 1과목 2과목 3과목</div></section>
+</div></main>
+</div>
+</body></html>
