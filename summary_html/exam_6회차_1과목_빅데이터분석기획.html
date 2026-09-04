@@ -437,6 +437,55 @@ body.ex-concepts .ex-q details.ex-concept,
 @media (max-width:640px){
   #sc-pad{left:8px !important;right:8px !important;width:auto !important}
 }
+/* ================= 음성 모드 (문제·보기 읽어주기) =================
+   브라우저에 들어 있는 음성 합성(SpeechSynthesis)을 쓴다. 따로 받을 것도,
+   인터넷도 필요 없다. 안드로이드 크롬·아이폰 사파리 모두 한국어 목소리를 갖고 있다.
+--------------------------------------------------------------------------- */
+#tts-bar{position:fixed;left:0;right:0;bottom:0;z-index:950;display:none;
+  align-items:center;gap:6px;padding:7px 10px;
+  background:rgba(255,255,255,.97);border-top:1px solid var(--line);
+  box-shadow:0 -3px 14px rgba(0,0,0,.10);
+  font-family:inherit;font-size:13px;-webkit-user-select:none;user-select:none}
+body.tts-on #tts-bar{display:flex}
+
+#tts-bar button{font:inherit;font-size:12.5px;line-height:1;cursor:pointer;
+  min-height:38px;padding:0 11px;color:#444;background:#fff;
+  border:1px solid var(--line);border-radius:9px}
+#tts-bar button:hover{border-color:var(--accent);color:var(--accent)}
+#tts-bar button.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+#tts-bar #tts-play{min-width:52px;font-size:15px;font-weight:700;
+  background:var(--navy);border-color:var(--navy);color:#fff}
+#tts-bar .sp{flex:1 1 auto}
+#tts-bar .tts-at{font-size:12px;color:#888;white-space:nowrap;
+  font-variant-numeric:tabular-nums}
+#tts-bar #tts-slow,#tts-bar #tts-fast{min-width:34px;font-size:15px;font-weight:700;
+  padding:0 8px}
+#tts-bar select{font:inherit;font-size:12.5px;min-height:38px;padding:0 6px;
+  border:1px solid var(--line);border-radius:9px;background:#fff;color:#444}
+
+/* 읽고 있는 문항 표시 */
+.ex-q.tts-now{outline:2px solid var(--accent);outline-offset:3px;border-radius:10px}
+.ex-q .tts-say{background:#FFF6D8;border-radius:3px;box-shadow:0 0 0 2px #FFF6D8}
+
+/* 모드 바의 단추 */
+#ex-speak.on{background:var(--accent);border-color:var(--accent);color:#fff}
+
+@media print{ #tts-bar{display:none !important} }
+
+/* 휴대폰 — 음성 막대가 맨 아래를 차지하므로 다른 고정 것들을 위로 올린다 */
+@media(max-width:640px){
+  #tts-bar{padding:7px 8px;gap:5px}
+  #tts-bar button{padding:0 9px;font-size:12px}
+  #tts-bar .tts-at{display:inline;font-size:11px}
+  #tts-bar #tts-rate{display:none}          /* 좁은 화면에서는 ＋ － 로 조절 */
+  #tts-bar #tts-next{display:none}
+  body.tts-on #main{padding-bottom:150px}
+  body.tts-on #sb-toggle{bottom:66px}
+  body.tts-on #an-bar{bottom:62px}
+  body.tts-on #ex-timer{bottom:116px}
+  body.tts-on .ex-bar #ex-submit{bottom:116px}
+  body.tts-on.sc-open #sc-pad{bottom:52px !important;height:50vh !important}
+}
 /* ================= 휴대폰 대응 (시험지) =================
    900px 이하에서는 사이드바가 이미 서랍으로 바뀐다. 여기서는 그보다 좁은
    실제 휴대폰(≤640px)에서 문제를 끝까지 풀 수 있게 다듬는다.
@@ -2528,6 +2577,333 @@ body.an-rectmode #main{-webkit-user-select:none;user-select:none}
     var b0 = document.getElementById('ex-scratch');
     if(b0) b0.classList.remove('on');
   }
+})();
+
+;
+/* ================= 음성 모드 : 문제·보기 읽어주기 =================
+   브라우저에 들어 있는 음성 합성(SpeechSynthesis)만 쓴다. 받을 것도 인터넷도
+   필요 없고, 안드로이드 크롬·아이폰 사파리 모두 한국어 목소리를 갖고 있다.
+
+   읽는 순서
+     "1번" → 지문 → "보기 1" → 보기 … → (정답이 드러난 뒤에만) "정답 3번" → 풀이
+
+   실전 모드에서는 정답·풀이를 읽지 않는다. 채점을 마쳤거나 학습 모드·
+   실전 모드(내용 포함)처럼 답이 이미 보이는 상태에서만 읽는다.
+
+   챙긴 것
+     - iOS 는 사용자가 누른 그 순간에만 말을 시작할 수 있다 → 재생은 반드시 단추에서
+     - 긴 문장을 통째로 넘기면 중간에 끊기는 브라우저가 있다 → 문장 단위로 잘라 넣는다
+     - 목소리 목록이 늦게 채워진다 → voiceschanged 를 기다렸다 다시 고른다
+     - 화면을 벗어나면 멈춘다(다른 탭·뒤로 가기)
+--------------------------------------------------------------------------- */
+(function(){
+  if(!document.getElementById('exam')) return;
+  var SS = window.speechSynthesis;
+  if(!SS || typeof window.SpeechSynthesisUtterance !== 'function') return;  // 지원 안 함
+
+  var FILE = decodeURIComponent((location.pathname.split('/').pop() || 'exam'))
+               .replace(/\.html?$/i, '');
+  var KEY = 'bdnote:tts:' + FILE;
+  var MARK = '①②③④⑤';
+  // 읽기 배속. 음성 엔진마다 위쪽에서 잘리는 경우가 있어 3배까지만 둔다.
+  var RATES = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3];
+
+  var qs = [].slice.call(document.querySelectorAll('.ex-q'));
+  if(!qs.length) return;
+
+  var st = {on:false, rate:1.0, ans:true};
+  try{
+    var o = JSON.parse(localStorage.getItem(KEY) || 'null');
+    if(o){ st.rate = +o.rate || 1.0; st.ans = (o.ans !== false); }
+  }catch(e){}
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify({rate:st.rate, ans:st.ans})); }catch(e){}
+  }
+
+  /* ---------- 목소리 ---------- */
+  var voice = null;
+  function pickVoice(){
+    var list = SS.getVoices() || [];
+    if(!list.length) return;
+    var ko = list.filter(function(v){ return /^ko(-|_|$)/i.test(v.lang || ''); });
+    // 기기에 담긴 목소리를 먼저 (인터넷 없이도 나온다)
+    voice = ko.filter(function(v){ return v.localService; })[0] || ko[0] || null;
+  }
+  pickVoice();
+  if(typeof SS.onvoiceschanged !== 'undefined')
+    SS.addEventListener('voiceschanged', pickVoice);
+
+  /* ---------- 읽을 글 만들기 ---------- */
+  function txt(el){
+    if(!el) return '';
+    var s = el.innerText || el.textContent || '';
+    return s.replace(/\s+/g, ' ').trim();
+  }
+
+  function answerVisible(q){
+    // 정답이 이미 화면에 보이는 상태인지 — 실전 모드에서 미리 불러 주면 안 된다
+    return q.classList.contains('show') ||
+           document.body.classList.contains('ex-graded') ||
+           document.body.classList.contains('ex-study') ||
+           document.body.classList.contains('ex-concepts');
+  }
+
+  function linesFor(q){
+    var out = [];
+    var no = (q.id || '').replace(/^q/, '');
+    var body = txt(q.querySelector('.ex-body'));
+    out.push(no + '번.');
+    if(body) out.push(body);
+    var opts = [].slice.call(q.querySelectorAll('.ex-opts label'));
+    opts.forEach(function(l, i){
+      var t = txt(l.querySelector('.tx'));
+      if(t) out.push('보기 ' + (i + 1) + '. ' + t);
+    });
+    if(st.ans && answerVisible(q)){
+      var ai = parseInt(q.getAttribute('data-ans'), 10);
+      if(!isNaN(ai)) out.push('정답은 ' + (ai + 1) + '번입니다.');
+      var br = q.querySelectorAll('.ex-exp .ex-brief');
+      [].forEach.call(br, function(b){
+        var t = txt(b);
+        if(t) out.push(t);
+      });
+    }
+    return out;
+  }
+
+  /* 긴 글은 문장으로 잘라 넣는다 — 한 번에 넘기면 중간에 끊는 브라우저가 있다 */
+  function chunks(line){
+    // 문장 끝(. ? ! 。)에서 자른다. 뒤돌아보기 정규식은 예전 사파리가 파싱조차
+    // 못 해 스크립트 전체가 죽으므로 쓰지 않고 손으로 훑는다.
+    var parts = [], cur = '';
+    for(var i = 0; i < line.length; i++){
+      cur += line[i];
+      if('.?!。'.indexOf(line[i]) >= 0 && (i + 1 >= line.length || line[i + 1] === ' ')){
+        parts.push(cur); cur = '';
+      }
+    }
+    if(cur) parts.push(cur);
+
+    var out = [], buf = '';
+    parts.forEach(function(p){
+      p = p.trim();
+      if(!p) return;
+      if(buf && (buf + ' ' + p).length > 160){ out.push(buf); buf = p; }
+      else { buf = buf ? buf + ' ' + p : p; }
+    });
+    if(buf) out.push(buf);
+    // 그래도 너무 긴 토막은 강제로 나눈다(끊김 방지)
+    var fin = [];
+    out.forEach(function(t){
+      while(t.length > 220){ fin.push(t.slice(0, 220)); t = t.slice(220); }
+      if(t) fin.push(t);
+    });
+    return fin;
+  }
+
+  /* ---------- 재생 ---------- */
+  var idx = 0, playing = false, queue = [], qi = 0, stopping = false;
+
+  function clearMark(){
+    qs.forEach(function(q){ q.classList.remove('tts-now'); });
+  }
+  function markNow(){
+    clearMark();
+    var q = qs[idx];
+    if(q){
+      q.classList.add('tts-now');
+      q.scrollIntoView({block:'center', behavior:'smooth'});
+    }
+    render();
+  }
+
+  function speakNext(){
+    if(stopping || qi >= queue.length){
+      if(!stopping && qi >= queue.length) onQuestionDone();
+      return;
+    }
+    var u = new SpeechSynthesisUtterance(queue[qi]);
+    u.lang = 'ko-KR';
+    if(voice) u.voice = voice;
+    u.rate = st.rate;
+    u.pitch = 1;
+    u.onend = function(){ qi++; speakNext(); };
+    u.onerror = function(){ qi++; speakNext(); };
+    SS.speak(u);
+  }
+
+  function onQuestionDone(){
+    if(idx < qs.length - 1){       // 다음 문항으로 이어서 읽는다
+      idx++;
+      startCurrent();
+    }else{
+      stop();
+    }
+  }
+
+  function buildQueue(){
+    queue = [];
+    linesFor(qs[idx]).forEach(function(l){
+      chunks(l).forEach(function(c){ queue.push(c); });
+    });
+    qi = 0;
+  }
+
+  function startCurrent(){
+    stopping = false;
+    SS.cancel();
+    buildQueue();
+    markNow();
+    playing = true;
+    render();
+    speakNext();
+  }
+
+  function stop(){
+    stopping = true;
+    playing = false;
+    try{ SS.cancel(); }catch(e){}
+    clearMark();
+    render();
+  }
+
+  function toggle(){
+    if(playing){
+      stop();
+    }else{
+      startCurrent();
+    }
+  }
+
+  function jump(d){
+    var was = playing;
+    idx = Math.max(0, Math.min(qs.length - 1, idx + d));
+    if(was) startCurrent();
+    else { markNow(); }
+  }
+
+  /* 보이는 문항에서 시작하도록 — 스크롤 위치에 가장 가까운 문항을 고른다 */
+  function nearest(){
+    var best = 0, bd = Infinity;
+    qs.forEach(function(q, i){
+      var t = Math.abs(q.getBoundingClientRect().top - 80);
+      if(t < bd){ bd = t; best = i; }
+    });
+    return best;
+  }
+
+  /* ---------- 막대 ---------- */
+  var bar = document.createElement('div');
+  bar.id = 'tts-bar';
+  bar.innerHTML =
+    '<button type="button" id="tts-prev" title="이전 문항">◀</button>' +
+    '<button type="button" id="tts-play" title="읽기 / 멈춤">▶</button>' +
+    '<button type="button" id="tts-next" title="다음 문항">▶▶</button>' +
+    '<span class="tts-at" id="tts-at">1 / 1</span>' +
+    '<span class="sp"></span>' +
+    '<button type="button" id="tts-ans" title="정답과 풀이도 읽기">정답 읽기</button>' +
+    '<button type="button" id="tts-slow" title="느리게">－</button>' +
+    '<button type="button" id="tts-fast" title="빠르게">＋</button>' +
+    '<select id="tts-rate" title="읽는 속도">' +
+      RATES.map(function(r){
+        return '<option value="' + r + '">' + r + '배</option>'; }).join('') +
+    '</select>' +
+    '<button type="button" id="tts-close" title="음성 모드 끄기">✕</button>';
+  document.body.appendChild(bar);
+
+  var elPlay = bar.querySelector('#tts-play');
+  var elAt   = bar.querySelector('#tts-at');
+  var elAns  = bar.querySelector('#tts-ans');
+  var elRate = bar.querySelector('#tts-rate');
+
+  function render(){
+    elPlay.textContent = playing ? '❚❚' : '▶';
+    elAt.textContent = (idx + 1) + ' / ' + qs.length + '  ·  ' + st.rate + '배';
+    elAns.classList.toggle('on', st.ans);
+    var b = document.getElementById('ex-speak');
+    if(b) b.classList.toggle('on', st.on);
+  }
+  if(RATES.indexOf(st.rate) < 0) st.rate = 1;
+  elRate.value = String(st.rate);
+
+  bar.querySelector('#tts-prev').addEventListener('click', function(){ jump(-1); });
+  bar.querySelector('#tts-next').addEventListener('click', function(){ jump(1); });
+  elPlay.addEventListener('click', toggle);
+  elAns.addEventListener('click', function(){
+    st.ans = !st.ans; save(); render();
+    if(playing) startCurrent();
+  });
+  function setRate(v){
+    v = Math.max(RATES[0], Math.min(RATES[RATES.length - 1], Math.round(v * 100) / 100));
+    st.rate = v;
+    elRate.value = String(v);
+    save();
+    render();
+    // 읽던 자리를 잃지 않게, 지금 토막부터 새 속도로 다시 잇는다
+    if(playing){
+      stopping = false;
+      try{ SS.cancel(); }catch(e){}
+      speakNext();
+    }
+  }
+  elRate.addEventListener('change', function(){ setRate(+this.value || 1); });
+  function step(d){
+    var i = RATES.indexOf(st.rate);
+    if(i < 0){                                  // 목록에 없는 값이면 가장 가까운 칸으로
+      i = 0;
+      RATES.forEach(function(r, k){
+        if(Math.abs(r - st.rate) < Math.abs(RATES[i] - st.rate)) i = k;
+      });
+    }
+    setRate(RATES[Math.max(0, Math.min(RATES.length - 1, i + d))]);
+  }
+  bar.querySelector('#tts-slow').addEventListener('click', function(){ step(-1); });
+  bar.querySelector('#tts-fast').addEventListener('click', function(){ step(1); });
+  bar.querySelector('#tts-close').addEventListener('click', function(){ setOn(false); });
+
+  function setOn(v){
+    st.on = v;
+    document.body.classList.toggle('tts-on', v);
+    if(v){
+      idx = nearest();
+      markNow();
+      toast('음성 모드 — ▶ 를 누르면 지금 문항부터 읽습니다');
+    }else{
+      stop();
+    }
+    render();
+  }
+
+  function toast(m){
+    // exam.js 의 알림을 쓸 수 있으면 쓰고, 없으면 조용히 넘어간다
+    var t = document.getElementById('an-toast');
+    if(t){ t.textContent = m; t.classList.add('show');
+           setTimeout(function(){ t.classList.remove('show'); }, 2600); }
+  }
+
+  /* ---------- 모드 바 단추 ---------- */
+  var mb = document.querySelector('#exam .ex-bar');
+  if(mb){
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = 'ex-speak';
+    btn.textContent = '읽어주기';
+    btn.title = '문제와 보기를 소리로 읽어 줍니다 (Alt+R)';
+    var sep = mb.querySelector('.ex-sep');
+    mb.insertBefore(btn, sep || null);
+    btn.addEventListener('click', function(){ setOn(!st.on); });
+  }
+  document.addEventListener('keydown', function(ev){
+    if(ev.altKey && (ev.key === 'r' || ev.key === 'R')){ ev.preventDefault(); setOn(!st.on); }
+  });
+
+  /* 화면을 벗어나거나 문서를 떠나면 멈춘다 */
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden && playing) stop();
+  });
+  window.addEventListener('pagehide', function(){ try{ SS.cancel(); }catch(e){} });
+
+  render();
 })();
 </script>
 <script id="annot-js">/* ================= 펜 모드 : 형광펜 · 밑줄 · 영역 복사 =================
