@@ -383,6 +383,60 @@ body.ex-concepts .ex-q details.ex-concept,
 .ex-part.rd{margin-top:44px;border-top:3px solid var(--accent);border-radius:0 0 8px 8px;
   padding-top:12px;font-size:17px}
 .ex-part.rd:first-of-type{margin-top:4px}
+/* ================= 연습장 (문제 옆 계산용 메모지) =================
+   본문 위에 얹는 필기(an-ink)는 2만 px 문서를 따라다녀야 해서 좌표를 잴 때마다
+   레이아웃이 흔들린다. 계산은 그럴 이유가 없으므로, 문서와 아무 상관 없는
+   독립 캔버스를 따로 띄운다. 크기가 고정이라 획을 그어도 리플로우가 없다.
+--------------------------------------------------------------------------- */
+#sc-pad{position:fixed;z-index:60;display:none;flex-direction:column;
+  background:#fff;border:1px solid #CFD8D5;border-radius:10px;
+  box-shadow:0 6px 26px rgba(0,0,0,.16);overflow:hidden;
+  font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",system-ui,sans-serif}
+#sc-pad.on{display:flex}
+#sc-pad.mini .sc-body{display:none}
+#sc-pad.mini{height:auto !important;resize:none}
+
+.sc-head{display:flex;align-items:center;gap:6px;padding:6px 8px;
+  background:#F2F7F5;border-bottom:1px solid #E0E9E6;cursor:move;
+  touch-action:none;user-select:none;flex:0 0 auto}
+.sc-head b{font-size:12.5px;color:#26705F;margin-right:2px;white-space:nowrap}
+.sc-head .sp{flex:1 1 auto}
+.sc-head button{font:inherit;font-size:11.5px;line-height:1;padding:5px 7px;
+  color:#555;background:#fff;border:1px solid #DDE5E2;border-radius:6px;cursor:pointer}
+.sc-head button:hover{border-color:#2E8B7A;color:#2E8B7A}
+.sc-head button.on{background:#2E8B7A;border-color:#2E8B7A;color:#fff;font-weight:700}
+
+.sc-pen{width:20px;height:20px;padding:0 !important;border-radius:50% !important;
+  position:relative}
+.sc-pen::after{content:"";position:absolute;inset:3px;border-radius:50%;background:currentColor}
+.sc-pen.on{box-shadow:0 0 0 2px #fff,0 0 0 3.5px #2E8B7A}
+.sc-pen.k{color:#1B1B1B}.sc-pen.b{color:#1F5FBF}.sc-pen.r{color:#C0392B}
+
+.sc-body{position:relative;flex:1 1 auto;min-height:0;background:#fff}
+#sc-cv{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair;
+  background-image:linear-gradient(#EDF1F0 1px,transparent 1px);
+  background-size:100% 28px}
+#sc-pad.era #sc-cv{cursor:cell}
+
+.sc-foot{display:flex;align-items:center;gap:6px;padding:4px 8px;
+  border-top:1px solid #EEF2F1;font-size:11px;color:#999;flex:0 0 auto}
+.sc-foot .sp{flex:1 1 auto}
+.sc-foot button{font:inherit;font-size:11px;padding:3px 7px;color:#777;background:#fff;
+  border:1px solid #E4E9E7;border-radius:5px;cursor:pointer}
+.sc-foot button:hover{border-color:#2E8B7A;color:#2E8B7A}
+
+.sc-grip{position:absolute;right:0;bottom:0;width:16px;height:16px;cursor:nwse-resize;
+  touch-action:none}
+.sc-grip::before{content:"";position:absolute;right:3px;bottom:3px;width:8px;height:8px;
+  border-right:2px solid #BBC7C4;border-bottom:2px solid #BBC7C4}
+
+/* 모드 바의 연습장 단추 */
+#ex-scratch.on{background:var(--accent);border-color:var(--accent);color:#fff}
+
+@media print{ #sc-pad{display:none !important} }
+@media (max-width:640px){
+  #sc-pad{left:8px !important;right:8px !important;width:auto !important}
+}
 /* ===ANNOT-CSS=== */
 /* ================= 펜 모드 : 형광펜 · 밑줄 · 영역 복사 ================= */
 
@@ -5012,6 +5066,383 @@ body.an-rectmode #main{-webkit-user-select:none;user-select:none}
   paintTimer();
   refreshNav();
   loadHist();
+})();
+
+;
+/* ================= 연습장 : 문제 옆 계산용 메모지 =================
+   시험지 옆에 띄워 놓고 펜으로 계산하는 판. 본문 위에 얹는 필기와 달리 문서
+   레이아웃과 아무 상관이 없는 독립 캔버스라, 획을 그어도 문서 리플로우가 없다.
+
+   글씨가 끊기지 않게 챙긴 것
+     - pointerrawupdate / getCoalescedEvents 로 펜이 보낸 점을 하나도 버리지 않는다
+       (S펜은 120~360Hz 로 들어오는데 pointermove 만 받으면 프레임당 한 점만 남는다)
+     - setPointerCapture + touch-action:none — 손이 스치거나 스크롤이 끼어들지 않는다
+     - 그리는 동안에는 방금 이어진 구간만 덧그린다. 전체 다시 그리기는 되돌리기·
+       지우개·창 크기 변경처럼 실제로 필요할 때만 한다
+     - 화면 갱신은 프레임당 한 번(rAF)으로 묶는다
+
+   저장은 시험지 파일마다 따로. 획 목록을 그대로 담아 두므로 되돌리기와 창 크기
+   변경에도 그대로 살아난다.
+--------------------------------------------------------------------------- */
+(function(){
+  if(!document.getElementById('exam')) return;          // 시험지에서만 쓴다
+
+  var FILE = decodeURIComponent((location.pathname.split('/').pop() || 'exam'))
+               .replace(/\.html?$/i, '');
+  var KEY  = 'bdnote:scratch:' + FILE;
+  var INK  = {k:'#1B1B1B', b:'#1F5FBF', r:'#C0392B'};
+  var ERASE_R = 12;
+  var MIN_W = 240, MIN_H = 200;
+
+  /* ---------- 상태 ---------- */
+  var st = {open:false, mini:false, box:null, pg:0, pages:[[]], color:'k', width:2.2};
+
+  function load(){
+    try{
+      var o = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if(o && o.pages instanceof Array && o.pages.length){
+        st.pages = o.pages;
+        st.pg    = Math.min(o.pg || 0, o.pages.length - 1);
+        st.box   = o.box || null;
+        st.color = INK[o.color] ? o.color : 'k';
+        st.width = +o.width || 2.2;
+        st.open  = !!o.open;
+        st.mini  = !!o.mini;
+      }
+    }catch(e){}
+  }
+
+  var saveT = null;
+  function save(){                                       // 획마다 저장하면 글씨가 끊긴다
+    clearTimeout(saveT);
+    saveT = setTimeout(saveNow, 700);
+  }
+  function saveNow(){
+    clearTimeout(saveT);
+    try{
+      localStorage.setItem(KEY, JSON.stringify({
+        v:1, pages:st.pages, pg:st.pg, box:st.box,
+        color:st.color, width:st.width, open:st.open, mini:st.mini}));
+    }catch(e){}
+  }
+  window.addEventListener('pagehide', saveNow);
+
+  /* ---------- 화면 ---------- */
+  var pad = document.createElement('div');
+  pad.id = 'sc-pad';
+  pad.innerHTML =
+    '<div class="sc-head">' +
+      '<b>연습장</b>' +
+      '<button type="button" class="sc-pen k" data-c="k" title="검정"></button>' +
+      '<button type="button" class="sc-pen b" data-c="b" title="파랑"></button>' +
+      '<button type="button" class="sc-pen r" data-c="r" title="빨강"></button>' +
+      '<button type="button" id="sc-era" title="획 지우개">지우개</button>' +
+      '<button type="button" id="sc-undo" title="한 획 되돌리기">되돌리기</button>' +
+      '<span class="sp"></span>' +
+      '<button type="button" id="sc-mini" title="접기/펴기">▁</button>' +
+      '<button type="button" id="sc-close" title="닫기">✕</button>' +
+    '</div>' +
+    '<div class="sc-body"><canvas id="sc-cv"></canvas><div class="sc-grip"></div></div>' +
+    '<div class="sc-foot">' +
+      '<button type="button" id="sc-prev">‹</button>' +
+      '<span id="sc-pg">1 / 1</span>' +
+      '<button type="button" id="sc-next">›</button>' +
+      '<button type="button" id="sc-add">새 장</button>' +
+      '<span class="sp"></span>' +
+      '<button type="button" id="sc-clear">이 장 비우기</button>' +
+    '</div>';
+  document.body.appendChild(pad);
+
+  var cv    = pad.querySelector('#sc-cv');
+  var ctx   = cv.getContext('2d');
+  var body  = pad.querySelector('.sc-body');
+  var elPg  = pad.querySelector('#sc-pg');
+  var btnEra= pad.querySelector('#sc-era');
+  var dpr   = 1, erasing = false;
+
+  function strokes(){ return st.pages[st.pg] || (st.pages[st.pg] = []); }
+
+  /* ---------- 캔버스 ---------- */
+  function fit(){
+    var w = body.clientWidth, h = body.clientHeight;
+    if(w <= 0 || h <= 0) return;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);     // 3배는 지우개까지 무거워진다
+    cv.width  = Math.round(w * dpr);
+    cv.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    redraw();
+  }
+
+  function drawStroke(s){
+    var p = s.p;
+    ctx.strokeStyle = INK[s.c] || INK.k;
+    ctx.lineWidth = s.w;
+    ctx.beginPath();
+    if(p.length <= 4){                                   // 점 하나 — 짧은 선으로
+      ctx.moveTo(p[0], p[1]);
+      ctx.lineTo(p[p.length - 2] + 0.01, p[p.length - 1]);
+    }else{
+      ctx.moveTo(p[0], p[1]);
+      for(var i = 2; i < p.length - 2; i += 2)            // 중점을 지나는 2차 곡선
+        ctx.quadraticCurveTo(p[i], p[i+1], (p[i] + p[i+2]) / 2, (p[i+1] + p[i+3]) / 2);
+      ctx.lineTo(p[p.length - 2], p[p.length - 1]);
+    }
+    ctx.stroke();
+  }
+
+  function redraw(){
+    ctx.clearRect(0, 0, cv.width / dpr, cv.height / dpr);
+    strokes().forEach(drawStroke);
+    elPg.textContent = (st.pg + 1) + ' / ' + st.pages.length;
+  }
+
+  /* 그리는 중 — 마지막 두 구간만 덧그린다(전체 다시 그리기 없음) */
+  function drawTail(s){
+    var p = s.p, n = p.length;
+    ctx.strokeStyle = INK[s.c] || INK.k;
+    ctx.lineWidth = s.w;
+    ctx.beginPath();
+    if(n < 6){
+      ctx.moveTo(p[0], p[1]);
+      ctx.lineTo(p[n-2], p[n-1]);
+    }else{
+      ctx.moveTo((p[n-6] + p[n-4]) / 2, (p[n-5] + p[n-3]) / 2);
+      ctx.quadraticCurveTo(p[n-4], p[n-3], (p[n-4] + p[n-2]) / 2, (p[n-3] + p[n-1]) / 2);
+    }
+    ctx.stroke();
+  }
+
+  /* ---------- 그리기 ---------- */
+  var cur = null, geo = null, pend = false;
+
+  function flush(){
+    pend = false;
+    if(cur) drawTail(cur);
+  }
+  function schedule(){
+    if(pend) return;
+    pend = true;
+    requestAnimationFrame(flush);
+  }
+
+  function at(ev){
+    return [ev.clientX - geo.left, ev.clientY - geo.top];
+  }
+
+  function addPoint(ev){
+    var q = at(ev), p = cur.p;
+    var dx = q[0] - p[p.length-2], dy = q[1] - p[p.length-1];
+    if(dx*dx + dy*dy < 0.35) return;                     // 제자리 떨림은 버린다
+    p.push(q[0], q[1]);
+  }
+
+  function eraseAt(ev){
+    var q = at(ev), list = strokes(), hit = false;
+    for(var i = list.length - 1; i >= 0; i--){
+      var p = list[i].p;
+      for(var j = 0; j < p.length; j += 2){
+        var dx = p[j] - q[0], dy = p[j+1] - q[1];
+        if(dx*dx + dy*dy <= ERASE_R * ERASE_R){ list.splice(i, 1); hit = true; break; }
+      }
+    }
+    if(hit){ redraw(); save(); }
+  }
+
+  cv.addEventListener('pointerdown', function(ev){
+    if(ev.button !== 0 && ev.pointerType === 'mouse') return;
+    ev.preventDefault();
+    // 붙잡기에 실패해도 획은 그어져야 한다 — 여기서 예외가 나면 획을 통째로 잃는다
+    try{ cv.setPointerCapture(ev.pointerId); }catch(e){}
+    var r = cv.getBoundingClientRect();
+    geo = {left:r.left, top:r.top};
+    if(erasing || ev.buttons === 32 || ev.button === 5){   // S펜 버튼 = 지우개
+      cur = null;
+      eraseAt(ev);
+      return;
+    }
+    sawRaw = false;
+    cur = {c:st.color, w:st.width, p:[]};
+    var q = at(ev);
+    cur.p.push(q[0], q[1]);
+    strokes().push(cur);
+    drawTail(cur);
+  });
+
+  var sawRaw = false;                                    // 이 획에서 rawupdate 를 받았는가
+
+  function onMove(ev){
+    if(!geo) return;
+    if(!cur){ if(erasing && ev.buttons) eraseAt(ev); return; }
+    // 펜이 보낸 점을 하나도 버리지 않는다 — 이게 없으면 획이 각지고 끊겨 보인다
+    var list = (ev.getCoalescedEvents ? ev.getCoalescedEvents() : null);
+    if(list && list.length) for(var i = 0; i < list.length; i++) addPoint(list[i]);
+    else addPoint(ev);
+    schedule();
+  }
+  /* pointerrawupdate 는 프레임에 묶이지 않아 더 촘촘하게 들어온다. 다만 브라우저나
+     입력 장치에 따라 아예 오지 않을 수 있어 pointermove 도 함께 듣고, 같은 획에서
+     rawupdate 를 이미 받았으면 pointermove 는 흘려보낸다(같은 점을 두 번 넣지 않게). */
+  cv.addEventListener('pointerrawupdate', function(ev){ sawRaw = true; onMove(ev); });
+  cv.addEventListener('pointermove', function(ev){ if(!sawRaw) onMove(ev); });
+
+  function endStroke(ev){
+    if(geo && cur){
+      if(ev && ev.type === 'pointerup') onMove(ev);
+      drawStroke(cur);                                   // 매끄러운 최종 모양으로 한 번 더
+      save();
+    }
+    cur = null; geo = null;
+  }
+  cv.addEventListener('pointerup', endStroke);
+  cv.addEventListener('pointercancel', endStroke);
+  cv.addEventListener('pointerleave', function(ev){ if(cur) endStroke(ev); });
+  cv.addEventListener('contextmenu', function(ev){ ev.preventDefault(); });
+
+  /* ---------- 도구 ---------- */
+  function setColor(c){
+    st.color = c; erasing = false;
+    pad.classList.remove('era');
+    btnEra.classList.remove('on');
+    pad.querySelectorAll('.sc-pen').forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-c') === c);
+    });
+    save();
+  }
+  pad.querySelectorAll('.sc-pen').forEach(function(b){
+    b.addEventListener('click', function(){ setColor(b.getAttribute('data-c')); });
+  });
+  btnEra.addEventListener('click', function(){
+    erasing = !erasing;
+    btnEra.classList.toggle('on', erasing);
+    pad.classList.toggle('era', erasing);
+  });
+  pad.querySelector('#sc-undo').addEventListener('click', function(){
+    strokes().pop(); redraw(); save();
+  });
+  pad.querySelector('#sc-clear').addEventListener('click', function(){
+    if(!strokes().length) return;
+    if(!window.confirm('이 장에 쓴 것을 모두 지웁니다. 계속할까요?')) return;
+    st.pages[st.pg] = []; redraw(); saveNow();
+  });
+  pad.querySelector('#sc-add').addEventListener('click', function(){
+    st.pages.splice(st.pg + 1, 0, []);
+    st.pg++; redraw(); saveNow();
+  });
+  pad.querySelector('#sc-prev').addEventListener('click', function(){
+    if(st.pg > 0){ st.pg--; redraw(); saveNow(); }
+  });
+  pad.querySelector('#sc-next').addEventListener('click', function(){
+    if(st.pg < st.pages.length - 1){ st.pg++; redraw(); saveNow(); }
+  });
+
+  /* ---------- 열고 닫기 · 옮기기 · 크기 ---------- */
+  function place(){
+    // 숨은 탭이나 아직 그려지기 전에는 innerWidth 가 0 으로 잡힌다. 그 값으로 자리를
+    // 잡으면 판이 최소 크기로 찌부러지므로, 창 크기를 제대로 읽기 전까지는 기억해 두지
+    // 않는다(다음 place() 에서 제대로 된 기본값을 다시 계산한다).
+    var raw = window.innerWidth | 0;
+    var VW = Math.max(raw, 320);
+    var VH = Math.max(window.innerHeight | 0, 320);
+    var b = st.box;
+    if(!b){
+      var w = Math.min(400, Math.max(MIN_W, VW - 40));
+      var h = Math.min(540, Math.max(MIN_H, VH - 120));
+      b = {x: Math.max(4, VW - w - 20), y: 80, w:w, h:h};
+      if(raw > 0) st.box = b;
+    }
+    if(raw > 0){                                   // 창 크기를 읽을 수 있을 때만 가둔다
+      b.w = Math.max(MIN_W, Math.min(b.w, VW - 8));
+      b.h = Math.max(MIN_H, Math.min(b.h, VH - 8));
+      b.x = Math.max(4, Math.min(b.x, VW - 80));
+      b.y = Math.max(4, Math.min(b.y, VH - 44));
+    }
+    pad.style.left = b.x + 'px';
+    pad.style.top  = b.y + 'px';
+    pad.style.width  = b.w + 'px';
+    pad.style.height = b.h + 'px';
+  }
+
+  function setOpen(v){
+    st.open = v;
+    pad.classList.toggle('on', v);
+    var b = document.getElementById('ex-scratch');
+    if(b) b.classList.toggle('on', v);
+    if(v){
+      place(); fit();
+      requestAnimationFrame(function(){ if(st.open){ place(); fit(); } });
+    }
+    saveNow();
+  }
+
+  pad.querySelector('#sc-close').addEventListener('click', function(){ setOpen(false); });
+  pad.querySelector('#sc-mini').addEventListener('click', function(){
+    st.mini = !st.mini;
+    pad.classList.toggle('mini', st.mini);
+    this.textContent = st.mini ? '▔' : '▁';
+    if(!st.mini){ place(); fit(); }
+    saveNow();
+  });
+
+  function drag(handle, onMove2){
+    handle.addEventListener('pointerdown', function(ev){
+      if(ev.target.tagName === 'BUTTON') return;
+      ev.preventDefault();
+      try{ handle.setPointerCapture(ev.pointerId); }catch(e){}
+      var sx = ev.clientX, sy = ev.clientY, b = {x:st.box.x, y:st.box.y, w:st.box.w, h:st.box.h};
+      function mv(e){ onMove2(b, e.clientX - sx, e.clientY - sy); }
+      function up(){
+        handle.removeEventListener('pointermove', mv);
+        handle.removeEventListener('pointerup', up);
+        saveNow();
+        fit();
+      }
+      handle.addEventListener('pointermove', mv);
+      handle.addEventListener('pointerup', up);
+    });
+  }
+  drag(pad.querySelector('.sc-head'), function(b, dx, dy){
+    st.box.x = b.x + dx; st.box.y = b.y + dy; place();
+  });
+  drag(pad.querySelector('.sc-grip'), function(b, dx, dy){
+    st.box.w = Math.max(MIN_W, b.w + dx);
+    st.box.h = Math.max(MIN_H, b.h + dy);
+    place(); fit();
+  });
+
+  var reT = null;
+  window.addEventListener('resize', function(){
+    clearTimeout(reT);
+    reT = setTimeout(function(){ if(st.open && !st.mini){ place(); fit(); } }, 120);
+  });
+
+  /* ---------- 모드 바 단추 ---------- */
+  var bar = document.querySelector('#exam .ex-bar');
+  if(bar){
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = 'ex-scratch';
+    btn.textContent = '연습장';
+    btn.title = '문제 옆에 띄워 놓고 펜으로 계산합니다 (Alt+N)';
+    var sep = bar.querySelector('.ex-sep');
+    bar.insertBefore(btn, sep || null);
+    btn.addEventListener('click', function(){ setOpen(!st.open); });
+  }
+  document.addEventListener('keydown', function(ev){
+    if(ev.altKey && (ev.key === 'n' || ev.key === 'N')){ ev.preventDefault(); setOpen(!st.open); }
+  });
+
+  /* ---------- 시작 ---------- */
+  load();
+  setColor(st.color);
+  pad.classList.toggle('mini', st.mini);
+  pad.querySelector('#sc-mini').textContent = st.mini ? '▔' : '▁';
+  if(st.open) setOpen(true);
+  else{
+    var b0 = document.getElementById('ex-scratch');
+    if(b0) b0.classList.remove('on');
+  }
 })();
 </script>
 <script id="annot-js">/* ================= 펜 모드 : 형광펜 · 밑줄 · 영역 복사 =================
