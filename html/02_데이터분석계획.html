@@ -1,0 +1,3307 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>빅데이터분석기사 필기 · PART 01 CHAPTER 02 데이터 분석 계획</title>
+<style>
+:root{
+  --accent:#2E8B7A;
+  --accent-soft:#BBDDD5;
+  --accent-pale:#EAF4F1;
+  --navy:#1F3A63;
+  --ink:#222;
+  --ink-sub:#555;
+  --line:#DDD;
+  --bg:#fff;
+  --side-bg:#FAFAF9;
+  --mark:#D8EFCB;
+  --sidebar-w:290px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",system-ui,sans-serif;
+  font-size:15.5px; line-height:1.75; word-break:keep-all;
+}
+
+/* ---------- 레이아웃 ---------- */
+#layout{display:flex; align-items:flex-start}
+#sidebar{
+  width:var(--sidebar-w); flex:0 0 var(--sidebar-w);
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+  background:var(--side-bg); border-right:1px solid var(--line);
+  padding:18px 0 60px;
+}
+#sidebar .side-head{
+  padding:0 18px 14px; border-bottom:1px solid var(--line); margin-bottom:10px;
+}
+#sidebar .side-head b{display:block; font-size:14px; color:var(--accent); letter-spacing:.02em}
+#sidebar .side-head span{display:block; font-size:12px; color:var(--ink-sub); margin-top:3px}
+#toc{list-style:none; margin:0; padding:0; font-size:13.5px}
+#toc li{margin:0}
+#toc a{
+  display:block; padding:5px 16px 5px 18px; color:#444; text-decoration:none;
+  border-left:3px solid transparent; line-height:1.45;
+}
+#toc a:hover{background:#F0F0EE; color:var(--accent)}
+#toc a.active{background:var(--accent-pale); color:var(--accent); border-left-color:var(--accent); font-weight:700}
+#toc .lv1>a{font-weight:700; color:#222; padding-top:10px; padding-bottom:8px; font-size:14px}
+#toc .lv2>a{padding-left:30px}
+#toc .lv3>a{padding-left:44px; font-size:12.8px; color:#666}
+
+#main{flex:1 1 auto; min-width:0; padding:36px 40px 140px}
+.wrap{max-width:900px; margin:0 auto}
+
+/* ---------- 본문 요소 ---------- */
+.page-mark{
+  margin:38px 0 14px; padding:2px 0 2px 10px;
+  border-left:3px solid var(--accent-soft);
+  font-size:12px; color:#999; letter-spacing:.04em;
+}
+h1.doc-title{
+  font-size:24px; margin:0 0 6px; color:var(--accent);
+}
+.doc-sub{color:var(--ink-sub); font-size:13.5px; margin:0 0 10px}
+.doc-note{
+  background:#FFFBEA; border:1px solid #F0E2AE; border-radius:6px;
+  padding:12px 16px; font-size:13px; color:#6B5B23; margin:0 0 30px;
+}
+
+h2{
+  font-size:20px; margin:52px 0 18px; padding:10px 16px;
+  background:var(--accent); color:#fff; border-radius:4px;
+  border-left:8px solid var(--navy); letter-spacing:.01em;
+}
+h3{
+  font-size:17px; margin:34px 0 14px; padding-bottom:8px;
+  border-bottom:2px solid var(--accent-soft); color:#1b1b1b;
+}
+h4{
+  font-size:15.5px; margin:24px 0 10px; color:var(--accent);
+}
+h4::before{content:"● "; font-size:11px; vertical-align:2px}
+h5{font-size:15px; margin:18px 0 8px; color:#333}
+
+p{margin:0 0 10px}
+ul.dash{list-style:none; margin:0 0 12px; padding:0}
+ul.dash>li{position:relative; padding-left:14px; margin:3px 0}
+ul.dash>li::before{content:"·"; position:absolute; left:2px; color:var(--accent)}
+.para-block p{margin:0 0 8px}
+
+mark{background:var(--mark); padding:0 1px}
+
+/* 표 */
+.table-scroll{overflow-x:auto; margin:0 0 16px}
+table{border-collapse:collapse; width:100%; font-size:14px}
+table th,table td{border:1px solid #CFCFCF; padding:7px 10px; vertical-align:middle}
+table th{background:#F2F2F0; font-weight:700; text-align:center}
+table td.h{background:#F7F7F5; font-weight:700; text-align:center; white-space:nowrap}
+table.plain th{background:#F2F2F0}
+
+/* 시험 안내 카드 */
+.cardrow{display:flex; gap:22px; flex-wrap:wrap; margin-bottom:8px}
+.card{flex:1 1 380px; min-width:300px}
+.card>h3{
+  text-align:center; font-weight:700; font-size:16px; padding:9px 0;
+  border:1px solid #D9D9D9; border-top:3px solid var(--accent);
+  border-bottom:1px solid #D9D9D9;
+  border-radius:0 0 14px 14px; background:#fff; margin:0 0 16px;
+}
+.card>h3.pink{border-top-color:#F2A099}
+.card>h3.blue{border-top-color:#9BB6DE}
+.callout{
+  background:#FDF6E3; border-left:5px solid #F0D18B; border-radius:4px;
+  padding:14px 18px; margin:22px 0;
+}
+.callout h4{margin-top:0; color:#7A5E12}
+.callout h4::before{content:""}
+h3.callout-head{border:0; margin:0 0 8px; padding:0; font-size:17px; color:#7A5E12}
+.tel{font-weight:700; color:var(--navy); font-size:17px}
+
+/* 출제경향 */
+h3.trend-head{
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  border-bottom:2px solid var(--navy); padding-bottom:6px; margin:30px 0 12px;
+  font-size:inherit; font-weight:400;
+}
+.trend-head .pno{
+  background:var(--accent); color:#fff; font-weight:700; padding:3px 12px;
+  border-radius:3px; font-size:15px;
+}
+.trend-head .ptit{font-weight:700; font-size:17px}
+.trend-head .pcap{font-size:13px; color:#555}
+.trend-head .pcnt{
+  margin-left:auto; background:var(--accent-pale); color:#26705F;
+  font-weight:700; font-size:13px; padding:3px 12px; border-radius:12px;
+}
+table.trend td.bar-cell{width:230px; padding:6px 10px}
+.bar{
+  position:relative; height:22px; border:1px solid #D6D6D6; background:#fff; border-radius:2px;
+}
+.bar>i{display:block; height:100%; background:var(--accent-soft); border-radius:1px}
+.bar>span{position:absolute; right:7px; top:0; line-height:22px; font-size:12.5px; font-weight:700; color:#333}
+table.trend td.tag{font-size:13px; color:#444; line-height:1.6}
+details.orig{margin:6px 0 22px}
+details.orig summary{cursor:pointer; font-size:12.5px; color:var(--accent); user-select:none}
+details.orig img{max-width:100%; margin-top:10px; border:1px solid var(--line); border-radius:4px}
+
+/* 표지 */
+.cover{
+  background:var(--accent); color:#fff; border-radius:6px;
+  padding:38px 34px; margin:52px 0 22px;
+}
+.cover .kicker{letter-spacing:.35em; font-size:13px; font-weight:700; opacity:.95}
+.cover .num{font-size:56px; font-weight:800; line-height:1; color:#26333C; margin:6px 0 10px}
+.cover .name{font-size:32px; font-weight:800; line-height:1.25}
+.cover--chapter{background:#F0F0EE; color:#222; border-left:10px solid var(--accent)}
+.cover--chapter .kicker{color:var(--accent)}
+.cover--chapter .num{color:#26333C}
+.cover--chapter .name{color:var(--accent)}
+.tagbox{
+  display:inline-block; background:var(--accent); color:#fff; font-size:12.5px;
+  font-weight:700; padding:2px 10px; border-radius:2px; margin-bottom:8px;
+}
+.cover .tagbox{background:#fff; color:var(--accent)}
+.cover-body{margin-top:22px; font-size:14px; line-height:1.7}
+.cover--chapter .cover-body{color:#333}
+.freq{margin-top:18px}
+.freq .row{display:flex; align-items:center; gap:12px; margin:6px 0; font-size:13.5px}
+.freq .row b{width:96px; flex:0 0 96px}
+.freq .bar{flex:1 1 auto}
+
+.unclear{background:#FFE9E9; border-bottom:1px dashed #D66}
+ol.numlist{margin:0 0 0 18px; padding:0}
+ol.numlist>li{margin:3px 0}
+.procbox{border:1px solid #C9C9C4; border-radius:3px; padding:9px 10px; margin-top:7px; text-align:center; line-height:1.55; background:#fff}
+
+/* ---------- 본문 상세 요소 ---------- */
+.sec-meta{margin:-6px 0 12px}
+.freq-tag{
+  display:inline-block; background:var(--accent-pale); color:#26705F;
+  font-size:12.5px; font-weight:700; padding:3px 12px; border-radius:3px;
+}
+.freq-tag b{color:var(--accent); font-size:14px}
+.tagline{
+  background:var(--accent-pale); border-radius:4px; padding:10px 14px;
+  font-size:13.5px; color:#333; margin:0 0 26px;
+}
+.tagline .tagbox{margin:0 8px 0 0; vertical-align:1px}
+
+h3 .num{
+  display:inline-block; background:var(--accent); color:#fff; font-size:13px;
+  font-weight:700; padding:1px 8px; border-radius:3px; margin-right:8px; vertical-align:3px;
+}
+sup.star{color:var(--accent); font-size:13px}
+.star-b{color:var(--accent)}
+.cite{font-size:12.5px; color:#777}
+
+/* 원문자 목록 */
+ol.circled{list-style:none; counter-reset:c; margin:0 0 12px; padding:0}
+ol.circled>li{
+  counter-increment:c; position:relative; padding-left:24px; margin:8px 0;
+}
+ol.circled>li::before{
+  content:counter(c, decimal); position:absolute; left:0; top:1px;
+  width:16px; height:16px; line-height:15px; text-align:center;
+  border:1px solid #666; border-radius:50%; font-size:11px; color:#444;
+}
+.ex{margin:5px 0 0 4px; font-size:14.5px}
+.ex-tag{
+  display:inline-block; background:#555; color:#fff; font-size:10.5px;
+  padding:0 5px; border-radius:2px; margin-right:5px; vertical-align:2px;
+}
+ul.dash2{list-style:none; margin:4px 0 0; padding:0}
+ul.dash2>li{position:relative; padding-left:15px; margin:3px 0; color:#333}
+ul.dash2>li::before{content:"–"; position:absolute; left:0; color:#888}
+
+/* 표 캡션 */
+.tbl-cap{
+  font-weight:700; font-size:14px; color:#333; margin:20px 0 7px;
+}
+.tbl-cap::before{content:"▶ "; color:var(--accent); font-size:11px; vertical-align:1px}
+
+/* 여백 용어설명 */
+aside.note{
+  background:#F6F6F4; border-left:3px solid #D6D6D2; border-radius:0 4px 4px 0;
+  padding:11px 15px; margin:14px 0; font-size:13px; color:#4A4A4A; line-height:1.65;
+}
+aside.note b{color:#222}
+aside.note hr{border:0; border-top:1px solid #E2E2DE; margin:10px 0}
+
+/* 기적의 TIP / 더 알기 TIP */
+.tip{
+  border:1px solid var(--accent-soft); border-radius:4px; background:#fff;
+  padding:11px 15px; margin:16px 0; font-size:13.5px;
+}
+.tip-head{
+  display:block; font-weight:700; color:var(--accent); font-size:13px; margin-bottom:5px;
+}
+.tip-head::before{content:"⚑ "}
+.tip.tip-more{border-color:#B9C9DE; background:#F7FAFD}
+.tip-head-more{color:#3A5F8F}
+.tip-head-more::before{content:"✚ "}
+.tip-more .tip-title{font-weight:700; margin:0 0 8px}
+.tip-more figure{margin:14px 0 0}
+
+/* 도식 */
+figure{margin:18px 0; text-align:center}
+figure img{max-width:100%; height:auto}
+figcaption{font-size:13px; color:#444; font-weight:700; margin-top:8px}
+
+/* 개념 체크 */
+.check{
+  border-top:2px solid var(--accent); border-bottom:2px solid var(--accent-soft);
+  padding:0 0 18px; margin:34px 0;
+}
+.check-head{
+  display:inline-block; background:var(--accent); color:#fff; font-weight:700;
+  font-size:13px; padding:4px 14px; border-radius:0 0 4px 0;
+}
+.check .q{margin:20px 0 0}
+.q-title{font-weight:700; font-size:15.5px; margin-bottom:8px}
+.q-no{color:var(--accent); margin-right:6px}
+ol.q-opt{margin-left:6px}
+ol.q-opt>li{font-size:15px}
+.ans{text-align:right; margin:12px 0 6px; font-size:14px; font-weight:700}
+.ans-tag{
+  display:inline-block; background:var(--accent-soft); color:#1b4d43;
+  font-size:11px; padding:1px 7px; border-radius:2px; margin-right:5px; vertical-align:1px;
+}
+ul.sol{
+  border-top:1px dotted #BBB; padding-top:12px; font-size:13.5px; color:#444;
+}
+ul.sol>li{margin:5px 0}
+
+/* 체크리스트 박스 */
+.boxlist{
+  border:1px solid #DCDCD8; border-radius:4px; padding:14px 18px; margin:14px 0;
+}
+.boxlist ul.dash{margin:0}
+.source{text-align:right; font-size:12.5px; color:#666; margin:6px 0 0}
+
+/* 예상문제 */
+.exam-kicker{
+  display:inline-block; background:var(--accent-soft); color:#1b4d43;
+  font-size:12px; font-weight:700; padding:2px 10px; border-radius:2px;
+  margin-right:8px; vertical-align:3px;
+}
+.exam{columns:2; column-gap:38px; margin-top:18px}
+.eq{break-inside:avoid; margin:0 0 26px}
+.eq-t{font-weight:700; font-size:15px; margin-bottom:7px; text-indent:-26px; padding-left:26px}
+.eq-n{color:var(--accent); font-size:17px; margin-right:6px}
+.eq ol.q-opt{margin:0 0 0 4px}
+.eq ol.q-opt>li{font-size:14.5px; margin:4px 0}
+
+/* 정답 & 해설 */
+.anskey{background:#F4F6F5; border-radius:4px; padding:0 0 14px; margin:18px 0 24px}
+.anskey-head{
+  background:var(--accent); color:#fff; font-weight:700; letter-spacing:.08em;
+  padding:7px 16px; font-size:14px; border-radius:4px 4px 0 0;
+}
+.anskey-grid{
+  display:grid; grid-template-columns:repeat(5,1fr); gap:8px 4px;
+  padding:14px 16px 0; font-size:15px; font-weight:700; text-align:center;
+}
+.sols{columns:2; column-gap:38px}
+.sol-item{break-inside:avoid; margin:0 0 16px}
+.sol-h{border-bottom:1px dotted #BBB; padding-bottom:3px; margin-bottom:6px; font-size:14px}
+.sol-h b{color:var(--accent); font-size:16px; margin-right:6px}
+.sol-item p{font-size:13.5px; color:#444; margin:0}
+.sol-item p.wrong{margin-top:5px; color:#8A4B3F; font-size:13px}
+
+@media(max-width:820px){
+  .exam,.sols{columns:1}
+  .anskey-grid{grid-template-columns:repeat(4,1fr)}
+}
+
+/* 표 안 목록 여백 정리 */
+table ul.dash{margin:0}
+table ul.dash>li{margin:2px 0}
+/* 여백 노트 안의 소형 표 */
+table.mini{font-size:12px}
+table.mini td{padding:3px 7px; text-align:center; background:#fff}
+table.mini td:first-child{text-align:left; font-weight:600}
+
+@media(max-width:900px){
+  #layout{display:block}
+  #sidebar{position:static; width:auto; height:auto; border-right:0; border-bottom:1px solid var(--line)}
+  #main{padding:24px 18px 80px}
+}
+/* 제곱근 */
+.sq{border-top:1.3px solid currentColor;padding:1px 3px 0 2px;margin-left:1px}
+.sq::before{content:"√";border-top:0;margin-left:-11px;padding-right:1px;
+  display:inline-block;transform:translateY(-1px)}
+</style>
+</head>
+<body>
+<div id="layout">
+
+  <nav id="sidebar">
+    <div class="side-head">
+      <b>빅데이터분석기사 필기</b>
+      <span>PART 01 · CHAPTER 02 데이터 분석 계획</span>
+    </div>
+    <ul id="toc"></ul>
+  </nav>
+
+  <main id="main">
+  <div class="wrap">
+
+    <h1 class="doc-title">CHAPTER 02 데이터 분석 계획</h1>
+    <p class="doc-sub">원본: 02_빅분기필기-데이터분석계획.pdf (책 1-81 ~ 1-146)</p>
+    <p class="doc-note">전사 완료 — <b>책 1-81 ~ 1-146 전체</b> (SECTION 01 · 02 본문, 개념 체크, 예상문제 및 정답 &amp; 해설 포함). 좌측 퀵메뉴는 본문 제목을 따라 자동 생성됩니다. 좌측 퀵메뉴는 본문 제목을 따라 자동 생성됩니다.</p>
+
+<div class="page-mark">1-81</div>
+
+<h2 id="c0-ch02">CHAPTER 02 데이터 분석 계획</h2>
+<div class="cover cover--chapter">
+  <div class="kicker">CHAPTER</div>
+  <div class="num">02</div>
+  <div class="name">데이터 분석 계획</div>
+  <div class="cover-body">
+    <span class="tagbox">학습 방향</span>
+    <p>빅데이터 분석을 위한 방안을 수립하고 세부적인 작업을 계획합니다. 분석 과제 도출 방법으로 상향식 접근 방식과 하향식 접근 방식의 차이점을 확인하며 공부합니다. 빅데이터 분석 방법론의 각 단계와 작업들을 설명할 수 있어야 합니다. 데이터 확보 방안 및 분석 프로젝트 관리를 위한 요소들을 학습합니다.</p>
+    <div class="freq">
+      <span class="tagbox">출제빈도</span>
+      <div class="row"><b>SECTION 01</b><div class="bar"><i style="width:80%"></i><span>80%</span></div></div>
+      <div class="row"><b>SECTION 02</b><div class="bar"><i style="width:20%"></i><span>20%</span></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="page-mark">1-82</div>
+
+<h2 id="s1">SECTION 01 분석 방안 수립</h2>
+<p class="sec-meta"><span class="freq-tag">출제빈도 <b>상</b> | 중 | 하</span></p>
+<p class="tagline"><span class="tagbox">빈출 태그</span> 분석 기획 · 로드맵 · 하향식 · 상향식 · 프로토타이핑 · SDLC · KDD · CRISP–DM · SEMMA</p>
+
+<h3 id="s1-01"><span class="num">01</span> 데이터 분석(Data Analysis)<sup class="star">★</sup></h3>
+<p>데이터 분석은 대용량의 데이터 집합으로부터 유용한 정보를 찾고 결과를 예측하기 위해 목적에 따라 분석기술과 방법론을 기반으로 정형 · 비정형 대용량 데이터를 구축, 탐색, 분석하고 시각화를 수행하는 업무이다. <span class="cite">(국가직무능력표준, NCS)</span></p>
+<aside class="note"><b class="star-b">★ 데이터 분석</b><br>인사이트를 발굴하고 이를 공유하여 의사결정을 지원하는 것을 목표로 데이터를 정의, 수집, 변환, 모델링, 시각화하는 과정</aside>
+
+<h4 id="s1-01-1">1) 데이터 분석의 현황</h4>
+<ul class="dash">
+  <li>대다수의 기업들은 빅데이터가 갖고 있는 무한한 비즈니스 잠재력을 규명하는 초기 프로젝트에 머무르고 있다.</li>
+  <li>빅데이터를 활용하기 위한 장애물은 비용보다 데이터 분석을 수행하기 위한 분석적 방법과 성과에 대한 이해의 부족이다.</li>
+</ul>
+<aside class="note">빅데이터는 경제나 사회, 의료 등 전 영역에 걸쳐 가치 있는 정보를 제공할 수 있어 그 중요성이 더 크게 인식되고 있다.</aside>
+
+<h4 id="s1-01-2">2) 데이터 분석의 지향점</h4>
+<h5>① 전략적 통찰이 없는 데이터 분석 배제</h5>
+<ul class="dash">
+  <li>단순하게 데이터 분석을 자주, 많이 수행하는 것이 경쟁우위를 가져다주는 것은 아니다.</li>
+  <li>분석은 경쟁의 본질에 영향을 미치고 기업의 경쟁전략을 이끌어 가므로, 경쟁의 본질을 제대로 바라보지 못한 분석은 불필요한 결과를 만들어 낸다.</li>
+</ul>
+<h5>② 일차원적인 데이터 분석 지양</h5>
+<ul class="dash">
+  <li>대부분의 기업들은 업계 내부의 문제에만 중점을 두고 있으며, 주로 부서 단위로 관리되기에 전체 비즈니스 관점의 핵심적인 역할을 기대하기 어렵다.</li>
+</ul>
+<aside class="note">소규모 부서 단위로 진행되는 데이터 분석과 달리 좀 더 넓은 시야에서의 핵심적인 비즈니스 이슈에 대한 답을 찾는 데이터 분석이 필요하다.</aside>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:130px">산업군</th><th>데이터 분석 내용</th></tr>
+  <tr><td class="h">금융</td><td>신용점수 산정, 사기방지, 프로그램 트레이딩, 고객 수익성 분석</td></tr>
+  <tr><td class="h">소매</td><td>프로모션, 판매관리, 수요예측, 재고관리</td></tr>
+  <tr><td class="h">제조</td><td>공급사슬 최적화, 수요예측, 재고관리, 상품개발</td></tr>
+  <tr><td class="h">운송</td><td>일정관리, 노선배정, 수익관리</td></tr>
+  <tr><td class="h">병원</td><td>약품거래, 질병관리</td></tr>
+  <tr><td class="h">에너지</td><td>트레이딩, 공급, 수요예측</td></tr>
+  <tr><td class="h">정부</td><td>사기방지, 범죄방지</td></tr>
+  <tr><td class="h">온라인</td><td>고객추천, 사이트 설계</td></tr>
+  <tr><td class="h">기타</td><td>성과관리</td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-83</div>
+
+<h5>③ <mark>전략 도출을 위한 가치 기반 데이터 분석 지향</mark></h5>
+<ul class="dash">
+  <li>전략적 통찰력 창출에 중점을 두고, 데이터 분석의 활용 범위를 더 넓고 전략적으로 변화시켜야 한다.</li>
+  <li>사업 성과를 견인하는 요소들과 차별화를 꾀할 기회에 대해 전략적 인사이트를 주는 가치 기반 분석 단계로 나아가야 한다.</li>
+  <li>사업과 관련 트렌드에 대한 청사진을 그리고, 인구통계학적 변화나 사회경제적 트렌드 및 고객 니즈의 변화 등을 고려하여 분석을 수행한다.</li>
+  <li>가치 기반 데이터 분석을 통해 해당 사업의 중요한 기회를 발굴하고, 경영진의 지원을 얻어낼 수 있으며 이를 통해 강력한 모멘텀을 형성할 수 있다.</li>
+</ul>
+<aside class="note">기업의 핵심가치와 관련하여 전략적 통찰력을 가져다 주는 데이터 분석을 내재화하기는 쉽지 않다.</aside>
+
+<h4 id="s1-01-3">3) 데이터 분석에 대한 회의론</h4>
+<ul class="dash">
+  <li>솔루션을 도입한 후 어떻게 활용하여 가치를 창출할 수 있을지 다시 또 과제를 수행해야 하는 상황이 반복되며 고가의 솔루션을 방치하고 있다.</li>
+  <li>현재 소개되고 있는 빅데이터 분석 성공사례들의 대다수가 기존 데이터 분석 프로젝트를 재포장한 경우이다.</li>
+</ul>
+
+<h4 id="s1-01-4">4) 데이터 분석 시 고려사항</h4>
+<ul class="dash">
+  <li><mark>데이터 분석은 규모가 아니라 어떤 시각과 통찰을 얻을 수 있는가의 문제이다.</mark></li>
+  <li>비즈니스 핵심에 대해 객관적이고 종합적인 통찰을 가져다 줄 수 있는 데이터를 찾아야 한다.</li>
+  <li>전략과 비즈니스의 핵심 가치에 집중하고 관련된 분석 평가지표를 개발하여 시장과 고객 변화에 효과적으로 대응하는 것이 중요하다.</li>
+</ul>
+<aside class="note">빅데이터 분석도 기존의 데이터 분석과 마찬가지로 데이터에서 인사이트를 발굴하여 성과를 창출하는 것이 관건이다.</aside>
+
+<div class="check">
+<div class="check-head">개념 체크</div>
+<div class="q">
+  <div class="q-title">다음 중 데이터 분석에 대한 설명으로 옳은 것은?</div>
+  <ol class="circled q-opt">
+    <li>데이터 분석은 분석 방법론을 이용하여 여러 형태의 데이터를 목적에 맞게 분석만 하는 것이다.</li>
+    <li>일차원적인 데이터 분석이 기본이며, 탐색적 데이터 분석(EDA)를 통해 목표를 달성할 수 있다.</li>
+    <li>데이터를 활용하기 위한 장애물은 높은 금전적, 시간적 비용들이다.</li>
+    <li>데이터 분석은 규모가 아니라 어떤 시각과 통찰을 얻을 수 있는가의 문제이다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ④</div>
+  <ul class="dash sol">
+    <li>데이터 분석은 분석기술과 방법론을 기반으로 여러 형태의 데이터를 구축, 탐색, 분석 및 시각화까지 수행하는 것이다.</li>
+    <li>일차원적인 데이터 분석은 지양하여야 하며, EDA 또한 전략적 통찰을 기반으로 진행되어야 한다.</li>
+    <li>빅데이터를 활용하기 위한 장애물은 비용보다 데이터 분석을 수행하기 위한 분석적 방법과 성과에 대한 이해의 부족이다.</li>
+  </ul>
+</div>
+</div>
+
+<div class="page-mark">1-84</div>
+
+<h3 id="s1-02"><span class="num">02</span> 데이터 분석 기획</h3>
+<p>분석 기획은 실제 분석을 수행하기에 앞서 분석을 수행할 과제의 정의 및 의도했던 결과를 도출할 수 있도록 이를 적절하게 관리할 수 있는 방안을 사전에 계획하는 작업이다.</p>
+<ul class="dash">
+  <li>어떠한 목표(What)를 달성하기 위해(Why) 어떠한 데이터를 가지고 어떤 방식으로(How) 수행할 것인가에 대한 일련의 계획을 수립한다.</li>
+</ul>
+<aside class="note">분석 기획은 분석 과제 및 프로젝트를 직접 수행하는 것은 아니지만, 성공적인 분석 결과를 도출하기 위한 중요한 사전 작업이다.</aside>
+
+<h4 id="s1-02-1">1) 분석 기획의 특징</h4>
+<h5>① 분석 대상과 방법에 따른 분류</h5>
+<ul class="dash">
+  <li>분석 주제와 방법에 대한 특성상 4가지 유형을 넘나들며 분석을 하고 결과를 도출하는 과정을 반복한다.</li>
+</ul>
+<figure><img src="figs/fig_1-84_01.png" alt="데이터 분석 주제 유형 — 분석의 대상(What) Known/Un-Known × 분석의 방식(How) Known/Un-Known: Optimization·Insight·Solution·Discovery"></figure>
+<h5>② 목표 시점에 따른 분류</h5>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:190px">단기적 접근 방식<br>(<mark>과제 중심적</mark> 접근)</td><td><ul class="dash"><li>당면한 과제를 빠르게 해결하기 위한 목적이다.</li><li>명확한 해결을 위해 Quick–Win 방식으로 분석한다.</li></ul></td></tr>
+  <tr><td class="h">중장기적 접근 방식<br>(<mark>마스터 플랜</mark> 접근)</td><td><ul class="dash"><li>지속적인 분석 문화를 내재화하기 위한 목적이다.</li><li>전사적으로 장기적 관점에서 과제를 도출하여 수행한다.</li></ul></td></tr>
+  <tr><td class="h">혼합 방식<br>(분석 기획 시 적합)</td><td><ul class="dash"><li>마스터 플랜을 수립하고 장기적 관점에서 접근하는 것이 바람직하다.</li><li>분석의 가치를 증명하고 이해관계자들의 동의를 얻기 위해 과제를 빠르게 해결하여 그 가치를 조기에 체험시킨다.</li></ul></td></tr>
+</table>
+</div>
+
+<h4 id="s1-02-2">2) 분석 기획 시 필요역량</h4>
+<h5>① 분석 기획을 위한 기본적인 소양</h5>
+<ul class="dash">
+  <li>분석 기획은 도메인 지식과 정보기술, 수학 및 통계학적 지식이라는 3가지 역량에 대한 균형 잡힌 시각을 갖고서 분석의 방향성과 계획을 수립하는 것이다.</li>
+</ul>
+<h5>② 프로젝트 관리 역량과 리더십</h5>
+<ul class="dash">
+  <li>분석 기획 시 기본적인 3가지 소양과 함께 프로젝트 관리 역량과 분석 프로젝트를 잘 이끌어 갈 리더십이 중요하다.</li>
+</ul>
+<aside class="note">
+  <b>분석 기획의 절차</b>
+  <div class="procbox">
+    비즈니스 이해 및 범위 설정<br>↓<br>프로젝트 정의<br>↓<br>프로젝트 수행 계획 수립<br>↓<br>프로젝트 위험 계획 수립
+  </div>
+</aside>
+
+<div class="page-mark">1-85</div>
+
+<figure><img src="figs/fig_1-85_01.png" alt="분석 기획 필요 역량 — Math &amp; Statistics · Information Technology · Domain Knowledge 벤다이어그램과 Project Management·IT·Communication·Leadership·Business·Analytics 도식"></figure>
+
+<h4 id="s1-02-3">3) 분석 기획 시 고려사항</h4>
+<h5>① 사용 가능한 데이터 확인</h5>
+<ul class="dash">
+  <li>데이터 확보 가능 여부, 데이터의 유형 등을 미리 확인하여야 한다.
+    <ul class="dash2"><li>데이터의 유형에 따라 적용 가능한 솔루션이나 분석 방법론이 달라진다.</li></ul></li>
+</ul>
+<aside class="note">데이터는 형태에 따라 정형, 비정형, 반정형 데이터로 분류된다.</aside>
+<h5>② 적합한 사례 탐색</h5>
+<ul class="dash">
+  <li>기존에 잘 구현되어 활용되고 있는 유사 분석 시나리오나 솔루션이 있다면 이를 최대한 활용하는 것이 유리하다.
+    <ul class="dash2"><li>분석 결과를 활용할 사용자의 측면에서 공감대를 얻을 수 있으며, 분석 수행이 원활하게 될 수 있도록 도와준다.</li></ul></li>
+</ul>
+<h5>③ 분석 수행 시 발생 가능한 요소 고려</h5>
+<ul class="dash">
+  <li>분석 결과의 정확도를 높이기 위하여 기간과 투입 자원 증가가 불가피하며, 이로 인한 비용 상승을 충분히 고려해야 한다.</li>
+  <li>사용자가 쉽게 이해하고 활용할 수 있도록 시각화 등을 고려하여야 한다.</li>
+  <li>분석 결과를 실제 환경에서도 성능에 문제없이 적용할 수 있도록 충분히 고려하여야 한다.</li>
+  <li>일회성 분석으로 그치지 않고 조직의 역량으로 내재화될 수 있도록 계속적인 교육과 활용방안 등의 변화 관리방안을 수립하여야 한다.</li>
+</ul>
+<div class="tbl-cap">데이터 분석 유형</div>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:210px">설명 분석<br>(Descriptive Analysis)</td><td>가장 기본이 되는 분석으로 주어진 데이터를 요약 또는 집계하여 결과를 도출한다. 과거 또는 현재 발생한 사실 그 자체를 설명한다.</td></tr>
+  <tr><td class="h">예측 분석<br>(Predictive Analysis)</td><td>미래의 불확실한 사실을 사전에 예측하거나 알려지지 않은 결과의 가능성을 파악하기 위하여 사용하는 분석 방법이다.</td></tr>
+  <tr><td class="h">진단 분석<br>(Diagnostic Analysis)</td><td>데이터 간의 인과 관계 또는 상관 관계를 파악하여 특정 결과가 발생한 원인을 밝히기 위해 분석을 수행한다.</td></tr>
+  <tr><td class="h">처방 분석<br>(Prescriptive Analysis)</td><td>예측되는 상황을 위해 무엇을 하면 좋을 지 대안을 제시한다. 대안 도출과 의사 결정은 물론 일부 실행까지 진행하는 분석방법이다.</td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-86</div>
+
+<div class="check">
+<div class="check-head">개념 체크</div>
+<div class="q">
+  <div class="q-title">다음 중 데이터 분석 기획에 대한 설명으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>데이터 분석을 위한 방법은 준비되어 있으나, 무엇을 분석해야 할지 모르는 상황에서 접근하는 영역을 Insight라 한다.</li>
+    <li>시대의 흐름을 빠르게 따라가기 위해 과제 중심적 접근 방식을 지향하여야 하며, 전통적 접근방식인 마스터 플랜 접근 방식은 지양하여야 한다.</li>
+    <li>어떠한 목표(What)를 달성하기 위해(Why) 어떠한 데이터를 가지고 어떤 방식으로(How) 수행할 것인가에 대한 일련의 계획을 수립한다.</li>
+    <li>분석 결과의 정확도를 높이기 위하여 기간과 투입 자원 증가가 불가피하며, 이로 인한 비용 상승을 충분히 고려해야 한다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ②</div>
+  <ul class="dash sol">
+    <li>과제 중심적 접근 방식은 단기적 접근 방식으로, 주로 당면한 과제를 빠르게 해결하기 위해 사용되며, 지속적인 분석 문화를 내재화하기 위해서는 중장기적 접근 방식인 마스터 플랜 접근 방식을 사용하여야 한다.</li>
+  </ul>
+</div>
+</div>
+
+<h3 id="s1-03"><span class="num">03</span> 분석 마스터 플랜과 로드맵 설정</h3>
+
+<h4 id="s1-03-1">1) 분석 마스터 플랜</h4>
+<p>분석 과제를 수행함에 있어 그 과제의 목적이나 목표에 따라 전체적인 방향성을 제시하는 기본계획이다.</p>
+<h5>① 분석 마스터 플랜 수립 절차</h5>
+<ul class="dash">
+  <li>분석 마스터 플랜 시 일반적인 정보전략계획 방법론을 활용할 수 있다. 다만 데이터 분석 기획의 특성을 고려하여 수행하여야 한다.</li>
+  <li>과제 도출 방법을 활용하여 데이터 분석 과제들을 빠짐없이 정의한다.</li>
+  <li>분석 과제의 중요도와 난이도 등을 고려하여 우선순위를 결정한다.</li>
+  <li>단기와 중장기로 나누어 분석 로드맵을 수립한다.</li>
+</ul>
+<h5>② 정보전략계획(Information Strategy Planning, ISP)</h5>
+<ul class="dash">
+  <li>정보기술 및 시스템을 전략적으로 활용하기 위한 중장기 마스터 플랜을 수립하는 절차이다.</li>
+  <li>조직 내 · 외부의 환경을 충분히 분석하여 새로운 기회나 문제점을 도출한다.</li>
+  <li>사용자의 요구사항을 확인하여 시스템 구축 우선순위를 결정한다.</li>
+</ul>
+
+<h4 id="s1-03-2">2) 분석 과제 우선순위 평가기준</h4>
+<h5>① IT 프로젝트의 과제 우선순위 평가기준</h5>
+<ul class="dash">
+  <li>전략적 중요도, 실행 용이성 등 기업에서 고려하는 중요 가치 기준에 따라 다양한 관점으로 과제 우선순위 기준을 정의하여 평가한다.</li>
+</ul>
+<aside class="note">
+  <b>우선순위 고려요소</b><br>전략적 중요도, 비즈니스 성과, ROI, 실행 용이성
+  <hr><b>적용범위/방식 고려요소</b><br>업무내재화 적용 수준, 분석데이터 적용 수준, 기술 적용 수준
+</aside>
+
+<div class="page-mark">1-87</div>
+
+<div class="table-scroll">
+<table>
+  <tr><th style="width:120px">평가관점</th><th style="width:130px">평가요소</th><th>내용</th></tr>
+  <tr><td class="h" rowspan="2">전략적<br>중요도</td><td class="h">전략적 필요성</td><td><ul class="dash"><li>비즈니스 목표나 업무에 얼마나 밀접하게 연관되어 있는지 측정한다.</li><li>발생 가능한 이슈가 해결되지 않았을 때의 위험이나 손실의 정도를 측정한다.</li></ul></td></tr>
+  <tr><td class="h">시급성</td><td><ul class="dash"><li>사용자 요구사항 반영이나 업무능률을 향상시키기 위해 얼마나 시급하게 수행되어야 하는지 측정한다.</li><li>향후 경쟁우위를 확보하기 위한 방안으로서 얼마나 중요한지 측정한다.</li></ul></td></tr>
+  <tr><td class="h" rowspan="2">실행<br>용이성</td><td class="h">투자 용이성</td><td><ul class="dash"><li>과제 수행을 위한 시간이나 인력을 투입하는데 얼마나 용이한지 측정한다.</li><li>과제를 수행하는 데 필요한 비용이나 투자예산의 확보 가능성 정도를 측정한다.</li></ul></td></tr>
+  <tr><td class="h">기술 용이성</td><td><ul class="dash"><li>과제에 적용할 기술의 안정성 검증 정도를 측정한다.</li><li>과제 수행의 결과로 얻게 될 시스템 및 하드웨어의 유지보수가 얼마나 용이한지 측정한다.</li><li>과제 수행 시 개발 스킬의 성숙도와 신기술 적용성 정도를 측정한다.</li></ul></td></tr>
+</table>
+</div>
+<h5>② 데이터 분석 프로젝트의 우선순위 평가기준</h5>
+<ul class="dash">
+  <li>기존 IT 프로젝트와는 다른 기준으로 우선순위 평가 기준을 정의하여야 하며, 과제를 수행하고자 하는 기업이 처한 상황에 따라 그 기준이 달라질 수 있다.</li>
+</ul>
+<aside class="note"><b>ROI(Return Of Investment)</b><br>투자 수익률, 가장 널리 사용되는 경영성과 측정기준 중 하나<br>ROI = Return / Investment</aside>
+<div class="tbl-cap">빅데이터의 특징을 고려한 분석 ROI 요소 4V</div>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:150px">ROI 요소</th><th style="width:130px">특징</th><th>내용</th><th style="width:56px"></th><th style="width:56px"></th></tr>
+  <tr><td class="h" rowspan="3">투자비용 요소<br>(Investment)</td><td class="h">데이터 크기<br>(Volume)</td><td><ul class="dash"><li>데이터 규모</li><li>데이터 양</li></ul></td><td class="h" rowspan="3">3V</td><td class="h" rowspan="4">4V</td></tr>
+  <tr><td class="h">데이터 형태<br>(Variety)</td><td><ul class="dash"><li>데이터 종류</li><li>데이터 유형</li></ul></td></tr>
+  <tr><td class="h">데이터 속도<br>(Velocity)</td><td><ul class="dash"><li>데이터 생성속도</li><li>데이터 처리속도</li></ul></td></tr>
+  <tr><td class="h">비즈니스 효과<br>(Return)</td><td class="h">새로운 가치<br>(Value)</td><td><ul class="dash"><li>분석 결과 활용을 통한 획득 가치</li><li>비즈니스 실행을 통한 획득 가치</li></ul></td></tr>
+</table>
+</div>
+<h5>③ 분석 ROI 요소를 고려한 과제 우선순위 평가기준</h5>
+<aside class="note">
+  <b>KPI</b><br>핵심성과지표, Key Performance Indicator
+  <hr><b>PoC(Proof of Concept)</b><br>개념증명, 원리 또는 실현 가능성을 입증하기 위하여 어떤 방법이나 아이디어에 대한 실현성을 보여주는 일
+</aside>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:110px">평가관점</th><th style="width:160px">평가요소</th><th>내용</th><th style="width:110px">ROI 요소</th></tr>
+  <tr><td class="h">시급성<br>(중요)</td><td><ul class="dash"><li>전략적 중요도</li><li>목표가치(KPI)</li></ul></td><td><ul class="dash"><li>현재의 관점에 전략적 가치를 둘 것인지 판단한다.</li><li>중장기적 관점에 전략적인 가치를 둘 것인지 판단한다.</li></ul></td><td class="h">비즈니스<br>효과</td></tr>
+  <tr><td class="h">난이도</td><td><ul class="dash"><li>데이터 획득 비용</li><li>데이터 가공 비용</li><li>데이터 저장 비용</li><li>분석 적용 비용</li><li>분석 수준</li></ul></td><td><ul class="dash"><li>비용과 범위 측면에서 적용하기 쉬운 과제인지 판단한다.</li><li>과제 범위를 PoC 또는 처음부터 크게 할 것인지 판단한다.</li><li>내부 데이터를 활용하고 외부 데이터까지 확대할지 판단한다.</li></ul></td><td class="h">투자비용<br>요소</td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-88</div>
+
+<ul class="dash">
+  <li>조직의 상황에 따라 난이도를 조율한다.
+    <ul class="dash2">
+      <li>분석 준비도와 성숙도 진단 결과를 활용해 조직의 분석 수준을 파악한다.</li>
+      <li>파악된 수준을 기초로 하여 적용 범위와 수행 방법별 난이도를 조정한다.</li>
+    </ul></li>
+</ul>
+
+<h4 id="s1-03-3">3) 분석 과제 우선순위 선정 및 조정</h4>
+<h5>① 포트폴리오 사분면 분석 기법 활용 : 난이도와 시급성을 기준으로 분석 과제 유형을 분류하여 4분면에 배치한다.</h5>
+<figure><img src="figs/fig_1-88_01.png" alt="포트폴리오 사분면 — 세로축 난이도(Difficult/Easy), 가로축 시급성(현재/미래), I·II·III·IV 영역"></figure>
+<aside class="note">왼쪽 상단이 1사분면이다.</aside>
+<h5>② 매트릭스 내 분석 과제 우선순위 선정</h5>
+<ul class="dash">
+  <li>가장 우선적으로 분석 과제 적용이 필요한 영역은 3사분면(III 영역)이다.</li>
+  <li>우선순위가 낮은 영역은 2사분면(II 영역)이다.</li>
+  <li>적용 우선순위 기준을 시급성에 둘 경우 순서 : III → IV → I → II 영역</li>
+  <li>적용 우선순위 기준을 난이도에 둘 경우 순서 : III → I → IV → II 영역</li>
+</ul>
+<aside class="note">
+  Investment는 난이도를 결정하고, Return은 시급성을 결정한다.
+  <hr>시급성은 전략적 가치를 어느 시점에 둘 것인지 의미하므로, 난이도를 조절하지 않는다면 그 다음 가치 창출이 기대되는 III → IV 순으로 우선순위가 된다.
+  <hr>난이도는 현재 시점에서 적용 가능한지를 의미하므로, 어려운 단기 과제의 난이도를 조절하여 III → I 순으로 우선순위가 된다.
+</aside>
+<h5>③ 매트릭스 내 분석 과제 우선순위 조정</h5>
+<ul class="dash">
+  <li>시급성이 높고 난이도가 높은 1사분면(I 영역)은 의사결정을 통해 적용 우선순위를 조정할 수 있다.</li>
+  <li>데이터 양과 특성, 분석 범위 등에 따라 난이도를 조율하여 적용 우선순위를 조정할 수 있다.
+    <div class="ex"><span class="ex-tag">예</span> 난이도를 조율하여 1사분면에서 3사분면으로 이동</div></li>
+</ul>
+<h5>④ 분석 과제 우선순위 조정 시 고려사항</h5>
+<ul class="dash">
+  <li>기술적 요소에 따른 적용 우선순위 조정
+    <ul class="dash2">
+      <li>대용량 데이터 분석은 데이터 저장, 처리, 분석을 위한 새로운 기술 요소들로 인하여 운영중인 시스템에 영향을 줄 수 있다.</li>
+      <li>기존 시스템에 미치는 영향을 최소화하여 적용하거나 운영중인 시스템과 별도로 시행하여 난이도 조율을 통한 우선순위를 조정할 수 있다.</li>
+    </ul></li>
+  <li>분석 범위에 따른 우선순위 조정
+    <ul class="dash2">
+      <li>분석 과제의 전체 범위를 한 번에 일괄적으로 적용하여 추진할 수 있다.</li>
+      <li>분석 과제 중 일부만 PoC로 진행하고 평가 후에 범위를 확대할 수 있다.</li>
+    </ul></li>
+</ul>
+
+<div class="page-mark">1-89</div>
+
+<h4 id="s1-03-4">4) 분석 로드맵 설정</h4>
+<p>분석 로드맵은 마스터 플랜에서 정의한 목표를 기반으로 분석 과제를 수행하기 위해 필요한 기준 등을 담아 만든 종합적인 계획이다.</p>
+<h5>① 분석 로드맵 수립 절차</h5>
+<ul class="dash">
+  <li>최종적인 실행 우선순위를 결정하여 단계적 구현 로드맵을 수립한다.</li>
+  <li>단계별로 추진하고자 하는 목표를 명확하게 정의한다.</li>
+  <li>추진 과제별 선행 관계를 고려하여 단계별 추진 내용을 정렬한다.</li>
+</ul>
+<figure><img src="figs/fig_1-89_01.png" alt="분석 로드맵 — 1단계 데이터 분석체계 도입, 2단계 데이터 분석 유효성 검증, 3단계 데이터 분석 확산 및 고도화와 단계별 추진목표 및 추진과제 0~3"></figure>
+<aside class="note"><b>PI(Process Innovation)</b><br>기업가치를 극대화하는 경영개선 업무</aside>
+<h5>② 세부적인 일정계획 수립</h5>
+<ul class="dash">
+  <li>반복적인 정련과정을 통해 프로젝트의 완성도를 높여 나간다.</li>
+  <li>데이터 수집 및 확보와 분석 데이터 준비 단계는 순차적으로 진행하고 모델링 단계는 반복적으로 수행한다.</li>
+  <li>주로 순차형과 반복형을 혼합하여 사용한다.</li>
+</ul>
+<figure><img src="figs/fig_1-89_02.png" alt="기존 구현 방식(설계→구현→테스트 순차적 구현, Deploy DW/BI System)과 Analytics 구현방식(분석 데이터 수집/확보→분석 데이터 준비→분석모델 설계·적용·평가 반복, Refine Analytics Model, Deploy Analytics Model)"></figure>
+
+<div class="page-mark">1-90</div>
+
+<div class="check">
+<div class="check-head">개념 체크</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">1</span> 다음 중 분석 로드맵 설정에 대한 설명으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>분석 로드맵은 마스터 플랜에서 정의한 목표를 기반으로 분석 과제를 수행하기 위해 필요한 기준 등을 담아 만든 종합적인 계획이다.</li>
+    <li>단계별로 추진하고자 하는 목표를 명확하게 정의하고, 추진 과제별 선행 관계를 고려하여 단계별 추진 내용을 정렬한다.</li>
+    <li>데이터 수집 및 확보와 분석 데이터 준비 단계는 순차적으로 진행하고 모델링 단계는 반복적으로 수행하는 순차형과 반복형을 혼합하여 사용한다.</li>
+    <li>분석 과제를 수행함에 있어 그 과제의 목적이나 목표에 따라 전체적인 방향성을 제시하는 기본계획이다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ④</div>
+  <ul class="dash sol">
+    <li>분석 과제를 수행함에 있어 그 과제의 목적이나 목표에 따라 전체적인 방향성을 제시하는 기본계획은 분석 마스터 플랜의 정의이다.</li>
+  </ul>
+</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">2</span> 다음 중 분석 과제 우선순위 선정과 조정에 대한 설명으로 옳은 것은?</div>
+  <ol class="circled q-opt">
+    <li>매트릭스 기반 분석 과제 우선순위 선정 시, 분석이 쉽지 않지만 시급하게 진행되어야 하는 경우 1사분면에 위치시킨다.</li>
+    <li>데이터 양과 특성, 분석 범위 등에 따라 난이도를 조율하여 적용 우선순위를 3사분면에서 1사분면으로 이동할 수 있다.</li>
+    <li>대용량 데이터 분석은 데이터 저장, 처리, 분석을 위한 새로운 기술 요소들로 기존 시스템과는 무관하다.</li>
+    <li>분석 과제의 전체 범위를 한 번에 일괄적으로 적용하기는 어려우며, 일부만 PoC로 진행하고 평가 후에 범위를 확대할 수 있다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ①</div>
+  <ul class="dash sol">
+    <li>시급성이 높고 난이도가 높은 영역은 1사분면이다.</li>
+    <li>난이도를 조율하여 적용 우선순위를 1사분면에서 3사분면으로 이동할 수 있다.</li>
+    <li>대용량 데이터 분석은 데이터 저장, 처리, 분석을 위한 새로운 기술 요소들로 인하여 운영중인 시스템에 영향을 줄 수 있다.</li>
+    <li>분석 과제의 전체 범위를 한 번에 일괄적으로 적용하여 추진할 수도 있고, 분석 과제 중 일부만 PoC로 진행하고 평가 후에 범위를 확대할 수 있다.</li>
+  </ul>
+</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">3</span> 다음 중 분석 과제 우선순위 평가기준에 대한 설명으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>과제를 수행하고자 하는 기업이 처한 상황에 따라 그 기준이 달라질 수 있다.</li>
+    <li>투자비용 요소로서 데이터 크기, 형태, 속도가 있으며, 비즈니스 효과로 새로운 가치를 얻을 수 있다.</li>
+    <li>시급성을 충족시키기 위해 데이터 가공 비용과 분석 수준 등을 낮출 수 있다.</li>
+    <li>난이도를 조절하기 위하여 데이터 획득 비용과 분석 수준 등을 낮출 수 있다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ③</div>
+  <ul class="dash sol">
+    <li>시급성의 평가요소는 전략적 중요도와 목표가치이며, 데이터 획득 비용과 가공 및 저장 비용, 분석 적용 비용, 분석 수준은 난이도의 평가요소이다.</li>
+  </ul>
+</div>
+</div>
+
+<div class="page-mark">1-91</div>
+
+<h3 id="s1-04"><span class="num">04</span> 분석 문제 정의</h3>
+
+<h4 id="s1-04-1">1) 분석 문제 정의 개요</h4>
+<h5>① 분석 과제 도출</h5>
+<p>분석 과제는 해결해야 할 다양한 문제들을 데이터 분석 문제로 변환하여 분석 프로젝트로 수행할 수 있는 과제정의서 형태로 도출한다.</p>
+<h5>② 대표적인 분석 과제 도출 방법</h5>
+<p><mark>문제가 먼저 주어지고 이에 대한 해법을 찾아가는 하향식 접근 방식과 데이터를 기반으로 문제의 재정의 및 해결방안을 탐색하는 상향식 접근 방식</mark>이 있다.</p>
+<figure><img src="figs/fig_1-91_01.png" alt="분석의 대상(What)과 분석의 방식(How)에 따른 과제 도출 방식 — Optimization·Insight·Solution·Discovery와 Top-Down Approach(Problem Solving)·Bottom-Up Approach(Problem Creation)"></figure>
+<h5>③ 최적의 의사결정을 위한 혼합방식</h5>
+<ul class="dash">
+  <li>동적인 환경에서 발산과 수렴 단계를 반복적으로 수행하며 상호 보완을 통해 분석의 가치를 극대화할 수 있다.</li>
+  <li>상향식 접근 방식의 발산(Diverge) 단계 : 가능한 옵션을 도출</li>
+  <li>하향식 접근 방식의 수렴(Converge) 단계 : 도출된 옵션을 분석하고 검증</li>
+</ul>
+<figure><img src="figs/fig_1-91_02.png" alt="Diverge → Converge → Diverge → Converge 반복 도식"></figure>
+<aside class="note">신상품 개발이나 전략 수립 등 중요한 의사결정이 필요할 때 주로 사용한다.</aside>
+<h5>④ 분석 과제 정의</h5>
+<ul class="dash">
+  <li>분석 과제 정의서는 다양한 방식으로 도출한 분석 과제들을 명확하게 정의하여 상세하게 작성한다.
+    <ul class="dash2">
+      <li>필요한 데이터, 데이터 수집과 분석 난이도, 분석 방법과 수행 주기, 상세 분석 과정, 분석 결과에 대한 검증 책임자 등을 포함한다.</li>
+      <li>분석 데이터는 조직 내부뿐만 아니라 외부 데이터도 포함하며, 데이터 유형이나 종류를 가리지 않고 범위를 확장하여 고려한다.</li>
+    </ul></li>
+  <li>분석 과제 정의서는 분석 프로젝트를 수행하는 이해관계자가 프로젝트의 방향을 설정하고 성공 여부를 판단할 수 있는 자료로 사용된다.
+    <ul class="dash2">
+      <li>분석 과제 정의서는 향후 프로젝트 수행계획의 입력물로 사용된다.</li>
+    </ul></li>
+</ul>
+
+<div class="page-mark">1-92</div>
+
+<h4 id="s1-04-2">2) 하향식 접근 방식(Top Down Approach)</h4>
+<p>하향식 접근 방식은 문제가 주어지고 이에 대한 해법을 찾기 위하여 각 과정이 체계적으로 단계화되어 수행하는 방식이다.</p>
+<aside class="note"><b>하향식 접근 방식</b><br>전통적 분석 과제 발굴 방식이다. 단, 근래의 문제들은 변화가 심하여 문제를 사전에 정확하게 정의하기 어렵다.</aside>
+<figure><img src="figs/fig_1-92_01.png" alt="하향식 접근 방식 — Problem Discovery(비즈니스 모델 기반/외부사례 기반 문제 탐색) → Problem Definition(데이터 분석 문제 변환) → Solution Search(수행 옵션 도출) → Feasibility Study(타당성 평가 → 과제 선정)"></figure>
+<div class="tbl-cap">하향식 접근 방식의 구성</div>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:150px">단계</th><th>내용</th></tr>
+  <tr><td class="h">문제 탐색</td><td>현황 분석, 인식된 문제점, 전략에서 기회나 문제를 탐색한다.</td></tr>
+  <tr><td class="h">문제 정의</td><td>해당 현실 문제를 데이터 관점의 문제로 정의한다.</td></tr>
+  <tr><td class="h">해결방안 탐색</td><td>데이터 관점의 문제를 해결하기 위한 방안을 탐색한다.</td></tr>
+  <tr><td class="h">타당성 평가</td><td>데이터 분석의 타당성을 평가한다.</td></tr>
+</table>
+</div>
+<h5>① 문제 탐색(Problem Discovery) 단계</h5>
+<ul class="dash">
+  <li>개별적으로 인지하고 있는 문제를 단순하게 나열하는 것보다 전체적인 관점의 기준 모델을 활용하여 누락 없이 문제를 도출하고 식별해야 한다.</li>
+  <li>현재 데이터의 소유 여부와 데이터가 없는 경우 해결방안 등에 대한 세부적인 내용보다 문제를 해결하여 발생하는 가치에 중심을 두어야 한다.</li>
+</ul>
+<aside class="note">전체적인 관점의 기준 모델에는 기업 내 · 외부 환경을 포괄하는 비즈니스 모델과 외부 참조모델이 있다.</aside>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:190px">구분</th><th>내용</th></tr>
+  <tr><td class="h">비즈니스 모델 기반<br>문제 탐색</td><td><ul class="dash"><li>해당 기업이 사업 모델을 도식화한 비즈니스 모델 캔버스의 블록을 단순화하여 기회를 추가로 도출한다.</li><li>새로운 관점의 접근으로 새로운 유형의 분석 기회와 주제를 발굴한다.</li></ul></td></tr>
+  <tr><td class="h">외부 참조 모델 기반<br>문제 탐색</td><td><ul class="dash">
+    <li>문제와 과제를 도출하는 기준 모델로, 유사 또는 동종의 환경에서 기존에 수행한 분석 사례를 벤치마킹한다.</li>
+    <li>제공되는 산업별, 업무 서비스별 분석테마 후보 그룹을 통해 빠르고 쉬운(Quick &amp; Easy) 방식으로 접근한다.</li>
+    <li>필요한 분석 기회에 대한 아이디어 획득 및 적용할 분석테마 후보들을 브레인스토밍으로 빠르게 도출한다.</li>
+    <li>인사이트 도출 및 업무 활용 사례들을 발굴하여 자사의 업종과 업무 서비스에 적용할 수 있다.</li>
+    <li>후보 그룹을 통해 벤치마킹할 대상 분석 기회를 고려하면 좀 더 빠르고 쉽게 분석기회 도출이 가능하다.</li>
+    <li>평소에 가치 발굴 사례들을 정리해두면 과제 발굴과 탐색 시 빠르고 의미 있는 분석 기회 도출이 가능하다.</li>
+    <li>타 업무 및 분야의 데이터 분석 활용 사례를 정리해 둔다면 새로운 주제 탐색 시 용이하다.</li>
+  </ul></td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-93</div>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:190px">분석 유스케이스<br>정의</td><td><ul class="dash"><li>도출한 분석 기회들을 구체적인 과제로 만들기 전에 분석 유스케이스로 정의하여야 한다.</li><li>문제에 대한 상세 설명과 기대효과를 명시하여 향후 데이터 분석 문제로의 전환 및 적합성 평가에 활용한다.</li></ul></td></tr>
+</table>
+</div>
+<h5>② 문제 정의(Problem Definition) 단계</h5>
+<figure><img src="figs/fig_1-93_01.png" alt="비즈니스 문제(고객 이탈의 증대·예상 못한 설비 장애로 판매량 감소·기존 판매 정보 기반으로 판단 시 재고 관리 및 적정 가격 판매의 어려움)를 분석 문제로 변환"></figure>
+<ul class="dash">
+  <li>식별된 비즈니스 문제를 데이터적인 문제로 변환하여 정의한다.</li>
+  <li>필요한 데이터와 기법을 정의하기 위한 데이터 분석 문제로 변환한다.</li>
+  <li>분석 수행자 외 문제 해결 시 효용을 얻을 최종 사용자 관점에서 정의한다.</li>
+  <li>분석 문제가 잘 정의되면 필요한 데이터의 정의나 기법 발굴 시 용이하므로, 분석의 관점으로 가능한 정확하게 문제를 재정의하여야 한다.</li>
+</ul>
+<h5>③ 해결방안 탐색(Solution Search) 단계</h5>
+<ul class="dash">
+  <li>정의된 데이터 분석 문제를 해결하기 위한 다양한 방안들을 모색한다.
+    <ul class="dash2"><li>분석 기법 및 시스템과 분석 역량 보유 여부에 따라 세분화가 가능하다.</li></ul></li>
+</ul>
+<figure><img src="figs/fig_1-93_02.png" alt="해결방안 탐색 매트릭스 — 분석 역량(Who) 확보/미확보 × 분석기법 및 시스템(How) 기존 시스템/신규 도입: 기존 시스템 개선 활용·교육 및 채용을 통한 역량 확보·시스템 고도화·전문 업체 Sourcing"></figure>
+<h5>④ 타당성 평가(Feasibility Study) 단계</h5>
+<ul class="dash">
+  <li>도출된 분석 문제, 가설에 대한 대안을 과제화하기 위한 타당성을 분석한다.</li>
+  <li>도출된 여러 대안 중 평가 과정을 거쳐 가장 우월한 대안을 선택한다.</li>
+</ul>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:150px">경제적<br>타당성</td><td><ul class="dash"><li>비용 대비 편익 분석 관점의 접근이 필요하다.
+    <ul class="dash2"><li>비용 항목은 데이터, 시스템, 인력, 유지보수 등 분석 비용이다.</li><li>편익은 분석 결과를 적용하여 발생 가능한 실질적 비용 절감, 추가적 매출과 수익 등의 경제적 가치로 산출한다.</li></ul></li></ul></td></tr>
+  <tr><td class="h">데이터 및<br>기술적 타당성</td><td><ul class="dash"><li>데이터 분석 시 데이터, 분석 시스템 환경 분석역량이 필요하다.</li><li>기술적 타당성 분석 시 역량 확보 방안의 사전수립이 필요하다.</li><li>비즈니스 분석가, 데이터 분석가, 시스템 엔지니어 등과 협업한다.</li></ul></td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-94</div>
+
+<h4 id="s1-04-3">3) 하향식 접근 방식의 문제 탐색 방법</h4>
+<h5>① 비즈니스 모델 캔버스를 활용한 과제 발굴</h5>
+<ul class="dash">
+  <li>해당 기업의 사업 모델을 도식화한 비즈니스 모델 캔버스의 9가지 블록을 단순화하여 문제 발굴을 3개의 단위로, 이를 관리하는 2개의 영역으로 도출한다.</li>
+</ul>
+<aside class="note"><b>비즈니스 모델 캔버스</b><br>새로운 사업 모형을 개발하고 기존의 모형을 문서화하기 위한 경영전략 템플릿</aside>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:210px">업무 단위<br>(Operation)</td><td>제품이나 서비스를 생산하기 위한 내부 프로세스 및 주요 자원과 관련하여 주제를 도출한다.</td></tr>
+  <tr><td class="h">제품 단위<br>(Product)</td><td>생산 및 제공하는 제품이나 서비스를 개선하기 위한 관련 주제들을 도출한다.</td></tr>
+  <tr><td class="h">고객 단위<br>(Customer)</td><td>제품이나 서비스를 제공받는 사용자나 고객 또는 이를 제공하는 채널 관점에서 관련 주제들을 도출한다.</td></tr>
+  <tr><td class="h">규제와 감사 영역<br>(Audit &amp; Regulation)</td><td>제품 생산과 전달 과정에서 발생하는 규제나 보안 관점에서 관련 주제들을 도출한다.</td></tr>
+  <tr><td class="h">지원 인프라 영역<br>(IT &amp; Human Resource)</td><td>분석을 수행하는 시스템 영역과 이를 운영 및 관리하는 인력의 관점에서 관련 주제들을 도출한다.</td></tr>
+</table>
+</div>
+<figure><img src="figs/fig_1-94_01.png" alt="비즈니스 모델 캔버스 — 핵심 파트너십·핵심 활동·핵심 자원·가치 제안·고객관계·채널·고객 세그먼트·비용 구조·수익원을 규제&amp;감사·업무·제품·고객·지원 인프라로 단순화"></figure>
+<aside class="note">캔버스를 이용하여 각 사업 요소들의 유기적 연결에 대해 이해한다.</aside>
+<h5>② 분석 기회 발굴의 범위 확장</h5>
+<ul class="dash">
+  <li>현재 사업 방식이나 비즈니스에 대한 문제 해결은 최적화 및 단기 과제 형식으로 도출 가능하다.</li>
+  <li>새로운 문제의 발굴이나 장기적인 접근을 위해서는 환경과 경쟁 구도의 변화 및 역량의 재해석을 통한 혁신 관점의 분석 기회 추가 도출이 필요하다.</li>
+  <li>거시적 관점의 요인, 경쟁자의 동향, 시장의 니즈 변화, 역량의 재해석 등 새로운 관점의 접근이 필요하다.</li>
+</ul>
+<aside class="note">분석가뿐만 아니라 해당 기능을 수행하는 직원이나 관련자에 대한 폭넓은 인터뷰와 워크숍 형태의 아이디어 발굴 작업이 필요하다.</aside>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:130px">관점</th><th style="width:180px">영역</th><th>내용</th></tr>
+  <tr><td class="h" rowspan="5">거시적 관점</td><td class="h">사회 영역<br>(Social)</td><td>고객영역을 확장하여 전체 시장을 사회, 문화, 구조적 트렌드 변화에 기반하여 분석 기회를 도출한다.</td></tr>
+  <tr><td class="h">기술 영역<br>(Technological)</td><td>과학, 기술, 의학 등 최신 기술의 등장변화에 따른 역량 내재화와 제품 및 서비스 개발에 대한 분석 기회를 도출한다.</td></tr>
+  <tr><td class="h">경제 영역<br>(Economic)</td><td>산업과 금융 전반의 변동성과 경제 구조 변화 동향에 따른 시장 흐름을 파악하고 이에 대한 분석 기회를 도출한다.</td></tr>
+  <tr><td class="h">환경 영역<br>(Environmental)</td><td>환경과 관련된 정부, 사회단체, 시민사회의 관심과 규제 동향을 파악하고 이에 대한 분석 기회를 도출한다.</td></tr>
+  <tr><td class="h">정치 영역<br>(Political)</td><td>주요 정책방향, 정세, 지정학적 동향 등의 거시적인 흐름을 토대로 하여 분석 기회를 도출한다.</td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-95</div>
+
+<div class="table-scroll">
+<table>
+  <tr><th style="width:130px">관점</th><th style="width:180px">영역</th><th>내용</th></tr>
+  <tr><td class="h" rowspan="3">경쟁자<br>확대 관점</td><td class="h">대체재 영역<br>(Substitute)</td><td>현재 생산하고 있는 제품 또는 서비스의 대체재를 파악하고 이를 고려한 분석 기회를 도출한다.</td></tr>
+  <tr><td class="h">경쟁자 영역<br>(Competitor)</td><td>현재 생산하고 있는 제품이나 서비스의 주요 경쟁자에 대한 동향을 파악하여 이를 고려한 분석 기회를 도출한다.</td></tr>
+  <tr><td class="h">신규 진입자 영역<br>(New Entrant)</td><td>향후 시장에서 파괴적인 역할을 수행할 수 있는 신규 진입자에 대한 동향을 파악하여 이를 고려한 분석 기회를 도출한다.</td></tr>
+  <tr><td class="h" rowspan="3">시장의 니즈 탐색<br>관점</td><td class="h">고객 영역<br>(Customer)</td><td>고객의 구매 동향 및 고객의 컨텍스트를 더욱 깊게 이해하여 제품 또는 서비스의 개선에 필요한 분석 기회를 도출한다.</td></tr>
+  <tr><td class="h">채널 영역<br>(Channel)</td><td>자체 채널뿐 아니라 최종 고객에게 상품이나 서비스를 전달 가능한 모든 경로를 파악하여 경로별 채널 분석 기회를 확대하여 탐색한다.</td></tr>
+  <tr><td class="h">영향자들 영역<br>(Influencer)</td><td>주주, 투자자, 협의 및 기타 이해관계자의 주요 관심사항에 대하여 파악하고 분석 기회를 탐색한다.</td></tr>
+  <tr><td class="h" rowspan="2">역량의 재해석<br>관점</td><td class="h">내부 역량 영역<br>(Competency)</td><td>지식, 기술, 스킬 등 노하우와 인프라적인 유형 자산에 대해서도 폭넓게 재해석하고 해당 영역에서 분석 기회를 탐색한다.</td></tr>
+  <tr><td class="h">파트너와<br>네트워크 영역<br>(Partners &amp; Network)</td><td>관계사와 공급사 등의 역량을 활용해 수행할 수 있는 기능을 파악해 보고 이에 대한 분석 기회를 추가적으로 도출한다.</td></tr>
+</table>
+</div>
+<figure><img src="figs/fig_1-95_01.png" alt="분석 기회 발굴의 범위 확장 — 기업을 중심으로 거시적 관점(메가 트렌드: 사회·기술·경제·환경·정치), 경쟁자 확대(경쟁사의 동향: 대체재·경쟁자·신규 진입자), 시장니즈 탐색(고객 니즈의 변화: 고객·채널·영향자들), 역량의 재해석(역량의 변화: 내부 역량·파트너 네트워크)"></figure>
+
+<h4 id="s1-04-4">4) 상향식 접근 방식(Bottom Up Approach)</h4>
+<p>문제의 정의 자체가 어려운 경우 데이터를 기반으로 문제의 재정의 및 해결방안을 탐색하고 이를 지속적으로 개선하는 방식이다.</p>
+<h5>① 상향식 접근 방식의 특징</h5>
+<ul class="dash">
+  <li>다량의 데이터 분석을 통해 <mark>왜(why) 그러한 일이 발생하는지 역으로 추적하면서 문제를 도출</mark>하거나 재정의할 수 있는 방식이다.</li>
+  <li>데이터를 활용하여 생각지도 못했던 인사이트 도출 및 시행착오를 통한 개선이 가능하다.</li>
+</ul>
+<aside class="note">일반적으로 비지도학습 방법에 의해 수행된다.</aside>
+
+<div class="page-mark">1-96</div>
+
+<h5>② 상향식 접근 방식의 등장배경</h5>
+<ul class="dash">
+  <li>기존 하향식 접근 방식의 한계를 극복하기 위해 등장하였다.
+    <ul class="dash2">
+      <li>하향식 접근 방식은 솔루션 도출은 유효하지만 새로운 문제 탐색은 어렵다.</li>
+      <li>하향식 접근 방식은 복잡하고 다양한 환경에서 발생한 문제에는 부적합하다.</li>
+    </ul></li>
+  <li>논리적 단계별 접근법은 문제의 구조가 분명하고 이에 대한 해결책을 도출하기 위한 데이터가 분석가나 의사결정자에게 주어져 있음을 가정하고 있다.</li>
+</ul>
+<h5>③ 상향식 접근기반 전통적 분석 사고 극복방안</h5>
+<ul class="dash">
+  <li>디자인 사고 접근법</li>
+</ul>
+<figure><img src="figs/fig_1-96_01.png" alt="디자인 사고 접근법 — Empathize → Define → Ideate → Prototype → Test"></figure>
+<ul class="dash2" style="margin-left:14px">
+  <li>현장 관찰과 감정이입, 대상 관점으로의 전환을 수행한다.</li>
+  <li>통상적으로는 분석적으로 사물을 인식하려는 Why를 강조하나, 답을 미리 내는 것이 아니라 사물을 있는 그대로 인식하는 What 관점으로 접근한다.</li>
+  <li>객관적으로 존재하는 데이터 자체를 관찰하고 실제 행동으로 옮김으로써 대상을 좀 더 잘 이해하는 방식으로 접근한다.</li>
+</ul>
+<aside class="note">첫 단계로 감정이입(Empathize)을 특히 강조한다.</aside>
+<ul class="dash">
+  <li>비지도학습 방법에 의한 수행
+    <ul class="dash2">
+      <li>목표값을 사전에 학습하거나 정의하지 않고 데이터 자체만을 가지고 결과를 도출한다.</li>
+      <li>새로운 유형의 인사이트를 도출하기에 유용한 방식이다.</li>
+      <li>데이터 마이닝의 연관규칙분석, 군집분석이나 기술통계 및 프로파일링 등이 대표적이다.</li>
+    </ul></li>
+  <li>빅데이터 환경에서의 분석
+    <ul class="dash2">
+      <li>인과관계(Know–why)에서 상관관계(Know–affinity) 분석으로 이동하였다.</li>
+      <li>통계적 분석환경에서는 인과관계 분석을 위해 가설을 설정하고 이를 검증하기 위해 모집단으로부터 표본을 추출하여 가설검증을 하였다.</li>
+      <li>빅데이터 분석환경에서는 인과관계, 상관관계, 연관분석을 통하여 다양한 문제를 해결할 수 있다.</li>
+    </ul></li>
+</ul>
+<aside class="note">
+  비지도학습은 데이터 자체의 결합, 연관성, 유사성 등을 중심으로 데이터 상태를 표현하는 방식이다.
+  <hr>지도학습의 경우는 명확한 목적 하에 데이터를 분석한다.
+  <hr>폭포수 모형과 비슷한 하향식 접근 방식은 문제가 정형화되어 있고 문제해결을 위한 데이터가 완벽하게 존재해야만 효과적으로 사용할 수 있다.
+</aside>
+<h5>④ 상향식 접근 방식의 문제 해결 방법</h5>
+<ul class="dash">
+  <li><mark>프로토타이핑 접근법</mark> : 일단 먼저 분석을 시도해 보고 그 결과를 확인하면서 반복적으로 개선해 나가는 방식이다.
+    <ul class="dash2">
+      <li>시행착오를 통하여 문제 해결을 시도하는 방식이다.</li>
+      <li>사용자가 요구사항이나 데이터를 정확히 정의하기 어렵고 원천 데이터도 명확하지 않을 때 주로 사용한다.</li>
+    </ul></li>
+</ul>
+
+<div class="page-mark">1-97</div>
+
+<ul class="dash2" style="margin-left:14px">
+  <li>완전하지는 않지만 신속하게 해결책이나 모형을 제시하여 이를 바탕으로 문제를 더 명확하게 인식하고 필요한 데이터를 식별하여 구체화할 수 있다.</li>
+</ul>
+<div class="tbl-cap">프로토타이핑 접근법의 필요성</div>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:190px">관점</th><th>내용</th></tr>
+  <tr><td class="h">문제에 대한<br>인식 수준</td><td><ul class="dash"><li>문제 정의가 불명확하거나 새로운 문제일 경우 사용자나 이해관계자는 프로토타입을 이용하여 문제를 이해하고 구체화할 수 있다.</li></ul></td></tr>
+  <tr><td class="h">필요 데이터<br>존재 여부의<br>불확실성</td><td><ul class="dash"><li>데이터 확보방안 수립 시 데이터 사용자와 분석가 간에 반복적이고 순환적인 협의 과정이 필요하다.</li><li>문제 해결을 위해 필요한 모든 데이터가 존재하지 않을 경우, 이에 대한 수집방안이나 대체방안을 수립하여야 한다.</li><li>대체 불가능한 데이터가 존재하는지 사전에 확인하여 프로젝트가 중도에 중단되는 위험을 방지할 수 있다.</li></ul></td></tr>
+  <tr><td class="h">데이터 사용 목적의<br>가변성</td><td><ul class="dash"><li>데이터의 가치는 사전에 정해진 수집 목적에 따라 확정되는 것이 아니며, 그 가치가 지속적으로 변화한다.</li><li>기존에 보유 중인 데이터도 데이터 정의를 재검토하여 데이터의 사용 목적과 범위를 확대할 수 있다.</li></ul></td></tr>
+</table>
+</div>
+<div class="tbl-cap">프로토타이핑 접근법의 프로세스</div>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:130px">특징</td><td><ul class="dash"><li>잘 설계된 프로토타이핑을 지속하는 경우 실험이 가지고 있는 불명확성은 감소하고 의도했던 결과를 도출할 가능성이 높아진다.</li><li>빅데이터 분석환경에서는 최대한 빨리 분석 결과를 보여 주고 이를 가지고 지속적으로 반복하는 방법이 효과적이다.</li></ul></td></tr>
+  <tr><td class="h">구성</td><td><ul class="dash"><li>가설의 생성(Hypotheses)</li><li>디자인에 대한 실험(Design Experiments)</li><li>실제 환경에서의 테스트(Test)</li><li>테스트 결과에서의 통찰(Insight) 도출 및 가설 확인</li></ul></td></tr>
+</table>
+</div>
+
+<div class="check">
+<div class="check-head">개념 체크</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">1</span> 다음 중 분석 문제 정의에 대한 설명으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>수렴(Converge) 단계에서는 가능한 옵션을 도출하고, 발산(Diverge) 단계에서는 도출된 옵션을 분석하고 검증한다.</li>
+    <li>문제가 먼저 주어지고 이에 대한 해법을 찾아가는 하향식 접근 방식과 데이터를 기반으로 문제의 재정의 및 해결방안을 탐색하는 상향식 접근 방식이 있다.</li>
+    <li>분석 과제는 해결해야 할 다양한 문제들을 데이터 분석 문제로 변환하여 분석 프로젝트로 수행할 수 있는 과제정의서 형태로 도출한다.</li>
+    <li>분석 과제 정의서는 분석 프로젝트를 수행하는 이해관계자가 프로젝트의 방향을 설정하고 성공 여부를 판단할 수 있는 자료로 사용된다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ①</div>
+  <ul class="dash sol">
+    <li>최적의 의사결정을 위해 혼합방식을 사용할 수 있으며, 동적인 환경에서 상향식 접근 방식의 발산과 하향식 접근 방식의 수렴 단계를 반복적으로 수행하며 상호 보완을 통해 분석의 가치를 극대화할 수 있다. 발산 단계에서는 가능한 옵션을 도출하며, 수렴 단계에서는 도출된 옵션을 분석하고 검증한다.</li>
+  </ul>
+</div>
+</div>
+
+<div class="page-mark">1-98</div>
+
+<div class="check">
+<div class="check-head">개념 체크 (이어짐)</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">2</span> 다음 중 하향식 접근 방식에 대한 설명으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>문제 탐색 단계, 문제 정의 단계, 해결방안 탐색 단계, 타당성 평가 단계로 구성되어 있다.</li>
+    <li>문제가 주어지고 이에 대한 해법을 찾기 위하여 각 과정이 체계화된 방식으로 최근 실시간으로 발생하고 있는 문제들에 대하여 적용할 수 있다.</li>
+    <li>문제 탐색 기법으로 비즈니스 모델 기반 문제 탐색, 외부 참조 모델 기반 문제 탐색, 분석 유즈케이스 정의 방법이 있다.</li>
+    <li>타당성 평가 단계에서는 경제적 타당성과 데이터 및 기술적 타당성을 검증하여야 한다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ②</div>
+  <ul class="dash sol">
+    <li>하향식 접근 방식(Top Down Approach)은 문제가 주어지고 이에 대한 해법을 찾기 위하여 각 과정이 체계적으로 단계화되어 수행하는 전통적 분석 과제 발굴 방식으로 근래의 문제들은 변화가 심하여 문제를 사전에 정확하게 정의하기 어렵다.</li>
+  </ul>
+</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">3</span> 다음 중 상향식 접근 방식에 대한 설명으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>문제의 정의 자체가 어려운 경우 데이터를 기반으로 문제의 재정의 및 해결방안을 탐색하고 이를 지속적으로 개선하는 방식이다.</li>
+    <li>다량의 데이터 분석을 통해 왜(why) 그러한 일이 발생하는지 역으로 추적하면서 문제를 도출하거나 재정의할 수 있는 방식이다.</li>
+    <li>디자인 사고 접근법은 사물을 있는 그대로 인식하는 What 관점을 강조하지만, 분석적으로 사물을 인식하려는 Why 관점으로 접근한다.</li>
+    <li>프로토타이핑 접근법은 일단 먼저 분석을 시도해 보고 그 결과를 확인하면서 반복적으로 개선해 나가는 방식이다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ③</div>
+  <ul class="dash sol">
+    <li>디자인 사고 접근법은 통상적으로는 분석적으로 사물을 인식하려는 Why를 강조하나, 답을 미리 내는 것이 아니라 사물을 있는 그대로 인식하는 What 관점으로 접근한다.</li>
+  </ul>
+</div>
+</div>
+
+<h3 id="s1-05"><span class="num">05</span> 데이터 분석 방안</h3>
+
+<h4 id="s1-05-1">1) 분석 방법론</h4>
+<p>데이터 분석 시 품질확보를 위하여 단계별로 수행해야 하는 활동, 작업, 산출물을 정의한다.</p>
+<ul class="dash">
+  <li>데이터 분석을 효과적으로 수행하기 위하여 이를 체계화한 절차와 방법이 정리된 데이터 분석 방법론의 수립이 필수적이다.</li>
+  <li>프로젝트는 한 개인의 역량이나 조직의 우연한 성공에 의해서는 안 되고 일정 품질 수준 이상의 산출물과 프로젝트의 성공 가능성을 제시해야 한다.</li>
+</ul>
+<aside class="note"><b>분석 방법론</b><br>데이터 분석을 효과적으로 수행하기 위하여 분석 절차를 체계적으로 정리한 방법</aside>
+<h5>① 분석 방법론의 구성요건</h5>
+<ul class="dash">
+  <li>상세한 절차(Procedures)</li>
+  <li>방법(Methods)</li>
+  <li>도구와 기법(Tools &amp; Techniques)</li>
+</ul>
+
+<div class="page-mark">1-99</div>
+
+<ul class="dash">
+  <li>템플릿과 산출물(Templates &amp; Outputs)</li>
+  <li>어느 정도의 지식만 있으면 활용 가능한 수준의 난이도</li>
+</ul>
+<h5>② 분석 방법론의 생성과정(선순환 과정)</h5>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:150px">형식화</td><td><ul class="dash"><li>개인의 암묵지가 조직의 형식지로 발전되었다.</li><li>분석가의 경험을 바탕으로 정리하여 문서화한다.</li></ul></td></tr>
+  <tr><td class="h">체계화</td><td><ul class="dash"><li>문서화한 최적화된 형식지로 전개됨으로써 방법론이 생성되었다.</li><li>문서에는 절차나 활동 및 작업, 산출물, 도구 등을 정의한다.</li></ul></td></tr>
+  <tr><td class="h">내재화</td><td><ul class="dash"><li>개인에게 전파되고 활용되어 암묵지로 발전되었다.</li><li>전파된 방법론을 학습하고 활용하여 내재화한다.</li></ul></td></tr>
+</table>
+</div>
+<figure><img src="figs/fig_1-99_01.png" alt="분석 방법론 생성 선순환 — 암묵지 →(형식화)→ 형식지 →(체계화)→ 방법론 →(내재화)→ 암묵지"></figure>
+<aside class="note">분석 방법론은 일본의 경영학자 노나카 이쿠지로의 지식창조 매커니즘을 바탕으로 생성된다.</aside>
+
+<h4 id="s1-05-2">2) 계층적 프로세스 모델 구성</h4>
+<p>분석 방법론은 일반적으로 계층적 프로세스 모델 형태로 구성 가능하며, 단계, 태스크, 스텝 3계층으로 구성된다.</p>
+<h5>① 최상위 계층 – 단계(Phase)</h5>
+<ul class="dash">
+  <li>프로세스 그룹을 통하여 완성된 단계별 산출물을 생성한다.</li>
+  <li>각 단계는 기준선으로 설정되어 관리되어야 하며 버전관리 등을 통하여 통제한다.</li>
+</ul>
+<h5>② 중간 계층 – 태스크(Task)</h5>
+<ul class="dash">
+  <li>각 태스크는 단계를 구성하는 단위 활동이다.</li>
+  <li>물리적 또는 논리적 단위로 품질검토가 가능하다.</li>
+</ul>
+<h5>③ 최하위 계층 – 스텝(Step)</h5>
+<ul class="dash">
+  <li>WBS(Work Breakdown Structure)의 워크패키지(Work Package)이다.</li>
+  <li>입력자료, 처리 및 도구, 출력자료로 구성된 단위 프로세스이다.</li>
+</ul>
+<figure><img src="figs/fig_1-99_02.png" alt="계층적 프로세스 모델 — 단계(단계별 완료보고서) → 태스크(보고서) → 스텝(보고서 구성요소), 스텝은 입력자료·프로세스·출력자료로 구성"></figure>
+
+<div class="page-mark">1-100</div>
+
+<h4 id="s1-05-3">3) 소프트웨어개발생명주기 활용</h4>
+<p>분석 방법론은 소프트웨어 공학의 소프트웨어개발생명주기를 활용하여 구성할 수도 있다.</p>
+<ul class="dash">
+  <li>소프트웨어개발생명주기(Software Development Life Cycle, SDLC)는 소프트웨어에 대해 요구분석과 설계, 구현과정을 거쳐 설치, 운영과 유지보수, 그리고 폐기할 때까지의 전 과정을 가시적으로 표현한 것이다.</li>
+</ul>
+<aside class="note"><b>소프트웨어개발생명주기의 필요성</b>
+  <ul class="dash"><li>소프트웨어 위기를 대처</li><li>효과적인 소프트웨어 개발 수행</li><li>고품질 소프트웨어 생산성 확보</li></ul>
+</aside>
+<div class="tbl-cap">소프트웨어개발생명주기의 구성요소</div>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:130px">계획<br>(요구명세)</td><td><ul class="dash"><li>고객의 요구사항을 명세화한다.</li><li>타당성 조사 및 소프트웨어의 기능과 제약조건을 정의하는 명세서를 작성한다.</li><li>요구사항은 일반적으로 모호하고 불완전하며 모순되기도 한다.</li></ul></td></tr>
+  <tr><td class="h">요구분석</td><td><ul class="dash"><li>대상이 되는 문제 영역과 사용자가 원하는 Task를 이해한다.</li></ul></td></tr>
+  <tr><td class="h">설계</td><td><ul class="dash"><li>분석모형을 가지고 이를 세분화함으로써 구현될 수 있는 형태로 전환한다.</li></ul></td></tr>
+  <tr><td class="h">구현</td><td><ul class="dash"><li>실행 가능한 코드를 생성한다.</li></ul></td></tr>
+  <tr><td class="h">시험</td><td><ul class="dash"><li>발생 가능한 실행 프로그램의 오류를 발견하고 수정한다.</li></ul></td></tr>
+  <tr><td class="h">유지보수</td><td><ul class="dash"><li>인수가 완료된 후 일어나는 모든 개발 활동이다.</li></ul></td></tr>
+</table>
+</div>
+<h5>① 폭포수 모형(Waterfall Model)</h5>
+<p>고전적 Life Cycle Paradigm으로 분석, 설계, 개발, 구현, 시험 및 유지보수 과정을 순차적으로 접근하는 방법이다.</p>
+<aside class="note"><b>폭포수 모형</b>
+  <ul class="dash"><li>프로젝트 진행과정을 세분화하여 관리하기에 용이</li><li>고객의 요구사항을 초기에 명확히 정의하기 어려움</li></ul>
+</aside>
+<div class="boxlist">
+<ul class="dash">
+  <li>소프트웨어 개발을 단계적, 순차적, 체계적 접근 방식으로 수행한다.</li>
+  <li>각 단계별로 철저히 매듭짓고 다음 단계를 진행한다.</li>
+  <li>개념 정립에서 구현까지 하향식 접근 방법을 사용한다.</li>
+  <li>전 단계의 산출물은 다음 단계의 기초가 된다.</li>
+  <li>결과물이 후반부에 가서야 구체화되므로 문제점이 뒤늦게 발견된다.</li>
+</ul>
+<figure><img src="figs/fig_1-100_01.png" alt="폭포수 모형 — 계획 → 분석 → 설계 → 개발 → 시험 → 유지보수, What/How/Operation 구간"></figure>
+</div>
+<h5>② 프로토타입 모형(Prototype Model)</h5>
+<p>사용자의 요구사항을 충분히 분석할 목적으로 시스템의 일부분을 일시적으로 간략히 구현한 다음 다시 요구사항을 반영하는 과정을 반복하는 개발모형이다.</p>
+<ul class="dash">
+  <li>실험적 프로토타입 : 요구분석의 어려움을 해결하기 위해 실제 개발될 소프트웨어의 일부분을 직접 개발함으로써 의사소통의 도구로 활용한다.</li>
+  <li>진화적 프로토타입 : 프로토타입을 요구분석의 도구로만 활용하는 것이 아니라, 이미 개발된 프로토타입을 지속적으로 발전시켜 최종 소프트웨어로 발전시킨다.</li>
+</ul>
+<aside class="note"><b>프로토타입 모형</b>
+  <ul class="dash"><li>개발하려는 시스템의 주요 기능을 초기에 실제 운영할 모형으로 개발하는 방법</li><li>폭포수 모형의 단점을 보완</li></ul>
+</aside>
+
+<div class="page-mark">1-101</div>
+
+<div class="boxlist">
+<ul class="dash">
+  <li>요구 분석의 어려움 해결을 통해 사용자의 참여를 유도한다.</li>
+  <li>요구사항 도출과 이해에 있어 사용자와의 커뮤니케이션 수단으로 활용 가능하다.</li>
+  <li>사용자 자신이 원하는 것이 무엇인지 구체적으로 잘 모르는 경우 간단한 시제품으로 개발할 수 있다.</li>
+  <li>개발 타당성을 검토하는 수단으로 활용할 수 있다.</li>
+</ul>
+<figure><img src="figs/fig_1-101_01.png" alt="프로토타입 모형 — 요구분석 → Prototype 개발·개선 → Prototype 검토·평가 →(승인) 상세개발 → 설치 / (거절) 프로젝트 취소, 개선 필요시 Feedback"></figure>
+</div>
+<h5>③ 나선형 모형(Spiral Model)</h5>
+<p>시스템을 개발하면서 생기는 위험을 최소화하기 위해 나선을 돌면서 점진적으로 완벽한 시스템으로 개발하는 모형이다.</p>
+<aside class="note"><b>나선형 모형</b>
+  <ul class="dash"><li>대규모 시스템 및 위험 부담이 큰 시스템 개발에 적합</li><li>폭포수 모형과 프로토타입 모형의 단점을 보완</li></ul>
+</aside>
+<div class="boxlist">
+<ul class="dash">
+  <li>프로젝트의 완전성 및 위험 감소와 유지보수가 용이하다.</li>
+  <li>관리가 중요하나 매우 어렵고 개발시간이 장기화될 가능성이 있다.</li>
+</ul>
+<figure><img src="figs/fig_1-101_02.png" alt="나선형 모형 — 계획수립·위험분석·개발·고객평가 4분면을 나선형으로 반복"></figure>
+</div>
+<h5>④ 반복적 모형(Iterative Development Model)</h5>
+<p>사용자의 요구사항 일부분 혹은 제품의 일부분을 반복적으로 개발하여 최종 시스템으로 완성하는 모형이다.</p>
+<ul class="dash">
+  <li>증분형 모형(Incremental Model) : 사용자 요구사항과 제품의 일부분을 반복적으로 개발하며 대상범위를 확대해 나아가서 최종제품을 완성하는 방법이다.</li>
+</ul>
+<aside class="note">
+  <b>반복적 모형</b>
+  <ul class="dash"><li>폭포수, 프로토타입, 나선형이 혼합된 모형</li><li>재사용성, 객체지향, RAD의 기반을 제공</li><li>증분형(점증적) 모형, 진화형(점진적) 모형으로 분류</li></ul>
+  <hr><b>증분형 모형</b><br>폭포수 모형의 변형으로 각 증분을 따로 개발하여 통합
+</aside>
+
+<div class="page-mark">1-102</div>
+
+<div class="boxlist">
+<ul class="dash">
+  <li>첫 번째 검증은 핵심제품, 몇 사람만으로 구현 가능하다.</li>
+  <li>프로토타입 모형과 같이 반복적이나 각 점증이 갖는 제품 인도에 초점을 두고 있다.</li>
+  <li>규모가 큰 개발 조직일 경우 자원을 각 증분 개발에 충분히 할당할 수 있어 각 증분의 병행 개발로 기간을 단축시킬 수 있다.</li>
+  <li>증분의 수가 많고 병행 개발이 빈번하게 이루어지면 관리가 어려워지고, PM은 증분 개발 활동 간 조율에 많은 노력이 필요하다.</li>
+</ul>
+<figure><img src="figs/fig_1-102_01.png" alt="증분형 모형 — 소프트웨어 요구사항에서 증분 1·2·n으로 나뉘어 각각 설계 → 구현/시험 → 설치/운영, 정보 흐름"></figure>
+<ul class="dash2">
+  <li>증분 1 : 소프트웨어 요구사항 중 1에 해당하는 프로토타입 개발</li>
+  <li>증분 2 : 소프트웨어 요구사항 중 2에 해당하는 프로토타입 개발</li>
+  <li>증분 n : 소프트웨어 요구사항 중 n에 해당하는 프로토타입 개발</li>
+  <li>정보흐름 : 각 프로토타입 개발과정에서 단계별로 타 프로토타입의 개발과정에 영향</li>
+</ul>
+</div>
+<ul class="dash">
+  <li>진화형 모형(Evolution Model) : 시스템이 가지는 여러 구성요소의 핵심부분을 개발한 후 각 구성요소를 지속적으로 발전시켜 나가는 방법이다.</li>
+</ul>
+<aside class="note"><b>진화형 모형</b><br>시스템의 요구사항을 사전에 정의하기 어려운 경우 사용</aside>
+<div class="boxlist">
+<ul class="dash">
+  <li>다음 단계로의 진화를 위해 전체 과정에 대한 개요가 필요하다.</li>
+  <li>프로토타입을 만들고 이를 다시 분석함으로써 요구사항을 진화시키는 방법이다.</li>
+  <li>프로토타입의 시스템은 재사용을 전제로 한다.</li>
+</ul>
+<figure><img src="figs/fig_1-102_02.png" alt="진화형 모형 — 소프트웨어 요구사항에서 핵심요구사항 개발 → 1단계 진화 → n단계 진화, 각 단계 분석·설계·구현/시험·설치/운영과 Feedback"></figure>
+<ul class="dash2">
+  <li>핵심요구사항 개발 : 소프트웨어 요구사항의 핵심적인 부분(프로토타입)을 개발</li>
+  <li>1단계 진화 : 핵심요구사항 개발과정에서 산출된 프로토타입을 재분석하여 요구사항 진화</li>
+  <li>n단계 진화 : n−1의 요구사항 개발과정에서 산출된 프로토타입을 재분석하여 최종 완성</li>
+  <li>Feedback : 각 단계의 프로토타입을 설치/운영하여 발생하는 요구사항들을 차기 개발에 반영</li>
+</ul>
+</div>
+<div class="tbl-cap">소프트웨어개발생명주기의 대표적 유형 비교</div>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" rowspan="3" style="width:120px">폭포수 모형</td><td colspan="2">검토 및 승인을 거쳐 순차적, 하향식으로 개발이 진행된다.</td></tr>
+  <tr><td class="h" style="width:80px">장점</td><td><ul class="dash"><li>이해하기 쉽고 관리가 용이하다.</li><li>다음 단계 진행 전에 결과를 검증한다.</li></ul></td></tr>
+  <tr><td class="h">단점</td><td><ul class="dash"><li>요구사항 도출이 어렵다.</li><li>설계 및 코딩과 테스트가 지연된다.</li><li>문제점 발견이 늦어진다.</li></ul></td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-103</div>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" rowspan="3" style="width:120px">프로토타입<br>모형</td><td colspan="3">시스템의 핵심적인 기능을 먼저 만들어 평가한 후 구현한다.</td></tr>
+  <tr><td class="h" style="width:80px">장점</td><td colspan="2"><ul class="dash"><li>요구사항 도출과 시스템 이해가 용이하다.</li><li>의사소통을 향상시킨다.</li></ul></td></tr>
+  <tr><td class="h">단점</td><td colspan="2"><ul class="dash"><li>사용자의 오해(완제품)가 발생하기 쉽다.</li><li>폐기되는 프로토타입이 존재한다.</li></ul></td></tr>
+  <tr><td class="h" rowspan="7">나선형 모형</td><td colspan="3">폭포수 모형과 프로토타입 모형의 장점에 위험분석을 추가하였다.</td></tr>
+  <tr><td class="h" rowspan="4">구현<br>단계</td><td class="h" style="width:100px">계획수립</td><td>목표, 기능 선택, 제약조건을 설정한다.</td></tr>
+  <tr><td class="h">위험분석</td><td>기능 선택의 우선순위 및 위험요소를 분석하고 제거한다.</td></tr>
+  <tr><td class="h">개발</td><td>선택된 기능을 개발한다.</td></tr>
+  <tr><td class="h">고객평가</td><td>개발 결과를 평가한다.</td></tr>
+  <tr><td class="h">장점</td><td colspan="2"><ul class="dash"><li>점증적으로 개발 시 실패 위험을 감소시킬 수 있다.</li><li>테스트가 용이하고 피드백이 있다.</li></ul></td></tr>
+  <tr><td class="h">단점</td><td colspan="2">관리가 복잡하다.</td></tr>
+  <tr><td class="h" rowspan="3">반복적 모형</td><td colspan="3">시스템을 여러 번 나누어 릴리즈하는 방법이다.</td></tr>
+  <tr><td class="h">Incremental</td><td colspan="2">기능을 분해한 후 릴리즈별 기능을 추가 개발한다.</td></tr>
+  <tr><td class="h">Evolution</td><td colspan="2">전체 기능을 대상으로 하되 릴리즈를 진행하면서 기능이 완벽해진다.</td></tr>
+</table>
+</div>
+<h5>⑤ 소프트웨어개발생명주기 모형 선정 기준</h5>
+<ul class="dash">
+  <li>프로젝트의 규모와 성격</li>
+  <li>개발에 사용되는 방법과 도구</li>
+  <li>개발에 소요되는 시간과 비용</li>
+  <li>개발과정에서의 통제수단과 소프트웨어 산출물 인도 방식</li>
+</ul>
+
+<div class="check">
+<div class="check-head">개념 체크</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">1</span> 다음 중 분석 방법론에 대한 설명으로 옳은 것은?</div>
+  <ol class="circled q-opt">
+    <li>명확한 절차, 방법, 도구, 템플릿, 산출물, 그리고 전문지식이 담긴 매뉴얼을 제공해야 한다.</li>
+    <li>여러 사람들의 내재화된 습관을 체계화한 후 전문가에 의해 형식화되어 생성된다.</li>
+    <li>일반적으로 계층적 프로세스 모델 형태로 구성 가능하며, 단계, 스텝, 워크패키지 3계층으로 구성된다.</li>
+    <li>데이터 분석을 효과적으로 수행하기 위하여 분석 절차를 체계적으로 정리한 방법이다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ④</div>
+  <ul class="dash sol">
+    <li>분석 방법론은 상세한 절차(Procedures), 방법(Methods), 도구와 기법(Tools &amp; Techniques), 템플릿과 산출물(Templates &amp; Outputs), 어느 정도의 지식만 있으면 활용 가능한 수준의 난이도를 구성요건으로 갖추어야 한다.</li>
+    <li>분석 방법론은 형식화, 체계화, 내재화의 선순환 과정을 통해 생성된다.</li>
+    <li>분석 방법론은 일반적으로 계층적 프로세스 모델 형태로 구성 가능하며, 단계, 태스크, 스텝 3계층으로 구성된다. 태스크는 각 단계를 구성하는 단위 활동이며, 스텝은 태스크의 하위 층으로 WBS의 워크패키지를 말한다.</li>
+  </ul>
+</div>
+</div>
+
+<div class="page-mark">1-104</div>
+
+<div class="check">
+<div class="check-head">개념 체크 (이어짐)</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">2</span> 다음 중 소프트웨어개발생명주기에 대한 설명으로 옳은 것은?</div>
+  <ol class="circled q-opt">
+    <li>폭포수 모형은 의사소통을 향상시킨다.</li>
+    <li>나선형 모형은 계획수립, 위험분석, 개발, 고객평가 단계로 구성되어 있다.</li>
+    <li>원형 모형은 이해하기 쉽고 관리가 용이하다.</li>
+    <li>반복적 모형은 증분형 모형과 진화형 모형이 존재하며, 진화형 모형의 품질이 더 우수하다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ②</div>
+  <ul class="dash sol">
+    <li>폭포수 모형은 요구사항 도출이 어려우며, 원형 모형이 의사소통을 향상시킨다.</li>
+    <li>원형 모형은 사용자로 하여금 완제품으로 오해 받기 쉽고 폐기되는 프로토타입이 존재하며, 폭포수 모형이 이해하기 쉽고 관리가 용이하다.</li>
+    <li>증분형 모형과 진화형 모형은 서로 필요성이 다를 뿐이며, 증분형 모형은 폭포수 모형의 변형으로 각 증분을 따로 개발 및 통합하여 개발 기간을 단축시키고, 진화형 모형은 시스템의 요구사항을 사전에 정의하기 어려운 경우 사용하여 개발의 어려움을 최소화하는 것이다.</li>
+  </ul>
+</div>
+</div>
+
+<h4 id="s1-05-4">4) KDD 분석 방법론</h4>
+<p>KDD(Knowledge Discovery in Database)는 1996년 Fayyad가 통계적인 패턴이나 지식을 탐색하는 데 활용할 수 있도록 체계적으로 정리한 프로파일링 기술 기반의 데이터 마이닝 프로세스이다.</p>
+<aside class="note"><b>KDD 분석 방법론</b>
+  <ul class="dash"><li>데이터 마이닝, 기계학습, 인공지능, 패턴인식, 시각화 등에 응용 가능</li><li>데이터에서 패턴을 찾는 과정을 9개의 프로세스로 제시</li></ul>
+</aside>
+<h5>① KDD 분석 방법론의 9가지 프로세스</h5>
+<div class="boxlist">
+<ol class="numlist">
+  <li>분석 대상 비즈니스 도메인의 이해</li>
+  <li>분석 대상 데이터셋 선택과 생성</li>
+  <li>데이터에 포함되어 있는 잡음(Noise)과 이상값(Outlier) 등을 제거하는 정제작업이나 선처리</li>
+  <li>분석 목적에 맞는 변수를 찾고 필요시 데이터의 차원을 축소하는 데이터 변경</li>
+  <li>분석 목적에 맞는 데이터 마이닝 기법 선택</li>
+  <li>분석 목적에 맞는 데이터 마이닝 알고리즘 선택</li>
+  <li>데이터 마이닝 시행</li>
+  <li>데이터 마이닝 결과에 대한 해석</li>
+  <li>데이터 마이닝에서 발견된 지식 활용</li>
+</ol>
+</div>
+<h5>② <mark>KDD 분석 방법론의 분석절차</mark></h5>
+<p>데이터 분석은 데이터셋(Dataset) 선택, 데이터 전처리, 데이터 변환, 데이터 마이닝, 데이터 마이닝 결과 평가 총 5단계에 걸쳐 진행된다.</p>
+<aside class="note"><b>이상값(outlier, 이상치)</b><br>일반적 추세에서 많이 벗어난 값</aside>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:50px">단계</th><th style="width:170px"></th><th>내용</th></tr>
+  <tr><td class="h">1</td><td class="h">데이터셋 선택<br>(Selection)</td><td><ul class="dash"><li>분석대상 비즈니스 도메인에 대한 이해 및 프로젝트 목표의 정확한 설정을 선행한다.</li><li>데이터베이스 또는 원시 데이터에서 분석에 필요한 데이터를 선택한다.</li><li>필요시에 목표 데이터를 추가적으로 구성하여 활용한다.</li></ul></td></tr>
+  <tr><td class="h">2</td><td class="h">데이터 전처리<br>(Preprocessing)</td><td><ul class="dash"><li>잡음(Noise)과 이상값(Outlier), 결측치(Missing Value)를 식별하고 필요시 제거하거나 대체한다.</li><li>데이터가 추가적으로 필요한 경우 데이터셋 선택 절차부터 다시 실행한다.</li></ul></td></tr>
+  <tr><td class="h">3</td><td class="h">데이터 변환<br>(Transformation)</td><td><ul class="dash"><li>분석 목적에 맞는 변수를 선택하거나 데이터의 차원 축소 등을 수행한다.</li><li>학습용 데이터와 검증용 데이터로 데이터를 분리한다.</li></ul></td></tr>
+  <tr><td class="h">4</td><td class="h">데이터 마이닝<br>(Data Mining)</td><td><ul class="dash"><li>분석 목적에 맞는 데이터 마이닝 기법 및 알고리즘을 선택하여 분석을 수행한다.</li><li>필요시 데이터 전처리와 데이터 변환 절차를 추가로 실행하여 데이터 분석 결과의 품질을 높일 수 있다.</li></ul></td></tr>
+  <tr><td class="h">5</td><td class="h">데이터 마이닝<br>결과 평가<br>(Interpretation/<br>Evaluation)</td><td><ul class="dash"><li>분석 결과에 대한 해석과 평가 및 분석 목적과의 일치성을 확인한다.</li><li>발견된 지식을 업무에 활용하기 위한 방안을 모색한다.</li><li>필요한 경우 데이터셋 선택부터 데이터 마이닝 절차까지 반복하여 수행한다.</li></ul></td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-105</div>
+
+<figure><img src="figs/fig_1-105_01.png" alt="KDD 절차 — Data →(Selection)→ Target Data →(Preprocessing)→ Preprocessed Data →(Transformation)→ Transformed Data →(Data Mining)→ Patterns →(Interpretation/Evaluation)→ Knowledge"></figure>
+
+<h4 id="s1-05-5">5) CRISP–DM 분석 방법론</h4>
+<p>CRISP–DM(Cross Industry Standard Process for Data Mining)은 계층적 프로세스 모델로써 4계층으로 구성된 데이터 마이닝 프로세스이다.</p>
+<aside class="note"><b>CRISP–DM</b>
+  <ul class="dash"><li>데이터 탐색과 이해 및 데이터를 통한 문제 인식과 해결이 가능</li><li>비즈니스 요구사항에 맞게 데이터 마이닝을 반복적으로 수행할 수 있음</li></ul>
+</aside>
+<h5>① CRISP–DM 분석 방법론의 4계층</h5>
+<ul class="dash">
+  <li>최상위 레벨 : 여러 개의 단계(Phases)로 구성된다.</li>
+  <li>일반화 태스크(Generic Tasks) : 데이터 마이닝의 단일 프로세스를 완전하게 수행하는 단위이다.</li>
+  <li>세분화 태스크(Specialized Tasks) : 일반화 태스크를 구체적으로 수행한다.</li>
+  <li>프로세스 실행(Process Instances) : 데이터 마이닝을 구체적으로 실행한다.</li>
+</ul>
+<figure><img src="figs/fig_1-105_02.png" alt="CRISP-DM 4계층 — Phases · Generic Tasks(CRISP Process Model) ↔ Mapping ↔ Specialized Tasks · Process Instances(CRISP Process)"></figure>
+
+<div class="page-mark">1-106</div>
+
+<h5>② CRISP–DM 분석 방법론의 분석절차</h5>
+<aside class="note">총 6단계에 걸쳐 진행되며, 각 단계별로 세부업무가 정의되어 있다.</aside>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:160px">단계</th><th>내용</th><th style="width:200px">세부업무</th></tr>
+  <tr><td class="h">업무 이해<br>(Business<br>Understanding)</td><td><ul class="dash"><li>비즈니스 관점에서 프로젝트의 목적과 요구사항을 이해하기 위한 단계이다.</li><li>도메인 지식을 데이터 분석을 위한 문제정의로 변경한다.</li><li>초기 프로젝트 계획을 수립한다.</li></ul></td><td><ul class="dash"><li>업무 목적 파악</li><li>상황 파악</li><li>데이터 마이닝 목표 설정</li><li>프로젝트 계획 수립</li></ul></td></tr>
+  <tr><td class="h">데이터 이해<br>(Data Understanding)</td><td><ul class="dash"><li>분석을 위한 데이터 수집 및 데이터 속성을 이해한다.</li><li>데이터 품질 문제를 식별한다.</li><li>인사이트를 발견하는 단계이다.</li></ul></td><td><ul class="dash"><li>초기 데이터 수집</li><li>데이터 기술 분석</li><li>데이터 탐색</li><li>데이터 품질 확인</li></ul></td></tr>
+  <tr><td class="h">데이터 준비<br>(Data Preparation)</td><td><ul class="dash"><li>수집된 데이터를 분석 기법에 적합한 데이터로 변환한다.</li></ul></td><td><ul class="dash"><li>분석용 데이터셋 선택</li><li>데이터 정제</li><li>분석용 데이터셋 편성</li><li>데이터 통합</li><li>데이터 포맷팅</li></ul></td></tr>
+  <tr><td class="h">모델링<br>(Modeling)</td><td><ul class="dash"><li>다양한 모델링 기법과 알고리즘으로 모형 파라미터를 최적화한다.</li><li>모델링 결과를 테스트용 프로세스와 데이터셋으로 평가하여 모형 과적합 등의 문제를 확인한다.</li><li>데이터셋을 추가하기 위해 데이터 준비 절차를 반복할 수 있다.</li></ul></td><td><ul class="dash"><li>모델링 기법 선택</li><li>모형 테스트 계획 설계</li><li>모형 작성</li><li>모형 평가</li></ul></td></tr>
+  <tr><td class="h">평가<br>(Evaluation)</td><td><ul class="dash"><li>분석 모형이 프로젝트의 목적에 부합하는지 평가한다.</li><li>데이터 마이닝 결과를 수용할 것인지 최종적으로 판단한다.</li></ul></td><td><ul class="dash"><li>분석결과 평가</li><li>모델링 과정 평가</li><li>모형 적용성 평가</li></ul></td></tr>
+  <tr><td class="h">전개<br>(Deployment)</td><td><ul class="dash"><li>완성된 분석 모형을 업무에 적용하기 위한 계획을 수립한다.</li><li>모니터링과 분석 모형의 유지보수 계획을 마련한다.</li><li>프로젝트 종료 관련 프로세스를 수행하여 프로젝트 완료한다.</li></ul></td><td><ul class="dash"><li>전개 계획 수립</li><li>모니터링과 유지보수 계획 수립</li><li>프로젝트 종료 보고서 작성</li><li>프로젝트 리뷰</li></ul></td></tr>
+</table>
+</div>
+<figure><img src="figs/fig_1-106_01.png" alt="CRISP-DM 절차 — 비즈니스 이해 ↔ 데이터 이해 → 데이터 준비 ↔ 모델링 → 평가 → 전개, 중심에 데이터"></figure>
+
+<div class="page-mark">1-107</div>
+
+<h5>③ CRISP–DM과 KDD 분석 방법론의 비교</h5>
+<div class="table-scroll">
+<table>
+  <tr><th>CRISP–DM 분석 방법론</th><th>KDD 분석 방법론</th></tr>
+  <tr><td class="h">업무 이해(Business Understanding)</td><td style="background:#EDEDEB"></td></tr>
+  <tr><td class="h" rowspan="2">데이터 이해(Data Understanding)</td><td>데이터셋 선택(Selection)</td></tr>
+  <tr><td>데이터 전처리(Preprocessing)</td></tr>
+  <tr><td class="h">데이터 준비(Data Preparation)</td><td>데이터 변환(Transformation)</td></tr>
+  <tr><td class="h">모델링(Modeling)</td><td>데이터 마이닝(Data Mining)</td></tr>
+  <tr><td class="h">평가(Evaluation)</td><td>데이터 마이닝 결과 평가<br>(Interpretation/Evaluation)</td></tr>
+  <tr><td class="h">전개(Deployment)</td><td style="background:#EDEDEB"></td></tr>
+</table>
+</div>
+
+<h4 id="s1-05-6">6) SEMMA 분석 방법론</h4>
+<p>SEMMA(Sample, Explore, Modify, Model and Assess)는 SAS Institute의 주도로 만들어진 기술과 통계 중심의 데이터 마이닝 프로세스이다.</p>
+<aside class="note"><b>SAS Institute</b><br>미국의 통계분석 소프트웨어 기업</aside>
+<h5>① SEMMA 분석 방법론의 특징</h5>
+<ul class="dash">
+  <li>SAS Institute의 데이터 마이닝 도구와 손쉽게 접목하여 활용할 수 있다.</li>
+  <li>주로 데이터 마이닝 프로젝트의 모델링 작업에 중점을 두고 있다.</li>
+</ul>
+<figure><img src="figs/fig_1-107_01.png" alt="SEMMA — Sample(Generate a representative Sample of the data) → Explore(Visualization and basic Description of the data) → Modify(Select variables, transform Variable representations) → Model(Use variety of statistical and Machine learning models) → Assess(Evaluate the accuracy and Usefulness of the models)"></figure>
+<h5>② <mark>SEMMA 분석 방법론의 분석절차</mark></h5>
+<aside class="note">데이터 분석은 추출, 탐색, 수정, 모델링, 평가 총 5단계에 걸쳐 진행된다.</aside>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:130px">단계</th><th>내용</th><th style="width:230px">세부요소/산출물</th></tr>
+  <tr><td class="h">추출<br>(Sample)</td><td><ul class="dash"><li>분석할 데이터 추출</li><li>모델을 평가하기 위한 데이터 준비</li></ul></td><td><ul class="dash"><li>통계적 추출</li><li>조건 추출</li></ul></td></tr>
+  <tr><td class="h">탐색<br>(Explore)</td><td><ul class="dash"><li>분석용 데이터 탐색</li><li>데이터 오류 확인</li><li>비즈니스 이해</li><li>이상 현상 및 변화 탐색</li></ul></td><td><ul class="dash"><li>그래프</li><li>기초통계</li><li>Clustering</li><li>변수 유의성 및 상관분석</li></ul></td></tr>
+  <tr><td class="h">수정<br>(Modify)</td><td><ul class="dash"><li>분석용 데이터 변환</li><li>데이터 표현 극대화(시각화)</li><li>파생 변수 생성, 선택, 변형</li></ul></td><td><ul class="dash"><li>수량화</li><li>표준화</li><li>변환</li><li>그룹화</li></ul></td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-108</div>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:130px">모델링<br>(Model)</td><td><ul class="dash"><li>분석 모델 구축</li><li>패턴 발견</li><li>모델링과 알고리즘의 적용</li></ul></td><td style="width:230px"><ul class="dash"><li>Neural Network</li><li>Decision Tree</li><li>Logistic Regression</li><li>통계기법</li></ul></td></tr>
+  <tr><td class="h">평가<br>(Assess)</td><td><ul class="dash"><li>모델 평가 및 검증</li><li>서로 다른 모델 동시 비교</li><li>Next Step 결정</li></ul></td><td><ul class="dash"><li>Report</li><li>Feedback</li><li>모델 검증 자료</li></ul></td></tr>
+</table>
+</div>
+
+<div class="check">
+<div class="check-head">개념 체크</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">1</span> 다음 중 KDD 분석 방법론에 대한 설명으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>데이터 마이닝 외 다른 분야에는 응용하기 어렵다는 단점이 있다.</li>
+    <li>데이터에서 패턴을 찾는 과정을 9개의 프로세스로 제시한다.</li>
+    <li>데이터셋 선택, 데이터 전처리, 데이터 변환, 데이터 마이닝, 데이터 마이닝 결과 평가 총 5단계에 걸쳐 진행된다.</li>
+    <li>체계적으로 정리한 프로파일링 기술 기반의 데이터 마이닝 프로세스이다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ①</div>
+  <ul class="dash sol">
+    <li>KDD(Knowledge Discovery in Database) 분석 방법론은 데이터 마이닝, 기계학습, 인공지능, 패턴인식, 시각화 등에 응용 가능하다.</li>
+  </ul>
+</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">2</span> 다음 중 CRISP–DM 분석 방법론에 대한 설명으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>데이터 탐색과 이해 및 데이터를 통한 문제 인식과 해결이 가능하다.</li>
+    <li>비즈니스 요구사항에 맞게 데이터 마이닝을 반복적으로 수행할 수 있다.</li>
+    <li>계층적 프로세스 모델로써 3계층으로 구성된 데이터 마이닝 프로세스이다.</li>
+    <li>업무 이해, 데이터 이해, 데이터 준비, 모델링, 평가, 전개 총 6단계에 걸쳐 진행된다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ③</div>
+  <ul class="dash sol">
+    <li>CRISP–DM(Cross Industry Standard Process for Data Mining) 분석 방법론은 계층적 프로세스 모델로써 4계층으로 구성된 데이터 마이닝 프로세스이다. CRISP–DM 분석 방법론의 4계층은 최상위 레벨, 일반화 태스크(Generic Tasks), 세분화 태스크(Specialized Tasks), 프로세스 실행(Process Instances) 단계로 구성되어 있다.</li>
+  </ul>
+</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">3</span> 다음 중 SEMMA 분석 방법론에 대한 설명으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>SAS Institute의 데이터 마이닝 도구와 손쉽게 접목하여 활용할 수 있다.</li>
+    <li>응용 서비스 개발을 위한 3계층으로 구성되었다.</li>
+    <li>주로 데이터 마이닝 프로젝트의 모델링 작업에 중점을 두고 있다.</li>
+    <li>추출, 탐색, 수정, 모델링, 평가 총 5단계에 걸쳐 진행된다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ②</div>
+  <ul class="dash sol">
+    <li>SEMMA(Sample, Explore, Modify, Model and Assess) 분석 방법론은 SAS Institute의 주도로 만들어진 기술과 통계 중심의 데이터 마이닝 프로세스이다. 응용 서비스 개발을 위한 3계층으로 구성된 방법론은 빅데이터 분석 방법론이다.</li>
+  </ul>
+</div>
+</div>
+
+<div class="page-mark">1-109</div>
+
+<h3 id="s1-06"><span class="num">06</span> 빅데이터 분석 방법론</h3>
+
+<h4 id="s1-06-1">1) 빅데이터 분석 방법론 개요</h4>
+<p>분석 방법론은 응용 서비스 개발을 위한 3계층으로 구성되었다.</p>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:150px">단계<br>(Phase)</td><td><ul class="dash"><li>데이터 분석을 수행하기 위한 절차이다.</li><li>기준선(Baseline)을 설정하고 버전관리를 통해 통제되어야 한다.</li></ul></td></tr>
+  <tr><td class="h">태스크<br>(Task)</td><td><ul class="dash"><li>각 단계별로 수행되어야 하는 세부 업무이다.</li><li>각 태스크가 완료되면 그에 대한 성과를 얻을 수 있다.</li></ul></td></tr>
+  <tr><td class="h">스텝<br>(Step)</td><td><ul class="dash"><li>단기간 내에 수행 가능한 워크패키지(Work Package)이다.</li><li>입력자료, 처리 및 도구, 출력자료로 구성된 단위 프로세스이다.</li></ul></td></tr>
+</table>
+</div>
+<ul class="dash">
+  <li>각 단계별로 세부 태스크와 스텝이 정의되어 있다.</li>
+</ul>
+<figure><img src="figs/fig_1-109_01.png" alt="빅데이터 분석을 위한 단계 — 분석 기획 Planning → 데이터 준비 Preparing → 데이터 분석 Analyzing → 시스템 구현 Developing → 평가 및 전개 Deploying"></figure>
+
+<h4 id="s1-06-2">2) 빅데이터 분석 방법론의 개발절차</h4>
+<figure><img src="figs/fig_1-109_02.png" alt="빅데이터 분석 방법론 개발절차 — 분석 기획·데이터 준비·데이터 분석·시스템 구현·평가 및 전개 5단계와 각 단계별 태스크"></figure>
+<div class="tip"><span class="tip-head">기적의 TIP</span>분석 방법론의 개발절차를 이해하고 있어야 한다.</div>
+
+<h5>① <mark>분석 기획(Planning)</mark></h5>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" rowspan="3" style="width:110px">분석 기획</td><td style="width:230px">비즈니스 이해 및 범위 설정</td><td><ul class="dash"><li>비즈니스 이해</li><li>프로젝트 범위 설정</li></ul></td></tr>
+  <tr><td>프로젝트 정의 및 계획 수립</td><td><ul class="dash"><li>데이터 분석 프로젝트 정의</li><li>프로젝트 수행 계획 수립</li></ul></td></tr>
+  <tr><td>프로젝트 위험 계획 수립</td><td><ul class="dash"><li>데이터 분석 위험 식별</li><li>위험 대응 계획 수립</li></ul></td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-110</div>
+
+<ul class="dash">
+  <li>비즈니스 이해 및 범위 설정
+    <ul class="dash2">
+      <li>비즈니스에 대한 이해와 도메인에 대한 문제점을 파악한다.</li>
+      <li>업무 매뉴얼 또는 업무 전문가의 도움이 필요하다.</li>
+      <li>향후 프로젝트 진행을 위한 방향을 설정하고, 프로젝트 목적에 부합한 범위를 설정한다.</li>
+      <li>프로젝트의 범위를 명확하게 파악하기 위해 구조화된 명세서를 작성한다.</li>
+    </ul></li>
+  <li>프로젝트 정의 및 계획 수립
+    <ul class="dash2">
+      <li>모형의 운영 이미지를 설계하고 모형 평가 기준을 설정한다.</li>
+      <li>프로젝트의 목표 및 KPI, 목표 수준 등을 구체화하여 상세한 프로젝트 정의서를 작성한다.</li>
+      <li>데이터 확보계획이나 분석 방법, 일정, 예산, 품질 등을 포함하는 프로젝트 수행 계획서를 작성한다.</li>
+      <li>프로젝트 산출물을 중심으로 WBS(Work Breakdown Structure)를 작성한다.</li>
+    </ul></li>
+  <li>프로젝트 위험계획 수립
+    <ul class="dash2">
+      <li>프로젝트를 진행하면서 발생 가능한 모든 위험을 식별하여 사전 대응방안을 수립한다.</li>
+      <li>식별된 위험은 위험의 영향도와 빈도, 발생가능성에 따라 위험의 우선순위를 설정한다.</li>
+      <li>예상되는 위험에 대한 대응은 회피, 전이, 완화, 수용으로 구분하여 위험 관리 계획서를 작성한다.</li>
+    </ul></li>
+</ul>
+<aside class="note"><b>KPI</b><br>핵심성과지표</aside>
+<h5>② <mark>데이터 준비(Preparing)</mark></h5>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" rowspan="3" style="width:110px">데이터 준비</td><td style="width:230px">필요 데이터 정의</td><td><ul class="dash"><li>데이터 정의</li><li>데이터 획득 방안 수립</li></ul></td></tr>
+  <tr><td>데이터 스토어 설계</td><td><ul class="dash"><li>정형 데이터 스토어 설계</li><li>비정형 데이터 스토어 설계</li></ul></td></tr>
+  <tr><td>데이터 수집 및 정합성 점검</td><td><ul class="dash"><li>데이터 수집 및 저장</li><li>데이터 정합성 점검</li></ul></td></tr>
+</table>
+</div>
+<ul class="dash">
+  <li>필요 데이터 정의
+    <ul class="dash2">
+      <li>전사 차원에서 필요한 데이터를 정의한다.</li>
+      <li>정형, 비정형, 반정형 등 모든 내외부 데이터를 대상으로 데이터의 속성, 오너, 관련 시스템 담당자 등을 포함한 데이터 정의서를 작성한다.</li>
+      <li>내부 데이터 획득 시 부서 간 업무협조와 개인정보보호 및 정보보안과 관련된 문제점을 사전에 파악한다.</li>
+      <li>외부 데이터 획득 시 시스템 간 다양한 인터페이스 및 법적 이슈를 고려한다.</li>
+      <li>구체적인 데이터 획득방안을 상세하게 수립하여 혹시 모를 프로젝트의 지연을 방지한다.</li>
+    </ul></li>
+</ul>
+
+<div class="page-mark">1-111</div>
+
+<ul class="dash">
+  <li>데이터 스토어 설계
+    <ul class="dash2">
+      <li>전사 차원의 데이터 스토어를 설계한다.</li>
+      <li>정형, 비정형, 반정형 데이터를 모두 저장할 수 있도록 설계한다.</li>
+      <li>데이터의 효율적인 저장과 활용을 위해 데이터 스토어의 논리적, 물리적 설계를 구분하여 수행한다.</li>
+    </ul></li>
+  <li>데이터 수집 및 정합성 점검
+    <ul class="dash2">
+      <li>크롤링, 시스템 간 실시간 처리, 배치 처리, 데이터베이스 간 연동, API를 이용한 개발, ETL 도구 활용, 스크립트 작성 등 다양한 방법이 있다.</li>
+      <li>데이터 거버넌스에 근거하여 메타 데이터 및 데이터 사전 등이 작성되어 적용되고 있는지 주기적으로 확인한다.</li>
+      <li>데이터의 품질을 확보하기 위한 정합성 검증을 실시하며, 이를 위해 데이터 스토어 품질 점검을 수행한다.</li>
+      <li>데이터 품질개선이 필요한 부분에 대하여 보완 작업을 진행한다.</li>
+    </ul></li>
+</ul>
+<aside class="note">
+  정형 데이터 스토어는 일반적으로 관계형 데이터베이스를 이용한다. 비정형, 반정형 데이터 스토어는 하둡, NoSQL 등을 이용한다.
+  <hr>다양한 도구를 활용하여 데이터를 수집하고 데이터 스토어에 저장한다.
+  <hr><b>원시 데이터(Raw Data)</b><br>수집된 데이터의 초기 형태. 원시 데이터는 다양한 형식과 소스에서 수집될 수 있으며, 가공되지 않거나 구조화되지 않은 형태로 존재하기 때문에 분석 가능한 형태로 가공하고 변환하는 과정이 필요
+</aside>
+<h5>③ <mark>데이터 분석(Analyzing)</mark></h5>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" rowspan="5" style="width:110px">데이터 분석</td><td style="width:200px">분석용 데이터 준비</td><td><ul class="dash"><li>비즈니스 룰 확인</li><li>데이터셋 준비</li></ul></td></tr>
+  <tr><td>텍스트 분석</td><td><ul class="dash"><li>텍스트 데이터 확인 및 추출</li><li>텍스트 데이터 분석</li></ul></td></tr>
+  <tr><td>탐색적 분석</td><td><ul class="dash"><li>탐색적 데이터 분석</li><li>데이터 시각화 스텝</li></ul></td></tr>
+  <tr><td>모델링</td><td><ul class="dash"><li>데이터 분할</li><li>데이터 모델링</li><li>모델 적용 및 운영 방안</li></ul></td></tr>
+  <tr><td>모델 평가 및 검증</td><td><ul class="dash"><li>모델 평가</li><li>모델 검증</li></ul></td></tr>
+</table>
+</div>
+<ul class="dash">
+  <li>분석용 데이터 준비
+    <ul class="dash2">
+      <li>프로젝트의 목표를 정확하게 인식하고 세부적인 비즈니스 룰을 파악한다.</li>
+      <li>분석에 필요한 데이터의 범위를 확인하여 데이터베이스나 구조화된 형태로 구성한다.</li>
+      <li>필요한 경우 적절한 가공을 통하여 입력 데이터로 사용될 수 있도록 한다.</li>
+      <li>분석용 작업 공간과 전사 차원의 데이터 스토어로 분리할 수도 있다.</li>
+    </ul></li>
+  <li>텍스트 분석
+    <ul class="dash2">
+      <li>데이터 스토어에서 필요한 텍스트 데이터를 추출하여 다양한 기법으로 분석하고 모형을 구축한다.</li>
+      <li>텍스트 분석 결과는 모델링 태스크와 연동하여 프로젝트 목적에 부합하는 최종 모형을 구축한다.</li>
+      <li>구축된 모형은 텍스트 시각화 도구로 모형의 의미 전달을 명확화한다.</li>
+    </ul></li>
+</ul>
+<aside class="note">텍스트 분석을 위해 용어사전이 필요하며 업무 도메인에 맞도록 작성한다.</aside>
+
+<div class="page-mark">1-112</div>
+
+<ul class="dash">
+  <li>탐색적 분석
+    <ul class="dash2">
+      <li>분석용 데이터셋에 대한 정합성 검토, 데이터 요약, 데이터 특성을 파악하고 모델링에 필요한 데이터를 편성한다.</li>
+      <li>다양한 관점으로 평균, 분산 등 기초 통계량을 산출하여 데이터의 분포와 변수간의 관계 등 데이터 자체의 특성과 통계적 특성을 파악한다.</li>
+      <li>시각화를 탐색적 데이터 분석을 위한 도구로 활용하여 데이터의 가독성을 명확히 하고 데이터의 형상 및 분포 등 데이터 특성을 파악한다.</li>
+      <li>모델링 또는 향후 시스템 구현을 위한 사용자 인터페이스 또는 프로토타입으로 시각화를 활용한다.</li>
+      <li>모형의 시스템화를 위한 시각화를 목적으로 활용할 경우 시각화 기획, 시각화 설계, 시각화 구현 등 별도의 프로세스를 따라 진행이 필요하다.</li>
+    </ul></li>
+  <li>모델링
+    <ul class="dash2">
+      <li>모델링을 효과적으로 진행하기 위하여 사전에 데이터셋을 학습용과 테스트용으로 분할하여 준비한다.</li>
+      <li>모형에 적용하는 기법에 따라 교차검증을 수행하거나 앙상블 기법을 적용할 경우 데이터 분할 또는 검증 횟수, 생성모형 개수 등의 설정이 필요하다.</li>
+      <li>기계학습 등을 이용한 데이터 모델링은 훈련용 데이터를 활용하여 분류, 예측, 군집 등의 모형을 만들어 가동 중인 운영 시스템에 적용할 수 있다.</li>
+      <li>필요한 경우 비정형 데이터 분석결과를 통합적으로 활용하여 프로젝트 목적에 맞는 통합 모델링을 수행할 수 있다.</li>
+      <li>개발된 모형을 활용하기 위해 상세한 알고리즘 설명서 작성과 모니터링 방안이 필요하다.</li>
+      <li>알고리즘 설명서는 상황에 따라 의사코드(Pseudocode) 수준으로 상세히 작성하여야 한다.</li>
+      <li>개발된 모형의 안정적인 운영을 위한 모니터링 방안을 수립하여야 한다.</li>
+    </ul></li>
+  <li>모델 평가 및 검증
+    <ul class="dash2">
+      <li>프로젝트 정의서의 평가 기준에 따라 모형의 완성도를 평가한다.</li>
+      <li>품질관리 차원에서 모형 평가 프로세스를 진행한다.</li>
+      <li>모형 결과 보고서 내의 알고리즘을 파악하고 테스트용 데이터나 검증을 위한 별도의 데이터를 활용하여 모형의 객관성과 실무 적용성을 검증한다.</li>
+      <li>요구되는 성능 목표에 미달하는 경우 모형 튜닝 작업을 수행한다.</li>
+    </ul></li>
+</ul>
+<aside class="note">
+  데이터 분석 목적과 데이터셋 특성에 따라 모형 평가 방법이 달라진다.
+  <hr>모형의 품질을 최종 검증하는 프로세스이다.
+</aside>
+<h5>④ <mark>시스템 구현(Developing)</mark></h5>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" rowspan="2" style="width:110px">시스템 구현</td><td style="width:230px">설계 및 구현</td><td><ul class="dash"><li>시스템 분석 및 설계</li><li>시스템 구현</li></ul></td></tr>
+  <tr><td>시스템 테스트 및 운영</td><td><ul class="dash"><li>시스템 테스트</li><li>시스템 운영 계획</li></ul></td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-113</div>
+
+<ul class="dash">
+  <li>설계 및 구현
+    <ul class="dash2">
+      <li>시스템 및 데이터 아키텍처와 사용자 인터페이스 설계를 진행한다.</li>
+      <li>가동 중인 시스템에 적용하기 위해서는 운영 시스템에 대한 분석이 선행되어야 한다.</li>
+      <li>사용 중인 정보시스템 개발방법론을 응용하여 적용 가능하다.</li>
+      <li>시스템 설계서를 바탕으로 BI 패키지를 활용하거나 프로그래밍을 통하여 모형을 구현한다.</li>
+    </ul></li>
+  <li>시스템 테스트 및 운영
+    <ul class="dash2">
+      <li>단위 테스트, 통합 테스트, 시스템 테스트 등을 실시한다.</li>
+      <li>시스템 테스트는 품질관리 차원에서 진행함으로써 적용된 시스템의 객관성과 완전성을 확보한다.</li>
+      <li>시스템 운영자, 사용자를 대상으로 필요한 교육을 실시한다.</li>
+      <li>시스템 운영계획을 수립한다.</li>
+    </ul></li>
+</ul>
+<h5>⑤ <mark>평가 및 전개(Deploying)</mark></h5>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" rowspan="2" style="width:110px">평가 및 전개</td><td style="width:230px">모델 발전계획 수립</td><td><ul class="dash"><li>모델 발전계획</li></ul></td></tr>
+  <tr><td>프로젝트 평가 및 보고</td><td><ul class="dash"><li>프로젝트 성과 평가</li><li>프로젝트 종료</li></ul></td></tr>
+</table>
+</div>
+<ul class="dash">
+  <li>모델 발전계획 수립
+    <ul class="dash2">
+      <li>모형의 생명주기를 설정하고 주기적인 평가를 실시하여 모형을 유지보수하거나 재구축하기 위한 방안을 마련한다.</li>
+      <li>모형 업데이트를 자동화하는 방안을 수립하여 적용할 수 있다.</li>
+      <li>발전계획을 상세하게 수립하여 모형의 계속성을 확보해야 한다.</li>
+    </ul></li>
+  <li>프로젝트 평가 및 보고
+    <ul class="dash2">
+      <li>프로젝트 성과를 정량적 성과, 정성적 성과로 나눠 성과 평가서를 작성한다.</li>
+      <li>프로젝트 진행과정에서 산출된 지식이나 프로세스 등 산출물을 자산화한다.</li>
+      <li>프로젝트 최종 보고서를 작성하여 보고한 후 종료한다.</li>
+    </ul></li>
+</ul>
+
+<div class="check">
+<div class="check-head">개념 체크</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">1</span> 다음 중 빅데이터 분석 방법론에 대한 설명으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>응용 서비스 개발을 위한 3계층으로 구성되어 있다.</li>
+    <li>각 단계별로 세부 태스크와 스텝이 정의되어 있다.</li>
+    <li>분석 기획, 데이터 준비, 데이터 분석, 시스템 구현, 평가 및 전개 총 5단계로 걸쳐 진행된다.</li>
+    <li>탐색적 분석과 모델링을 위한 용어사전이 필요하다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ④</div>
+  <ul class="dash sol">
+    <li>데이터 분석 단계에서 텍스트 분석을 위해 용어사전이 필요하며 업무 도메인에 맞도록 작성해야 한다.</li>
+  </ul>
+</div>
+
+<div class="page-mark">1-114</div>
+
+<div class="q">
+  <div class="q-title"><span class="q-no">2</span> 다음 중 빅데이터 분석 방법론의 분석절차를 나열한 것으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>데이터 분석 단계에서는 분석용 데이터 준비, 텍스트 분석, 탐색적 분석, 모델링, 모델 평가 및 검증을 한다.</li>
+    <li>데이터 준비 단계에서는 비즈니스 이해 및 범위 설정, 프로젝트 정의 및 계획 수립, 프로젝트 위험계획 수립을 한다.</li>
+    <li>시스템 구현 단계에서는 설계 및 구현, 시스템 테스트 및 운영을 한다.</li>
+    <li>평가 및 전개 단계에서는 모델 발전계획 수립, 프로젝트 평가 및 보고를 한다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ②</div>
+  <ul class="dash sol">
+    <li>데이터 준비 단계에서는 필요 데이터 정의, 데이터 스토어 설계, 데이터 수집 및 정합성 점검을 수행한다. 비즈니스 이해 및 범위 설정, 프로젝트 정의 및 계획 수립, 프로젝트 위험계획 수립은 분석 기획 단계에서 수행한다.</li>
+  </ul>
+</div>
+</div>
+
+<h3 id="s1-07"><span class="num">07</span> 데이터 분석 거버넌스</h3>
+
+<h4 id="s1-07-1">1) 데이터 분석 거버넌스(Governance) 개요</h4>
+
+<aside class="note"><b>거버넌스</b><br>업무 프로세스, 정책 및 정보를 만들고 관리하는 지속적인 프로세스로 비즈니스 결과를 위한 전략, 활동, 조직 및 기술을 포함</aside>
+
+<h5>① 데이터 분석 거버넌스의 필요성</h5>
+<ul class="dash">
+  <li>데이터 분석 업무를 하나의 기업 문화로 정착하고 이를 지속적으로 고도화 해 나가기 위해 필요하다.</li>
+</ul>
+
+<h5>② 데이터 분석 거버넌스의 구성요소</h5>
+<ul class="dash">
+  <li>데이터 분석 기획과 관리를 수행하는 조직(Organization)</li>
+  <li>데이터 분석 과제 기획과 운영 프로세스(Process)</li>
+  <li>데이터 분석 지원 인프라(System)</li>
+  <li>데이터 거버넌스(Data)</li>
+  <li>데이터 분석 교육 및 마인드 육성 체계(Human Resource)</li>
+</ul>
+
+<h4 id="s1-07-2">2) 데이터 분석 기획과 관리를 수행하는 조직</h4>
+
+<aside class="note"><b>분석 조직구조</b>
+<ul class="dash">
+  <li>집중형 조직구조</li>
+  <li>기능형 조직구조</li>
+  <li>분산형 조직구조</li>
+</ul>
+</aside>
+
+<div class="boxlist">PART 01 – CHAPTER 01 – SECTION 01 빅데이터 개요 및 활용 – [06 빅데이터 조직 및 인력]을 참고</div>
+
+<h4 id="s1-07-3">3) 데이터 분석 과제 기획과 운영 프로세스</h4>
+<h5>① 데이터 분석 과제 관리 프로세스의 구성</h5>
+<ul class="dash">
+  <li>과제 발굴 단계
+    <ul class="dash2">
+      <li>개별 조직이나 개인이 도출한 데이터 분석 아이디어를 발굴한다.</li>
+      <li>발굴된 아이디어를 과제화하여 데이터 분석 과제 풀로 관리한다.</li>
+      <li>데이터 분석 프로젝트를 선정하는 작업을 수행한다.</li>
+    </ul></li>
+  <li>과제 수행 및 모니터링 단계
+    <ul class="dash2">
+      <li>데이터 분석을 수행할 팀을 구성한다.</li>
+      <li>데이터 분석 과제 실행 시 지속적인 모니터링을 수행한다.</li>
+      <li>데이터 분석 과제 결과를 공유하고 개선한다.</li>
+    </ul></li>
+</ul>
+
+<div class="page-mark">1-115</div>
+
+<h5>② 데이터 분석 과제 관리 프로세스의 특징</h5>
+<ul class="dash">
+  <li>조직 내에 데이터 분석 문화를 내재화하여 경쟁력을 확보할 수 있다.</li>
+  <li>결과물을 잘 축적하여 관리함으로써 향후 유사 데이터 분석 과제 수행 시 시행착오를 최소화할 수 있다.</li>
+  <li>데이터 분석 프로젝트를 효율적으로 진행할 수 있다.</li>
+</ul>
+
+<h5>③ 데이터 분석 과제 관리 프로세스</h5>
+<figure><img src="figs/fig_1-115_01.png" alt="데이터 분석 과제 관리 프로세스 — 과제 발굴: 1. 분석 Idea 발굴 → 2. 분석과제 후보 제안 → 3. 분석과제 확정(과제 후보 Pool → 전사분석조직 → 분석과제 → 과제 제안자), 과제 수행: 4. 팀 구성 → 5. 분석과제 실행 → 6. 분석과제 진행 관리 → 7. 결과 공유/개선(과제 결과 Pool ← 전사분석조직)"></figure>
+
+<h4 id="s1-07-4">4) 데이터 분석 지원 인프라</h4>
+<h5>① 데이터 분석 플랫폼 구축</h5>
+<ul class="dash">
+  <li>데이터 분석 마스터 플랜을 기획하는 단계에서부터 장기적, 지속적, 안정적으로 활용할 수 있도록 고려한다.
+    <ul class="dash2">
+      <li>단기적으로 구축하기 쉬운 개별 시스템보다는 확장성을 고려한 플랫폼 구조 도입이 적절하다.</li>
+    </ul></li>
+</ul>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:50%">개별 시스템</td><td class="h">플랫폼 구조</td></tr>
+  <tr>
+    <td style="text-align:center"><img src="figs/fig_1-115_02.png" alt="개별 시스템 — A, B, C, D, E, F 시스템이 서로 그물망 형태로 직접 연결된 구조" style="max-width:190px;width:100%"></td>
+    <td style="text-align:center"><img src="figs/fig_1-115_03.png" alt="플랫폼 구조 — A, B, C, D, E, F 시스템이 분석 플랫폼을 중심으로 연결된 구조" style="max-width:210px;width:100%"></td>
+  </tr>
+  <tr>
+    <td><ul class="dash"><li>시스템 간 자체적인 데이터 교환</li><li>시스템별 독립적인 데이터 관리</li><li>확장 시 시스템 간 인터페이스 폭증</li></ul></td>
+    <td><ul class="dash"><li>분석 플랫폼을 활용한 공동기능 활용</li><li>중앙집중적 데이터 관리</li><li>시스템 간 인터페이스 최소화</li></ul></td>
+  </tr>
+</table>
+</div>
+
+<h5>② 데이터 분석 플랫폼의 정의</h5>
+<ul class="dash">
+  <li>데이터 분석 서비스를 위한 응용프로그램이 실행될 수 있는 환경과 기초를 이루는 컴퓨터 시스템이다.</li>
+</ul>
+
+<h5>③ 데이터 분석 플랫폼의 특징</h5>
+<ul class="dash">
+  <li>데이터 분석에 필요한 프로그래밍 및 실행, 이를 서비스할 수 있는 환경을 제공한다.</li>
+  <li>새로운 데이터 분석 니즈가 발생할 경우 개별 시스템을 추가하지 않으면서도 추가적인 서비스 제공이 가능하다. (확장성 증대)</li>
+</ul>
+
+<div class="page-mark">1-116</div>
+
+<h5>④ 데이터 분석 플랫폼의 구성요소</h5>
+
+<aside class="note"><b>라이브러리</b><br>공통으로 사용될 수 있는 부분 기능들을 모아 놓은 것</aside>
+
+<figure><img src="figs/fig_1-116_01.png" alt="데이터 분석 플랫폼의 구성요소 — 광의의 분석 플랫폼: 분석 서비스 제공 엔진, 분석 애플리케이션, 분석 서비스 제공 API, 협의의 분석 플랫폼(데이터처리 Framework, 분석 엔진, 분석 라이브러리), 운영체제(OS), 하드웨어"></figure>
+
+<h4 id="s1-07-5">5) 데이터 거버넌스</h4>
+<h5>① 데이터 거버넌스의 필요성</h5>
+<ul class="dash">
+  <li>개별 시스템 단위로 데이터를 관리할 경우 데이터 중복, 비표준화에 따른 정합성 오류 등으로 데이터 활용도가 저하될 수 있다.</li>
+  <li>빅데이터 프로젝트의 효과적 추진 및 효과의 지속성을 얻기 위해서는 데이터 거버넌스 체계 수립이 필요하다.
+    <ul class="dash2">
+      <li>데이터 거버넌스가 없는 빅데이터의 적용은 단발성 효과에 불과할 가능성이 높다.</li>
+    </ul></li>
+</ul>
+
+<h5>② 데이터 거버넌스의 정의</h5>
+<ul class="dash">
+  <li>전사 차원의 모든 데이터에 대하여 정책 및 지침, 표준화, 운영조직과 책임 등의 표준화된 관리 체계를 수립하고 운영하기 위한 프레임워크와 저장소를 구축하는 것이다.</li>
+</ul>
+
+<h5>③ 데이터 거버넌스의 주요 관리 대상</h5>
+
+<aside class="note">학생부 데이터에서 이름, 생년월일, 주소, 전화번호 등을 예로 들 수 있다.<hr>하나의 영상 파일(데이터)에 대한 메타 데이터는 파일 생성 날짜, 시간, 작성자, 파일크기 등이 있을 수 있다.</aside>
+
+<ul class="dash">
+  <li>마스터 데이터(Master Data)
+    <ul class="dash2">
+      <li>마스터 파일을 형성하는 데이터이며, 데이터를 처리 및 조작하기 위하여 사용되는 기본 데이터이다.</li>
+    </ul></li>
+  <li>메타 데이터(Meta Data)
+    <ul class="dash2">
+      <li>데이터에 대한 구조화된 데이터이며, <mark>다른 데이터를 설명하기 위해 사용되는 데이터</mark>이다.</li>
+    </ul></li>
+  <li>데이터 사전(Data Dictionary)
+    <ul class="dash2">
+      <li>효과적인 데이터 자원관리를 위해 자료의 이름, 표현 방식, 자료의 의미와 사용 방식, 다른 자료와의 관계 등을 저장해놓은 데이터이다.</li>
+    </ul></li>
+</ul>
+
+<h5>④ 데이터 거버넌스의 특징</h5>
+<ul class="dash">
+  <li>데이터의 가용성, 유용성, 통합성, 보안성, 안전성을 확보할 수 있다.</li>
+  <li>빅데이터 프로젝트를 성공으로 이끄는 기반을 마련할 수 있다.</li>
+  <li>독자적인 구축도 가능하지만 전사 차원의 IT거버넌스나 EA(Enterprise Architecture)의 구성요소가 될 수도 있다.</li>
+</ul>
+
+<div class="page-mark">1-117</div>
+
+<h5>⑤ 빅데이터 거버넌스의 특징</h5>
+<ul class="dash">
+  <li>데이터 거버넌스에 추가적으로 빅데이터가 갖는 고유한 특성들을 고려하여 관리 체계를 수립한 것이다.
+    <ul class="dash2">
+      <li>빅데이터의 효율적 관리, 다양한 데이터의 관리체계, 데이터 최적화, 정보보호, 데이터 생명주기 관리, 데이터 카테고리별 관리 책임자 지정 등 다양한 요소들을 포함할 수 있다.</li>
+    </ul></li>
+</ul>
+
+<h5>⑥ 데이터 거버넌스의 구성요소</h5>
+<ul class="dash">
+  <li>원칙(Principle)
+    <ul class="dash2">
+      <li>데이터를 유지하고 관리하기 위한 지침 및 가이드</li>
+      <li>보안, 품질기준, 변경관리 등</li>
+    </ul></li>
+  <li>조직(Organization)
+    <ul class="dash2">
+      <li>데이터를 관리할 조직의 역할과 책임</li>
+      <li>데이터 관리자, 데이터베이스 관리자, 데이터 아키텍트 등</li>
+    </ul></li>
+  <li>프로세스(Process)
+    <ul class="dash2">
+      <li>데이터 관리를 위한 활동과 체계</li>
+      <li>작업 절차, 모니터링 활동, 측정 활동 등</li>
+    </ul></li>
+</ul>
+
+<h5>⑦ 데이터 거버넌스의 체계</h5>
+
+<aside class="note"><b>다이어그램</b><br>기호, 선, 점 등을 사용해 상호관계나 과정, 구조 등을 이해시키는 설명적 그림</aside>
+
+<figure><img src="figs/fig_1-117_01.png" alt="데이터 거버넌스의 체계 — 데이터 표준화 → 데이터 관리 체계 → 데이터 저장소 관리(Repository) → 표준화 활동 → 데이터 표준화로 이어지는 순환 구조"></figure>
+
+<ul class="dash">
+  <li>데이터 표준화
+    <ul class="dash2">
+      <li>데이터 표준 용어 설정<br>표준 단어 사전, 표준 도메인 사전, 표준 코드 등으로 구성되며, 각 사전 간 상호 검증이 가능한 점검 프로세스를 포함한다.</li>
+      <li>명명 규칙 수립<br>필요시 언어별로 작성되어 기준 언어와의 연결 상태(mapping)를 유지한다.</li>
+      <li>메타 데이터 및 데이터 사전 구축<br>데이터의 원활한 활용을 위한 데이터 구조 체계를 마련하며, 메타 엔티티 관계 다이어그램 등을 제공한다.</li>
+    </ul></li>
+  <li>데이터 관리 체계
+    <ul class="dash2">
+      <li>표준 데이터를 포함한 메타 데이터와 데이터 사전의 관리 원칙 수립 및 이에 근거한 항목별 상세 프로세스를 수립한다.</li>
+      <li>데이터 관리와 운영을 위한 담당자 및 조직별 역할과 책임을 구체적으로 마련한다.</li>
+      <li>빅데이터의 경우 데이터 생명 주기 관리방안도 수립하여야 한다.</li>
+    </ul></li>
+</ul>
+
+<div class="page-mark">1-118</div>
+
+<ul class="dash">
+  <li>데이터 저장소 관리
+    <ul class="dash2">
+      <li>메타 데이터 및 표준 데이터를 관리하기 위한 전사 차원의 저장소를 구성한다.</li>
+      <li>저장소는 데이터 관리 체계 지원을 위한 Workflow 및 관리용 Application을 지원하여야 한다.</li>
+      <li>관리 대상 시스템과의 인터페이스를 통한 통제가 가능해야 한다.</li>
+      <li>데이터 구조 변경에 따른 사전 영향 평가 등을 수행하여야 한다.</li>
+    </ul></li>
+  <li>표준화 활동
+    <ul class="dash2">
+      <li>데이터 거버넌스 체계를 구축한 후 표준 준수 여부를 주기적으로 점검한다.</li>
+      <li>데이터 거버넌스의 조직 내 안정적인 정착을 위한 계속적인 변화관리 및 주기적인 교육을 진행하여야 한다.</li>
+      <li>지속적인 데이터 표준화 개선 활동을 통해 실용성을 증대할 수 있다.</li>
+    </ul></li>
+</ul>
+
+<h4 id="s1-07-6">6) 데이터 분석 교육 및 마인드 육성 체계</h4>
+<h5>① 데이터 분석 교육 및 마인드 육성을 위한 변화 관리 필요성</h5>
+<ul class="dash">
+  <li>데이터 분석의 가치를 극대화하고 내재화하여 안정적인 추진기로 접어들기 위해 필요하다.
+    <ul class="dash2">
+      <li>새로운 체계를 도입하고자 할 경우 저항이나 기존 형태로 돌아가고자 하는 관성이 발생한다.</li>
+    </ul></li>
+</ul>
+
+<h5>② 데이터 분석 문화 도입방안</h5>
+<figure><img src="figs/fig_1-118_01.png" alt="분석 내재화 단계 — 준비기·도입기·안정 추진기: 조직 내 관성의 이동방향, 분석중심 문화가 미도입된 현재 균형상태/막연한 불안감 존재 → 기존 행태로 되돌아가려는 경향 → 많은 조직이 분석 과제를 성공시키지 못하고 포기하는 단계 → 성공 시 강한 탄성에 의해 변화 가속화 → 분석 활용이 일상화된 균형상태"><figcaption>▲ 데이터 분석 도입과 문화적 대응</figcaption></figure>
+
+<ul class="dash">
+  <li>적극적 도입 방안
+    <ul class="dash2">
+      <li>적합한 데이터 분석 과제를 도출한다.</li>
+      <li>효율적인 데이터 분석 업무 수행을 위한 데이터 분석 조직을 마련한다.</li>
+      <li>데이터 분석 마인드 형성을 위해 인력에 대한 지속적인 교육과 훈련을 실시한다.</li>
+      <li>데이터 기반 의사결정을 할 수 있는 기업 문화를 정착시키기 위한 변화관리를 지속적으로 계획하고 수행한다.</li>
+    </ul></li>
+</ul>
+
+<div class="page-mark">1-119</div>
+
+<aside class="note"><b>큐레이션</b><br>여러 정보를 수집, 선별하고 이에 새로운 가치를 부여해 배포하는 것<hr><b>매시업(Mash-Up)</b><br>여러 웹서비스 업체들이 제공하는 각종 콘텐츠와 서비스를 융합하여 새로운 서비스를 만들어내는 것</aside>
+
+<ul class="dash">
+  <li>데이터 분석 교육 방향
+    <ul class="dash2">
+      <li>단순한 도구 사용법 교육이 아닌 데이터 분석 역량을 확보하고 강화하는 방향으로 진행한다.</li>
+      <li>데이터 분석 기획자에 대한 데이터 분석 큐레이션 교육을 진행한다.</li>
+      <li>데이터 분석 실무자에 대한 데이터 분석 기법 및 도구 사용에 대한 교육을 진행한다.</li>
+      <li>기존 업무 수행자를 대상으로 데이터 분석 기회 발굴과 시나리오 작성법 등을 교육한다.</li>
+      <li>조직 내 데이터 분석 기반 업무 수행 문화가 정착되도록 분석적인 사고 향상 교육을 실시한다.</li>
+      <li>데이터를 바라보는 관점이나 데이터 분석과 활용 등이 하나의 문화로 받아들여지도록 유도한다.</li>
+    </ul></li>
+  <li>데이터 분석 방법 및 분석적 사고 교육</li>
+</ul>
+
+<figure><img src="figs/fig_1-119_01.png" alt="데이터 분석 방법 및 분석적 사고 교육 — 중앙: 프로젝트의 주도적 참여, 상시적 분석 역량/문화 강화. 상단: 비즈니스 분석 기회 발굴 및 구체화 과정에 대한 교육을 통해 비즈니스 현업 주도의 프로젝트 수행에 의한 가장 실용적인 분석 도출. 좌측 항목: 분석기회 발굴 및 구체화 방법, 분석 시나리오 작성 방법, 전사 목표 최적화를 위한 분석의 균형 고려 방법, 분석 기법 정의 방법, 분석기회 적용에 대한 ROI 평가 방법. 우측 항목: 분석 데이터 수집 및 가공 방법, 데이터 Mash-Up을 통한 분석정확도 및 품질강화 방법, 분석 아키텍처 설계 고려사항, 비주얼 분석을 통한 패턴 분석하기, 프로세스에 분석 내재화하기. 좌측 박스: 창의적 사고 및 문제해결을 위한 체계적 접근법 숙지, 데이터 분석기회발굴 및 과제 정의 방법 이해, 다양한 빅데이터 분석 기법의 활용, 빅데이터 개념 및 관련 기술의 습득. 하단: 분석 Tool에 대한 교육이 아닌, 분석적 사고, 분석방법, 분석을 통한 업무실행 방식에 대한 교육을 통해 본원적 분석역량 강화 및 분석문화 확산"></figure>
+
+<div class="check">
+<div class="check-head">개념 체크</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">1</span> 다음 중 데이터 분석 거버넌스의 구성요소에 속하지 않는 것은?</div>
+  <ol class="circled q-opt">
+    <li>데이터 분석 인프라</li>
+    <li>데이터 거버넌스</li>
+    <li>데이터 사전</li>
+    <li>데이터 분석 교육</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ③</div>
+  <ul class="dash sol">
+    <li>데이터 분석 거버넌스의 구성요소는 데이터 분석 기획과 관리를 수행하는 조직(Organization), 데이터 분석 과제 기획과 운영 프로세스(Process), 데이터 분석 지원 인프라(System), 데이터 거버넌스(Data), 데이터 분석 교육 및 마인드 육성 체계(Human Resource)이다.</li>
+  </ul>
+</div>
+
+<div class="page-mark">1-120</div>
+
+<div class="q">
+  <div class="q-title"><span class="q-no">2</span> 다음 중 협의의 분석 플랫폼의 구성요소로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>데이터 처리 프레임워크</li>
+    <li>분석 애플리케이션</li>
+    <li>분석 엔진</li>
+    <li>분석 라이브러리</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ②</div>
+  <ul class="dash sol">
+    <li>협의의 분석 플랫폼은 데이터 처리 프레임워크, 분석 엔진, 분석 라이브러리로 구성되어 있다.</li>
+    <li>광의의 분석 플랫폼은 협의의 분석 플랫폼을 포함하여 분석 서비스 제공 엔진, 분석 애플리케이션, 분석 서비스 제공 API, 운영체제로 구성되어 있다.</li>
+  </ul>
+</div>
+
+<div class="q">
+  <div class="q-title"><span class="q-no">3</span> 다음 중 데이터 거버넌스의 주요 관리 대상으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>마스터 데이터</li>
+    <li>메타 데이터</li>
+    <li>데이터 저장소</li>
+    <li>데이터 사전</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ③</div>
+  <ul class="dash sol">
+    <li>데이터 거버넌스의 주요 관리 대상은 마스터 데이터, 메타 데이터, 데이터 사전이다.</li>
+  </ul>
+</div>
+</div>
+
+<h3 id="s1-08"><span class="num">08</span> 데이터 분석 수준진단</h3>
+
+<h4 id="s1-08-1">1) 데이터 분석 수준진단 개요</h4>
+<h5>① 분석 수준진단 필요성</h5>
+<ul class="dash">
+  <li>조직 경쟁력 강화를 위한 데이터 분석의 도입 여부와 활용을 위해 현 상태에 대한 명확한 점검이 필요하다.
+    <ul class="dash2">
+      <li>데이터 분석의 수준진단을 통해 데이터 분석 기반을 만들기 위해 무엇을 준비하고 더 보완해야 하는지 확인 가능하고, 데이터 분석의 유형이나 방향을 결정할 수 있다.</li>
+    </ul></li>
+</ul>
+
+<h5>② 분석 수준진단 목표</h5>
+<ul class="dash">
+  <li>각 조직이 현재 수행하고 있는 데이터 분석 수준을 명확히 이해하고, 수준진단 결과를 바탕으로 미래 목표수준을 정의한다.
+    <ul class="dash2">
+      <li>데이터 분석을 위한 기반이나 환경이 타사 대비 어느 정도 수준이고, 어느 영역에 선택과 집중을 해야 하는지, 무엇을 보완해야 하는지 등 개선 방안을 도출한다.</li>
+    </ul></li>
+</ul>
+
+<div class="page-mark">1-121</div>
+
+<h5>③ 분석 수준진단 프레임워크</h5>
+
+<aside class="note"><b>데이터 분석 준비도</b><br>데이터를 분석하여 업무 및 의사결정에 활용하기 위한 준비가 어느정도 되어 있는지 점검하는 체계</aside>
+
+<ul class="dash">
+  <li>6개 영역의 분석 준비도와 3개 영역의 분석 성숙도를 동시에 평가할 수 있다.</li>
+</ul>
+
+<figure><img src="figs/fig_1-121_01.png" alt="분석 수준진단 프레임워크 — 분석 준비도(Readiness): 분석 업무, 분석 인력·조직, 분석 기법, 분석 데이터, 분석 문화, 분석 인프라의 6개 영역 / 분석 성숙도(Maturity): 도입 → 활용 → 확산 → 최적화 단계와 비즈니스, 조직 및 역량, IT의 3개 영역"></figure>
+
+<h4 id="s1-08-2">2) 분석 준비도(Readiness)</h4>
+<p>조직 내 데이터 분석 업무 도입을 목적으로 현재 수준을 파악하기 위한 진단방법이다.</p>
+
+<h5>① 분석 준비도의 원리</h5>
+<ul class="dash">
+  <li>총 6가지 영역을 대상으로 현재 수준을 파악한다.
+    <ul class="dash2">
+      <li>각 진단 영역별로 세부 항목에 대한 수준까지 파악한다.</li>
+    </ul></li>
+  <li>각 진단 결과 전체 요건 중 일정 수준 이상 충족하면 데이터 분석 업무를 도입한다.
+    <ul class="dash2">
+      <li>만일 일정 수준 이상 충족되지 못하면 데이터 분석 환경을 먼저 조성한다.</li>
+    </ul></li>
+</ul>
+
+<h5>② 데이터 분석 준비도 프레임워크</h5>
+
+<aside class="note"><b>EAI(Enterprise Application Integration)</b><br>모든 애플리케이션을 유기적으로 연동하여 필요한 정보를 중앙 집중적으로 통합, 관리, 사용할 수 있는 환경을 구현하는 것</aside>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:33%">분석 업무 파악</td><td class="h" style="width:34%">인력 및 조직</td><td class="h">분석 기법</td></tr>
+  <tr>
+    <td><ul class="dash"><li>발생한 사실 분석 업무</li><li>예측 분석 업무</li><li>시뮬레이션 분석 업무</li><li>최적화 분석 업무</li><li>분석 업무 정기적 개선</li></ul></td>
+    <td><ul class="dash"><li>분석 전문가 직무 존재</li><li>분석 전문가 교육 훈련 프로그램</li><li>관리자들의 기본적 분석 능력</li><li>전사 분석업무 총괄 조직 존재</li><li>경영진 분석 업무 이해 능력</li></ul></td>
+    <td><ul class="dash"><li>업무별 적합한 분석기법 사용</li><li>분석 업무 도입 방법론</li><li>분석기법 라이브러리</li><li>분석기법 효과성 평가</li><li>분석기법 정기적 개선</li></ul></td>
+  </tr>
+  <tr><td class="h">분석 데이터</td><td class="h">분석 문화</td><td class="h">IT 인프라</td></tr>
+  <tr>
+    <td><ul class="dash"><li>분석업무를 위한 데이터 충분성</li><li>분석업무를 위한 데이터 신뢰성</li><li>분석업무를 위한 데이터 적시성</li><li>비구조적 데이터 관리</li><li>외부 데이터 활용 체계</li><li>마스터데이터 관리(MDM)</li></ul></td>
+    <td><ul class="dash"><li>사실에 근거한 의사결정</li><li>관리자의 데이터 중시</li><li>회의 등에서 데이터 활용</li><li>경영진의 직관보다 데이터</li><li>데이터 공유 및 협업 문화</li></ul></td>
+    <td><ul class="dash"><li>운영시스템 데이터 통합</li><li>EAI, ETL 등 데이터유통체계</li><li>분석 전용 서버 및 스토리지</li><li>빅데이터 분석 환경</li><li>통계 분석 환경</li><li>비주얼 분석 환경</li></ul></td>
+  </tr>
+</table>
+</div>
+
+<h4 id="s1-08-3">3) 분석 성숙도 모델</h4>
+<h5>① 분석 성숙도 모델의 정의</h5>
+<ul class="dash">
+  <li>데이터 분석 능력 및 데이터 분석 결과 활용에 대한 조직의 성숙도 수준을 평가하여 현재 상태를 점검하는 방법이다.</li>
+</ul>
+
+<div class="page-mark">1-122</div>
+
+<aside class="note"><b>OLAP</b><br>사용자가 대용량 데이터를 쉽고 다양한 관점에서 추출 및 분석할 수 있도록 지원하는 기술<hr><b>샌드박스</b><br>보호된 영역 내에서 프로그램을 동작시키는 것, 보안 모델</aside>
+
+<h5>② 분석 성숙도 모델의 특징</h5>
+<ul class="dash">
+  <li>비즈니스 부문, 조직 및 역량 부문, IT 부문 총 3개 부문을 대상으로 실시한다.</li>
+  <li>성숙도 수준에 따라 도입, 활용, 확산, 최적화 단계로 구분한다.</li>
+</ul>
+
+<h5>③ 분석 성숙도 모델의 상세화</h5>
+
+<aside class="note">데이터를 얼마나 잘 수집, 분석, 소비 및 채택할 수 있는지가 성숙도를 결정한다.</aside>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:90px">단계</td><td class="h">도입 단계</td><td class="h">활용 단계</td><td class="h">확산 단계</td><td class="h">최적화 단계</td></tr>
+  <tr>
+    <td class="h">설명</td>
+    <td>분석을 시작하여 환경과 시스템을 구축</td>
+    <td>분석 결과를 실제 업무에 적용</td>
+    <td>전사 차원에서 분석을 관리하고 공유</td>
+    <td>분석을 진화시켜서 혁신 및 성과 향상에 기여</td>
+  </tr>
+  <tr>
+    <td class="h">비즈니스<br>부문</td>
+    <td><ul class="dash"><li>실적분석 및 통계</li><li>정기보고 수행</li><li>운영 데이터 기반</li></ul></td>
+    <td><ul class="dash"><li>미래 결과 예측</li><li>시뮬레이션</li><li>운영 데이터 기반</li></ul></td>
+    <td><ul class="dash"><li>전사 성과 실시간 분석</li><li>프로세스 혁신 3.0</li><li>분석규칙 관리</li><li>이벤트 관리</li></ul></td>
+    <td><ul class="dash"><li>외부 환경분석 활용</li><li>최적화 업무 적용</li><li>실시간 분석</li><li>비즈니스 모델 진화</li></ul></td>
+  </tr>
+  <tr>
+    <td class="h">조직 ·<br>역량부문</td>
+    <td><ul class="dash"><li>일부 부서에서 수행</li><li>담당자 역량에 의존</li></ul></td>
+    <td><ul class="dash"><li>전문 담당부서에서 수행</li><li>분석기법 도입</li><li>관리자가 분석 수행</li></ul></td>
+    <td><ul class="dash"><li>전사 모든 부서 수행</li><li>분석 COE 조직 운영</li><li>데이터 사이언티스트 확보</li></ul></td>
+    <td><ul class="dash"><li>데이터 사이언스 그룹</li><li>경영진 분석 활용</li><li>전략 연계</li></ul></td>
+  </tr>
+  <tr>
+    <td class="h">IT 부문</td>
+    <td><ul class="dash"><li>Data Warehouse</li><li>Data Mart</li><li>ETL/EAI</li><li>OLAP</li></ul></td>
+    <td><ul class="dash"><li>실시간 대시보드</li><li>통계 분석 환경</li></ul></td>
+    <td><ul class="dash"><li>빅데이터 관리 환경</li><li>시뮬레이션 · 최적화</li><li>비주얼 분석</li><li>분석 전용 서버</li></ul></td>
+    <td><ul class="dash"><li>분석 협업환경</li><li>분석 Sandbox</li><li>프로세스 내재화</li><li>빅데이터 분석</li></ul></td>
+  </tr>
+</table>
+</div>
+
+<h4 id="s1-08-4">4) 분석 수준진단 결과</h4>
+<h5>① 분석 준비도 및 성숙도 진단 결과</h5>
+<ul class="dash">
+  <li>조직의 현재 데이터 분석 수준을 객관적으로 파악할 수 있다.
+    <ul class="dash2">
+      <li>타사의 데이터 분석 수준과 비교하여 데이터 분석 경쟁력 확보 및 강화를 위한 목표 수준 설정이 가능하다.</li>
+    </ul></li>
+</ul>
+
+<figure><img src="figs/fig_1-122_01.png" alt="분석 준비도 및 성숙도 진단 결과 산점도 — 가로축 성숙단계(1.0 도입, 2.0 활용, 3.0 확산, 4.0 최적화), 세로축 준비도(30%, 70%, 100%). 여러 기업이 산점으로 표시되어 있으며 A기업이 준비도 약 60%, 성숙단계 1.0 부근에 강조 표시됨"></figure>
+
+<div class="page-mark">1-123</div>
+
+<h5>② 사분면 분석(Analytics Quadrant)</h5>
+<ul class="dash">
+  <li>데이터 분석 관점에서 4가지 유형으로 데이터 분석 수준진단 결과를 구분한다.
+    <ul class="dash2">
+      <li>향후 고려해야 하는 데이터 분석 수준에 대한 목표나 방향을 정의할 수 있으며, 유형별 특성에 따라 개선방안을 수립할 수 있다.</li>
+    </ul></li>
+</ul>
+
+<figure><img src="figs/fig_1-123_01.png" alt="사분면 분석 — 가로축 성숙도(낮음~높음), 세로축 준비도(낮음~높음). 2사분면 정착형: 준비도는 낮으나 조직, 인력, 분석업무, 분석기법 등을 기업 내부에서 제한적으로 사용하고 있어 1차적으로 정착이 필요한 기업. 1사분면 확산형: 기업에 필요한 6가지 분석 구성요소를 갖추고 있고, 현재 부분적으로 도입되어 지속적인 확산이 필요한 기업. 3사분면 준비형: 기업에 필요한 데이터, 인력, 조직, 분석업무, 분석기법 등이 적용되어 있지 않아 사전준비가 필요한 기업. 4사분면 도입형: 기업에서 활용하는 분석업무, 기법 등은 부족하지만 적용조직 등 준비도가 높아 바로 도입할 수 있는 기업"></figure>
+
+<div class="check">
+<div class="check-head">개념 체크</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">1</span> 다음 중 분석 준비도에 대한 설명으로 <u>틀린</u> 것은?</div>
+  <ol class="circled q-opt">
+    <li>비즈니스 부문, 조직 및 역량 부문, IT 부문 총 3개 부문을 대상으로 실시한다.</li>
+    <li>조직 내 데이터 분석 업무 도입을 목적으로 현재 수준을 파악하기 위한 진단방법이다.</li>
+    <li>총 6가지 영역을 대상으로 현재 수준을 파악한다.</li>
+    <li>각 진단 결과 전체 요건 중 일정 수준 이상 충족하면 데이터 분석 업무를 도입한다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ①</div>
+  <ul class="dash sol">
+    <li>분석 성숙도 모델은 비즈니스 부문, 조직 및 역량 부문, IT 부문 총 3개 부문을 대상으로 실시하며, 성숙도 수준에 따라 도입 단계, 활용 단계, 확산 단계, 최적화 단계로 구분한다.</li>
+  </ul>
+</div>
+
+<div class="q">
+  <div class="q-title"><span class="q-no">2</span> 다음 중 분석 성숙도 모델에 대한 설명으로 옳은 것은?</div>
+  <ol class="circled q-opt">
+    <li>최적화 단계에서는 데이터 사이언스 그룹, 경영진 분석 활용, 전략 연계를 비즈니스 부문에서 수행한다.</li>
+    <li>확산 단계에서는 전사 차원에서 분석을 관리하고 공유한다.</li>
+    <li>확산 단계에서는 전사 성과 실시간 분석, 프로세스 혁신 3.0, 분석규칙 관리, 이벤트 관리를 IT 부문에서 수행한다.</li>
+    <li>도입 단계에서는 전문 담당부서에서 수행, 분석기법 도입, 관리자가 분석 수행을 조직 및 역량 부문에서 담당한다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ②</div>
+  <ul class="dash sol">
+    <li>데이터 사이언스 그룹, 경영진 분석 활용, 전략 연계는 조직 및 역량 부문의 최적화 단계에 해당한다.</li>
+    <li>전사 성과 실시간 분석, 프로세스 혁신 3.0, 분석규칙 관리, 이벤트 관리는 비즈니스 부문에서 확산 단계에 해당한다.</li>
+    <li>전문 담당부서에서 수행, 분석기법 도입, 관리자가 분석 수행은 조직 및 역량 부문의 활용 단계에 해당한다.</li>
+  </ul>
+</div>
+</div>
+
+<div class="page-mark">1-124</div>
+
+<h3 id="s1-exam"><span class="exam-kicker">합격을 다지는</span> 예상문제</h3>
+
+<div class="exam">
+<div class="eq"><div class="eq-t"><span class="eq-n">01</span> 분석 기획 시 분석 주제와 방법에 따른 분류 유형으로 옳지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>Optimization은 분석 주제와 방법을 모두 알고 있을 때 가능하다.</li>
+  <li>Insight는 분석 주제와 방법 모두 모르고 있더라도 가능하다.</li>
+  <li>Solution은 분석 주제는 알지만 방법을 알지 못한 경우에도 찾을 수 있다.</li>
+  <li>Discovery는 분석 주제와 방법 모두 모르고 있더라도 가능하다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">02</span> 분석 기획 시 목표 시점에 따른 분류 유형으로 옳지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>단기적 접근 방식은 당면한 과제를 빠르게 해결하기 위한 목적이다.</li>
+  <li>중장기적 접근 방식은 지속적인 분석 문화를 내재화하기 위한 목적이다.</li>
+  <li>마스터 플랜 접근 방식은 분석의 가치를 증명하기 위해 과제를 빠르게 해결한다.</li>
+  <li>과제 중심적 접근 방식은 명확한 해결을 위해 Quick&#8211;Win 방식으로 분석한다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">03</span> 분석 ROI를 고려한 과제 우선순위 평가기준으로 난이도의 평가요소가 <u>아닌</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>데이터 획득 비용</li>
+  <li>데이터 가공 비용</li>
+  <li>분석 목표 가치(KPI)</li>
+  <li>분석 수준</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">04</span> 분석 마스터 플랜 수립 시 적용 우선순위를 결정하는 주요 요인이 <u>아닌</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>비즈니스 성과</li>
+  <li>전략적 중요도</li>
+  <li>업무 내재화 수준</li>
+  <li>실행 용이성</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">05</span> 분석 마스터 플랜 수립 시 ROI의 투자비용 요소로 적합하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>데이터 크기(Volume)</li>
+  <li>데이터 가치(Value)</li>
+  <li>데이터 형태(Variety)</li>
+  <li>데이터 속도(Velocity)</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">06</span> 분석 기획 시 고려해야 할 내용으로 적절하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>사용 가능한 데이터에 대한 확인이 필요하다.</li>
+  <li>기존에 잘 구현되어 활용되고 있는 적합한 사례가 있는지 탐색해 보아야 한다.</li>
+  <li>분석 수행 시 발생 가능한 위험요소들에 대한 고려가 필요하다.</li>
+  <li>분석 수행 시 반복 작업이 빈번하므로 반복 횟수와 회당 제한시간에 대한 고려가 필요하다.</li>
+</ol></div>
+
+<div class="page-mark">1-125</div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">07</span> 난이도와 시급성을 고려한 포트폴리오 사분면 분석 기법에 대한 설명으로 옳지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>가장 우선적으로 분석 과제 적용이 필요한 영역은 3사분면이다.</li>
+  <li>우선순위가 낮은 영역은 2사분면이다.</li>
+  <li>적용 우선순위 기준을 시급성에 둘 경우 순서는 3사분면, 4사분면, 1사분면, 2사분면 순이다.</li>
+  <li>적용 우선순위 기준을 난이도에 둘 경우 순서는 3사분면, 2사분면, 1사분면, 4사분면 순이다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">08</span> 분석 로드맵 설정 시 세부적인 일정계획 수립 방안으로 적절하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>데이터 수집과 데이터 준비 단계를 병렬로 진행한다.</li>
+  <li>반복적인 정련과정을 통해 프로젝트의 완성도를 높여 나간다.</li>
+  <li>모델링 단계는 반복적으로 수행하여야 한다.</li>
+  <li>순차형과 반복형을 혼합하여 사용한다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">09</span> 상향식 접근 방식에 대한 설명으로 옳은 것은?</div>
+<ol class="circled q-opt">
+  <li>데이터를 기반으로 문제의 재정의 및 해결방안을 탐색한다.</li>
+  <li>신상품 개발이나 전략 수립 등 중요한 의사결정이 필요할 때 사용한다.</li>
+  <li>문제가 먼저 주어지고 이에 대한 해법을 찾아간다.</li>
+  <li>동적인 환경에서 발산과 수렴 단계를 반복적으로 수행하여 상호 보완한다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">10</span> 하향식 접근 방식의 4단계 구성요소가 <u>아닌</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>문제 탐색(Problem Discovery)</li>
+  <li>문제 정의(Problem Definition)</li>
+  <li>문제 분석(Problem Analysis)</li>
+  <li>해결방안 탐색(Solution Search)</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">11</span> 상향식 접근 방식의 특징으로 올바르지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>데이터 분석을 통해 원인을 추적하면서 문제를 도출하거나 재정의할 수 있다.</li>
+  <li>데이터 분석을 통해 생각지 못한 인사이트를 도출할 수 있다.</li>
+  <li>비지도학습 방법에 의해 수행되며 시행착오를 통한 개선이 가능하다.</li>
+  <li>솔루션 도출은 유효하지만 새로운 문제 탐색은 어렵다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">12</span> 분석 방법론의 구성요건으로 적절하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>매뉴얼과 전문지식</li>
+  <li>상세한 절차</li>
+  <li>도구와 기법</li>
+  <li>템플릿과 산출물</li>
+</ol></div>
+
+<div class="page-mark">1-126</div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">13</span> KDD 분석 방법론의 분석절차로 올바른 것은?</div>
+<ol class="circled q-opt">
+  <li>Preprocessing → Transformation → Data Mining → Interpretation/Evaluation → Selection</li>
+  <li>Selection → Preprocessing → Transformation → Data Mining → Interpretation/Evaluation</li>
+  <li>Interpretation/Evaluation → Selection → Preprocessing → Transformation → Data Mining</li>
+  <li>Preprocessing → Transformation → Data Mining → Selection → Interpretation/Evaluation</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">14</span> CRISP&#8211;DM 분석 방법론의 분석절차로 올바른 것은?</div>
+<ol class="circled q-opt">
+  <li>업무 이해 → 데이터 준비 → 데이터 이해 → 모델링 → 평가 → 전개</li>
+  <li>데이터 이해 → 업무 이해 → 전개 → 데이터 준비 → 모델링 → 평가</li>
+  <li>업무 이해 → 데이터 이해 → 데이터 준비 → 모델링 → 평가 → 전개</li>
+  <li>데이터 준비 → 데이터 이해 → 업무 이해 → 모델링 → 평가 → 전개</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">15</span> SEMMA 분석 방법론의 분석절차로 올바른 것은?</div>
+<ol class="circled q-opt">
+  <li>추출 → 수정 → 탐색 → 모델링 → 평가</li>
+  <li>탐색 → 수정 → 추출 → 모델링 → 평가</li>
+  <li>탐색 → 추출 → 수정 → 모델링 → 평가</li>
+  <li>추출 → 탐색 → 수정 → 모델링 → 평가</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">16</span> 빅데이터 분석 방법론의 개발절차로 올바른 것은?</div>
+<ol class="circled q-opt">
+  <li>Planning → Preparing → Analyzing → Developing → Deploying</li>
+  <li>Planning → Analyzing → Developing → Deploying → Preparing</li>
+  <li>Planning → Developing → Deploying → Preparing → Analyzing</li>
+  <li>Planning → Deploying → Preparing → Analyzing → Developing</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">17</span> 빅데이터 분석 방법론의 데이터 준비 단계 세부 태스크가 <u>아닌</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>필요 데이터 정의</li>
+  <li>분석용 데이터 준비</li>
+  <li>데이터 스토어 설계</li>
+  <li>데이터 수집 및 정합성 점검</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">18</span> 빅데이터 분석 방법론의 분석 기획 단계 세부 태스크가 <u>아닌</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>프로젝트 정의 및 계획 수립</li>
+  <li>비즈니스 이해 및 범위 설정</li>
+  <li>모델 발전계획 수립</li>
+  <li>프로젝트 위험계획 수립</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">19</span> 계층적 프로세스 모델의 구성요소로 적절하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>단계(Phase)</li>
+  <li>프로세스(Process)</li>
+  <li>스텝(Step)</li>
+  <li>태스크(Task)</li>
+</ol></div>
+</div>
+
+<div class="page-mark">1-127</div>
+
+<h3 id="s1-exam-ans"><span class="exam-kicker">합격을 다지는</span> 예상문제 정답 &amp; 해설</h3>
+
+<div class="anskey">
+  <div class="anskey-head">SECTION 01</div>
+  <div class="anskey-grid">
+    <span>01 ②</span><span>02 ③</span><span>03 ③</span><span>04 ③</span><span>05 ②</span>
+    <span>06 ④</span><span>07 ④</span><span>08 ①</span><span>09 ①</span><span>10 ③</span>
+    <span>11 ④</span><span>12 ①</span><span>13 ②</span><span>14 ③</span><span>15 ④</span>
+    <span>16 ①</span><span>17 ②</span><span>18 ③</span><span>19 ②</span>
+  </div>
+</div>
+
+<div class="sols">
+<div class="sol-item"><div class="sol-h"><b>01</b> ②</div><p>Insight는 분석 주제는 정해지지 않았더라도 방법을 알고 있을 때 가능하다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>02</b> ③</div><p>분석의 가치를 증명하고 이해관계자들의 동의를 얻기 위해 과제를 빠르게 해결하여 그 가치를 조기에 체험시키는 방식은 혼합 방식이다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>03</b> ③</div><p>난이도를 평가하는 요소로는 데이터 획득 비용, 데이터 가공 비용, 데이터 저장 비용, 분석 적용 비용, 분석 수준이 있으며, 전략적 중요도와 목표 가치는 시급성에 해당한다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>04</b> ③</div><p>우선순위를 결정하는 주요 요인으로는 전략적 중요도, 비즈니스 성과(ROI), 실행 용이성이 있다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>05</b> ②</div><p>투자비용 요소로는 데이터 크기, 데이터 형태, 데이터 속도가 있으며, 비즈니스 효과로 데이터 가치가 있다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>06</b> ④</div><p>분석 수행 시 분석 품질과 비용이라는 서로 상반되는 요소들을 고려하여 분석 작업을 반복할 필요는 있지만 분석 기획 단계에서 미리 반복 횟수를 정하여 제한하는 것은 바람직하지 않다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>07</b> ④</div><p>적용 우선순위 기준을 난이도에 둘 경우 순서는 3사분면, 1사분면, 4사분면, 2사분면 순이다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>08</b> ①</div><p>데이터 수집 및 확보와 데이터 준비 단계는 순차적으로 진행하여야 한다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>09</b> ①</div><p>문제가 먼저 주어지는 것은 하향식 접근 방식이고, 동적인 환경에서 발산과 수렴 단계를 반복하는 것은 혼합 방식이며 신상품 개발이나 전략 수립 등 중요한 의사결정 시 사용한다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>10</b> ③</div><p>하향식 접근 방식의 4단계 구성요소로는 문제 탐색, 문제 정의, 해결방안 탐색, 타당성 평가가 있으며, 순차적으로 진행된다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>11</b> ④</div><p>하향식 접근 방식은 솔루션 도출은 유효하지만 새로운 문제 탐색은 어렵다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>12</b> ①</div><p>분석 방법론의 구성요건은 상세한 절차, 방법, 도구와 기법, 템플릿과 산출물, 그리고 어느 정도의 지식만 있으면 활용 가능한 수준의 난이도이다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>13</b> ②</div><p>KDD 분석 방법론의 분석절차는 데이터셋 선택(Selection), 데이터 전처리(Preprocessing), 데이터 변환(Transformation), 데이터마이닝(Data Mining), 데이터마이닝 결과 평가(Interpretation/ Evaluation) 순으로 수행된다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>14</b> ③</div><p>CRISP&#8211;DM 분석 방법론의 분석절차는 업무 이해(Business Understanding), 데이터 이해(Data Understanding), 데이터 준비(Data Preparation), 모델링(Modeling), 평가(Evaluation), 전개(Deployment) 순으로 수행된다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>15</b> ④</div><p>SEMMA 분석 방법론의 분석절차는 추출(Sample), 탐색(Explore), 수정(Modify), 모델링(Modeling), 평가(Assess) 순으로 수행된다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>16</b> ①</div><p>빅데이터 분석 방법론의 개발절차는 분석 기획(Planning), 데이터 준비(Preparing), 데이터 분석(Analyzing), 시스템 구현(Developing), 평가 및 전개(Deploying) 순으로 수행된다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>17</b> ②</div><p>데이터 준비 단계의 세부 태스크는 필요 데이터 정의, 데이터 스토어 설계, 데이터 수집 및 정합성 점검이 있으며, 분석용 데이터 준비 태스크는 데이터 분석 단계에 포함된다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>18</b> ③</div><p>분석 기획 단계의 세부 태스크는 비즈니스 이해 및 범위 설정, 프로젝트 정의 및 계획 수립, 프로젝트 위험계획 수립이 있으며, 모델 발전계획 수립 태스크는 평가 및 전개 단계에 속한다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>19</b> ②</div><p>계층적 프로세스 모델은 단계(Phase), 태스크(Task), 스텝(Step) 3단계로 구성되어 있다.</p></div>
+</div>
+
+<div class="page-mark">1-128</div>
+
+<h2 id="s2">SECTION 02 분석 작업 계획</h2>
+<p class="sec-meta"><span class="freq-tag">출제빈도 상 | 중 | <b>하</b></span></p>
+<p class="tagline"><span class="tagbox">빈출 태그</span> 데이터 분석 영역 · 분석 변수 · 작업 계획 · 분석 프로젝트</p>
+
+<div class="tip"><span class="tip-head">기적의 TIP</span>분석 작업 계획의 전체 흐름을 이해해야 한다.</div>
+
+<h3 id="s2-01"><span class="num">01</span> 분석 작업 개요</h3>
+<p>분석 작업 계획을 수립하기 위해 데이터 처리 프로세스 전체에 대한 이해가 필요하며, 데이터 처리 영역과 데이터 분석 영역으로 나누어 살펴볼 수 있다.</p>
+
+<figure><img src="figs/fig_1-128_01.png" alt="데이터 처리 프로세스 — 데이터 처리 영역: 데이터 소스(내부 데이터, 외부 데이터, 미디어 정보) → 데이터 수집(입력, 로그수집기, 크롤링, 센싱) → 데이터 저장(정형 데이터, 비정형 데이터, 저장 장치) → 데이터 처리(배치 처리, 실시간 처리, 분산 처리) / 데이터 분석 영역: 데이터 분석(전처리, 분석 방법, 머신러닝, 딥러닝) → 데이터 표현(시간 시각화, 관계 시각화, 공간 시각화, 분포 시각화)"><figcaption>▲ 데이터 처리 프로세스</figcaption></figure>
+
+<h4 id="s2-01-1">1) 데이터 처리 영역</h4>
+
+<aside class="note"><b>크롤링(crawling)</b><br>웹에 접근하여 관련 URL 속에서 하이퍼링크들을 찾아 분류하고 데이터들을 자동화된 방법으로 수집하는 것</aside>
+
+<p>데이터 분석을 위한 기초 데이터를 정의하고 수집 및 저장, 분석하기 수월하도록 물리적인 환경을 제공하는 영역이다.</p>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:130px">단계</td><td class="h">내용</td></tr>
+  <tr><td>데이터 소스</td><td>기업 내 각 부서나 서비스별 적재되고 있는 내부 데이터와 다른 기업이나 공공 데이터 등 외부 데이터가 있다.</td></tr>
+  <tr><td>데이터 수집</td><td>사용자로부터 데이터를 직접 입력받거나 로그수집기, 크롤링, 센서네트워크 등을 통해 데이터를 수집한다.</td></tr>
+  <tr><td>데이터 저장</td><td>데이터를 유형별로 나눠 최적의 설계를 하여 데이터 스토리지에 저장한다.</td></tr>
+  <tr><td>데이터 처리</td><td>저장된 대용량의 데이터를 신속하고 정확하게 처리하기 위하여 실시간 처리 및 분산 처리 등을 시도한다.</td></tr>
+</table>
+</div>
+
+<h4 id="s2-01-2">2) 데이터 분석 영역</h4>
+<p>저장되어 있는 데이터를 추출하여 분석 목적과 방법에 맞게 가공한 후, 데이터 분석을 직접 수행하고 그 결과를 표현하는 영역이다.</p>
+
+<h5>① 데이터 분석</h5>
+<ul class="dash">
+  <li>데이터 분석을 위해 저장된 데이터를 추출 및 가공하여 목적에 맞는 분석 방법을 통해 분석한다.</li>
+</ul>
+
+<div class="page-mark">1-129</div>
+
+<aside class="note"><b>작업분할구조도<br>(Work Breakdown Structure)</b><br>작업의 구성과 요소, 크기, 비용 및 기간에 대한 시스템 구조 등 목표 달성을 위해 필요한 업무를 정의하고 세분화하는 작업</aside>
+
+<div class="tbl-cap">데이터 분석 단계 &#8211; NCS(국가직무능력표준)</div>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:150px">구분</td><td class="h">내용</td></tr>
+  <tr><td>도메인 이슈 도출</td><td><ul class="dash"><li>분석 대상 과제 현황을 파악하고 개선과제를 정의한다.</li><li>문제의 주요 이슈별로 개선방향을 도출하고, 개선방안을 수립하며, 빅데이터 요건 정의서를 작성한다.</li></ul></td></tr>
+  <tr><td>분석목표 수립</td><td><ul class="dash"><li>빅데이터 요건 정의서를 토대로 개선방향에 맞는 현실적인 분석목표를 수립한다.</li><li>데이터 관련 정보, 분석 타당성 검토, 성과측정 방법 등을 포함한 분석목표 정의서를 작성한다.</li></ul></td></tr>
+  <tr><td>프로젝트 계획 수립</td><td><ul class="dash"><li>사전에 책정된 자원과 예산, 기간 등을 고려하여 분석 프로젝트 계획을 수립한다.</li><li>분석목표정의서, 프로젝트 소요비용 배분계획을 바탕으로 작업분할구조도(WBS)를 작성한다.</li></ul></td></tr>
+  <tr><td>보유 데이터 자산 확인</td><td><ul class="dash"><li>분석목표와 프로젝트 계획을 기반으로 현재 보유 중인 데이터의 품질이나 규모, 유형 등을 확인하고 법률적 이슈나 제약사항 등을 검토한다.</li></ul></td></tr>
+</table>
+</div>
+
+<h5>② 데이터 표현</h5>
+<ul class="dash">
+  <li>분석된 결과를 누구나 쉽게 이해할 수 있도록 적합한 시각화 방법을 이용하여 표현한다.</li>
+</ul>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:150px">구분</td><td class="h">내용</td></tr>
+  <tr><td>빅데이터 분석 결과 시각화</td><td>다양한 분석 및 시각화 도구를 활용하여 분석 결과를 시각화 한다.</td></tr>
+</table>
+</div>
+
+<div class="check">
+<div class="check-head">개념 체크</div>
+<div class="q">
+  <div class="q-title">다음 중 분석 작업 계획 수립을 위한 데이터 처리 프로세스에 대한 설명으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>크게 데이터 처리 영역과 데이터 분석 영역으로 나누어 볼 수 있다.</li>
+    <li>데이터 처리 영역은 데이터 분석을 위한 기초 데이터를 정의하고 수집 및 저장, 분석 환경을 제공한다.</li>
+    <li>데이터 분석 영역은 저장된 데이터를 추출하여 분석 목적과 방법에 맞게 가공하여 분석을 수행한다.</li>
+    <li>데이터 처리 영역은 데이터 수집, 저장, 처리, 표현 단계로 상세화 된다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ④</div>
+  <ul class="dash sol">
+    <li>데이터 처리 영역은 데이터 소스, 수집, 저장, 처리 단계로 상세화 되며, 데이터 분석 영역은 데이터 분석, 표현 단계로 상세화 된다.</li>
+  </ul>
+</div>
+</div>
+
+<div class="page-mark">1-130</div>
+
+<h3 id="s2-02"><span class="num">02</span> 데이터 확보 계획</h3>
+
+<h4 id="s2-02-1">1) 데이터 확보를 위한 사전 검토사항</h4>
+
+<h5>① <mark>필요 데이터의 정의</mark></h5>
+<ul class="dash">
+  <li>분석 목적에 맞는 데이터를 정의하고, 필요한 데이터를 확보할 수 있는지 확인하여야 하며, 확보할 수 없다면 대안을 함께 고려하여야 한다.</li>
+  <li>기업 내부 및 외부 공공기관이나 협력관계의 타 기업 담당자, 전문가 등 이해관계자들과 확보 가능한 데이터의 목록과 기대효과 등을 작성한다.</li>
+</ul>
+
+<h5>② 보유 데이터의 현황파악</h5>
+<ul class="dash">
+  <li>사전에 정의한 데이터의 존재 여부와 해당 데이터가 최신성을 보장하는지 확인한다.</li>
+  <li>분석 품질을 보장할 만큼 데이터 품질이 우수한지, 충분한 양이 존재하는지 확인한다.</li>
+</ul>
+
+<h5>③ 분석 데이터의 유형</h5>
+
+<aside class="note">데이터는 유형별로 정형 데이터, 반정형 데이터, 비정형 데이터로 구분된다.</aside>
+
+<ul class="dash">
+  <li>분석 데이터 확보를 위해 수집 대상 데이터의 유형을 고려해야 한다.</li>
+  <li>어떤 데이터를 어떤 기법을 이용하여 분석할 것인지 수립된 계획에 따라 데이터의 유형을 선택하고 변수를 정의해야 한다.</li>
+</ul>
+
+<h5>④ <mark>편향되지 않고 충분한 양의 데이터 규모</mark></h5>
+
+<aside class="note"><b>훈련 데이터셋</b><br>모델을 학습하는데 사용<hr><b>검증 데이터셋</b><br>훈련 데이터셋으로 만들어진 모델의 성능을 측정하는데 사용<hr><b>테스트 데이터셋</b><br>검증 데이터셋을 통해 사용할 모델이 결정된 후 모델의 예상 성능을 측정하는데 사용</aside>
+
+<ul class="dash">
+  <li>데이터 분석 기법에 따라 훈련(Training) 데이터셋, 검증(Validation) 데이터셋, 테스트(Test) 데이터셋이 필요할 수 있다.
+    <ul class="dash2">
+      <li>따라서 신뢰성 높은 데이터 분석 모형 개발과 정확한 데이터 분석을 위해 3가지 데이터셋으로 나누어 사용할 만큼 충분한 데이터가 확보되어야 한다.</li>
+    </ul></li>
+</ul>
+
+<h5>⑤ 내부 데이터의 사용</h5>
+<ul class="dash">
+  <li>필요 데이터에 대한 데이터 목록(변수 명칭, 설명, 형태, 기간, 용량, 권한 등)을 작성한다.</li>
+  <li>필요 데이터에 대한 관련 법률이나 보안적인 요소들을 확인하고, <mark>개인정보일 경우 비식별 조치방안을 함께 고려한다</mark>.</li>
+  <li>필요 데이터의 관리 권한이 다른 부서에 있는 경우 협의를 통해 데이터 공유 가능 여부를 확인한다.</li>
+</ul>
+
+<h5>⑥ 외부 데이터의 수집</h5>
+<ul class="dash">
+  <li>필요 데이터에 대한 데이터 목록을 데이터를 보유한 기업의 이름과 데이터 제공 방법(Open API, 복제 등)까지 고려하여 작성한다.</li>
+  <li>필요 데이터의 수집이 관련 법률이나 제도상 제약이 없는지 검토한다.</li>
+  <li>필요 데이터에 대하여 보유 기업으로부터 데이터 제공 가능여부와 구매 비용 등을 협의한다.</li>
+</ul>
+
+<div class="page-mark">1-131</div>
+
+<h5>⑦ <mark>데이터 수집 방법</mark></h5>
+
+<aside class="note"><b class="star-b">★ FGI</b><br>일반적으로 마케팅, 소비자 인사이트, 제품 개발, 서비스 향상 등의 목적으로 사용되는 질적 연구 방법 중 하나</aside>
+
+<ul class="dash">
+  <li>설문조사 : 설문조사는 사람들의 의견이나 행동에 대한 데이터를 수집하는 일반적인 방법으로 온라인 설문지, 전화 인터뷰, 직접 면접 등의 형태로 진행될 수 있으며, 개별 질문이나 척도를 사용하여 응답자의 의견을 수집한다.</li>
+  <li>관찰 : 관찰은 사람들의 행동, 사건 또는 상황을 직접 관찰하여 데이터를 수집하는 방법이다. 관찰은 실시간 또는 사전에 녹화된 비디오 또는 사진 등을 통해 이루어질 수 있으며, 이 방법은 사람들의 실제 행동을 측정하고 분석할 때 유용하다.</li>
+  <li>실험 : 실험은 특정 가설을 검증하기 위해 조작된 조건에서 데이터를 수집한다. 실험은 종종 실험 그룹과 대조 그룹으로 나뉘며, 서로 다른 처리를 받는 조건에서 차이를 비교하여 결과를 분석한다.</li>
+  <li>웹 크롤링 : 웹 크롤링은 웹 페이지를 자동으로 탐색하고 데이터를 추출하는 과정이다. 웹 크롤러는 웹사이트에서 정보를 수집하고, 텍스트, 이미지, 링크 등을 추출하여 분석한다.</li>
+  <li>소셜 미디어 분석 : 소셜 미디어 플랫폼에서 제공되는 데이터를 활용하여 트렌드, 의견, 감성 등을 분석하는 방법이다. 특정 키워드, 해시태그, 사용자 활동 등을 모니터링하여 데이터를 수집하고 분석할 수 있다.</li>
+  <li>데이터베이스 및 기존 데이터 활용 : 공공 데이터베이스, 기업 내부 데이터베이스, 과거 연구 등을 활용하여 데이터를 수집하고 분석할 수 있다.</li>
+  <li>FGI<sup class="star">★</sup>(Focused Group Interview, 집단면접) : FGI는 작은 그룹의 참가자들을 모아 집단적인 토론을 통해 의견과 경험을 수집하는 방법으로 일반적으로 6~12명의 참가자로 구성된 집단이 모여 진행되며, 주제와 관련된 질문들이 제시되어 참가자들은 서로의 의견을 나누고 토론한다. 이러한 토론은 구성원 간의 상호작용과 아이디어 교환을 통해 보다 깊은 인사이트를 얻을 수 있도록 도와준다.</li>
+  <li>스크래퍼(Scraper) : 스크래퍼는 웹 스크래핑(Web Scraping)을 수행하는 프로그램이나 도구이다. 웹 스크래핑은 웹 페이지의 내용을 자동으로 추출하여 데이터를 수집하는 과정이며, 스크래퍼는 웹사이트의 HTML 구조를 분석하고 필요한 정보를 추출하는 기능을 가진다.</li>
+</ul>
+
+<h4 id="s2-02-2">2) 분석에 필요한 변수 정의</h4>
+<p>데이터 분석 요건에 따라 도출된 활용 시나리오에 적합한 데이터의 유형 및 분석 변수를 정의한다.</p>
+
+<h5>① 데이터 수집 기획</h5>
+<ul class="dash">
+  <li>데이터 수집 기법을 활용하여 필요 데이터를 배치 자동화로 수집한다.
+    <ul class="dash2">
+      <li>데이터 수집 타깃 시스템 또는 사이트를 선별한다.</li>
+      <li>수집 대상 화면, 텍스트를 위해 인덱스 생성을 기획한다.</li>
+      <li>대상 시스템별 데이터 수집을 위한 크롤러를 준비하고 저장소를 기획한다.</li>
+      <li>크롤링 주기, 대상 범위를 확정하고 데이터 수집을 기획한다.</li>
+    </ul></li>
+</ul>
+
+<div class="page-mark">1-132</div>
+
+<ul class="dash">
+  <li>데이터 거래소, 공공 데이터에 적재된 분야별 데이터를 분류하고 선별한다.
+    <ul class="dash2">
+      <li>공공 데이터 사이트에 접속하여 필요한 도메인의 데이터를 검색한다.</li>
+      <li>검색한 공공 데이터 중 분석 대상이 되는 도메인의 우선순위를 정의한다.</li>
+      <li>필요한 데이터를 다운로드받아 저장할 수 있도록 계획한다.</li>
+      <li>저장한 데이터를 NoSQL 데이터에 적재하고 정제할 수 있도록 설계한다.</li>
+      <li>NoSQL에 적재한 데이터를 정제할 수 있도록 기획한다.</li>
+    </ul></li>
+</ul>
+
+<h5>② 분석 변수 정의</h5>
+
+<aside class="note"><b>빅데이터의 특징</b><br>Volume, Variety, Velocity, Veracity, Value</aside>
+
+<ul class="dash">
+  <li>빅데이터의 특징을 고려하여 분석 변수 생성을 기획한다.
+    <ul class="dash2">
+      <li>상관관계 분석을 위한 데이터 연속성 범주 등을 고려하여 분석 변수를 정의한다.</li>
+    </ul></li>
+  <li>분석 변수 유형과 형성 알고리즘을 이용하여 분석 유형을 도출한다.
+    <ul class="dash2">
+      <li>변수의 분포를 구별하는 정도에 따라 순수도(purity) 또는 불순도(impurity)에 의해서 측정 구간별 순수도를 가장 높이는 분석 변수를 도출한다.</li>
+    </ul></li>
+</ul>
+
+<h4 id="s2-02-3">3) 분석 변수 생성 프로세스 정의</h4>
+<p>분석 대상에 대해 객관적으로 인식하고 논리적 인과관계 분석 및 데이터 간 상관관계 분석을 위한 분석 변수 생성 프로세스를 정의한다.</p>
+
+<h5>① <mark>객관적 사실(Fact) 기반의 문제 접근</mark></h5>
+<ul class="dash">
+  <li>명확한 문제 인식을 위하여 분석적이고 가정(Why)에 의한 접근 방법과 함께 무엇(What)이 문제인지를 파악하여 객관적 관찰 데이터 유형을 식별한다.</li>
+</ul>
+
+<h5>② 데이터의 상관 분석</h5>
+<ul class="dash">
+  <li>빅데이터 분석 대상의 연관성 분석을 통해 데이터 집합 간 통계적 관련성을 분석할 수 있는 변수를 생성하고 변수의 척도를 분류한다.</li>
+  <li>변수 간 밀접한 관련성을 갖고 변화하는가를 분석하는 기법인 연관성 개념을 활용하여 변수 척도에 따른 연관성 분석을 수행한다.</li>
+  <li>분석 변수를 기반으로 연관성을 분석하여 데이터 간 숨겨진 관계성을 파악하고, 가치있는 데이터를 도출할 수 있도록 분석 변수를 생성한다.</li>
+</ul>
+
+<h5>③ 프로토타입을 통한 분석 변수 접근</h5>
+
+<aside class="note">빅데이터는 대부분 비정형 데이터 형태이며, 사용자가 빅데이터의 정보 및 분석 변수를 명확히 규정하기 어렵다.</aside>
+
+<ul class="dash">
+  <li>의미있는 분석 변수를 생성하기 위하여 프로토타이핑 접근법을 통해 결과를 확인하며, 반복적으로 개선하여 필요한 데이터를 식별하고 구체화한다.</li>
+  <li>프로토타이핑 모델로 반복적으로 개선하여 의미있는 데이터와 분석 변수를 생성함으로써 비정형 데이터가 갖는 문제점을 해소한다.</li>
+</ul>
+
+<div class="tbl-cap">프로토타입 접근의 필요성</div>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:170px">필요성</td><td class="h">내용</td></tr>
+  <tr><td>문제 인식 수준의 확인</td><td><ul class="dash"><li>사용자와 분석가 간 요구 사항과 문제 해결에 대한 인식 수준 차이를 확인할 수 있다.</li><li>문제 해결에 대한 명확한 목표 확인 및 필요 변수를 정의한다.</li></ul></td></tr>
+  <tr><td>필요 데이터 존재 여부</td><td><ul class="dash"><li>수집 데이터양이 부족한 경우, 재수집 방법, 대체 데이터 등에 대한 사용자와 분석가 간 반복적 확인을 통해 협의한다.</li></ul></td></tr>
+  <tr><td>사용 목적에 따른 가변성 검증</td><td><ul class="dash"><li>데이터의 가치는 지속적으로 변화할 수 있다.</li><li>데이터의 사용 목적과 범위에 따라 분석 변수를 재정의한다.</li><li>데이터의 사용 범위를 확대 또는 축소할 수 있다.</li></ul></td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-133</div>
+
+<h4 id="s2-02-4">4) 생성된 분석 변수의 정제를 위한 점검항목 정의</h4>
+<p>분석 기획 단계에서 도출된 문제 인식, 해결을 위한 개념적 대안 설계를 통해 <mark>도출된 데이터에 대해 가용성을 평가하고 점검항목을 정의</mark>한다.</p>
+
+<h5>① 분석 변수 점검의 필요성</h5>
+<ul class="dash">
+  <li>데이터의 가용성과 적정성이 부족할 경우 문제 해결 및 활용 시나리오 적용을 통해 가치 있는 결과를 도출하기 어렵다.</li>
+  <li>실행 전 분석 변수를 논리적 지표에 따라 점검한다.</li>
+</ul>
+
+<h5>② 분석 변수 점검항목 정의</h5>
+<ul class="dash">
+  <li>데이터 분석 도구, 활용 등 다각도로 분석 변수 점검 항목을 정의한다.</li>
+  <li>데이터 수집 시 분석 적합성과 데이터 확보 유무를 고려하여 기획한다.</li>
+  <li>데이터의 중복, 범위, 연관성 등을 도출할 수 있는 방법을 기획한다.</li>
+  <li>데이터 적합성을 고려하여 수행할 수 있는 분석 검증 방법을 기획한다.</li>
+  <li>수집 데이터에 존재할 수 있는 데이터의 특징 변수 도출 방법을 기획한다.</li>
+  <li>수집 데이터 변수 간 결합 가능 여부를 검증할 수 있는 방법을 기획한다.</li>
+  <li>수집 데이터의 타당성 검증 방법을 기획한다.
+    <ul class="dash2">
+      <li>데이터 수집에 투입되는 비용 및 시간을 조사한다.</li>
+      <li>데이터 수집 기법의 기술적 타당성 검증 방법을 기획한다.</li>
+    </ul></li>
+</ul>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:110px">분류</td><td class="h" style="width:170px">점검 항목</td><td class="h">내용</td></tr>
+  <tr><td class="h" rowspan="3">데이터 수집</td><td>데이터 적정성</td><td>문제 해결에 적절한 분석 변수인가?</td></tr>
+  <tr><td>데이터 가용성</td><td>수집 가능한 데이터인가?</td></tr>
+  <tr><td>대체 분석 데이터 유무</td><td>수집 불가능한 데이터인 경우 간접적으로 연관성 있는 데이터로 대체 가능한가?</td></tr>
+  <tr><td class="h" rowspan="4">데이터<br>적합성</td><td>데이터 중복</td><td>중복이나 노이즈 제거, 데이터값 존재 유무 등 기초 데이터 클렌징 수행 가능한가?</td></tr>
+  <tr><td>분석 변수별 범위</td><td>분석 변수별 측정될 수 있는 min/max를 확인하였는가?</td></tr>
+  <tr><td>분석 변수별 연관성</td><td>수집된 데이터 간 충분 간격으로 연관성이 있는가?</td></tr>
+  <tr><td>데이터 내구성</td><td>데이터 노이즈, 왜곡이 발생하였을 때 예측 성능을 보장할 수 있는가?</td></tr>
+  <tr><td class="h" rowspan="2">특징 변수</td><td>특징 변수 사용</td><td>분석 변수 중 바로 특징 변수로 사용할 수 있는 가능성이 있는가?</td></tr>
+  <tr><td>변수 간 결합 가능 여부</td><td>분석 변수를 결합하여 교차 검증(Cross Validation)을 할 수 있는가?</td></tr>
+  <tr><td class="h" rowspan="2">타당성</td><td>편익/비용 검증</td><td>분석 비용과 분석 후 결과가 추가적 매출, 수익 등에 기여할 수 있는가?</td></tr>
+  <tr><td>기술적 타당성</td><td>다양한 분석 툴을 활용할 수 있는 분석 변수를 도출하였는가?</td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-134</div>
+
+<h4 id="s2-02-5">5) 생성된 분석 변수의 전처리 방법 수립</h4>
+
+<aside class="note"><b>전처리(preprocessing)</b><br>데이터를 분석 목적과 방법에 맞는 형태로 처리하기 위해서 불필요한 정보를 분리하거나 제거하고 가공하는 예비적 조작</aside>
+
+<p>데이터 정제를 위한 점검항목 정의 후 이에 맞게 논리적 모형 설계를 위한 데이터 전처리 방법을 수립한다.</p>
+
+<h5>① 데이터 전처리 수행</h5>
+<ul class="dash">
+  <li>다양한 비즈니스 도메인에서 추출한 정형, 반정형, 비정형 데이터를 분석 및 처리에 적합한 데이터 형태로 조작한다.</li>
+  <li>데이터 정제, 통합, 축소, 변환을 반복적으로 수행하여 분석 변수로 활용하는 방안을 수립할 수 있다.</li>
+</ul>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:220px">처리 기법</td><td class="h">내용</td></tr>
+  <tr><td>데이터 정제(Cleaning)</td><td>결측값을 채우거나 이상치를 제거하는 과정을 통해 데이터의 신뢰도를 높이는 작업</td></tr>
+  <tr><td>데이터 통합(Integration)</td><td>다수의 정제된 데이터를 통합하여 표현하는 작업</td></tr>
+  <tr><td>데이터 축소(Reduction)</td><td>데이터 집합의 크기는 더 작지만 분석 결과는 같은 데이터 집합으로 만드는 작업</td></tr>
+  <tr><td>데이터 변환(Transformation)</td><td>데이터 마이닝의 효율을 높이기 위한 변환 및 변형 작업</td></tr>
+</table>
+</div>
+
+<h5>② 빅데이터 분석 프로세스 수행</h5>
+<ul class="dash">
+  <li>다양한 업무와 도메인이 포함되어 있어 완전히 자동화하여 처리하는 것은 어렵다.</li>
+  <li>데이터 전처리 과정은 정제와 통합을 통해 약 60~80% 처리된다.</li>
+</ul>
+
+<h5>③ 데이터 전처리 방안 수립</h5>
+<ul class="dash">
+  <li>데이터 Cleaning, Integration, Transformation, Reduction을 반복적으로 수행하여 분석 변수로 활용하는 방안을 수립할 수 있다.</li>
+</ul>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:150px">절차</td><td class="h" style="width:180px">세부 활동</td><td class="h">내용</td></tr>
+  <tr><td class="h" rowspan="2">정제<br>(Cleaning)</td><td>모순점 포착</td><td><ul class="dash"><li>데이터 입력의 실수 확인</li><li>데이터 표현의 모순 확인</li><li>일치하지 않는 코드 사용 여부</li><li>원래의 의도와 다른 목적으로 사용 여부</li></ul></td></tr>
+  <tr><td>메타데이터 확인</td><td><ul class="dash"><li>데이터 타입과 속성 확인</li><li>값의 범위 확인</li><li>속성의 표준 편차 확인</li><li>데이터 이상치 및 결측값 확인</li></ul></td></tr>
+  <tr><td class="h">통합/축소<br>(Integration)</td><td>데이터 통합</td><td><ul class="dash"><li>데이터 통합</li><li>스키마 통합</li><li>개체 식별 및 데이터값 충돌/감지 및 해결</li><li>데이터 통합에서 중복 처리</li><li>데이터 통계 생성</li></ul></td></tr>
+  <tr><td class="h">변환<br>(Transformation)</td><td>데이터 변환</td><td><ul class="dash"><li>데이터에서 노이즈 제거</li><li>새로운 속성 추가</li><li>데이터에 요약 작업 또는 집계 작업</li><li>데이터 정규화</li></ul></td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-135</div>
+
+<h4 id="s2-02-6">6) 생성 변수의 검증 방안 수립</h4>
+
+<aside class="note">빅데이터의 특징에 따라 주요 품질 요소를 도출하고, 생성된 분석 변수의 데이터 검증 방안을 수립한다.</aside>
+
+<h5>① 분석 변수의 데이터 검증 방안 수립</h5>
+<ul class="dash">
+  <li>모든 개별 데이터에 대한 타당성 보장보다는 빅데이터 개념 및 특성 측면에서 관리되어야 하는 항목과 수준에 대해 품질 검증을 정의한다.</li>
+</ul>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:170px">구분</td><td class="h">품질 관리 접근 방법</td></tr>
+  <tr><td>대량 데이터</td><td><ul class="dash"><li>데이터 사용자 오류는 무시</li><li>데이터 타당성에 치명적인 예외 상황만 탐지</li></ul></td></tr>
+  <tr><td>정밀 데이터</td><td><ul class="dash"><li>개별 데이터에 대한 타당성 검증은 환경 및 상황에 따라 판단</li><li>데이터 전체가 나타내는 의미를 중심으로 검증 기준 정의</li></ul></td></tr>
+  <tr><td>데이터 출처 불명확</td><td><ul class="dash"><li>명확한 목적이나 사전 통제 없이 생산된 데이터에 대한 별도 품질 기준 정의</li></ul></td></tr>
+</table>
+</div>
+
+<ul class="dash">
+  <li>빅데이터 품질 관리 및 검증은 정확성보다는 데이터의 양이 충분한지에 대한 충분성 개념하에 조직의 비즈니스 영역 및 목적에 따라 검증한다.</li>
+</ul>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:170px">구분</td><td class="h">품질 검증 전략</td></tr>
+  <tr><td>정확성<br>(Accuracy)</td><td><ul class="dash"><li>데이터 사용 목적에 따라 데이터 정확성의 기준 상이하게 적용</li></ul></td></tr>
+  <tr><td>완전성<br>(Completeness)</td><td><ul class="dash"><li>필요한 데이터인지 식별하는 수준으로 품질 요소 적용</li></ul></td></tr>
+  <tr><td>적시성<br>(Timeliness)</td><td><ul class="dash"><li>소멸성이 강한 데이터에 대한 품질 기준 판단</li><li>웹로그 데이터, 트윗 데이터 등 지속적으로 생성 소멸하는 데이터에 대한 품질 기준 수립</li></ul></td></tr>
+  <tr><td>일관성<br>(Consistency)</td><td><ul class="dash"><li>동일한 데이터의 경우에도 사용 목적에 따라 데이터의 의미가 달라지기 때문에 분석 요건에 따른 검증 요소 적용</li></ul></td></tr>
+</table>
+</div>
+
+<h5>② 데이터 검증 체계 수립</h5>
+
+<aside class="note"><b>컴플라이언스(Compliance)</b><br>사업 추진 과정에서 기업이 자발적으로 관련 법규를 준수하도록 하기 위한 일련의 시스템</aside>
+
+<ul class="dash">
+  <li>빅데이터 품질 및 데이터 검증 체계를 수립한다.
+    <ul class="dash2">
+      <li>수집한 데이터의 출처가 명확한지 검증한다.</li>
+      <li>중복된 데이터가 존재하는지, 정보 활용에 컴플라이언스 이슈가 없는지 데이터 관리 대상 선별을 검증한다.</li>
+      <li>데이터의 다양성이 확보되었는지, 데이터셋이 충분한지 검증한다.</li>
+      <li>주요 품질 지표의 조건을 만족하는지, 분석, 검증, 테스트 데이터가 분리되어 있는지 주요 품질 지표를 분석 및 검증한다.</li>
+    </ul></li>
+  <li>분석 변수 데이터 검증 방안을 수립한다.
+    <ul class="dash2">
+      <li>품질 관리를 통해 데이터 중복성, 불일치성 등 생성된 분석 변수에 대한 데이터 검증 방안을 수립한다.</li>
+    </ul></li>
+</ul>
+
+<div class="page-mark">1-136</div>
+
+<div class="check">
+<div class="check-head">개념 체크</div>
+<div class="q">
+  <div class="q-title">다음 중 데이터 확보를 위한 사전 검토사항으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>분석 목적에 맞는 데이터를 정의하고, 필요한 데이터를 확보할 수 있는지 확인하여야 하며, 확보할 수 없다면 대안을 함께 고려하여야 한다.</li>
+    <li>사전에 정의한 데이터의 존재 여부와 분석 품질을 보장할 만큼 데이터 품질이 우수한지, 충분한 양이 존재하는지 확인한다.</li>
+    <li>분석 대상에 대해 객관적으로 인식하고 논리적 인과관계 분석 및 데이터 간 상관관계 분석을 위한 분석 변수 생성 프로세스를 정의한다.</li>
+    <li>어떤 데이터를 어떤 기법을 이용하여 분석할 것인지 수립된 계획에 따라 데이터의 유형을 선택하고 변수를 정의해야 한다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ③</div>
+  <ul class="dash sol">
+    <li>데이터 확보를 위한 사전 검토사항은 필요 데이터의 정의, 보유 데이터의 현황파악, 분석 데이터의 유형 확인, 편향되지 않고 충분한 양의 데이터 규모 확인, 내부 데이터의 사용 가능여부 확인, 외부 데이터의 수집 가능여부 등을 확인하는 것이다.</li>
+    <li>분석 대상에 대해 객관적으로 인식하고 논리적 인과관계 분석 및 데이터 간 상관관계 분석을 위한 분석 변수 생성 프로세스를 정의하는 것은 데이터 확보를 위한 사전 검토대상은 아니다.</li>
+  </ul>
+</div>
+</div>
+
+<h3 id="s2-03"><span class="num">03</span> 분석 절차와 작업 계획</h3>
+
+<h4 id="s2-03-1">1) 분석 절차</h4>
+<p>분석 절차는 데이터 분석의 시발점이 되는 문제 인식에서부터 시작하여 데이터를 확보하고 분석하여 결과를 도출 및 제시하는 단계까지의 일반적인 과정을 정형화한 프로세스이다.</p>
+
+<h5>① 분석 절차의 특징</h5>
+
+<aside class="note">데이터 분석을 수행하기 위한 기본적인 과정을 명시하고 있다.</aside>
+
+<ul class="dash">
+  <li>분석 방법론을 구성하는 최소 요건이다.</li>
+  <li>상황에 따라 단계를 추가할 수도 있으며 생략 가능하다.</li>
+</ul>
+
+<div class="tbl-cap">분석 절차 비교</div>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:33%">일반적 데이터 분석 절차</td><td class="h" style="width:34%">NCS 데이터 분석 절차</td><td class="h">단계별 산출물</td></tr>
+  <tr>
+    <td><ul class="dash"><li>문제인식</li><li>연구조사</li></ul></td>
+    <td><ul class="dash"><li>도메인 이슈 도출</li><li>분석목표 수립</li></ul></td>
+    <td><ul class="dash"><li>데이터 요건 정의서</li><li>분석목표 정의서</li></ul></td>
+  </tr>
+  <tr>
+    <td><ul class="dash"><li>모형화</li><li>데이터 수집</li><li>데이터 분석</li></ul></td>
+    <td><ul class="dash"><li>프로젝트 계획 수립</li><li>보유 데이터 자산 확인</li></ul></td>
+    <td><ul class="dash"><li>작업분할구조도(WBS)</li><li>데이터 품질 보고서</li></ul></td>
+  </tr>
+  <tr>
+    <td><ul class="dash"><li>분석 결과 제시</li></ul></td>
+    <td><ul class="dash"><li>데이터 분석결과 시각화</li></ul></td>
+    <td><ul class="dash"><li>분석 보고서</li></ul></td>
+  </tr>
+</table>
+</div>
+
+<div class="page-mark">1-137</div>
+
+<h5>② 일반적인 분석 절차</h5>
+
+<aside class="note">데이터 분석의 절차는 데이터 수집 → 저장 → 처리 → 분석 → 시각화 → 이용 → 폐기 단계로 정의할 수도 있다.</aside>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:170px">구분</td><td class="h">내용</td></tr>
+  <tr><td>문제 인식</td><td><ul class="dash"><li>문제를 인식하고 분석 목적을 명확하게 정의한다.</li><li>분석 주제는 가설 형태 또는 결과 해석을 중심으로 할 수 있다.</li></ul></td></tr>
+  <tr><td>연구조사</td><td><ul class="dash"><li>문제 해결을 위한 각종 문헌을 조사하고 내용을 바탕으로 문제에 대한 해결 방안을 정의한다.</li><li>중요한 요인이나 변수들을 파악한다.</li></ul></td></tr>
+  <tr><td>모형화</td><td><ul class="dash"><li>복잡한 문제를 논리적이면서도 단순화하는 과정이다.</li><li>많은 변수가 포함된 현실 문제를 특징적 변수로 정의한다.</li><li>문제를 변수들 간의 관계로 정의한다.</li></ul></td></tr>
+  <tr><td>데이터 수집</td><td><ul class="dash"><li>데이터 수집 또는 변수를 측정하는 과정이다.</li><li>기존 데이터 활용이 불가능한 경우 추가적인 데이터 수집을 고려한다.</li></ul></td></tr>
+  <tr><td>데이터 분석</td><td><ul class="dash"><li>수집된 데이터로부터 인사이트를 발굴한다.</li><li>수집된 데이터로부터 변수들간의 관계를 분석한다.</li></ul></td></tr>
+  <tr><td>분석 결과 제시</td><td><ul class="dash"><li>변수들 간 인과관계나 상관관계를 포함한 분석 결과를 제시하고 공유한다.</li><li>표, 그림, 차트, 그래프 등을 활용하여 시각화한다.</li></ul></td></tr>
+</table>
+</div>
+
+<h5>③ <mark>분석 절차 적용 시 고려사항</mark></h5>
+<ul class="dash">
+  <li>문제에 대한 구체적 정의가 가능하고, 필요 데이터를 보유하고 있으며, 분석역량을 갖추고 있다면 통계 기반의 전통적 데이터 분석을 수행할 수 있다.</li>
+  <li>문제에 대한 구체적 정의가 없다면 데이터 마이닝 기반으로 데이터를 분석하여 인사이트를 발굴하거나 일단 데이터 분석을 시도한 후 결과를 확인해 가면서 반복적으로 개선 결과를 도출해 볼 수 있다.</li>
+</ul>
+
+<h4 id="s2-03-2">2) 작업 계획</h4>
+<p>분석 작업 계획은 분석 절차에 따라 데이터 분석 업무를 수행하기 위한 전반적인 작업 내용들을 세부적으로 정의하는 과정이다.</p>
+
+<h5>① 분석 작업 계획 수립</h5>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:190px">단계</td><td class="h">내용</td></tr>
+  <tr><td>프로젝트<br>소요비용 배분</td><td><ul class="dash"><li>주어진 시스템 및 데이터 환경을 고려하여 현실성 있는 계획이 되도록 프로젝트 일정을 수립한다.</li><li>사전에 작성해 놓은 데이터 분석목표정의서의 내용이 모두 반영될 수 있도록 한다.</li><li>프로젝트 소요비용은 인건비나 하드웨어 구입 및 사용비용, 소프트웨어 비용, 그리고 기타 비용을 고려하여 산정한다.</li></ul></td></tr>
+  <tr><td>프로젝트<br>작업분할구조 수립</td><td><ul class="dash"><li>데이터 분석목표정의서와 프로젝트 소요비용 배분 계획을 참고하여 데이터 분석 절차에 맞게 수립한다.</li><li>분석 절차 이외 필요한 작업이 있는 경우 추가적으로 반영하여 작업분할구조를 수립한다.</li></ul></td></tr>
+  <tr><td>프로젝트<br>업무 분장 계획 및 배분</td><td><ul class="dash"><li>배분된 인건비를 기준으로 단계별 인원 투입 계획을 수립하고 역할별로 작성해야 하는 필수 산출물을 정의한다.</li><li>소요기간별 투입 인원과 역할을 구분하여 배정하고 필수 산출물을 정의한다.</li><li>프로젝트 유관부서 리더들과 프로젝트 참여 인원을 중심으로 프로젝트 평가위원회를 구성한다.</li><li>상황에 따라 외부 자문 위원을 참여시킨다.</li></ul></td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-138</div>
+
+<h5>② 작업분할구조(Work Breakdown Structure, WBS) 작성</h5>
+
+<aside class="note"><b>작업분할구조</b><br>프로젝트의 범위와 최종 산출물을 세부요소로 분할한 계층적 구조도<hr><b>검정(테스트)</b><br>통계적으로 집단에 대해서 특징짓는 가설을 세우고 그 가설이 맞는지 틀리는지를 판단, 즉 일정한 규칙이나 자격 조건을 기준으로 하여 조사 후 결정<hr><b>검증(증명)</b><br>증명보다 약한 개념으로 틀릴 가능성이 없음을 경험적 검사 또는 실험으로 밝혀내는 것</aside>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:160px">단계</td><td class="h">내용</td></tr>
+  <tr><td>데이터<br>분석과제 정의</td><td><ul class="dash"><li>데이터 분석목표정의서를 기준으로 프로젝트 전체 일정에 맞춰 사전에 준비한다.</li><li>각 단계별 필요 산출물과 보고서 작성 시기, 세부 일정 등을 정리한다.</li></ul></td></tr>
+  <tr><td>데이터<br>준비 및 탐색</td><td><ul class="dash"><li>데이터 엔지니어가 데이터를 수집하고 정리하는 일정을 수립한다.</li><li>데이터 분석가가 분석에 필요한 데이터들로부터 변수 후보를 탐색하고 최종 산출물을 도출하는 일정을 수립한다.</li><li>데이터 분석 가설을 세우고 유의미한 검정을 수행하는 일정을 포함한다.</li></ul></td></tr>
+  <tr><td>데이터 분석<br>모델링 및 검증</td><td><ul class="dash"><li>실험방법 및 절차를 구분하고 검증하는 내용과 수행일정을 상세하게 수립한다.</li><li>데이터 분석 모델링 작업이 1회 이상 수행되므로 검증일정을 고려하여 세부 일정을 수립한다.</li></ul></td></tr>
+  <tr><td>산출물 정리</td><td><ul class="dash"><li>데이터 분석 단계별 산출물을 정리하고, 모델링 과정에서 개발된 분석 스크립트를 최종 산출물로 정리한다.</li><li>전체 일정에서 산출물 정리 과정을 반드시 포함시킨다.</li></ul></td></tr>
+</table>
+</div>
+
+<h4 id="s2-03-3">3) 분석목표정의서</h4>
+<p>문제의 개선방향에 맞는 현실적인 분석목표를 수립하여 필요한 데이터에 대한 정보나 분석 타당성 검토 및 성과측정 방법 등을 정리한 정의서이다.</p>
+
+<h5>① 분석목표정의서 구성요소</h5>
+<ul class="dash">
+  <li>원천 데이터 조사</li>
+</ul>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:160px">구분</td><td class="h">내용</td></tr>
+  <tr><td>데이터 정보</td><td><ul class="dash"><li>데이터 축적 기간, 획득 주기, 테이블 스키마, 메타 데이터를 확인한다.</li></ul></td></tr>
+  <tr><td>데이터 수집<br>난이도</td><td><ul class="dash"><li>데이터 수집 및 정제 과정, 시기와 방법을 확인한다.</li><li>데이터 수집 난이도가 높을 경우 데이터 활용을 재고한다.</li></ul></td></tr>
+</table>
+</div>
+<ul class="dash">
+  <li>분석 방안 및 적용 가능성 판단
+    <ul class="dash2">
+      <li>개선 목표와 현시점의 분석 목표 간 차이를 고려하여 분석 목표를 조정하거나 상황에 따라 우선순위를 조정한다.</li>
+      <li>분석 목표에 부합한 데이터 분석 기법이 있더라도 현재 적합한 분석 환경이 구축되지 않았다면 분석 목표를 조정한다.</li>
+    </ul></li>
+  <li>성과평가 기준</li>
+</ul>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:160px">구분</td><td class="h">내용</td></tr>
+  <tr><td>정성적 평가</td><td><ul class="dash"><li>분석 기법이나 기술의 활용 가능성을 평가한다.</li><li>신규 데이터나 외부 데이터의 활용 가능성을 평가한다.</li><li>세분화나 군집화를 통해 집단을 선정한다.</li><li>이 외 관련 시스템별로 정성적 요소를 평가한다.</li></ul></td></tr>
+  <tr><td>정량적 평가</td><td><ul class="dash"><li>기존 방법 대비 효과의 증감 비율을 평가한다.</li><li>유효한 가설의 수나 목표 대비 증감 비율을 평가한다.</li><li>데이터 모형의 정확도를 측정하여 평가한다.</li><li>기타 분석 특성에 따른 자체 KPI에 의한 성과를 측정한다.</li></ul></td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-139</div>
+
+<h5>② 분석목표정의서 작성 방법</h5>
+<ul class="dash">
+  <li>분석 목적을 설정하고 이를 달성하기 위한 세부 목표를 수립한다.</li>
+  <li>필요한 데이터를 정의하고, 분석 방법과 데이터 수집 및 분석 난이도, 수행 주기, 분석 결과에 대한 검증 기준을 설계한다.</li>
+  <li>도메인 이슈 도출을 통한 개선 방향을 토대로 목표 수준을 정리한다.</li>
+</ul>
+
+<div class="check">
+<div class="check-head">개념 체크</div>
+<div class="q">
+  <div class="q-title">다음 중 일반적인 분석 절차에 대한 설명으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>연구조사 단계에서는 문제 해결을 위한 각종 문헌을 조사하고 내용을 바탕으로 문제에 대한 해결방안을 정의한다.</li>
+    <li>모형화 단계에서는 수집된 데이터로부터 변수들간의 관계를 분석한다.</li>
+    <li>문제 인식 단계에서 분석 주제는 가설 형태 또는 결과 해석을 중심으로 할 수 있다.</li>
+    <li>분석 결과 제시 단계에서는 변수들 간 인과관계나 상관관계를 포함한 분석 결과를 제시하고 공유한다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ②</div>
+  <ul class="dash sol">
+    <li>모형화 단계는 복잡한 문제를 논리적이면서도 단순화하는 과정으로, 문제를 변수들 간의 관계로 정의한다. 수집된 데이터로부터 변수들간의 관계를 분석하는 것은 데이터 분석 단계이다.</li>
+  </ul>
+</div>
+</div>
+
+<h3 id="s2-04"><span class="num">04</span> 분석 프로젝트 관리</h3>
+
+<h4 id="s2-04-1">1) 분석 프로젝트</h4>
+
+<aside class="note">분석 프로젝트는 도출된 결과의 재해석을 통한 지속적인 반복과 정교화가 수행되는 경우가 대부분이다.</aside>
+
+<p>분석 프로젝트는 과제 형태로 도출된 분석 기회를 프로젝트화하여 그 가치를 증명하기 위한 수단이다.</p>
+
+<h5>① 분석 프로젝트의 특징</h5>
+<ul class="dash">
+  <li>데이터 영역과 비즈니스 영역에 대한 이해와 더불어 지속적인 반복이 요구되는 분석 프로세스의 특성을 이해하여 프로젝트 관리방안을 수립해야 한다.</li>
+  <li>지속적인 개선 및 변경을 염두에 두고 프로젝트 기한 내에 가능한 최선의 결과를 도출할 수 있도록 프로젝트 구성원들과 협업이 필요하다.</li>
+</ul>
+
+<h5>② 분석 프로젝트의 추가적 속성</h5>
+
+<aside class="note">데이터를 다루면서 분석 모형을 생성하는 프로젝트 특성상 표의 추가적인 중점 관리 영역을 고려하여야 한다.</aside>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:190px">관리 영역</td><td class="h">내용</td></tr>
+  <tr><td>데이터 크기<br>(Data Size)</td><td><ul class="dash"><li>데이터가 지속적으로 생성되어 증가하는 점을 고려한다.</li></ul></td></tr>
+  <tr><td>데이터 복잡도<br>(Data Complexity)</td><td><ul class="dash"><li>정형, 비정형 데이터와 다양한 시스템에 산재되어 있는 원천 데이터들을 통합하는 진행이 필요하다.</li><li>데이터에 잘 적용될 수 있는 분석 모형의 선정 등을 사전에 고려하여야 한다.</li></ul></td></tr>
+  <tr><td>속도<br>(Speed)</td><td><ul class="dash"><li>분석 결과가 도출되어 이를 활용하는 시나리오 측면에서의 속도까지 고려하여야 한다.</li><li>프로젝트 수행 시 분석 모형의 성능과 속도를 고려한 개발과 테스트 수행을 고려하여야 한다.</li></ul></td></tr>
+  <tr><td>분석 모형의 복잡도<br>(Analytic Model<br>Complexity)</td><td><ul class="dash"><li>분석 모형의 정확도와 복잡도는 Trade off 관계에 있다.</li><li>분석 모형이 복잡할수록 정확도는 상승하지만 해석이 어려워지므로 이에 대한 기준을 정의하고 최적 모형을 탐색해야 한다.</li></ul></td></tr>
+  <tr><td>정확도와 정밀도<br>(Accuracy &amp;<br>Precision)</td><td><ul class="dash"><li>분석 결과를 활용하는 측면에서는 Accuracy가 중요하다.</li><li>분석 모형의 안정성 측면에서는 Precision이 중요하다.</li><li>Accuracy와 Precision은 Trade off인 경우가 많다.</li></ul></td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-140</div>
+
+<aside class="note"><b>Trade off</b><br>두 개의 목표 가운데 하나를 달성하려고 하면 다른 달성이 늦어지거나 희생되는 관계<hr><b>정확도(Accuracy)</b><br>모형과 실제값 사이의 차이인 정확도를 측정하는 지표<hr><b>정밀도(Precision)</b><br>모형을 계속하여 반복했을 때 결과의 일관성을 측정하는 지표</aside>
+
+<div class="tbl-cap">정확도와 정밀도의 관점</div>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:160px">구분</td><td class="h">내용</td></tr>
+  <tr>
+    <td style="text-align:center"><img src="figs/fig_1-140_01.png" alt="과녁 밖 여러 곳에 예측값들이 흩어져 있는 그림" style="max-width:110px"></td>
+    <td><ul class="dash"><li>낮은 정확도, 낮은 정밀도
+      <ul class="dash2"><li>예측값들이 실제값과 멀리 떨어져 있고 예측값끼리도 멀리 떨어져 있다.</li><li>편향(Bias)도 높고 분산(Variance)도 높다.</li></ul></li></ul></td>
+  </tr>
+  <tr>
+    <td style="text-align:center"><img src="figs/fig_1-140_02.png" alt="과녁 중심에서 벗어난 한 곳에 예측값들이 모여 있는 그림" style="max-width:110px"></td>
+    <td><ul class="dash"><li>낮은 정확도, 높은 정밀도
+      <ul class="dash2"><li>예측값들이 실제값과 멀리 떨어져 있지만 예측값끼리는 모여 있다.</li><li>편향은 높고 분산은 낮다.</li></ul></li></ul></td>
+  </tr>
+  <tr>
+    <td style="text-align:center"><img src="figs/fig_1-140_03.png" alt="과녁 중심 주변에 예측값들이 흩어져 있는 그림" style="max-width:110px"></td>
+    <td><ul class="dash"><li>높은 정확도, 낮은 정밀도
+      <ul class="dash2"><li>예측값들은 실제값에 가까이 있으나 예측값끼리는 떨어져 있다.</li><li>편향은 낮고 분산은 높다.</li></ul></li></ul></td>
+  </tr>
+  <tr>
+    <td style="text-align:center"><img src="figs/fig_1-140_04.png" alt="과녁 중심에 예측값들이 모여 있는 그림" style="max-width:110px"></td>
+    <td><ul class="dash"><li>높은 정확도, 높은 정밀도
+      <ul class="dash2"><li>예측값들과 실제값이 거의 같으며 모여 있다.</li><li>편향과 분산 모두 낮다.</li></ul></li></ul></td>
+  </tr>
+</table>
+</div>
+
+<h5>③ 분석가의 역할</h5>
+<ul class="dash">
+  <li>분석가는 데이터 영역과 비즈니스 영역의 중간에서 현황을 이해하고 분석 모형을 통한 조율을 수행하는 조정자의 역할과 분석 프로젝트 관리 역할을 수행한다.</li>
+</ul>
+
+<h4 id="s2-04-2">2) 분석 프로젝트 관리</h4>
+
+<aside class="note">프로젝트 관리 지침의 체계는 KSA ISO 21500으로 정의된 총 10개의 관리 주제 그룹으로 구성되어 있다.</aside>
+
+<h5>① 효율적인 데이터 분석 수행을 위한 필요성</h5>
+<ul class="dash">
+  <li>과제 형태로 도출된 분석 기회는 프로젝트화를 통하여 그 가치를 증명하고 목표를 달성할 필요가 있다.</li>
+  <li>범위, 일정, 품질, 이슈 및 리스크, 의사소통 등 영역별로 고려해야 하는 요소가 많아 체계적 관리가 필요하다.</li>
+</ul>
+
+<h5>② 분석 프로젝트의 관리 방안</h5>
+<ul class="dash">
+  <li>분석 프로젝트는 데이터 분석이 갖는 기본 특성(5V)을 살려 프로젝트 관리 지침을 만들어 기본 가이드로 활용해야 한다.</li>
+  <li>프로젝트 관리 영역에 대한 주요한 사항들은 체크포인트 형태로 관리되어야 한다.</li>
+  <li>발생할 수 있는 이슈와 위험을 숙지하고 미연에 방지하는 것이 중요하다.</li>
+</ul>
+
+<div class="page-mark">1-141</div>
+
+<ul class="dash">
+  <li>분석 프로젝트를 성공적으로 수행하기 위해 프로젝트의 영역별 관리 포인트를 사전에 이해하고 적용하는 것이 중요하다.</li>
+</ul>
+
+<h4 id="s2-04-3">3) 분석 프로젝트의 영역별 주요 관리 항목</h4>
+
+<h5>① 범위 관리(Scope Management)</h5>
+<ul class="dash">
+  <li>분석 기획 단계에서 명시한 프로젝트의 범위는 분석을 수행하면서 데이터의 형태와 양 또는 적용되는 모형의 알고리즘에 따라 빈번하게 변경되곤 하며 이것은 프로젝트를 지연시키는 중대한 사유가 된다.</li>
+  <li>분석의 최종 결과물이 분석 보고서 형태인지 시스템인지에 따라 투입되는 자원과 범위가 크게 달라지므로 사전에 충분히 고려되어야 한다.</li>
+</ul>
+
+<h5>② 일정 관리(Time Management)</h5>
+<ul class="dash">
+  <li>분석 프로젝트는 초기에 의도했던 모형이나 결과가 쉽게 나오는 경우가 흔치 않으며, 지속적으로 반복하는 과정에서 많은 시간이 소모되곤 한다.</li>
+  <li>분석 결과의 품질을 보장한다는 전제하에 Time Boxing 기법으로 일정을 관리하는 것이 필요하다.</li>
+</ul>
+
+<h5>③ 원가 관리(Cost Management)</h5>
+<ul class="dash">
+  <li>외부 데이터를 활용하여 데이터 분석을 수행하는 경우 데이터 구입 및 수집을 위해 많은 비용이 소모될 수 있으므로 사전에 충분한 조사가 필요하다.</li>
+  <li>프로젝트를 수행하는 과정에서 목표한 결과를 달성하기 위해 오픈 소스 도구를 사용하지 않고 고가의 상용 도구를 사용하게 될 경우 비용이 증가한다.</li>
+</ul>
+
+<h5>④ 품질 관리(Quality Management)</h5>
+<ul class="dash">
+  <li>분석 프로젝트의 수행 결과에 대한 품질목표를 사전협의를 통해 수립하고 통제하여야 한다.</li>
+  <li>프로젝트 품질은 품질관리계획과 품질통제 및 품질보증으로 구성되어 있으며, 이를 잘 나누어 수행하여야 한다.</li>
+</ul>
+
+<h5>⑤ 통합 관리(Integration Management)</h5>
+<ul class="dash">
+  <li>프로젝트 관리 프로세스들을 통합적으로 운영될 수 있도록 관리하여야 한다.</li>
+</ul>
+
+<h5>⑥ 조달 관리(Procurement Management)</h5>
+
+<aside class="note"><b>PoC</b><br>새로운 프로젝트의 실제 실현 가능성을 효과와 효용, 기술적 관점에서 검증하는 과정</aside>
+
+<ul class="dash">
+  <li>상황에 따라 분석 프로젝트 목적에 적합한 범위 내에서 외부에 아웃소싱을 수행할 수 있다.</li>
+  <li>PoC(Proof of Concept)와 같이 지속성이 보장되지 않은 프로젝트는 인프라 구매보다 클라우드와 같은 대여방식을 고려해 볼 필요가 있다.</li>
+</ul>
+
+<h5>⑦ 인적자원 관리(Human Resource Management)</h5>
+<ul class="dash">
+  <li>분석 프로젝트는 인적자원과 데이터가 핵심이므로, 프로젝트 수행 전 전문인력 확보와 고용유지 방안을 검토하여야 한다.</li>
+  <li>전문인력의 효율적인 운영을 위해 핵심인재의 전문분야와 보유역량 및 수준 등을 관리하고, 프로젝트별 투입 시점과 피로도 등을 종합적으로 관리한다.</li>
+</ul>
+
+<div class="page-mark">1-142</div>
+
+<h5>⑧ 위험 관리(Risk Management)</h5>
+<ul class="dash">
+  <li>필요한 데이터가 확보되지 않거나 품질이 보장되지 않을 경우 분석 프로젝트 진행이 어려울 수 있으며, 관련 위험을 식별하고 대응방안을 수립해야 한다.</li>
+  <li>데이터 및 분석 알고리즘의 한계로 품질목표를 달성하기 어려울 수 있으며, 전문인력의 이탈로 프로젝트가 중단될 수 있어 대응방안 수립이 필요하다.</li>
+  <li>그 밖에 분석 프로젝트 진행 과정에서 발생할 수 있는 위험을 식별하고, 위험을 분석하여 대응방안을 수립해야 한다.</li>
+</ul>
+
+<h5>⑨ 의사소통 관리(Communication Management)</h5>
+<ul class="dash">
+  <li>프로젝트의 원활한 진행을 위한 다양한 의사소통 채널과 모든 이해관계자가 분석 결과를 공유할 수 있도록 시각화와 같은 방안을 마련해야 한다.</li>
+</ul>
+
+<h5>⑩ 이해관계자 관리(Stakeholder Management)</h5>
+<ul class="dash">
+  <li>분석 프로젝트는 데이터 전문가, 분석 전문가, 비즈니스 전문가, 시스템 전문가 등 다양한 전문가의 참여가 필요하며, 이들을 잘 관리하여야 한다.</li>
+  <li>프로젝트 관리자는 분석 프로젝트에 영향을 미치는 이해관계자들을 식별하고 관리하여야 한다.</li>
+</ul>
+
+<div class="check">
+<div class="check-head">개념 체크</div>
+<div class="q">
+  <div class="q-title">다음 중 분석 프로젝트 진행 시 추가적으로 고려해야 할 내용으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>분석 결과를 활용하는 측면에서는 Precision, 분석 모형의 안정성 측면에서는 Accuracy가 중요하다.</li>
+    <li>데이터 크기는 데이터가 지속적으로 생성되어 증가하는 점을 고려한다.</li>
+    <li>분석 모형의 정확도와 복잡도는 Trade off 관계에 있음을 유념해야 한다.</li>
+    <li>정형, 비정형 데이터와 다양한 시스템에 산재되어 있는 원천 데이터들을 통합하는 방안을 수립해야 한다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ①</div>
+  <ul class="dash sol">
+    <li>Accuracy는 모형과 실제값 사이의 차이인 정확도를 측정하는 지표이며, Precision은 모형을 계속하여 반복했을 때 결과의 일관성을 측정하는 지표이다. 분석 결과를 활용하는 측면에서는 Accuracy가 중요하고, 분석 모형의 안정성 측면에서는 Precision이 중요하다.</li>
+  </ul>
+</div>
+</div>
+
+<div class="page-mark">1-143</div>
+
+<h3 id="s2-exam"><span class="exam-kicker">합격을 다지는</span> 예상문제 (SECTION 02)</h3>
+
+<div class="exam">
+<div class="eq"><div class="eq-t"><span class="eq-n">01</span> 신뢰성 높은 데이터 분석 모형 개발을 위한 3가지 데이터셋이 <u>아닌</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>Training Dataset</li>
+  <li>Verification Dataset</li>
+  <li>Validation Dataset</li>
+  <li>Test Dataset</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">02</span> 외부 데이터를 수집하고자 할 때 고려해야 할 내용으로 적합하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>데이터를 획득하는 데 필요한 비용을 고려하여야 한다.</li>
+  <li>데이터를 제공받기 위한 계약서를 잘 작성하여 모든 법률적 위험요소를 완전히 해소한다.</li>
+  <li>데이터를 수집하여 저장할 방법을 살펴보아야 한다.</li>
+  <li>내부 데이터와의 결합 가능여부 등을 검토하여야 한다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">03</span> 데이터 확보 계획 수립 시 분석 변수 점검항목으로 적절하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>데이터 다양성</li>
+  <li>데이터 가용성</li>
+  <li>데이터 적정성</li>
+  <li>기술적 타당성</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">04</span> 생성 분석 변수의 전처리 방법으로 적합하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>데이터 정제</li>
+  <li>데이터 통합</li>
+  <li>데이터 변환</li>
+  <li>데이터 삭제</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">05</span> 빅데이터의 주요 품질 지표가 <u>아닌</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>편의성</li>
+  <li>정확성</li>
+  <li>완전성</li>
+  <li>적시성</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">06</span> 일반적인 데이터 분석 절차를 순서대로 나열한 것은?</div>
+<ol class="circled q-opt">
+  <li>연구조사 → 문제 인식 → 데이터 수집 → 모형화 → 데이터 분석 → 분석 결과 제시</li>
+  <li>문제 인식 → 연구조사 → 모형화 → 데이터 수집 → 데이터 분석 → 분석 결과 제시</li>
+  <li>데이터 수집 → 연구조사 → 문제 인식 → 모형화 → 데이터 분석 → 분석 결과 제시</li>
+  <li>연구조사 → 데이터 수집 → 문제 인식 → 모형화 → 데이터 분석 → 분석 결과 제시</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">07</span> 분석작업계획 수립 절차로 적절하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>프로젝트 소요비용 배분</li>
+  <li>프로젝트 작업분할구조 수립</li>
+  <li>프로젝트 정의서 작성</li>
+  <li>프로젝트 업무 분장 계획 및 배분</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">08</span> 다음 중 데이터 분석 과제 수행을 위한 필요역량으로 적합하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>데이터 거버넌스 체계 수립 역량</li>
+  <li>도메인 이슈 도출 역량</li>
+  <li>분석 목표 수립 역량</li>
+  <li>프로젝트 계획 수립 역량</li>
+</ol></div>
+
+<div class="page-mark">1-144</div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">09</span> 분석목표정의서의 구성요소로 적절하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>데이터 분석과제 정의</li>
+  <li>원천 데이터 조사</li>
+  <li>분석 방안 및 적용 가능성 판단</li>
+  <li>성과평가 기준</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">10</span> 분석 프로젝트가 갖는 속성으로 적절하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>데이터 크기</li>
+  <li>데이터 분석가의 역량</li>
+  <li>데이터와 분석 모형의 복잡도</li>
+  <li>정확도와 정밀도</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">11</span> 내부 데이터를 수집하고자 할 때 고려해야 할 내용으로 적합하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>필요 데이터에 대한 데이터 목록(변수 명칭, 설명, 형태, 기간, 용량, 권한 등)을 작성한다.</li>
+  <li>필요 데이터에 대한 관련 법률적인 요소들을 확인한다.</li>
+  <li>필요 데이터가 내부적 사용 목적일 경우 보안적인 요소들로부터 자유롭다.</li>
+  <li>필요 데이터가 개인정보일 경우 비식별 조치방안을 고려한다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">12</span> 분석 변수 생성 프로세스 정의에 대한 설명으로 적절하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>객관적 사실 기반의 문제 접근이 필요하다.</li>
+  <li>데이터의 상관관계 분석이 필요하다.</li>
+  <li>프로토타입을 통한 분석 변수 접근이 필요하다.</li>
+  <li>분석 변수 유형과 형성 알고리즘을 이용한 분석 유형 도출이 필요하다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">13</span> 생성된 분석 변수의 정제를 위한 점검항목 중 데이터 적합성과 관련된 항목이 <u>아닌</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>데이터 중복</li>
+  <li>변수 간 결합 가능 여부</li>
+  <li>분석 변수별 범위</li>
+  <li>분석 변수별 연관성</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">14</span> 생성된 분석 변수의 정제를 위한 점검항목 중 데이터 수집과 관련된 항목이 <u>아닌</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>데이터 적정성</li>
+  <li>편익/비용 검증</li>
+  <li>데이터 가용성</li>
+  <li>대체 분석 데이터 유무</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">15</span> 생성 변수의 검증 방안 수립 과정에서 데이터 검증 체계 수립과 관련된 내용으로 적합하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>수집한 데이터의 출처가 명확한지 검증한다.</li>
+  <li>데이터 관리 대상 선별을 검증한다.</li>
+  <li>데이터의 타당성이 확보되었는지 검증한다.</li>
+  <li>주요 품질 지표를 분석 및 검증한다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">16</span> 분석목표정의서 성과평가 기준 중 정성적 평가와 관련된 내용으로 적합하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>분석 기법이나 기술의 활용 가능성을 평가한다.</li>
+  <li>신규 데이터나 외부 데이터의 활용 가능성을 평가한다.</li>
+  <li>세분화나 군집화를 통해 집단을 선정한다.</li>
+  <li>분석 특성에 따른 자체 KPI에 의한 성과를 측정한다.</li>
+</ol></div>
+
+<div class="page-mark">1-145</div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">17</span> 분석목표정의서 성과평가 기준 중 정량적 평가와 관련된 내용으로 적합하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>세분화나 군집화를 통해 집단을 선정한다.</li>
+  <li>기존 방법 대비 효과의 증감 비율을 평가한다.</li>
+  <li>유효한 가설의 수나 목표 대비 증감 비율을 평가한다.</li>
+  <li>데이터 모형의 정확도를 측정하여 평가한다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">18</span> 정확도(Accuracy)와 정밀도(Precision)의 설명으로 적절하지 <u>않은</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>정확도는 모형과 실제값 사이의 차이를 측정하는 지표이다.</li>
+  <li>편향(bias)도 높고 분산(variance)도 높은 모델이 정확도와 정밀도가 높다.</li>
+  <li>정밀도는 모형을 계속하여 반복했을 때 결과의 일관성을 측정하는 지표이다.</li>
+  <li>정확도와 정밀도는 Trade off인 경우가 많다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">19</span> 정확도는 낮지만 정밀도가 높은 모델의 특징을 바르게 설명한 것은?</div>
+<ol class="circled q-opt">
+  <li>예측값들이 실제값과 멀리 떨어져 있고 예측값끼리도 멀리 떨어져 있다.</li>
+  <li>예측값들은 실제값에 가까이 있으나 예측값끼리는 떨어져 있다.</li>
+  <li>예측값들이 실제값과 멀리 떨어져 있지만 예측값끼리는 모여있다.</li>
+  <li>예측값들과 실제값이 거의 같으며 모여있다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">20</span> 분석 프로젝트의 영역별 관리 항목 중 조달 관리와 관련된 내용으로 적합한 것은?</div>
+<ol class="circled q-opt">
+  <li>프로젝트 관리 프로세스들을 통합적으로 운영될 수 있도록 관리하여야 한다.</li>
+  <li>분석 프로젝트에 영향을 미치는 이해관계자와 참여하는 데이터, 분석, 비즈니스, 시스템 등의 전문가들을 잘 관리하여야 한다.</li>
+  <li>분석의 최종 결과물이 분석 보고서 형태인지 시스템인지에 따라 투입되는 자원과 범위가 크게 달라지므로 사전에 충분히 고려되어야 한다.</li>
+  <li>상황에 따라 분석 프로젝트 목적에 적합한 범위 내에서 외부에 아웃소싱을 수행할 수 있다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">21</span> 분석 작업 계획 수립을 위한 작업분할구조도 작성 절차로 적합한 것은?</div>
+<ol class="circled q-opt">
+  <li>데이터 분석과제 정의 → 데이터 준비와 탐색 → 산출물 정리 → 데이터 분석 모델링 및 검증</li>
+  <li>데이터 준비와 탐색 → 데이터 분석과제 정의 → 산출물 정리 → 데이터 분석 모델링 및 검증</li>
+  <li>데이터 준비와 탐색 → 데이터 분석과제 정의 → 데이터 분석 모델링 및 검증 → 산출물 정리</li>
+  <li>데이터 분석과제 정의 → 데이터 준비와 탐색 → 데이터 분석 모델링 및 검증 → 산출물 정리</li>
+</ol></div>
+</div>
+
+<div class="page-mark">1-146</div>
+
+<h3 id="s2-exam-ans"><span class="exam-kicker">합격을 다지는</span> 예상문제 정답 &amp; 해설 (SECTION 02)</h3>
+
+<div class="anskey">
+  <div class="anskey-head">SECTION 02</div>
+  <div class="anskey-grid">
+    <span>01 ②</span><span>02 ②</span><span>03 ①</span><span>04 ④</span><span>05 ①</span>
+    <span>06 ②</span><span>07 ③</span><span>08 ①</span><span>09 ①</span><span>10 ②</span>
+    <span>11 ③</span><span>12 ④</span><span>13 ②</span><span>14 ②</span><span>15 ③</span>
+    <span>16 ④</span><span>17 ①</span><span>18 ②</span><span>19 ③</span><span>20 ④</span>
+    <span>21 ④</span>
+  </div>
+</div>
+
+<div class="sols">
+<div class="sol-item"><div class="sol-h"><b>01</b> ②</div><p>신뢰성 높은 데이터 분석 모형 개발과 정확한 데이터 분석을 위해 편향되지 않고 충분한 양의 Training Dataset, Validation Dataset, Test Dataset이 필요하다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>02</b> ②</div><p>데이터를 제공받기 위한 계약서는 공급자와 요청자 사이의 거래 조건 등을 정리한 것이며, 계약서 작성만으로 법률적 위험요소들이 해소되었다고 볼 수는 없다. 또한 개인정보를 포함한 데이터가 있다면 개인정보 관련 법규를 검토하여 비식별화 조치 등을 취하여야 한다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>03</b> ①</div><p>데이터 확보 계획 수립 시 데이터 수집을 위해 데이터 적정성과 가용성, 대체 분석 데이터 유무에 대한 확인이 필요하며, 타당성 검증을 위해 편익/비용 검증과 기술적 타당성을 점검한다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>04</b> ④</div><p>생성 분석 변수의 전처리 방법으로 데이터 정제, 데이터 통합, 데이터 축소, 데이터 변환이 있다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>05</b> ①</div><p>빅데이터의 주요 품질 지표로는 정확성, 완전성, 적시성, 일관성이 있다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>06</b> ②</div><p>데이터 분석 절차는 문제 인식, 연구조사, 모형화, 데이터 수집, 데이터 분석, 분석 결과 제시 순으로 수행된다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>07</b> ③</div><p>분석작업계획 수립 절차로는 프로젝트 소요비용 배분, 프로젝트 작업분할구조 수립, 프로젝트 업무 분장 계획 및 배분이 있다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>08</b> ①</div><p>NCS 데이터 분석 요구역량으로 도메인 이슈 도출, 분석 목표 수립, 프로젝트 계획 수립, 보유 데이터 자산 확인 능력을 정의하고 있다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>09</b> ①</div><p>분석목표정의서의 구성요소는 원천 데이터 조사, 분석 방안 및 적용 가능성 판단, 성과평가 기준으로 이루어져 있다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>10</b> ②</div><p>분석 프로젝트가 갖는 속성으로는 데이터 크기, 데이터 복잡도, 속도, 분석 모형의 복잡도, 정확도와 정밀도가 있다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>11</b> ③</div><p>필요 데이터에 대한 관련 법률이나 보안적인 요소들을 확인하고, 개인정보일 경우 비식별 조치방안을 고려해야 한다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>12</b> ④</div><p>분석에 필요한 변수를 정의하는 과정에서 분석 변수 유형과 형성 알고리즘을 이용한 분석 유형 도출이 필요하다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>13</b> ②</div><p>데이터 적합성 관련 점검항목들은 데이터 중복, 분석 변수별 범위, 분석 변수별 연관성, 데이터 내구성이 있으며, 변수 간 결합 가능 여부는 특징 변수 관련 항목이다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>14</b> ②</div><p>데이터 수집 관련 점검항목들은 데이터 적정성, 데이터 가용성, 대체 분석 데이터 유무가 있으며, 편익/비용 검증은 타당성 관련 항목이다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>15</b> ③</div><p>데이터의 타당성이 아닌 다양성이 확보되었는지, 데이터셋이 충분한지 검증한다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>16</b> ④</div><p>분석 특성에 따른 자체 KPI에 의한 성과를 측정하는 것은 정량적 평가이다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>17</b> ①</div><p>세분화나 군집화를 통해 집단을 선정하는 것은 정성적 평가이다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>18</b> ②</div><p>정확도와 정밀도가 높은 모델은 편향과 분산 모두 낮다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>19</b> ③</div><p>예측값들이 실제값과 멀리 떨어져 있지만 예측값끼리는 모여있으며, 편향은 높고 분산은 낮다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>20</b> ④</div><p>조달 관리에서는 상황에 따라 분석 프로젝트 목적에 적합한 범위 내에서 외부에 아웃소싱을 수행할 수 있으며, PoC와 같이 지속성이 보장되지 않은 프로젝트는 인프라 구매보다 클라우드와 같은 대여방식을 고려해 볼 필요가 있다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>21</b> ④</div><p>작업분할구조도 작성절차는 데이터 분석과제 정의, 데이터 준비와 탐색, 데이터 분석 모델링 및 검증, 산출물 정리 순으로 작성한다.</p></div>
+</div>
+
+<!-- NEXT-CHUNK-ANCHOR -->
+
+  </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  var main = document.getElementById('main');
+  var toc  = document.getElementById('toc');
+  var heads = main.querySelectorAll('h2[id], h3[id], h4[id]');
+  var items = [];
+
+  heads.forEach(function(h){
+    var lv = h.tagName === 'H2' ? 1 : (h.tagName === 'H3' ? 2 : 3);
+    var li = document.createElement('li');
+    li.className = 'lv' + lv;
+    var a = document.createElement('a');
+    a.href = '#' + h.id;
+    a.textContent = (h.dataset.toc || h.textContent).replace(/^●\s*/, '').trim();
+    li.appendChild(a);
+    toc.appendChild(li);
+    items.push({h:h, a:a});
+  });
+
+  // scrollspy
+  var current = null;
+  function spy(){
+    var best = null, bestTop = -Infinity;
+    var line = 120;
+    items.forEach(function(it){
+      var top = it.h.getBoundingClientRect().top;
+      if (top <= line && top > bestTop){ bestTop = top; best = it; }
+    });
+    if (!best) best = items[0];
+    if (best && best.a !== current){
+      if (current) current.classList.remove('active');
+      current = best.a;
+      current.classList.add('active');
+      var sb = document.getElementById('sidebar');
+      var r = current.getBoundingClientRect(), sr = sb.getBoundingClientRect();
+      if (r.top < sr.top + 40 || r.bottom > sr.bottom - 40){
+        sb.scrollTop += (r.top - sr.top) - sb.clientHeight/2;
+      }
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if (!ticking){ ticking = true; requestAnimationFrame(function(){ spy(); ticking = false; }); }
+  }, {passive:true});
+  spy();
+})();
+</script>
+</body>
+</html>

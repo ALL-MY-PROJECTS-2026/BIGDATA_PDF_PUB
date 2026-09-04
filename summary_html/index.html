@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>빅데이터분석기사 요약노트</title>
+<style>:root{
+  --accent:#2E8B7A; --accent-soft:#BBDDD5; --accent-pale:#EAF4F1;
+  --navy:#1F3A63; --ink:#222; --line:#DDD; --side-bg:#FAFAF9; --sidebar-w:270px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;color:var(--ink);
+  font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",system-ui,sans-serif;
+  font-size:15px;line-height:1.75;word-break:keep-all}
+
+#layout{display:flex;align-items:flex-start}
+#sidebar{width:var(--sidebar-w);flex:0 0 var(--sidebar-w);position:sticky;top:0;
+  height:100vh;overflow-y:auto;background:var(--side-bg);
+  border-right:1px solid var(--line);padding:16px 0 60px}
+.side-head{padding:0 16px 12px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.side-head a{display:block;font-size:14px;font-weight:700;color:var(--accent);text-decoration:none}
+.side-head span{display:block;font-size:11.5px;color:#777;margin-top:2px}
+ul.parts,#toc{list-style:none;margin:0;padding:0;font-size:13px}
+ul.parts li.grp{padding:12px 16px 4px;font-size:11.5px;font-weight:700;
+  color:#999;letter-spacing:.03em}
+ul.parts a{display:flex;justify-content:space-between;gap:8px;
+  padding:5px 16px;color:#444;text-decoration:none;border-left:3px solid transparent}
+ul.parts a span{color:#aaa;font-size:11.5px;flex:0 0 auto}
+ul.parts a:hover{background:#F0F0EE;color:var(--accent)}
+ul.parts a.on{background:var(--accent-pale);color:var(--accent);
+  border-left-color:var(--accent);font-weight:700}
+.toc-head{padding:16px 16px 6px;margin-top:8px;border-top:1px solid var(--line);
+  font-size:11.5px;font-weight:700;color:#999}
+#toc a{display:block;padding:4px 16px;color:#555;text-decoration:none;
+  border-left:3px solid transparent;line-height:1.4}
+#toc a:hover{background:#F0F0EE;color:var(--accent)}
+#toc a.active{background:var(--accent-pale);color:var(--accent);
+  border-left-color:var(--accent);font-weight:700}
+#toc .l2 a{padding-left:28px;font-size:12.5px}
+#toc .l3 a{padding-left:40px;font-size:12px;color:#777}
+
+#main{flex:1 1 auto;min-width:0;padding:34px 40px 120px}
+.wrap{max-width:880px;margin:0 auto}
+
+.crumb{font-size:12.5px;color:#888;margin:0 0 4px;letter-spacing:.02em}
+h1{font-size:26px;margin:0 0 6px;color:var(--accent)}
+.src{font-size:12.5px;color:#888;margin:0 0 28px}
+
+.page-mark{margin:30px 0 10px;padding:1px 0 1px 9px;border-left:3px solid var(--accent-soft);
+  font-size:11.5px;color:#bbb;letter-spacing:.04em}
+h3{font-size:19px;margin:34px 0 14px;padding:9px 14px;background:var(--accent);
+  color:#fff;border-radius:4px;border-left:7px solid var(--navy)}
+h4{font-size:16.5px;margin:26px 0 10px;padding-bottom:6px;
+  border-bottom:2px solid var(--accent-soft)}
+h5{font-size:15px;margin:20px 0 8px;color:var(--accent)}
+h5::before{content:"● ";font-size:10px;vertical-align:2px}
+
+p{margin:0 0 9px}
+ul{list-style:none;margin:0 0 12px;padding:0}
+ul.dash>li{position:relative;padding-left:14px;margin:3px 0}
+ul.dash>li::before{content:"·";position:absolute;left:3px;color:var(--accent)}
+ul.numlist>li{margin:3px 0;padding-left:4px}
+
+p.note{background:#F6F6F4;border-left:3px solid #D6D6D2;border-radius:0 4px 4px 0;
+  padding:9px 13px;margin:10px 0;font-size:13.5px;color:#4A4A4A}
+p.mnemo{display:inline-block;background:#FFF6D9;border:1px solid #EBD9A0;border-radius:14px;
+  padding:3px 14px;margin:8px 0;font-size:13.5px;font-weight:700;color:#7A5E12}
+p.mnemo::before{content:"☞ "}
+
+figure{margin:16px 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid #EEE;border-radius:4px}
+
+/* index */
+.index{padding:44px 24px 100px}
+.index h2{font-size:17px;margin:34px 0 12px;padding:8px 14px;background:var(--accent-pale);
+  color:#26705F;border-radius:4px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.card{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:8px;
+  text-decoration:none;color:var(--ink);background:#fff;transition:.15s}
+.card:hover{border-color:var(--accent);box-shadow:0 2px 10px rgba(46,139,122,.13)}
+.card b{display:block;font-size:15px;margin-bottom:4px}
+.card span{font-size:12px;color:#999}
+
+@media(max-width:900px){
+  #layout{display:block}
+  #sidebar{position:static;width:auto;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+  #main{padding:22px 16px 70px}
+}
+
+details.ov{margin:0 0 14px;border:1px solid var(--line);border-radius:6px;padding:10px 14px;background:#fff}
+details.ov summary{cursor:pointer;font-size:13px;color:var(--accent);font-weight:700;user-select:none}
+details.ov img{display:block;max-width:100%;margin-top:12px;border:1px solid #EEE;border-radius:4px}
+
+/* 수식 — 원문 이미지 그대로 */
+img.eq{display:inline-block;vertical-align:middle;max-width:100%;
+  height:auto;margin:2px 0 2px 4px}
+p.eqline{margin:6px 0 6px 14px}
+
+/* ---------- 확인 문제 ---------- */
+.quiz{margin:26px 0;border:1px solid var(--accent-soft);border-radius:8px;
+  background:#FCFEFD;overflow:hidden}
+.qtoggle{display:flex;align-items:center;gap:8px;width:100%;
+  padding:12px 16px;border:0;background:var(--accent-pale);color:#26705F;
+  font:700 14px/1.4 inherit;text-align:left;cursor:pointer}
+.qtoggle:hover{background:#DDEDE8}
+.qtoggle .arw{display:inline-block;transition:transform .18s;font-size:12px}
+.qtoggle[aria-expanded="true"] .arw{transform:rotate(180deg)}
+.qtoggle .score{margin-left:auto;font-size:12.5px;font-weight:700}
+.qbody{padding:6px 18px 18px}
+ol.qlist{list-style:none;margin:0;padding:0;counter-reset:none}
+li.q{padding:16px 0;border-bottom:1px dashed #DDE7E4}
+li.q:last-child{border-bottom:0}
+.qt{margin:0 0 9px;font-size:14.8px;line-height:1.6}
+.qt b{color:var(--accent);margin-right:4px}
+.opts{display:flex;flex-direction:column;gap:2px}
+label.opt{display:flex;gap:7px;align-items:flex-start;padding:5px 9px;
+  border-radius:5px;cursor:pointer;font-size:14.2px;line-height:1.55}
+label.opt:hover{background:#F1F7F5}
+label.opt input{margin:5px 0 0;flex:0 0 auto}
+label.opt .mk{flex:0 0 auto;color:#666}
+/* 채점 결과 표시 */
+.quiz.graded label.opt{cursor:default}
+.quiz.graded label.opt input{pointer-events:none}
+label.opt.correct{background:#E8F6EC;box-shadow:inset 0 0 0 1px #9FD3AE}
+label.opt.wrong{background:#FDECEC;box-shadow:inset 0 0 0 1px #E3A6A6}
+label.opt.correct .mk::after{content:" ✔";color:#1E7A3C;font-weight:700}
+label.opt.wrong .mk::after{content:" ✘";color:#C0392B;font-weight:700}
+li.q.ok  > .qt::after{content:" 정답";color:#1E7A3C;font-size:12px;font-weight:700;margin-left:6px}
+li.q.ng  > .qt::after{content:" 오답";color:#C0392B;font-size:12px;font-weight:700;margin-left:6px}
+li.q.na  > .qt::after{content:" 미응답";color:#999;font-size:12px;font-weight:700;margin-left:6px}
+.exp{display:none;margin:9px 0 0;padding:10px 13px;background:#F6F6F4;
+  border-left:3px solid var(--accent-soft);border-radius:0 4px 4px 0;
+  font-size:13.4px;color:#444;line-height:1.65}
+.quiz.graded .exp{display:block}
+.exp b{color:var(--accent)}
+.qbar{display:flex;align-items:center;gap:8px;margin-top:16px;
+  padding-top:14px;border-top:1px solid #E6EFEC}
+.btn{padding:7px 16px;border-radius:5px;border:1px solid var(--accent);
+  background:var(--accent);color:#fff;font:700 13px inherit;cursor:pointer}
+.btn.reset{background:#fff;color:var(--accent)}
+.btn:hover{opacity:.88}
+.qbar .result{font-size:13.5px;font-weight:700;color:#26705F}
+
+/* ---------- 수식 (원문을 직접 옮겨 적은 텍스트) ---------- */
+.eqbox{margin:12px 0 12px 14px;padding:10px 16px;
+  background:#FAFBFB;border-left:3px solid var(--accent-soft);border-radius:0 4px 4px 0;
+  font-size:15.5px;line-height:2.4;overflow-x:auto}
+.eqbox i,.eqtext i{font-family:"Cambria Math","Cambria","Times New Roman",serif;
+  font-style:italic}
+.eqtext{margin:8px 0 10px 14px;line-height:1.95}
+.eqline{margin:4px 0}
+/* 분수 */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;
+  text-align:center;margin:0 3px;line-height:1.25}
+.fr>.nu{padding:0 5px 1px;border-bottom:1.3px solid currentColor}
+.fr>.de{padding:1px 5px 0}
+/* 제곱근 */
+.sq{border-top:1.3px solid currentColor;padding:1px 3px 0 2px;margin-left:1px}
+.sq::before{content:"√";border-top:0;margin-left:-11px;padding-right:1px;
+  display:inline-block;transform:translateY(-1px)}
+.eqbox sup,.eqtext sup,.eqbox sub,.eqtext sub{font-size:.72em}
+
+/* ---------- 인쇄 / PDF ---------- */
+@media print{
+  @page{size:A4;margin:14mm 12mm}
+  body{font-size:10.6pt;line-height:1.62}
+  #sidebar{display:none !important}
+  #layout{display:block}
+  #main{padding:0}
+  .wrap{max-width:none}
+  .crumb{font-size:9pt}
+  h1{font-size:19pt;margin-bottom:2mm}
+  .src{font-size:9pt;margin-bottom:6mm}
+  h3{font-size:13.5pt;margin:7mm 0 3mm;-webkit-print-color-adjust:exact;
+     print-color-adjust:exact;break-after:avoid}
+  h4{font-size:12pt;margin:5mm 0 2mm;break-after:avoid}
+  h5{font-size:11pt;margin:4mm 0 1.5mm;break-after:avoid}
+  ul,figure,table,.eqbox,.eqtext{break-inside:avoid}
+  figure img{max-height:88mm}
+  .page-mark{font-size:8pt;color:#bbb}
+  p.note,p.mnemo,.eqbox{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  /* 문제는 펼친 상태로, 해설까지 함께 인쇄 */
+  .quiz{break-inside:auto;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .qtoggle{cursor:default}
+  .qtoggle .arw,.qtoggle .score{display:none}
+  .qbody{display:block !important}
+  .qbar{display:none}
+  li.q{break-inside:avoid}
+  .exp{display:block !important}
+  label.opt input{display:none}
+  label.opt{padding:2px 6px}
+  a{color:inherit;text-decoration:none}
+}
+/* ===BM-IDX-CSS=== */
+#bm-idx{margin:26px 0 8px}
+#bm-idx h2{margin:0 0 10px}
+#bm-idx .bm-hint{color:#888;font-size:13.5px;margin:0}
+#bm-idx .bm-list{list-style:none;margin:0;padding:0;display:grid;gap:8px;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+#bm-idx .bm-list li{position:relative}
+#bm-idx .bm-list a{display:block;padding:9px 30px 9px 12px;border:1px solid var(--line);
+  border-radius:9px;background:#fff;text-decoration:none;color:inherit}
+#bm-idx .bm-list a:hover{border-color:var(--accent);box-shadow:0 1px 5px rgba(0,0,0,.07)}
+#bm-idx .bm-label{display:block;font-weight:700;font-size:14px;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+#bm-idx .bm-where{display:block;font-size:11.5px;color:#999;margin-top:2px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#bm-idx .bm-del{position:absolute;top:6px;right:6px;border:0;background:none;
+  color:#bbb;cursor:pointer;font-size:13px;padding:3px}
+#bm-idx .bm-del:hover{color:#C0392B}
+/* ===/BM-IDX-CSS=== */
+/* ===EXAM-IDX-CSS=== */
+/* 목차(index.html)의 회차 x 과목 표. build_exam.py 가 index.html 에 넣는다. */
+.ex-idx-wrap{overflow-x:auto;margin:10px 0 6px;-webkit-overflow-scrolling:touch}
+table.ex-idx{border-collapse:collapse;width:100%;min-width:420px;font-size:13px}
+table.ex-idx th,table.ex-idx td{border:1px solid var(--line);padding:7px 8px;text-align:center}
+table.ex-idx thead th{background:var(--accent-pale);color:#26705F;font-weight:700;line-height:1.35}
+table.ex-idx thead th small{font-weight:400;color:#5b8f81;font-size:11px}
+table.ex-idx th.rd{background:var(--side-bg);text-align:left;white-space:nowrap;line-height:1.35}
+table.ex-idx th.rd small{display:block;font-weight:400;color:#999;font-size:11px}
+table.ex-idx td a{display:block;padding:3px 0;color:var(--accent);font-weight:700;
+  text-decoration:none;border-radius:5px}
+table.ex-idx td a:hover{background:var(--accent-pale)}
+table.ex-idx td.soon{color:#c4c4c4}
+@media(max-width:760px){
+  table.ex-idx{font-size:12px;min-width:340px}
+  table.ex-idx th,table.ex-idx td{padding:5px 4px}
+  table.ex-idx thead th small,table.ex-idx th.rd small{display:none}
+  table.ex-idx thead th br{display:none}
+}
+/* 목차 표 아래 '한번에 풀기' 버튼 묶음 */
+.ex-all{margin:14px 0 4px;padding:12px 14px;border:1.5px dashed var(--accent);border-radius:8px;
+  background:#FAFCFB}
+.ex-all p{margin:0 0 10px;font-size:13px;color:#555}
+.ex-allbtns{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.ex-allbtn{display:block;padding:9px 12px;border:1px solid var(--line);border-radius:7px;
+  background:#fff;color:var(--ink);text-decoration:none;font-size:13.5px;line-height:1.4}
+.ex-allbtn b{color:var(--accent);margin-right:4px}
+.ex-allbtn span{display:block;font-size:11.5px;color:#999}
+.ex-allbtn:hover{border-color:var(--accent);background:var(--accent-pale)}
+/* ===/EXAM-IDX-CSS=== */
+</style></head><body>
+<div class="wrap index">
+<!--ROOT-LINK--><a href="../index.html" style="display:inline-block;margin:0 0 14px;padding:5px 13px;border:1px solid #DDD;border-radius:16px;background:#fff;font-size:12.5px;color:#2E8B7A;text-decoration:none">← 전체 목차</a><!--/ROOT-LINK-->
+<h1>빅데이터분석기사 요약노트</h1>
+<p class="src">원본: 빅데이터분석기사_요약노트_260805_unlocked.pdf (69쪽) · 개정 2026.08.05</p>
+<!-- ===EXAM-IDX=== -->
+<h2>모의고사</h2>
+<p class="src">회차마다 4과목 · 각 20문항입니다. 한 회차를 다 풀면 실제 시험과 같은 80문항이 됩니다. 실전 모드(타이머·일괄 채점·과락 판정)와 학습 모드(즉시 해설) 중에 고를 수 있습니다. 맨 오른쪽 <b>실전</b> 은 4과목을 실제 시험처럼 한 번에 푸는 시험지입니다 — 80문항 · 120분 · 합격 판정까지 나옵니다.</p>
+<div class="ex-idx-wrap"><table class="ex-idx"><thead><tr><th></th><th>1과목<br><small>빅데이터 분석 기획</small></th><th>2과목<br><small>빅데이터 탐색</small></th><th>3과목<br><small>빅데이터 모델링</small></th><th>4과목<br><small>빅데이터 결과해석</small></th><th class="full">실전<br><small>4과목 통합</small></th></tr></thead>
+<tbody><tr><th class="rd">1회차<br><small>기본</small></th><td><a href="exam_1회차_1과목_빅데이터분석기획.html">20문항</a></td><td><a href="exam_1회차_2과목_빅데이터탐색.html">20문항</a></td><td><a href="exam_1회차_3과목_빅데이터모델링.html">20문항</a></td><td><a href="exam_1회차_4과목_빅데이터결과해석.html">20문항</a></td><td class="full"><a href="exam_1회차_실전모의고사.html">80문항 · 120분</a></td></tr><tr><th class="rd">2회차<br><small>기본 II</small></th><td><a href="exam_2회차_1과목_빅데이터분석기획.html">20문항</a></td><td><a href="exam_2회차_2과목_빅데이터탐색.html">20문항</a></td><td><a href="exam_2회차_3과목_빅데이터모델링.html">20문항</a></td><td><a href="exam_2회차_4과목_빅데이터결과해석.html">20문항</a></td><td class="full"><a href="exam_2회차_실전모의고사.html">80문항 · 120분</a></td></tr><tr><th class="rd">3회차<br><small>계산·응용</small></th><td><a href="exam_3회차_1과목_빅데이터분석기획.html">20문항</a></td><td><a href="exam_3회차_2과목_빅데이터탐색.html">20문항</a></td><td><a href="exam_3회차_3과목_빅데이터모델링.html">20문항</a></td><td><a href="exam_3회차_4과목_빅데이터결과해석.html">20문항</a></td><td class="full"><a href="exam_3회차_실전모의고사.html">80문항 · 120분</a></td></tr><tr><th class="rd">4회차<br><small>함정·부정형</small></th><td><a href="exam_4회차_1과목_빅데이터분석기획.html">20문항</a></td><td><a href="exam_4회차_2과목_빅데이터탐색.html">20문항</a></td><td><a href="exam_4회차_3과목_빅데이터모델링.html">20문항</a></td><td><a href="exam_4회차_4과목_빅데이터결과해석.html">20문항</a></td><td class="full"><a href="exam_4회차_실전모의고사.html">80문항 · 120분</a></td></tr><tr><th class="rd">5회차<br><small>고난도 종합</small></th><td><a href="exam_5회차_1과목_빅데이터분석기획.html">20문항</a></td><td><a href="exam_5회차_2과목_빅데이터탐색.html">20문항</a></td><td><a href="exam_5회차_3과목_빅데이터모델링.html">20문항</a></td><td><a href="exam_5회차_4과목_빅데이터결과해석.html">20문항</a></td><td class="full"><a href="exam_5회차_실전모의고사.html">80문항 · 120분</a></td></tr><tr><th class="rd">6회차<br><small>계산 I</small></th><td><a href="exam_6회차_1과목_빅데이터분석기획.html">20문항</a></td><td><a href="exam_6회차_2과목_빅데이터탐색.html">20문항</a></td><td><a href="exam_6회차_3과목_빅데이터모델링.html">20문항</a></td><td><a href="exam_6회차_4과목_빅데이터결과해석.html">20문항</a></td><td class="full"><a href="exam_6회차_실전모의고사.html">80문항 · 120분</a></td></tr><tr><th class="rd">7회차<br><small>계산 II</small></th><td><a href="exam_7회차_1과목_빅데이터분석기획.html">20문항</a></td><td><a href="exam_7회차_2과목_빅데이터탐색.html">20문항</a></td><td><a href="exam_7회차_3과목_빅데이터모델링.html">20문항</a></td><td><a href="exam_7회차_4과목_빅데이터결과해석.html">20문항</a></td><td class="full"><a href="exam_7회차_실전모의고사.html">80문항 · 120분</a></td></tr><tr><th class="rd">8회차<br><small>계산·함정</small></th><td><a href="exam_8회차_1과목_빅데이터분석기획.html">20문항</a></td><td><a href="exam_8회차_2과목_빅데이터탐색.html">20문항</a></td><td><a href="exam_8회차_3과목_빅데이터모델링.html">20문항</a></td><td><a href="exam_8회차_4과목_빅데이터결과해석.html">20문항</a></td><td class="full"><a href="exam_8회차_실전모의고사.html">80문항 · 120분</a></td></tr><tr><th class="rd">9회차<br><small>사례·계산</small></th><td><a href="exam_9회차_1과목_빅데이터분석기획.html">20문항</a></td><td><a href="exam_9회차_2과목_빅데이터탐색.html">20문항</a></td><td><a href="exam_9회차_3과목_빅데이터모델링.html">20문항</a></td><td><a href="exam_9회차_4과목_빅데이터결과해석.html">20문항</a></td><td class="full"><a href="exam_9회차_실전모의고사.html">80문항 · 120분</a></td></tr><tr><th class="rd">10회차<br><small>총정리</small></th><td><a href="exam_10회차_1과목_빅데이터분석기획.html">20문항</a></td><td><a href="exam_10회차_2과목_빅데이터탐색.html">20문항</a></td><td><a href="exam_10회차_3과목_빅데이터모델링.html">20문항</a></td><td><a href="exam_10회차_4과목_빅데이터결과해석.html">20문항</a></td><td class="full"><a href="exam_10회차_실전모의고사.html">80문항 · 120분</a></td></tr></tbody></table></div>
+<div class="ex-all"><p><b>한번에 풀기</b> — 한 과목의 모든 회차를 회차 구분선을 두고 한 페이지에서 이어 풉니다. 채점은 회차별로 따로 나옵니다.</p><div class="ex-allbtns"><a class="ex-allbtn" href="exam_1과목_전회차_빅데이터분석기획.html"><b>1과목</b> 빅데이터 분석 기획<span>1~10회차 · 200문항</span></a><a class="ex-allbtn" href="exam_2과목_전회차_빅데이터탐색.html"><b>2과목</b> 빅데이터 탐색<span>1~10회차 · 200문항</span></a><a class="ex-allbtn" href="exam_3과목_전회차_빅데이터모델링.html"><b>3과목</b> 빅데이터 모델링<span>1~10회차 · 200문항</span></a><a class="ex-allbtn" href="exam_4과목_전회차_빅데이터결과해석.html"><b>4과목</b> 빅데이터 결과해석<span>1~10회차 · 200문항</span></a></div></div>
+<!-- ===/EXAM-IDX=== -->
+
+<h2>1과목 · 빅데이터 분석 기획</h2><details class="ov"><summary>1과목 주요 내용 한눈에 보기 (원문 3쪽)</summary><img src="figs/fig_p03_1.png" alt="1과목 주요 내용"></details><div class="cards"><a class="card" href="1-1_빅데이터의이해.html"><b>빅데이터의 이해</b><span>원문 4~9쪽 · 6쪽</span></a><a class="card" href="1-2_데이터분석계획.html"><b>데이터분석 계획</b><span>원문 10~15쪽 · 6쪽</span></a><a class="card" href="1-3_데이터수집및저장계획.html"><b>데이터 수집 및 저장 계획</b><span>원문 16~19쪽 · 4쪽</span></a></div><h2>2과목 · 빅데이터 탐색</h2><details class="ov"><summary>2과목 주요 내용 한눈에 보기 (원문 21쪽)</summary><img src="figs/fig_p21_1.png" alt="2과목 주요 내용"></details><div class="cards"><a class="card" href="2-1_데이터전처리.html"><b>데이터 전처리</b><span>원문 22~26쪽 · 5쪽</span></a><a class="card" href="2-2_데이터탐색.html"><b>데이터 탐색</b><span>원문 27~30쪽 · 4쪽</span></a><a class="card" href="2-3_통계기법이해.html"><b>통계기법 이해</b><span>원문 31~36쪽 · 6쪽</span></a></div><h2>3과목 · 빅데이터 모델링</h2><details class="ov"><summary>3과목 주요 내용 한눈에 보기 (원문 38쪽)</summary><img src="figs/fig_p38_1.png" alt="3과목 주요 내용"></details><div class="cards"><a class="card" href="3-1_분석모형설계.html"><b>분석모형 설계</b><span>원문 39~40쪽 · 2쪽</span></a><a class="card" href="3-2_분석기법적용.html"><b>분석기법 적용</b><span>원문 41~54쪽 · 14쪽</span></a></div><h2>4과목 · 빅데이터 결과해석</h2><details class="ov"><summary>4과목 주요 내용 한눈에 보기 (원문 56쪽)</summary><img src="figs/fig_p56_1.png" alt="4과목 주요 내용"></details><div class="cards"><a class="card" href="4-1_분석모형평가및개선.html"><b>분석모형 평가 및 개선</b><span>원문 57~62쪽 · 6쪽</span></a><a class="card" href="4-2_분석결과해석및활용.html"><b>분석결과 해석 및 활용</b><span>원문 63~69쪽 · 7쪽</span></a></div>
+</div><script id="bmidx-js">
+/* ================= 목차의 북마크 목록 =================
+   각 페이지의 펜 도구( 🔖 북마크 )로 꽂은 책갈피를 한자리에 모아 보여 준다.
+   누르면 그 파일의 그 자리로 바로 이동한다( #bm=<id> — annot.js 가 받아서 스크롤 ).
+   저장소는 펜 모드와 같은 규칙 — 서버가 있으면 디스크(_bookmarks), 없으면 브라우저.
+--------------------------------------------------------------------- */
+(function(){
+  var wrap = document.querySelector('.wrap') || document.body;
+  var BMKEY = 'bdnote:bookmarks';
+  var bm = {v:1, items:[]}, api = null;
+
+  function load(){
+    try{
+      var s = localStorage.getItem(BMKEY);
+      if(s){
+        var o = JSON.parse(s);
+        if(o && o.items instanceof Array) bm = o;
+      }
+    }catch(e){}
+  }
+  function save(){
+    try{ localStorage.setItem(BMKEY, JSON.stringify(bm)); }catch(e){}
+    if(api){
+      fetch(api, {method:'PUT', headers:{'Content-Type':'application/json'},
+                  body:JSON.stringify(bm)}).catch(function(){});
+    }
+  }
+
+  /* ---------- 그리기 ---------- */
+  var box = document.createElement('div');
+  box.id = 'bm-idx';
+  var anchor = document.querySelector('.ex-idx-wrap');
+  if(anchor) anchor.parentNode.insertBefore(box, anchor.nextSibling);
+  else wrap.insertBefore(box, wrap.firstChild);
+
+  function fmt(ts){
+    var d = new Date(ts);
+    return (d.getMonth() + 1) + '/' + d.getDate();
+  }
+
+  function render(){
+    var items = bm.items.slice().sort(function(a, b){ return b.ts - a.ts; });
+    var h = '<h2>북마크</h2>';
+    if(!items.length){
+      h += '<p class="bm-hint">아직 꽂아 둔 북마크가 없습니다 — 각 페이지에서 '
+         + '<b>✎ 펜 → 🔖 북마크</b> 를 누르면 여기에서 바로 이동할 수 있습니다.</p>';
+      box.innerHTML = h;
+      return;
+    }
+    h += '<ul class="bm-list">';
+    items.forEach(function(it){
+      h += '<li data-id="' + it.id + '">'
+         + '<a href="' + encodeURI(it.file) + '.html#bm=' + encodeURIComponent(it.id) + '">'
+         + '<span class="bm-label">🔖 ' + esc(it.label) + '</span>'
+         + '<span class="bm-where">' + esc(it.title || it.file) + ' · ' + fmt(it.ts) + '</span>'
+         + '</a>'
+         + '<button class="bm-del" title="이 북마크를 지웁니다">✕</button></li>';
+    });
+    h += '</ul>';
+    box.innerHTML = h;
+  }
+
+  function esc(s){
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  box.addEventListener('click', function(ev){
+    if(!ev.target.closest) return;
+    var del = ev.target.closest('.bm-del');
+    if(!del) return;
+    var li = del.closest('li'), id = li.getAttribute('data-id');
+    var it = null;
+    bm.items.forEach(function(x){ if(x.id === id) it = x; });
+    if(!it) return;
+    if(!window.confirm('북마크 "' + it.label + '" 를 지울까요?')) return;
+    bm.items = bm.items.filter(function(x){ return x.id !== id; });
+    save(); render();
+  });
+
+  /* ---------- 시작 ---------- */
+  load(); render();
+  if(/^https?:$/.test(location.protocol) && window.fetch){
+    fetch('api/state/_bookmarks', {cache:'no-store'})
+      .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+      .then(function(o){
+        api = 'api/state/_bookmarks';
+        if(o && o.items instanceof Array) bm = o;
+        render();
+      })
+      .catch(function(){});
+  }
+})();
+</script><!--/bmidx-js-->
+</body></html>

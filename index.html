@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>빅데이터분석기사 학습 자료</title>
+<style>
+:root{--accent:#2E8B7A;--accent-pale:#EAF4F1;--navy:#1F3A63;--ink:#222;--line:#DDD}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);background:#FAFAF9;
+  font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",system-ui,sans-serif;
+  font-size:15px;line-height:1.75;word-break:keep-all}
+.wrap{max-width:820px;margin:0 auto;padding:56px 24px 100px}
+h1{font-size:27px;margin:0 0 6px;color:var(--accent)}
+.src{font-size:12.5px;color:#888;margin:0 0 30px}
+
+/* 잠금 화면 */
+#gate{max-width:380px;margin:14vh auto 0;padding:30px 28px;background:#fff;
+  border:1px solid var(--line);border-radius:12px;box-shadow:0 3px 18px rgba(0,0,0,.06);
+  text-align:center}
+#gate h2{font-size:17px;margin:0 0 4px;color:var(--accent)}
+#gate p{font-size:12.5px;color:#999;margin:0 0 18px}
+#gate input{width:100%;padding:11px 13px;font-size:15px;text-align:center;
+  border:1.5px solid var(--line);border-radius:8px;letter-spacing:.12em}
+#gate input:focus{outline:none;border-color:var(--accent)}
+#gate button{width:100%;margin-top:10px;padding:11px;font-size:14.5px;font-weight:700;
+  color:#fff;background:var(--accent);border:0;border-radius:8px;cursor:pointer}
+#gate button:hover{background:#26705F}
+#gate .err{min-height:18px;margin:10px 0 0;font-size:12.5px;color:#C0392B}
+
+/* 목차 */
+.cards{display:grid;gap:14px}
+.card{display:flex;gap:16px;align-items:flex-start;padding:20px 22px;background:#fff;
+  border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--ink);
+  transition:.15s}
+.card:hover{border-color:var(--accent);box-shadow:0 3px 14px rgba(46,139,122,.14);
+  transform:translateY(-1px)}
+.card .ic{font-size:26px;line-height:1.1;flex:0 0 auto}
+.card b{display:block;font-size:17px;margin-bottom:3px;color:var(--navy)}
+.card .d{display:block;font-size:13.5px;color:#555}
+.card .m{display:block;font-size:12px;color:#999;margin-top:5px}
+.note{margin-top:28px;padding:11px 15px;background:#FCF6F3;border:1.5px dashed #C0846F;
+  border-radius:8px;font-size:13px;color:#6B4132}
+.foot{margin-top:22px;font-size:12.5px;color:#aaa}
+.foot button{font:inherit;color:#aaa;background:none;border:0;padding:0;
+  cursor:pointer;text-decoration:underline}
+</style></head><body>
+<div class="wrap">
+  <div id="gate">
+    <h2>빅데이터분석기사 학습 자료</h2>
+    <p>비밀번호를 넣으면 목차가 열립니다.</p>
+    <input id="pw" type="password" autocomplete="current-password"
+           placeholder="비밀번호" aria-label="비밀번호">
+    <button type="button" id="go">열기</button>
+    <p class="err" id="err" role="alert"></p>
+  </div>
+
+  <div id="idx" hidden></div>
+</div>
+<script>
+function sha256(msg){
+  var K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+  0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+  0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+  0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+  0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+  0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+  0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+  0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+  var H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+  var b=(typeof msg==='string')?utf8(msg):msg, L=b.length, bits=L*8;
+  var n=((L+9+63)>>6)<<6, m=new Uint8Array(n);
+  m.set(b); m[L]=0x80;
+  var hi=Math.floor(bits/4294967296), lo=bits>>>0;
+  m[n-8]=(hi>>>24)&255; m[n-7]=(hi>>>16)&255; m[n-6]=(hi>>>8)&255; m[n-5]=hi&255;
+  m[n-4]=(lo>>>24)&255; m[n-3]=(lo>>>16)&255; m[n-2]=(lo>>>8)&255; m[n-1]=lo&255;
+  var w=new Uint32Array(64);
+  function rr(x,c){ return (x>>>c)|(x<<(32-c)); }
+  for(var i=0;i<n;i+=64){
+    for(var t=0;t<16;t++)
+      w[t]=(m[i+t*4]<<24)|(m[i+t*4+1]<<16)|(m[i+t*4+2]<<8)|m[i+t*4+3];
+    for(t=16;t<64;t++){
+      var s0=rr(w[t-15],7)^rr(w[t-15],18)^(w[t-15]>>>3);
+      var s1=rr(w[t-2],17)^rr(w[t-2],19)^(w[t-2]>>>10);
+      w[t]=(w[t-16]+s0+w[t-7]+s1)>>>0;
+    }
+    var a=H[0],bb=H[1],c=H[2],d=H[3],e=H[4],f=H[5],g=H[6],h=H[7];
+    for(t=0;t<64;t++){
+      var S1=rr(e,6)^rr(e,11)^rr(e,25), ch=(e&f)^(~e&g);
+      var t1=(h+S1+ch+K[t]+w[t])>>>0;
+      var S0=rr(a,2)^rr(a,13)^rr(a,22), mj=(a&bb)^(a&c)^(bb&c);
+      var t2=(S0+mj)>>>0;
+      h=g; g=f; f=e; e=(d+t1)>>>0; d=c; c=bb; bb=a; a=(t1+t2)>>>0;
+    }
+    H[0]=(H[0]+a)>>>0; H[1]=(H[1]+bb)>>>0; H[2]=(H[2]+c)>>>0; H[3]=(H[3]+d)>>>0;
+    H[4]=(H[4]+e)>>>0; H[5]=(H[5]+f)>>>0; H[6]=(H[6]+g)>>>0; H[7]=(H[7]+h)>>>0;
+  }
+  var out=new Uint8Array(32);
+  for(var j=0;j<8;j++){
+    out[j*4]=(H[j]>>>24)&255; out[j*4+1]=(H[j]>>>16)&255;
+    out[j*4+2]=(H[j]>>>8)&255; out[j*4+3]=H[j]&255;
+  }
+  return out;
+}
+function utf8(s){
+  var o=[];
+  for(var i=0;i<s.length;i++){
+    var c=s.charCodeAt(i);
+    if(c<0x80) o.push(c);
+    else if(c<0x800){ o.push(0xc0|(c>>6),0x80|(c&63)); }
+    else if(c>=0xd800&&c<0xdc00){
+      var c2=s.charCodeAt(++i), u=0x10000+((c-0xd800)<<10)+(c2-0xdc00);
+      o.push(0xf0|(u>>18),0x80|((u>>12)&63),0x80|((u>>6)&63),0x80|(u&63));
+    } else { o.push(0xe0|(c>>12),0x80|((c>>6)&63),0x80|(c&63)); }
+  }
+  return new Uint8Array(o);
+}
+function hex(u){
+  var s='';
+  for(var i=0;i<u.length;i++) s+=('0'+u[i].toString(16)).slice(-2);
+  return s;
+}
+function keystream(pw,n){
+  var out=new Uint8Array(n), i=0, p=0;
+  while(p<n){
+    var blk=sha256(pw+':'+i);
+    for(var j=0;j<32&&p<n;j++) out[p++]=blk[j];
+    i++;
+  }
+  return out;
+}
+function unlock(pw,b64){
+  var bin=atob(b64), n=bin.length, ks=keystream(pw,n), out=new Uint8Array(n);
+  for(var i=0;i<n;i++) out[i]=(bin.charCodeAt(i)&255)^ks[i];
+  return new TextDecoder('utf-8').decode(out);
+}
+
+
+(function(){
+  var CHECK = '375cbb502073190b482e1f73d637d1594f020e42312fbfc8da5765751edf3d86';
+  var DATA  = 'ElRG9Zx2SLRETmn2CX3TByKWrRUoUNzxyMYre2RNZq5JXNF5SrDy1PDmny49Rn4q1ULHPK2Wu1ado5N3dP83cDzJyyYO4+6g5PaZ3A22D1PtbLQ39y0kHjBtukHOU+muZYOQRGj8EdGsF5vHOkHx8xRCafr27jB+mAqGGrNRb/tIMi8Fc1U8oLb5hQmNYbJpM79C1isZnaZJEsb8Lzvy9cS0SguKZjIXxZC0oKtA8tBMPKL8VYEvyrA/ASSRcVU9o4t2UOzkkDOtZ4m4yno+WVikVBhkqa97UJWJC4vnX0JNI6w3R5k3l9Dg/MYdC6v3CoH+SC2ec9VGrBSHnAdNfTiWMPalm9P0FouTh6i7jH1PcYLG8cHdLLp8Bera8TA6tveNXcX1WH2LQszkGbb8uwNJu0gIZNomWnDZ24YCDO7hRl5Jr1koC9J4zhQGujzhFFMpYEB427NhFBRVwJix0kPc9WdrnVbbuNlow0TDMK500F8l1tK27VBdww9wThuUhCCbYi0KwdMhAtDwOa9BNr6xjkCLaZhIW/Wz/F19UiMoFANLeOLOChQHKBiorZdxSUYittDQS0Q/721nHFjy5zk3fTPYBwpwmyOSLhYZsxZ1s8zI7Q9nYmO0xMLKMFolag80FpGt3oMIeN1JCZomtc2jLPRz4Y4EkppMvEAXOTedjW9Mw8UskwRaw9zULPJpK6bGADAQXDxyuLPcswtj7f4nYbtYa7yIWR1RB6QTUrVAcVJjgYas0rxVYLaMu8gNCMshnb2zW9JB96a9ahYrHfUmLYUYUWkG1QnCCeyjHcjyMixj+FAZNfZdtwFHfoa+D9pZIiq5+Sr/Fxkr4C/jzbm6nPvpo14PH/49ubv7Hajsti8Oul+mEHn0gC1yj9JFZ+DOT5nQRhMus2/GWUbuMLv6mawvXt3v9aBtLj8O9Nav3W1se+z4pu2g9j4Uul9OopJ6LMRWIaq/aSdBFwKRbNxlq/bHR1opvWDcnUn3htUQcS0LrI20J1sVL9PLCWjwJMmu6av6wN8KpIiiw/16ZlxSOcPP86UmRCMq2KN6fH9q465iz4j8RRAYSF2K3bcmesk6zQXRESBpy0mAAy84LVvFO4JWSTXHE32tn2GcyvqLnQCW5ZdTZcGnWUtMQr4wt3OCoowHOmqPB3QJduG+MEx3BSLLB+eBxdxoYLVPDzS7CFeouNy3sByDMWK2JzPXyCNNQLw7EH/V2ikBd42XPnOGO4COOVmWFZ+j0L6zi8jawvpdpZX4jo2+Md9JXHR4dwF2V2jHo4+QP+6fW+D5V0Q/0wsWneZb3xoOwldUJ4GsVyycO75IuKkSqB97VYZEYE43ncQFmqX0PKlNzENxYKTM7d8qalqBDncSGfujXCLbxsOfrEHKp9TsAe+zVJVxodUdec04xoHAWGfh+Y6LPioo7vzOLJSjjyBFwYPIK6THwcLcROcYRD6O4i21J7WqSX/WOwQM1d0CUCxjBi9LJbMkMYEzQoxBKo5Az5wd9ry8j4jVkHKPnHpCWGun9/sXERzTLtAYyiT72/2ASJib2Ph1jRgYgAmIpc3N0aBqiWmp//5RHPka06EoYp/yriCLM+noDU9BQT4XUKNC9504Wvt/MC2Auk5Evs822VCbyU8mwMIU1vXzFARX+GPXt4Zm4ik=';
+  var KEY   = 'bdnote:root:ok';
+  var gate  = document.getElementById('gate');
+  var body  = document.getElementById('idx');
+  var inp   = document.getElementById('pw');
+  var err   = document.getElementById('err');
+
+  function open(pw){
+    try{
+      body.innerHTML = unlock(pw, DATA);
+    }catch(e){
+      err.textContent = '목차를 여는 중 문제가 생겼습니다.';
+      return false;
+    }
+    gate.hidden = true;
+    body.hidden = false;
+    return true;
+  }
+
+  function tryPw(pw, quiet){
+    if(hex(sha256(pw + ':check')) !== CHECK){
+      if(!quiet){ err.textContent = '비밀번호가 맞지 않습니다.'; inp.select(); }
+      return false;
+    }
+    if(!open(pw)) return false;
+    try{ sessionStorage.setItem(KEY, pw); }catch(e){}
+    return true;
+  }
+
+  document.getElementById('go').addEventListener('click', function(){ tryPw(inp.value, false); });
+  inp.addEventListener('keydown', function(e){ if(e.key === 'Enter') tryPw(inp.value, false); });
+  inp.addEventListener('input', function(){ err.textContent = ''; });
+
+  var lockBtn = document.getElementById('lock');
+  if(lockBtn) lockBtn.addEventListener('click', function(){
+    try{ sessionStorage.removeItem(KEY); }catch(e){}
+    location.reload();
+  });
+
+  var saved = null;
+  try{ saved = sessionStorage.getItem(KEY); }catch(e){}
+  if(saved && tryPw(saved, true)) return;      // 이 창에서 한 번 풀었으면 다시 묻지 않는다
+  inp.focus();
+})();
+</script>
+</body></html>

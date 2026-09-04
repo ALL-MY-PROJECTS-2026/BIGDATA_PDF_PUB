@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>빅데이터분석기사 필기 · PART 02 CHAPTER 02 데이터 탐색</title>
+<style>
+:root{
+  --accent:#2E8B7A;
+  --accent-soft:#BBDDD5;
+  --accent-pale:#EAF4F1;
+  --navy:#1F3A63;
+  --ink:#222;
+  --ink-sub:#555;
+  --line:#DDD;
+  --bg:#fff;
+  --side-bg:#FAFAF9;
+  --mark:#D8EFCB;
+  --sidebar-w:290px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",system-ui,sans-serif;
+  font-size:15.5px; line-height:1.75; word-break:keep-all;
+}
+
+/* ---------- 레이아웃 ---------- */
+#layout{display:flex; align-items:flex-start}
+#sidebar{
+  width:var(--sidebar-w); flex:0 0 var(--sidebar-w);
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+  background:var(--side-bg); border-right:1px solid var(--line);
+  padding:18px 0 60px;
+}
+#sidebar .side-head{
+  padding:0 18px 14px; border-bottom:1px solid var(--line); margin-bottom:10px;
+}
+#sidebar .side-head b{display:block; font-size:14px; color:var(--accent); letter-spacing:.02em}
+#sidebar .side-head span{display:block; font-size:12px; color:var(--ink-sub); margin-top:3px}
+#toc{list-style:none; margin:0; padding:0; font-size:13.5px}
+#toc li{margin:0}
+#toc a{
+  display:block; padding:5px 16px 5px 18px; color:#444; text-decoration:none;
+  border-left:3px solid transparent; line-height:1.45;
+}
+#toc a:hover{background:#F0F0EE; color:var(--accent)}
+#toc a.active{background:var(--accent-pale); color:var(--accent); border-left-color:var(--accent); font-weight:700}
+#toc .lv1>a{font-weight:700; color:#222; padding-top:10px; padding-bottom:8px; font-size:14px}
+#toc .lv2>a{padding-left:30px}
+#toc .lv3>a{padding-left:44px; font-size:12.8px; color:#666}
+
+#main{flex:1 1 auto; min-width:0; padding:36px 40px 140px}
+.wrap{max-width:900px; margin:0 auto}
+
+/* ---------- 본문 요소 ---------- */
+.page-mark{
+  margin:38px 0 14px; padding:2px 0 2px 10px;
+  border-left:3px solid var(--accent-soft);
+  font-size:12px; color:#999; letter-spacing:.04em;
+}
+h1.doc-title{
+  font-size:24px; margin:0 0 6px; color:var(--accent);
+}
+.doc-sub{color:var(--ink-sub); font-size:13.5px; margin:0 0 10px}
+.doc-note{
+  background:#FFFBEA; border:1px solid #F0E2AE; border-radius:6px;
+  padding:12px 16px; font-size:13px; color:#6B5B23; margin:0 0 30px;
+}
+
+h2{
+  font-size:20px; margin:52px 0 18px; padding:10px 16px;
+  background:var(--accent); color:#fff; border-radius:4px;
+  border-left:8px solid var(--navy); letter-spacing:.01em;
+}
+h3{
+  font-size:17px; margin:34px 0 14px; padding-bottom:8px;
+  border-bottom:2px solid var(--accent-soft); color:#1b1b1b;
+}
+h4{
+  font-size:15.5px; margin:24px 0 10px; color:var(--accent);
+}
+h4::before{content:"● "; font-size:11px; vertical-align:2px}
+h5{font-size:15px; margin:18px 0 8px; color:#333}
+
+p{margin:0 0 10px}
+ul.dash{list-style:none; margin:0 0 12px; padding:0}
+ul.dash>li{position:relative; padding-left:14px; margin:3px 0}
+ul.dash>li::before{content:"·"; position:absolute; left:2px; color:var(--accent)}
+.para-block p{margin:0 0 8px}
+
+mark{background:var(--mark); padding:0 1px}
+
+/* 표 */
+.table-scroll{overflow-x:auto; margin:0 0 16px}
+table{border-collapse:collapse; width:100%; font-size:14px}
+table th,table td{border:1px solid #CFCFCF; padding:7px 10px; vertical-align:middle}
+table th{background:#F2F2F0; font-weight:700; text-align:center}
+table td.h{background:#F7F7F5; font-weight:700; text-align:center; white-space:nowrap}
+table.plain th{background:#F2F2F0}
+
+/* 시험 안내 카드 */
+.cardrow{display:flex; gap:22px; flex-wrap:wrap; margin-bottom:8px}
+.card{flex:1 1 380px; min-width:300px}
+.card>h3{
+  text-align:center; font-weight:700; font-size:16px; padding:9px 0;
+  border:1px solid #D9D9D9; border-top:3px solid var(--accent);
+  border-bottom:1px solid #D9D9D9;
+  border-radius:0 0 14px 14px; background:#fff; margin:0 0 16px;
+}
+.card>h3.pink{border-top-color:#F2A099}
+.card>h3.blue{border-top-color:#9BB6DE}
+.callout{
+  background:#FDF6E3; border-left:5px solid #F0D18B; border-radius:4px;
+  padding:14px 18px; margin:22px 0;
+}
+.callout h4{margin-top:0; color:#7A5E12}
+.callout h4::before{content:""}
+h3.callout-head{border:0; margin:0 0 8px; padding:0; font-size:17px; color:#7A5E12}
+.tel{font-weight:700; color:var(--navy); font-size:17px}
+
+/* 출제경향 */
+h3.trend-head{
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  border-bottom:2px solid var(--navy); padding-bottom:6px; margin:30px 0 12px;
+  font-size:inherit; font-weight:400;
+}
+.trend-head .pno{
+  background:var(--accent); color:#fff; font-weight:700; padding:3px 12px;
+  border-radius:3px; font-size:15px;
+}
+.trend-head .ptit{font-weight:700; font-size:17px}
+.trend-head .pcap{font-size:13px; color:#555}
+.trend-head .pcnt{
+  margin-left:auto; background:var(--accent-pale); color:#26705F;
+  font-weight:700; font-size:13px; padding:3px 12px; border-radius:12px;
+}
+table.trend td.bar-cell{width:230px; padding:6px 10px}
+.bar{
+  position:relative; height:22px; border:1px solid #D6D6D6; background:#fff; border-radius:2px;
+}
+.bar>i{display:block; height:100%; background:var(--accent-soft); border-radius:1px}
+.bar>span{position:absolute; right:7px; top:0; line-height:22px; font-size:12.5px; font-weight:700; color:#333}
+table.trend td.tag{font-size:13px; color:#444; line-height:1.6}
+details.orig{margin:6px 0 22px}
+details.orig summary{cursor:pointer; font-size:12.5px; color:var(--accent); user-select:none}
+details.orig img{max-width:100%; margin-top:10px; border:1px solid var(--line); border-radius:4px}
+
+/* 표지 */
+.cover{
+  background:var(--accent); color:#fff; border-radius:6px;
+  padding:38px 34px; margin:52px 0 22px;
+}
+.cover .kicker{letter-spacing:.35em; font-size:13px; font-weight:700; opacity:.95}
+.cover .num{font-size:56px; font-weight:800; line-height:1; color:#26333C; margin:6px 0 10px}
+.cover .name{font-size:32px; font-weight:800; line-height:1.25}
+.cover--chapter{background:#F0F0EE; color:#222; border-left:10px solid var(--accent)}
+.cover--chapter .kicker{color:var(--accent)}
+.cover--chapter .num{color:#26333C}
+.cover--chapter .name{color:var(--accent)}
+.tagbox{
+  display:inline-block; background:var(--accent); color:#fff; font-size:12.5px;
+  font-weight:700; padding:2px 10px; border-radius:2px; margin-bottom:8px;
+}
+.cover .tagbox{background:#fff; color:var(--accent)}
+.cover-body{margin-top:22px; font-size:14px; line-height:1.7}
+.cover--chapter .cover-body{color:#333}
+.freq{margin-top:18px}
+.freq .row{display:flex; align-items:center; gap:12px; margin:6px 0; font-size:13.5px}
+.freq .row b{width:96px; flex:0 0 96px}
+.freq .bar{flex:1 1 auto}
+
+.unclear{background:#FFE9E9; border-bottom:1px dashed #D66}
+/* 오답 피하기 */
+.avoid{margin:8px 0 0;padding:8px 12px;background:#F7F7F5;border-radius:4px;font-size:13.4px;color:#444}
+.avoid-tag{display:inline-block;background:#6B7280;color:#fff;font-size:11px;font-weight:700;
+  padding:1px 8px;border-radius:10px;margin-right:6px;vertical-align:1px}
+/* 수식 (원문을 직접 옮겨 적은 텍스트) */
+.eqbox{margin:12px 0 12px 14px;padding:10px 16px;background:#FAFBFB;
+  border-left:3px solid var(--accent-soft);border-radius:0 4px 4px 0;
+  font-size:15px;line-height:2.3;overflow-x:auto}
+.eqbox i{font-family:"Cambria Math","Cambria","Times New Roman",serif;font-style:italic}
+.eqbox .eqline{margin:4px 0}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;
+  margin:0 3px;line-height:1.25}
+.fr>.nu{padding:0 5px 1px;border-bottom:1.3px solid currentColor}
+.fr>.de{padding:1px 5px 0}
+
+ol.numlist{margin:0 0 0 18px; padding:0}
+ol.numlist>li{margin:3px 0}
+.procbox{border:1px solid #C9C9C4; border-radius:3px; padding:9px 10px; margin-top:7px; text-align:center; line-height:1.55; background:#fff}
+
+/* ---------- 본문 상세 요소 ---------- */
+.sec-meta{margin:-6px 0 12px}
+.freq-tag{
+  display:inline-block; background:var(--accent-pale); color:#26705F;
+  font-size:12.5px; font-weight:700; padding:3px 12px; border-radius:3px;
+}
+.freq-tag b{color:var(--accent); font-size:14px}
+.tagline{
+  background:var(--accent-pale); border-radius:4px; padding:10px 14px;
+  font-size:13.5px; color:#333; margin:0 0 26px;
+}
+.tagline .tagbox{margin:0 8px 0 0; vertical-align:1px}
+
+h3 .num{
+  display:inline-block; background:var(--accent); color:#fff; font-size:13px;
+  font-weight:700; padding:1px 8px; border-radius:3px; margin-right:8px; vertical-align:3px;
+}
+sup.star{color:var(--accent); font-size:13px}
+.star-b{color:var(--accent)}
+.cite{font-size:12.5px; color:#777}
+
+/* 원문자 목록 */
+ol.circled{list-style:none; counter-reset:c; margin:0 0 12px; padding:0}
+ol.circled>li{
+  counter-increment:c; position:relative; padding-left:24px; margin:8px 0;
+}
+ol.circled>li::before{
+  content:counter(c, decimal); position:absolute; left:0; top:1px;
+  width:16px; height:16px; line-height:15px; text-align:center;
+  border:1px solid #666; border-radius:50%; font-size:11px; color:#444;
+}
+.ex{margin:5px 0 0 4px; font-size:14.5px}
+.ex-tag{
+  display:inline-block; background:#555; color:#fff; font-size:10.5px;
+  padding:0 5px; border-radius:2px; margin-right:5px; vertical-align:2px;
+}
+ul.dash2{list-style:none; margin:4px 0 0; padding:0}
+ul.dash2>li{position:relative; padding-left:15px; margin:3px 0; color:#333}
+ul.dash2>li::before{content:"–"; position:absolute; left:0; color:#888}
+
+/* 표 캡션 */
+.tbl-cap{
+  font-weight:700; font-size:14px; color:#333; margin:20px 0 7px;
+}
+.tbl-cap::before{content:"▶ "; color:var(--accent); font-size:11px; vertical-align:1px}
+
+/* 여백 용어설명 */
+aside.note{
+  background:#F6F6F4; border-left:3px solid #D6D6D2; border-radius:0 4px 4px 0;
+  padding:11px 15px; margin:14px 0; font-size:13px; color:#4A4A4A; line-height:1.65;
+}
+aside.note b{color:#222}
+aside.note hr{border:0; border-top:1px solid #E2E2DE; margin:10px 0}
+
+/* 기적의 TIP / 더 알기 TIP */
+.tip{
+  border:1px solid var(--accent-soft); border-radius:4px; background:#fff;
+  padding:11px 15px; margin:16px 0; font-size:13.5px;
+}
+.tip-head{
+  display:block; font-weight:700; color:var(--accent); font-size:13px; margin-bottom:5px;
+}
+.tip-head::before{content:"⚑ "}
+.tip.tip-more{border-color:#B9C9DE; background:#F7FAFD}
+.tip-head-more{color:#3A5F8F}
+.tip-head-more::before{content:"✚ "}
+.tip-more .tip-title{font-weight:700; margin:0 0 8px}
+.tip-more figure{margin:14px 0 0}
+
+/* 도식 */
+figure{margin:18px 0; text-align:center}
+figure img{max-width:100%; height:auto}
+figcaption{font-size:13px; color:#444; font-weight:700; margin-top:8px}
+
+/* 개념 체크 */
+.check{
+  border-top:2px solid var(--accent); border-bottom:2px solid var(--accent-soft);
+  padding:0 0 18px; margin:34px 0;
+}
+.check-head{
+  display:inline-block; background:var(--accent); color:#fff; font-weight:700;
+  font-size:13px; padding:4px 14px; border-radius:0 0 4px 0;
+}
+.check .q{margin:20px 0 0}
+.q-title{font-weight:700; font-size:15.5px; margin-bottom:8px}
+.q-no{color:var(--accent); margin-right:6px}
+ol.q-opt{margin-left:6px}
+ol.q-opt>li{font-size:15px}
+.ans{text-align:right; margin:12px 0 6px; font-size:14px; font-weight:700}
+.ans-tag{
+  display:inline-block; background:var(--accent-soft); color:#1b4d43;
+  font-size:11px; padding:1px 7px; border-radius:2px; margin-right:5px; vertical-align:1px;
+}
+ul.sol{
+  border-top:1px dotted #BBB; padding-top:12px; font-size:13.5px; color:#444;
+}
+ul.sol>li{margin:5px 0}
+
+/* 체크리스트 박스 */
+.boxlist{
+  border:1px solid #DCDCD8; border-radius:4px; padding:14px 18px; margin:14px 0;
+}
+.boxlist ul.dash{margin:0}
+.source{text-align:right; font-size:12.5px; color:#666; margin:6px 0 0}
+
+/* 예상문제 */
+.exam-kicker{
+  display:inline-block; background:var(--accent-soft); color:#1b4d43;
+  font-size:12px; font-weight:700; padding:2px 10px; border-radius:2px;
+  margin-right:8px; vertical-align:3px;
+}
+.exam{columns:2; column-gap:38px; margin-top:18px}
+.eq{break-inside:avoid; margin:0 0 26px}
+.eq-t{font-weight:700; font-size:15px; margin-bottom:7px; text-indent:-26px; padding-left:26px}
+.eq-n{color:var(--accent); font-size:17px; margin-right:6px}
+.eq ol.q-opt{margin:0 0 0 4px}
+.eq ol.q-opt>li{font-size:14.5px; margin:4px 0}
+
+/* 정답 & 해설 */
+.anskey{background:#F4F6F5; border-radius:4px; padding:0 0 14px; margin:18px 0 24px}
+.anskey-head{
+  background:var(--accent); color:#fff; font-weight:700; letter-spacing:.08em;
+  padding:7px 16px; font-size:14px; border-radius:4px 4px 0 0;
+}
+.anskey-grid{
+  display:grid; grid-template-columns:repeat(5,1fr); gap:8px 4px;
+  padding:14px 16px 0; font-size:15px; font-weight:700; text-align:center;
+}
+.sols{columns:2; column-gap:38px}
+.sol-item{break-inside:avoid; margin:0 0 16px}
+.sol-h{border-bottom:1px dotted #BBB; padding-bottom:3px; margin-bottom:6px; font-size:14px}
+.sol-h b{color:var(--accent); font-size:16px; margin-right:6px}
+.sol-item p{font-size:13.5px; color:#444; margin:0}
+.sol-item p.wrong{margin-top:5px; color:#8A4B3F; font-size:13px}
+
+@media(max-width:820px){
+  .exam,.sols{columns:1}
+  .anskey-grid{grid-template-columns:repeat(4,1fr)}
+}
+
+/* 표 안 목록 여백 정리 */
+table ul.dash{margin:0}
+table ul.dash>li{margin:2px 0}
+/* 여백 노트 안의 소형 표 */
+table.mini{font-size:12px}
+table.mini td{padding:3px 7px; text-align:center; background:#fff}
+table.mini td:first-child{text-align:left; font-weight:600}
+
+@media(max-width:900px){
+  #layout{display:block}
+  #sidebar{position:static; width:auto; height:auto; border-right:0; border-bottom:1px solid var(--line)}
+  #main{padding:24px 18px 80px}
+}
+/* 제곱근 */
+.sq{border-top:1.3px solid currentColor;padding:1px 3px 0 2px;margin-left:1px}
+.sq::before{content:"√";border-top:0;margin-left:-11px;padding-right:1px;
+  display:inline-block;transform:translateY(-1px)}
+</style>
+</head>
+<body>
+<div id="layout">
+
+  <nav id="sidebar">
+    <div class="side-head">
+      <b>빅데이터분석기사 필기</b>
+      <span>PART 02 · CHAPTER 02 데이터 탐색</span>
+    </div>
+    <ul id="toc"></ul>
+  </nav>
+
+  <main id="main">
+  <div class="wrap">
+
+    <h1 class="doc-title">PART 02 · CHAPTER 02 데이터 탐색</h1>
+    <p class="doc-sub">원본: 04_빅분기필기-데이터전처리.pdf (책 1-202 ~ 1-239)</p>
+    <p class="doc-note">작업 진행 중 — 좌측 퀵메뉴는 본문 제목을 따라 자동 생성됩니다.</p>
+
+<div class="page-mark">1-242</div>
+
+<h2 id="s1">SECTION 01 데이터 탐색의 기초</h2>
+<p class="sec-meta"><span class="freq-tag">출제빈도 상 | <b>중</b> | 하</span></p>
+<p class="tagline"><span class="tagbox">빈출 태그</span> 데이터 분석 · 상관분석 · 기초통계 · 분산 · 편차</p>
+
+<aside class="note">탐색적 데이터 분석을 통해 자료에 대한 충분한 이해를 하고 좀 더 정교한 모형을 개발할 수 있다.</aside>
+
+<h3 id="s1-01"><span class="num">01</span> 데이터 탐색의 개요</h3>
+
+<h4 id="s1-01-1">1) 탐색적 데이터 분석(Exploratory Data Analysis, EDA)</h4>
+<p>수집한 데이터가 들어왔을 때, 다양한 방법을 통해서 자료를 관찰하고 이해하는 과정을 의미하는 것으로 본격적인 데이터 분석 전에 자료를 직관적인 방법으로 통찰하는 과정이다.</p>
+
+<h4 id="s1-01-2">2) 탐색적 데이터 분석의 필요성</h4>
+<ul class="dash">
+  <li>데이터의 분포 및 값을 검토함으로써 데이터가 표현하는 현상을 이해하며 <mark>내재된 잠재적 문제에 대해 인식하고 해결안을 도출</mark>할 수 있다.
+    <ul class="dash2">
+      <li>문제점 발견 시 본 분석 전 데이터의 수집 의사를 결정할 수 있다.</li>
+    </ul></li>
+  <li>다양한 각도에서 데이터를 살펴보는 과정을 통해 문제정의 단계에서 인지 못한 새로운 양상 · 패턴을 발견할 수 있다.
+    <ul class="dash2">
+      <li>새로운 양상을 발견 시 초기설정 문제의 가설을 수정하거나 또는 새로운 가설을 설립할 수 있다.</li>
+    </ul></li>
+</ul>
+
+<h4 id="s1-01-3">3) 분석과정 및 절차</h4>
+<ul class="dash">
+  <li>분석의 목적과 변수가 무엇인지, 개별변수의 이름이나 설명을 가지는지 확인한다.</li>
+  <li>데이터의 문제성을 확인한다. 즉, 데이터의 결측치의 유무, 이상치의 유무 등을 확인하고 추가적으로 분포상의 이상 형태와 Head 또는 Tail 부분을 확인한다.</li>
+  <li>데이터의 개별 속성값이 예상한 범위 분포를 가지는지 확인한다(기초통계산출을 통한 확인과정을 거친다).</li>
+  <li>관계속성 확인 절차를 가진다. 즉, 개별 데이터 간의 속성 관찰에서 보지 못한 데이터 간의 속성(<span class="ex-tag">예</span> 상관관계 등)을 확인한다.</li>
+</ul>
+
+<h4 id="s1-01-4">4) 이상치의 검출</h4>
+<p>이상치가 왜 발생했는지 의미를 파악하는 것이 중요하다. 그리고 그러한 의미를 파악했으면 어떻게 대처해야 할지(제거, 대체, 유지 등)를 판단한다.<br>이상치를 발견하는 기법으로 다음과 같은 방법들이 있다.</p>
+
+<div class="page-mark">1-243</div>
+
+<aside class="note"><b>분산</b><br>관측값에서 산술평균을 뺀 값을 제곱하고, 그것을 모두 더한 후 전체 개수로 나눠서 구한 것<hr><b>정규분포</b><br>평균을 중심으로 좌우대칭인 종 모양을 이루는 분포<hr><b>표준정규분포</b><br>정규분포 중에서 평균이 0이고 표준 편차가 1인 것, 변수를 z로 쓰며 z-분포라고 줄여 부르기도 함</aside>
+
+<h5>① 개별 데이터 관찰</h5>
+<ul class="dash">
+  <li>데이터 값을 눈으로 살펴보면서 전체적인 추세와 특이사항을 관찰할 수 있다.</li>
+  <li>데이터가 많다고 앞부분만 보면 안 되고, 패턴이 뒤에서 나타날 수도 있으므로 뒤 or 무작위로 표본을 추출해서 관찰한다. 단, 이상치는 표본의 크기가 작은 경우 나타나지 않을 수도 있다.</li>
+</ul>
+
+<h5>② 통계값 활용</h5>
+<ul class="dash">
+  <li>적절한 요약 통계지표(Summary Statistics)를 사용할 수 있다.</li>
+  <li>데이터의 중심을 알기 위해서는 평균(mean), 중앙값(median), 최빈값(mode)을 사용할 수 있다.</li>
+  <li>데이터의 분산도를 알기 위해서는 범위(range), 분산(variance)을 사용할 수 있다.</li>
+  <li>통계 지표를 이용할 때는 데이터의 특성에 주의해야 한다. 예를 들어, 평균에는 집합 내 모든 데이터 값이 반영되기 때문에, 이상값이 있으면 값이 영향을 받지만, 중앙값에는 가운데 위치한 값 하나가 사용되기 때문에 이상값의 존재에도 대표성이 있는 결과를 얻을 수 있다.</li>
+</ul>
+
+<div class="tip-more"><span class="tip-head-more">더 알기 TIP</span>
+<b>통계값 활용 방법</b>
+<p><b>1. IQR(Inter Quartile Range) 방법(사분위범위를 이용한 이상치 제거 방법)</b><br>
+전체 데이터들을 오름차순으로 정렬하고, 정확히 4등분(25%, 50%, 75%, 100%)으로 나눈다.<br>
+여기서 75% 지점의 값(75% percentile: 3 사분위수)과 25% 지점(25% percentile: 1 사분위수)의 값의 차이를 IQR이라고 정의한다.</p>
+<div class="procbox" style="text-align:left">
+최대값 = 75% percentile: 3 사분위수 + 1.5 &times; IQR<br>
+최소값 = 25% percentile: 1 사분위수 &#8722; 1.5 &times; IQR
+</div>
+<p>결정된 최대값보다 크거나 최소값보다 작은 값을 이상치로 간주한다. 터키펜스(Turkey Fences)라고도 한다.</p>
+<p><b>2. 정규분포를 활용(평균과 분산을 이용한 이상치 제거 방법)</b></p>
+<figure><img src="figs/fig_1-243_01.png" alt="정규분포의 평균과 표준편차 내의 데이터 분포 관계 — 가로축 x, 세로축 f(x)의 종 모양 곡선에 μ−3σ, μ−2σ, μ−σ, μ, μ+σ, μ+2σ, μ+3σ 구간이 표시되고 각 구간의 누적 비율이 0.683, 0.954, 0.997로 표기됨"><figcaption>▲ 정규분포의 평균과 표준편차 내의 데이터 분포 관계</figcaption></figure>
+<p>정규분포를 이용하여 어느 정도의 값이 이상치인지 직접 판단하여 이상치를 제거할 수도 있다. 예를 들어 (&mu;&#8722;2&sigma;) ~ (&mu;+2&sigma;) 또는 (&mu;&#8722;1.5&sigma;) ~ (&mu;+1.5&sigma;) 구간을 벗어나는 값을 이상치로 판단한다.<br>
+** 여기서 &sigma;: 표준편차, &mu;: 평균을 말한다.</p>
+</div>
+
+<div class="page-mark">1-244</div>
+
+<aside class="note"><b>상관분석</b><br>2개 이상의 양적 변수간의 관계가 유의한지 확인하는 분석<hr><b>산점도</b><br>직교 좌표계를 이용해 두 개 변수 간의 관계를 나타내는 방법<hr><b>산포도</b><br>변량이 흩어져 있는 정도를 하나의 수로 나타낸 값</aside>
+
+<div class="tbl-cap">6 Sigma의 통계적 의미</div>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:180px">단위</td><td class="h">분포내의 면적(&mu; 중심으로)</td><td class="h">비고</td></tr>
+  <tr><td>1&sigma; (&mu;&#8722;&sigma;) ~ (&mu;+&sigma;)</td><td>68.3%</td><td>불량률 32%</td></tr>
+  <tr><td>2&sigma; (&mu;&#8722;2&sigma;) ~ (&mu;+2&sigma;)</td><td>95.4%</td><td>불량률 5%</td></tr>
+  <tr><td>3&sigma; (&mu;&#8722;3&sigma;) ~ (&mu;+3&sigma;)</td><td>99.7%</td><td>불량률 0.3%</td></tr>
+  <tr><td>4&sigma; (&mu;&#8722;4&sigma;) ~ &mu;+4&sigma;</td><td>99.99%</td><td>불량률 0.01%</td></tr>
+  <tr><td>5&sigma; (&mu;&#8722;5&sigma;) ~ (&mu;+5&sigma;)</td><td>99.9999%</td><td>불량률 0.0001%</td></tr>
+  <tr><td>6&sigma; (&mu;&#8722;6&sigma;) ~ (&mu;+6&sigma;)</td><td>99.99999999%</td><td>불량률 0.00000001%</td></tr>
+</table>
+</div>
+
+<h5>③ 시각화 활용</h5>
+<p>시각적인 표현은, 분석에 많은 도움을 준다. 시각화를 통해 주어진 데이터의 개별 속성에 어떤 통계 지표가 적절한지 결정할 수 있다.</p>
+<ul class="dash">
+  <li>시각화 방법에는 확률밀도 함수, 히스토그램, 점플롯(dot plot), 워드 클라우드, 시계열 차트, 지도 등이 있다.</li>
+</ul>
+
+<h5>④ 머신러닝 기법 활용</h5>
+<ul class="dash">
+  <li>대표적인 머신러닝 기법으로 K-means를 통해 이상치를 확인할 수 있다.</li>
+  <li>정상 데이터의 패턴을 학습하여 이상치를 검출하는 방법이 주로 사용된다.</li>
+</ul>
+
+<h3 id="s1-02"><span class="num">02</span> 상관관계분석</h3>
+
+<h4 id="s1-02-1">1) <mark>변수 간의 상관성 분석</mark></h4>
+<p>두 변수 간에 어떤 선형적 관계를 갖고 있는지를 분석하는 방법이다. 두 변수는 서로 독립적인 관계이거나 상관된 관계일 수 있으며 이때 두 변수 간의 관계의 강도를 상관관계(correlation)라 한다.</p>
+<ol class="circled">
+  <li><b>단순상관분석(Simple Correlation Analysis)</b> : 단순히 두 개의 변수가 어느 정도 강한 관계에 있는가를 측정한다.</li>
+  <li><b>다중상관분석(Multiple Correlation Analysis)</b> : 3개 이상의 변수 간의 관계강도를 측정한다.</li>
+  <li><b>편상관관계분석(Partial Correlation Analysis)</b> : 다중상관분석에서 다른 변수와의 관계를 고정하고 두 변수의 관계강도를 측정하는 것을 말한다.</li>
+</ol>
+
+<h4 id="s1-02-2">2) 상관분석의 기본가정</h4>
+<ol class="circled">
+  <li><b>선형성</b> : 두 변인 X와 Y의 관계가 직선적인지를 알아보는 것으로 이 가정은 분포를 나타내는 산점도를 통하여 확인할 수 있다.</li>
+  <li><b>동변량성(등분산성, Homoscedasticity)</b> : X의 값에 관계없이 Y의 흩어진 정도가 같은 것을 의미한다. 반의어는 이분산성(Heteroscedasticity)이다.</li>
+</ol>
+<ul class="dash">
+  <li>산포도가 특정 구간에 상관없이 퍼진 정도가 일정할 때 자료가 동변량성을 띤다고 얘기하며, 반대로 그 정도가 일정하지 않으면 이분산성을 보인다고 말한다.</li>
+</ul>
+
+<div class="page-mark">1-245</div>
+
+<aside class="note"><b>상관계수</b><br>두 변량 x, y 사이의 상관관계의 정도를 나타내는 수치<hr><b>단조 관계</b><br>한 변수가 커질수록 다른 변수가 한쪽 방향으로만 변하는 관계</aside>
+
+<ol class="circled" start="3">
+  <li><b>두 변인의 정규분포성</b> : 두 변인의 측정치 분포가 모집단에서 모두 정규분포를 이루는 것이다.</li>
+  <li><b>무선독립표본</b> : 모집단에서 표본을 뽑을 때 표본대상이 확률적으로 선정된다는 것이다.</li>
+</ol>
+
+<h4 id="s1-02-3">3) 상관분석 방법</h4>
+
+<h5>① 피어슨 상관계수(Pearson Correlation Coefficient 또는 Pearson&rsquo;s r)</h5>
+<ul class="dash">
+  <li>두 변수 X 와 Y 간의 선형 상관관계를 계량화한 수치이다.</li>
+  <li>피어슨 상관계수는 +1과 &#8722;1 사이의 값을 가지며, <mark>+1은 완벽한 양의 선형 상관관계, 0은 선형 상관관계 없음, &#8722;1은 완벽한 음의 선형 상관관계를 의미한다.</mark></li>
+</ul>
+
+<div class="procbox">
+  &rho; = C(c, y) / (&sigma;<sub>x</sub>&sigma;<sub>y</sub>)<br><br>
+  C(x, y) = Cov(x, y) = 1/(n&#8722;1) &sum;<sup>n</sup><sub>i=1</sub> (x<sub>i</sub>&#8722;x̄)(y<sub>i</sub>&#8722;ȳ) : 표본 간의 공분산<br>
+  &sigma;<sub>x</sub>: 표본 x의 표준편차, &sigma;<sub>y</sub>: 표본 y의 표준편차, x̄, ȳ: 각각의 평균
+</div>
+
+<figure><img src="figs/fig_1-245_01.png" alt="상관계수값과 데이터의 산점도 — 좌에서 우로 ρ=−1(완전한 음의 직선), −1<ρ<0(음의 방향 타원 분포), ρ=0(원형 분포), 0<ρ<1(양의 방향 타원 분포), ρ=+1(완전한 양의 직선)"><figcaption>▲ 상관계수값과 데이터의 산점도</figcaption></figure>
+
+<h5>② 스피어만 상관계수(Spearman Correlation Coefficient)</h5>
+<ul class="dash">
+  <li>데이터가 서열자료인 경우, 즉 자료의 값 대신 순위(rank)를 이용하는 경우의 상관계수로서, 데이터를 작은 것부터 차례로 순위를 매겨 서열 순서로 바꾼 뒤 순위를 이용해 상관계수를 구한다.</li>
+  <li>두 변수 간의 연관 관계가 있는지 없는지를 밝혀 주며 자료에 이상점이 있거나 표본크기가 작을 때 유용하다.</li>
+</ul>
+
+<div class="procbox">&rho; = 1 &#8722; 6&sum;d<sub>i</sub><sup>2</sup> / n(n<sup>2</sup>&#8722;1)</div>
+
+<ul class="dash">
+  <li>d<sub>i</sub><sup>2</sup> : x<sub>i</sub>의 순위(x<sub>i</sub>의 관측치를 크기 순으로 정렬하였을 때 순위)와 y<sub>i</sub>의 순위 차이를 나타낸다. n은 표본의 개수이다.</li>
+  <li>즉, 스피어만 상관계수(&rho;)는 값의 크기보다 순위가 얼마나 일치하는지를 측정한다. 순위 차이가 작을수록(거의 일치할수록) &rho;는 1에 가까워지고, 순위 차이가 클수록 &rho;는 작아지며, 순위 차이가 충분히 크면 0을 지나 음수가 될 수도 있다. 따라서 &rho;는 두 변수 간의 단조 관계를 파악하는데 쓰인다.</li>
+</ul>
+
+<div class="page-mark">1-246</div>
+
+<div class="tip"><span class="tip-head">기적의 TIP</span>주요 용어들을 확실히 알고 넘어가야 한다.</div>
+
+<div class="procbox" style="text-align:left">
+&rho; &asymp; +1 : 단조 증가 관계(함께 커짐)<br>
+&rho; &asymp; 0 : 순위 기준 단조 관계가 약함/없음<br>
+&rho; &asymp; &#8722;1 : 단조 감소 관계(한쪽이 커질수록 다른 쪽은 줄어듦)
+</div>
+
+<figure><img src="figs/fig_1-246_01.png" alt="선형관계와 단조관계 비교 — 왼쪽: 직선 위에 점들이 놓인 선형 관계 및 단조 관계, 가운데: 곡선을 따라 증가하는 단조 관계, 오른쪽: 규칙 없이 흩어진 관계 없음"><figcaption>▲ 선형관계와 단조관계</figcaption></figure>
+
+<ul class="dash">
+  <li>선형관계의 경우는 직선의 형태로 모형화가 가능한 것으로 해석될 수 있다. 단조관계는 두 변수가 동일한 방향으로 변화는 하지만 직선의 형태로 모형화가 가능하지 않은(일정한 비율로 변화되는 것이 아닌) 것을 의미한다.</li>
+</ul>
+
+<h3 id="s1-03"><span class="num">03</span> 기초통계량의 추출 및 이해</h3>
+<p>자료를 수집하여 요약 · 정리하는 기초통계(또는 기술통계)는 자료의 특성을 정량적인 수치에 의해서 나타내는 방법이다.<br>자료의 특성을 중심화 경향(Central Tendency), 퍼짐 정도(산포도 · 분산도), 자료의 분포형태(Shape of Distribution) 등의 수치적 결과로 나타낼 수 있다.</p>
+
+<h4 id="s1-03-1">1) <mark>중심화 경향 기초통계량</mark></h4>
+
+<h5>① 산술평균(Arithmetic Mean)</h5>
+<ul class="dash">
+  <li>모든 자료들을 합한 후 전체 자료수로 나누어 계산하는 일반적인 평균을 의미한다.</li>
+  <li>모평균 &mu;(Population Mean) : 모집단 전체 자료의 산술평균</li>
+</ul>
+
+<div class="procbox">&mu; = (x<sub>1</sub>+x<sub>2</sub>+x<sub>3</sub>+&#8943;+x<sub>N</sub>) / N = (1/N) &sum;<sup>N</sup><sub>i=1</sub> x<sub>i</sub> &nbsp; (N: 전체 모집단의 크기)</div>
+
+<ul class="dash">
+  <li>표본평균 X̄(Sample Mean) : 모집단의 부분집합인 추출된 표본 전체의 산술평균</li>
+</ul>
+
+<div class="procbox">X̄ = (x<sub>1</sub>+x<sub>2</sub>+x<sub>3</sub>+&#8943;+x<sub>n</sub>) / n = (1/n) &sum;<sup>n</sup><sub>i=1</sub> x<sub>i</sub> &nbsp; (n: 전체 표본의 크기)</div>
+
+<h5>② 기하평균(Geometric Mean)</h5>
+<ul class="dash">
+  <li>n개의 자료에 대해서 관측치를 곱한 후 n 제곱근으로 표현한다.</li>
+</ul>
+
+<div class="procbox">기하평균 = <sup>n</sup>&radic;(x<sub>1</sub> &times; x<sub>2</sub> &times; x<sub>3</sub> &times; &#8943; &times; x<sub>n</sub>)</div>
+
+<ul class="dash">
+  <li>다기간의 수익률에 대한 평균 수익률, 평균물가상승률 등을 구할 때 사용한다.</li>
+</ul>
+
+<div class="page-mark">1-247</div>
+
+<aside class="note"><b>사분위수</b><br>자료를 동일한 비율로 4등분 할 때 세 위치(25%, 50%, 75%)
+<ul class="dash">
+  <li>Q1(제1사분위수) : 25% 지점</li>
+  <li>Q2(제2사분위수) : 50% 지점</li>
+  <li>Q3(제3사분위수) : 75% 지점</li>
+</ul>
+</aside>
+
+<div class="boxlist">
+10,000원짜리 주식이 있다고 가정하고 10% 상승하고 10% 하락했다고 하면 산술평균적인 개념으로 봤을 때 가격변동이 없는 것으로 착각할 수 있다.<br>
+그러나 10,000 &times; 0.1 = 1000원이므로 11000원이 되고 이후 11,000 &times; 10% = 1,100원이므로 9,900원이 된다.<br>
+기하평균식으로 보면 다음 아래와 같다(수익률변환기준).
+<div class="procbox">&radic;(1.1 &times; 0.9) = 0.995</div>
+0.995 &#8722; 1 = &#8722;0.005 즉, 평균 수익률은 &#8722;0.5% 손실로 해석할 수 있다.<br>
+최초 10,000원 &#8722; 50원 &#8722; 50원 &asymp; 9,900원
+</div>
+
+<h5>③ 조화평균(Harmonic Mean)</h5>
+<ul class="dash">
+  <li>각 요소의 역수의 산술평균을 구한 후 다시 역수를 취하는 형태로 표현한다.</li>
+</ul>
+
+<div class="procbox">조화평균 = n / ( 1/x<sub>1</sub> + 1/x<sub>2</sub> + &#8943; + 1/x<sub>n</sub> )</div>
+
+<ul class="dash">
+  <li>변화율 등의 평균을 구할 때 사용한다.</li>
+  <li>각 자료가 동일한 경우 자료에 대한 조화평균, 산술평균값과 기하평균의 값은 같다. 다만 자료가 서로 다를 경우 조화평균&le;기하평균&le;산술평균의 부등식 관계를 가진다.</li>
+</ul>
+
+<div class="procbox">2ab/(a+b) &nbsp;&le;&nbsp; <sup>2</sup>&radic;(ab) &nbsp;&le;&nbsp; (a+b)/2</div>
+
+<h5>④ 중앙값(Median)</h5>
+<ul class="dash">
+  <li>중앙값은 자료를 크기 순으로 나열할 때 가운데에 위치한 값이다.</li>
+  <li>자료의 수를 n이라 할 때, n이 홀수이면 (n+1)/2번째 자료값이 중앙값이 되고, n이 짝수이면, n/2번째와 n/2+1번째 자료의 평균을 중앙값으로 정의한다.</li>
+</ul>
+
+<h5>⑤ 최빈값(Mode)</h5>
+<ul class="dash">
+  <li>가장 노출 빈도가 높은 자료를 최빈값이라 한다. 최빈값은 질적자료나 양적자료 모두에 사용된다.</li>
+</ul>
+
+<h5>⑥ 분위수(Quantile)</h5>
+<ul class="dash">
+  <li>분위수는 자료의 위치를 표현하는 수치이다. 자료를 크기순서대로 배열을 한 후 그 자료를 분할하는 역할을 하는 위치의 수치를 계산한 것이다.</li>
+  <li>자료를 몇 등분 하느냐에 따라 사분위수(quartile), 오분위수(quintile), 십분위수(decile), 백분위수(percentile) 등이 있다.</li>
+  <li>N개의 자료가 존재할 때 백분위수로 전환되는 분위수의 위치를 나타내는 식은 아래와 같다. 전체 y(%)가 해당 분위수의 하부에 위치한다.</li>
+</ul>
+
+<div class="procbox">분위수의 위치 = (N+1) &times; y/100</div>
+
+<div class="page-mark">1-248</div>
+
+<aside class="note">산포도=분산도=퍼짐 정도<hr><b>평균 절대 편차</b><br>관측값에서 평균을 빼고, 그 차이값에 절댓값을 취하고, 그 값들을 모두 더하여 전체 데이터 개수로 나눠 준 것</aside>
+
+<h4 id="s1-03-2">2) 산포도(분산도, Degree Dispersion)</h4>
+<p>자료의 퍼짐 정도를 나타내는 기초 통계량이다. 중심 위치의 측도만으로 자료의 분포에 대한 충분한 정보를 얻을 수 없으므로 중심 경향도 수치에서 자료가 얼마나 떨어져 있는지를 측정하는 척도도 필요하다.</p>
+
+<h5>① 분산(Variance), 표준편차(Standard Deviation)</h5>
+<ul class="dash">
+  <li><mark>분산은 평균을 중심으로 밀집되거나 퍼짐 정도를 나타내는 척도</mark>이고, 표준편차는 분산의 제곱근으로 표현한다.</li>
+  <li>분산은 개개의 자료값과 평균과의 편차의 제곱을 이용하여 표현되므로 자료값의 단위를 제곱한 단위를 사용하게 된다. <mark>분산으로 얻은 수치를 해석하기가 곤란하다는 단점을 보완하기 위하여 제곱근을 취한 척도가 표준편차</mark>이다.</li>
+</ul>
+
+<div class="procbox">
+  &sigma;<sup>2</sup> = (1/N) &sum;<sup>N</sup><sub>i=1</sub> (x<sub>i</sub>&#8722;&mu;)<sup>2</sup> (모분산), &nbsp; s<sup>2</sup> = 1/(n&#8722;1) &sum;<sup>n</sup><sub>i=1</sub> (x<sub>i</sub>&#8722;x̄)<sup>2</sup> (표본분산)<br><br>
+  &sigma; = &radic;[ (1/N) &sum;<sup>N</sup><sub>i=1</sub> (x<sub>i</sub>&#8722;&mu;)<sup>2</sup> ] (모표준편차), &nbsp; s = &radic;[ 1/(n&#8722;1) &sum;<sup>n</sup><sub>i=1</sub> (x<sub>i</sub>&#8722;x̄)<sup>2</sup> ] (표본표준편차)
+</div>
+
+<ul class="dash">
+  <li>분산의 특성
+    <ul class="dash2">
+      <li>개개의 자료값에 대한 정보를 반영한다.</li>
+      <li>수리적으로 다루기 쉽다.</li>
+      <li>특이점에 매우 큰 영향을 받는다.</li>
+      <li>분산이 클수록 각 자료값이 평균으로부터 넓게 흩어진 형태를 갖는다.</li>
+      <li>미지의 모분산을 추론할 때 많이 사용한다.</li>
+    </ul></li>
+</ul>
+
+<div class="boxlist">
+여러 자산에 대한 투자수익률이 다음과 같이 제시되었을 때 분산과 표준편차를 구하여 보면<br>
+12%, 20%, 23%, 25%, 30%
+<div class="procbox">일단 평균은 (12% + 20% + 23% + 25% + 30%) / 5 = 22%</div>
+분산(모분산)은
+<div class="procbox">&sigma;<sup>2</sup> = [ (12%&#8722;22%)<sup>2</sup> + (20%&#8722;22%)<sup>2</sup> + (23%&#8722;22%)<sup>2</sup> + (25%&#8722;22%)<sup>2</sup> + (30%&#8722;22%)<sup>2</sup> ] / 5 = 35.6</div>
+이 되고 표준편차는 &radic;35.6 = 5.97%가 된다.
+</div>
+
+<h5>② 범위(Range)</h5>
+<ul class="dash">
+  <li>데이터 간의 최댓값과 최솟값의 차이를 나타내는 것으로 동일한 범위를 갖더라도 자료의 분포모양은 다를 수가 있음에 유의해야 한다.</li>
+</ul>
+
+<h5>③ 평균 절대 편차(평균 편차, 절대 편차, Mean Absolute Deviation, MAD)</h5>
+<ul class="dash">
+  <li>각 자료값과 표본평균과의 편차의 절댓값에 대한 산술평균을 의미한다.</li>
+</ul>
+
+<div class="procbox">MAD = (1/n) &sum;<sup>n</sup><sub>i=1</sub> |x<sub>i</sub>&#8722;x̄|</div>
+
+<div class="page-mark">1-249</div>
+
+<aside class="note">평균 편차는 각각의 자료가 평균과의 차이가 있는데 이 차이들의 평균이 얼마인가?를 의미한다.</aside>
+
+<ul class="dash">
+  <li>개개의 자료값에 대한 정보를 반영한다.</li>
+  <li>이상치에 대한 영향을 범위보다 적게 받는다.</li>
+  <li>절댓값을 사용하므로 수리적으로 다루기 부적절하다(평균이 대푯값인 표준 편차나 분산이 더 선호되는 이유이다).
+    <ul class="dash2">
+      <li>편차는 유클리디안 거리 개념이며 특정 대푯값으로 떨어진 거리를 의미한다.</li>
+      <li>절대 편차의 최소값을 갖는 자료값(기초통계량)은 평균이 아닌 중앙값이다.</li>
+      <li>절대 편차는 미분 불가능점이 존재한다.</li>
+    </ul></li>
+  <li>평균 절대 편차가 클수록 자료는 폭넓게 분포한다.
+    <ul class="dash2">
+      <li>평균 절대 편차보다는 중앙값 절대 편차(Median Absolute Deviation)를 사용할 때, 유용할 수 있다.</li>
+    </ul></li>
+</ul>
+
+<div class="boxlist">
+다음과 같이 여러 자산에 대한 투자수익률이 제시 되었을 때 MAD를 구하여 보면<br>
+12%, 20%, 23%, 25%, 30%
+<div class="procbox">일단 평균은 (12% + 20% + 23% + 25% + 30%) / 5 = 22%</div>
+<div class="procbox">평균편차는 ( |12&#8722;22| + |20&#8722;22| + |23&#8722;22| + |25&#8722;22| + |30&#8722;22| ) / 5 = 4.8%</div>
+MAD의 의미는 개별 수익률이 평균 22%이고 &plusmn;4.8%의 편차가 발생하고 있다는 것이다.
+</div>
+
+<h5>④ 사분위범위(Inter Quartile Range)</h5>
+<ul class="dash">
+  <li>자료를 크기 순으로 배열 후 자료의 1/4에 해당하는 1사분위수(Q1)를 구하고 3/4에 해당하는 3사분위수(Q3)를 구한다. 사분위범위는 Q3&#8722;Q1으로 정의되며 자료의 50% 범위 내에 위치하게 됨을 의미한다.</li>
+</ul>
+
+<div class="boxlist">
+8, 10, 12, 13, 15, 17, 17, 18, 19, 23, 24 자료에 대해서 사분위범위를 구하면
+<div class="procbox" style="text-align:left">
+Q1 = (11+1) &times; (25/100) = 3이므로 3번째 수치인 12이고<br>
+Q3 = (11+1)(75/100) = 9이므로 9번째 수치인 19이다.
+</div>
+그러므로 사분위범위는 19&#8722;12=7이 된다.
+</div>
+
+<ul class="dash">
+  <li>사분위범위는 주로 이상치의 판단 시에 사용되는 것으로</li>
+</ul>
+
+<div class="procbox">
+  최대값 = 75% percentile: 3 사분위수 + 1.5 &times; IQR<br>
+  최소값 = 25% percentile: 1 사분위수 &#8722; 1.5 &times; IQR
+</div>
+
+<p>결정된 최대값보다 크거나 최소값보다 작은 값을 이상치로 간주한다.</p>
+
+<div class="boxlist">
+상기 예에서 최대값과 최소값을 구하여 보면
+<div class="procbox" style="text-align:left">
+최대값 = 75% percentile: 3 사분위수 + 1.5 &times; IQR = 19 + 1.5 &times; 7 = 29.5<br>
+최소값 = 25% percentile: 1 사분위수 &#8722; 1.5 &times; IQR = 12 &#8722; 1.5 &times; 7 = 1.5
+</div>
+전체 표본에서 1.5보다 작은 값과 29.5보다 큰 값은 이상치로 제외시켜 사용하면 된다는 의미이다.
+</div>
+
+<div class="page-mark">1-250</div>
+
+<aside class="note">변동계수 = 표준편차/평균<hr>왜도의 부호는 분포의 비대칭성 방향을 나타낸다</aside>
+
+<div class="tip"><span class="tip-head">기적의 TIP</span>분포 모양에 따른 평균, 중앙값, 최빈값의 성질을 확실히 이해해야 한다.</div>
+
+<h5>⑤ 변동계수(Coefficient of Variance, CV)</h5>
+<ul class="dash">
+  <li>평균을 중심으로 한 상대적인 산포의 척도를 나타내는 수치이다.</li>
+  <li>측정 단위가 동일하지만 평균이 큰 차이를 보이는 두 자료집단 또는 측정단위가 서로 다른 두 자료집단에 대한 산포의 척도를 비교할 때 많이 사용한다.</li>
+</ul>
+
+<div class="procbox">CV = (&sigma; / &mu;) &times; 100(%) (모집단의 변동계수)</div>
+
+<ul class="dash">
+  <li>변동계수가 클수록 상대적으로 넓게 분포를 이룬다.<br><span class="ex-tag">예</span> 신생아의 몸무게와 산모의 몸무게(단위는 같으나, 평균의 차가 큰 경우)</li>
+</ul>
+
+<div class="boxlist">
+포트폴리오A 평균 수익률은 30% 표준편차는 4%이며, 포트폴리오B 평균 수익률은 15% 표준편차는 3%라고 한다. 포트폴리오A, B의 변동계수를 구하여 보면
+<div class="procbox">
+포트폴리오A의 CV = 4% / 30% = 13.3%<br>
+포트폴리오B의 CV = 3% / 15% = 20%
+</div>
+포트폴리오A, B 중 포트폴리오 B의 수익의 변동이 더 크다고 판단할 수 있다.
+</div>
+
+<h4 id="s1-03-3">3) 자료의 분포형태(Shape of Distribution)</h4>
+
+<h5>① <mark>왜도(Skewness)</mark></h5>
+<ul class="dash">
+  <li>왜도는 분포의 비대칭(asymmetry) 정도를 나타내는 통계적 측도이다. 데이터 분포의 대칭성과 비대칭성을 정량화하여 평가하는 데 사용된다.</li>
+  <li>분포가 대칭이면 왜도는 0이다. 왼쪽으로 치우친 경우 왜도는 양수, 오른쪽으로 치우친 경우 왜도는 음수이다.</li>
+</ul>
+
+<figure><img src="figs/fig_1-250_01.png" alt="왜도에 따른 분포 3종 — 왼쪽부터 왜도>0(오른쪽 꼬리가 긴 분포), 왜도=0(좌우대칭 분포), 왜도<0(왼쪽 꼬리가 긴 분포)"></figure>
+
+<ul class="dash">
+  <li>왜도는 분포의 모양 뿐만 아니라 이상치의 존재 여부를 파악하는 데에도 도움을 줄 수 있다. 이상치는 분포의 비대칭성을 높이고, 왜도의 크기를 변화시킨다.</li>
+  <li>왜도는 다음과 같은 공식으로 계산된다.</li>
+</ul>
+
+<div class="procbox">
+Skewness = [ (1/n) &sum;<sup>n</sup><sub>i=1</sub> (x<sub>i</sub>&#8722;x̄)<sup>3</sup> ] / [ (1/n) &sum;<sup>n</sup><sub>i=1</sub> (x<sub>i</sub>&#8722;x̄)<sup>2</sup> ]<sup>3/2</sup><br><br>
+n은 데이터의 총 개수, x<sub>i</sub>는 개별 데이터 값, x̄는 데이터의 평균
+</div>
+
+<ul class="dash">
+  <li>왜도의 값은 일반적으로 &#8722;3과 +3 사이의 범위에 있으며, 보통 왜도의 절대값이 1.96보다 크면 비대칭성이 있다고 판단할 수 있다. 하지만 이것은 규칙적 기준은 아니며, 데이터 분포의 특성과 분석 목적에 따라 다르다.</li>
+</ul>
+
+<div class="page-mark">1-251</div>
+
+<aside class="note">Mode : 최빈값<br>Median : 중앙값<br>Mean : 평균<hr>3을 곱함으로써 비대칭 정도를 좀 더 강조한 값을 얻을 수 있다.<hr>평균을 중심으로 가까이 몰리면 더욱 뾰족한 모양, 즉 첨도가 커진다.</aside>
+
+<figure><img src="figs/fig_1-251_01.png" alt="왜도별 평균·중앙값·최빈값의 위치 — Positive Skew: Mode < Median < Mean, Symmetrical Distribution: Mean = Median = Mode, Negative Skew: Mean < Median < Mode"></figure>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:33%">왜도(Skewness)</td><td class="h" style="width:33%">모양</td><td class="h">성질</td></tr>
+  <tr><td>양수(Positive)</td><td>오른쪽으로 긴꼬리</td><td>평균 &gt; 중앙값 &gt; 최빈값</td></tr>
+  <tr><td>0</td><td>좌우 대칭</td><td>평균 = 중앙값 = 최빈값</td></tr>
+  <tr><td>음수(Negative)</td><td>왼쪽으로 긴꼬리</td><td>평균 &lt; 중앙값 &lt; 최빈값</td></tr>
+</table>
+</div>
+
+<div class="tip-more"><span class="tip-head-more">더 알기 TIP</span>
+<b>피어슨의 비대칭 계수(Pearson&rsquo;s skewness coefficients)</b><br>
+피어슨의 비대칭 계수는 칼 피어슨이 비대칭도 측정을 위해 제안한 간단한 계산법으로, 일반적으로 왜도와 비슷하게 분포가 좌우로 얼마나 대칭적인지를 나타내는 통계값이다(분포의 모양과 성질은 표의 구분과 동일).
+<p>피어슨의 비대칭 계수는 다음과 같이 정의된다.</p>
+<div class="procbox">
+(평균 &#8722; 최빈값) / 표준편차<br>
+3*(평균 &#8722; 최빈값) / 표준편차<br>
+3*(평균 &#8722; 중앙값) / 표준편차
+</div>
+<p>일반적으로 계수 값 = 3*(평균 &#8722; 중앙값)/표준편차로 구할 수 있다.</p>
+<ul class="dash">
+  <li>중앙값, 최빈값, 평균이 일치하면 Cs=0으로 정규분포를 이룬다.</li>
+  <li>계수 값이 0보다 크면 왼쪽으로 치우치고 오른쪽으로 긴 꼬리를 가지는 분포를 이룬다. 이를 정적편포라 한다.</li>
+  <li>계수 값이이 0보다 작으면 오른쪽으로 치우치고 왼쪽으로 긴 꼬리를 가지는 분포를 이룬다. 이를 부적편포라 한다.</li>
+</ul>
+</div>
+
+<h5>② <mark>첨도(Kurtosis)</mark></h5>
+<ul class="dash">
+  <li>분포의 뾰족한(peakedness) 정도를 나타내는 통계적 척도이다.</li>
+</ul>
+
+<div class="procbox">
+Kurtosis = [ (1/n) &sum;<sup>n</sup><sub>i=1</sub> (x<sub>i</sub>&#8722;x̄)<sup>4</sup> ] / [ (1/n) &sum;<sup>n</sup><sub>i=1</sub> (x<sub>i</sub>&#8722;x̄)<sup>2</sup> ]<sup>2</sup>
+</div>
+
+<figure><img src="figs/fig_1-251_02.png" alt="첨도에 따른 분포 3종 — 첨도>3(뾰족한 분포), 첨도=3(정규분포에 해당하는 완만한 분포), 첨도<3(평평한 분포)"></figure>
+
+<ul class="dash">
+  <li>첨도의 값이 3 미만인 경우는 평평한 분포이고 3이면 정규분포를 나타내며 3이 넘는 경우는 뾰족한 분포의 형태를 가지는 것으로 판단할 수 있다.</li>
+</ul>
+
+<div class="page-mark">1-252</div>
+
+<div class="tip"><span class="tip-head">기적의 TIP</span>차수별 연결 고리를 암기한다.<br>1차 모멘트 → 평균<br>2차 모멘트 → 분산<br>3차 모멘트 → 왜도<br>4차 모멘트 → 첨도</div>
+
+<h3 id="s1-04"><span class="num">04</span> 모멘트(적률)</h3>
+<p>모멘트는 확률분포의 형태를 수치적으로 표현하기 위한 대표적인 통계량이다. 데이터가 특정 값 주변에 어떻게 분포하고 있는지, 얼마나 퍼져 있는지, 그리고 분포가 어느 방향으로 치우쳐 있는지를 설명하는 데 사용된다.</p>
+
+<h4 id="s1-04-1">1) 모멘트(Moment)의 정의</h4>
+
+<h5>① 원점 모멘트(Raw Moment)</h5>
+<p>기준점을 0으로 두고 계산한 모멘트이다. 확률변수 <i>X</i>의 <i>k</i>차 원점 모멘트는 다음과 같이 정의된다.</p>
+<div class="procbox">E[X<sup>k</sup>]</div>
+<p>원점 모멘트는 통계학적 이론 전개 시 의미가 있지만 실제 분석에서는 많이 사용되지 않는다.</p>
+
+<h5>② 중심 모멘트(Central Moment)</h5>
+<p>데이터의 평균 &mu;을 기준으로 계산한 모멘트로, 실제 통계 분석에서 가장 널리 사용된다. 확률변수 <i>X</i>의 <i>k</i>차 중심 모멘트는 다음과 같이 정의된다.</p>
+<div class="procbox">E[(X&#8722;&mu;)<sup>k</sup>]</div>
+
+<h4 id="s1-04-2">2) 주요 모멘트와 기술통계량의 의미</h4>
+<p>모멘트를 통해 데이터 분포의 형태를 단계적으로 이해할 수 있다.</p>
+
+<h5>① 1차 원점 모멘트 &#8722; 평균(Mean)</h5>
+<div class="procbox">E[X]</div>
+<p>분포의 중심 위치를 나타내는 가장 기본적인 통계량이다.</p>
+
+<h5>② 2차 중심 모멘트 &#8722; 분산(Variance)</h5>
+<div class="procbox">E[(X&#8722;&mu;)<sup>2</sup>]</div>
+<p>데이터가 평균으로부터 얼마나 퍼져 있는지를 나타낸다. 값이 클수록 데이터의 변동성이 크다.</p>
+
+<h5>③ 3차 중심 모멘트 &#8722; 왜도(Skewness)</h5>
+<div class="procbox">E[(X&#8722;&mu;)<sup>3</sup>]</div>
+<p>분포의 비대칭성을 나타낸다.</p>
+<ul class="dash">
+  <li>왜도가 양수 : 오른쪽 꼬리가 길다. (Positive Skew)</li>
+  <li>왜도가 음수 : 왼쪽 꼬리가 길다. (Negative Skew)</li>
+</ul>
+
+<h5>④ 4차 중심 모멘트 &#8722; 첨도(Kurtosis)</h5>
+<div class="procbox">E[(X&#8722;&mu;)<sup>4</sup>]</div>
+<p>분포의 뾰족함과 꼬리의 두꺼움을 나타낸다.</p>
+<ul class="dash">
+  <li>첨도가 높은 경우 : 분포가 뾰족하고 이상치가 많다.</li>
+  <li>첨도가 낮은 경우 : 분포가 평평하다.</li>
+</ul>
+
+<div class="page-mark">1-253</div>
+
+<aside class="note"><b>초과첨도(Excess Kurtosis)</b><br>첨도에서 3을 뺀 값, 첨도를 정규분포에 맞춰 조정한 개념</aside>
+
+<h4 id="s1-04-3">3) 모멘트의 주요 활용</h4>
+<p>모멘트는 단순한 이론적 개념을 넘어, 실제 데이터 분석과 통계 모델링에서 매우 중요한 역할을 한다. 특히 데이터의 분포 특성을 정량적으로 파악하고, 모델의 가정이 적절한지를 검증하며, 이상치 탐지 및 데이터 전처리 과정에서도 핵심적으로 활용된다.</p>
+
+<h5>① 정규성 검정 및 전처리 연계</h5>
+<p>모멘트는 데이터가 정규분포를 따르는 지 판단하는 직관적 기준이 된다.</p>
+<ul class="dash">
+  <li>정규분포의 통계적 특징 : 왜도 &asymp; 0, 첨도 &asymp; 3(단, 초과첨도 기준으로는 0)</li>
+  <li>왜도와 첨도가 위 조건을 벗어나 분포가 비대칭인 경우, 로그 변환이나 Box-Cox 변환 같은 전처리 기법을 적용하기도 한다. 이 과정에서 모멘트 값 변화를 통해 전처리 효과를 정량적으로 평가할 수 있다.</li>
+</ul>
+
+<h5>② 이상치 탐지</h5>
+<p>첨도는 극단적 이상치 존재 가능성을 판단하는 중요한 지표이다.</p>
+<ul class="dash">
+  <li>첨도가 높은 경우 : 중심이 뾰족하고 꼬리가 두꺼움 → 극단적 이상치 많음</li>
+  <li>첨도가 낮은 경우 : 중심이 완만하고 꼬리가 얇음 → 이상치가 적고 고르게 분포</li>
+</ul>
+<p>또한 왜도와 함께 해석하면 이상치의 방향성까지 파악할 수 있다.</p>
+<ul class="dash">
+  <li>왜도 &gt; 0 + 높은 첨도 : 큰 양수 방향 이상치 존재</li>
+  <li>왜도 &lt; 0 + 높은 첨도 : 큰 음수 방향 이상치 존재</li>
+</ul>
+
+<h5>③ 통계 모델링에서의 활용(가설검정 및 추정)</h5>
+<ul class="dash">
+  <li>회귀분석 가정 검정 : 선형 회귀 모델 구축 후, 잔차(Residuals)의 왜도와 첨도를 확인하여 정규성 가정을 검토하거나, 분산(2차 모멘트)의 변동을 통해 이분산성(Heteroscedasticity) 여부를 판단한다.</li>
+  <li>확률분포 추정 : 표본 데이터에서 계산된 표본 모멘트를 이용하여 모집단의 모수를 추정하는 적률법(Method of Moments)을 사용한다.</li>
+</ul>
+
+<h5>④ 머신러닝 스케일링 전략</h5>
+<p>입력 특징(Feature)들의 모멘트를 분석하여 왜도가 심한 변수를 선별하고, 이에 맞는 로그 변환이나 표준화 및 정규화 스케일링 필요 여부 결정에 활용한다.</p>
+
+<div class="tip-more"><span class="tip-head-more">더 알기 TIP</span>
+<b>금융 및 리스크 분석에서의 모멘트 활용</b><br>
+모멘트는 수익률 및 자산 리스크 분석에서 특히 중요한 역할을 한다.
+<ul class="dash">
+  <li>평균 : 자산의 기대 수익률</li>
+  <li>분산 : 자산의 위험(변동성)</li>
+  <li>왜도 : 수익률의 비대칭성(주가 폭락 위험 등)</li>
+  <li>첨도 : 금융위기 시 극단적 손실 가능성(Tail Risk, 꼬리 위험)</li>
+</ul>
+예를 들어 동일한 평균과 분산을 가진 두 자산이 있을 때, 첨도가 높은 자산은 극단적 손실 가능성이 더 크므로 더 위험한 자산으로 평가된다.
+</div>
+
+<div class="boxlist"><b>※ 원본 PDF 누락 안내</b><br>책 <b>1-254 · 1-255</b> 두 쪽이 원본 PDF에 포함되어 있지 않아 해당 구간(자료의 분포형태 후반 ~ 상자 수염 그림 직전)을 전사하지 못했습니다. 원본 PDF에서 스프레드 1장(책 2쪽) 분량이 통째로 빠져 있습니다.</div>
+
+<div class="page-mark">1-256</div>
+
+<aside class="note"><b>3사분위수(Q3)</b><br>데이터를 정렬했을 때 75%에 위치한 수<hr><b>1사분위수(Q1)</b><br>데이터를 정렬했을 때 25%에 위치한 수<hr><b>사분위범위(IQR)</b><br>3사분위수&#8722;1사분위수<hr><b>최댓값</b><br>3사분위수 + (1.5*IQR)<hr><b>최솟값</b><br>1사분위수 &#8722; (1.5*IQR)</aside>
+
+<h5>⑦ 상자 수염 그림(Box Plot)</h5>
+<p>수치적 자료를 표현하는 그래프이다. 이 그래프는 가공하지 않은 자료 그대로를 이용하여 그린 것이 아니라, 자료로부터 얻어 낸 통계량인 5가지 요약 수치(다섯 숫자 요약, Five-number Summary)를 가지고 그린다.</p>
+
+<figure><img src="figs/fig_1-256_01.png" alt="상자 그림(Box Plot) 구조 — 위에서부터 이상치(○), 최대값, 3사분위수, 중앙값, 1사분위수, 최소값이 표시되고 3사분위수와 1사분위수 사이가 사분위수 범위, 최대값과 최소값 사이가 범위로 표기됨. 좌측에는 4곳 모두 동일한 자료의 개수 포함이라는 설명이 붙음"><figcaption>▲ 상자 그림(Box Plot)</figcaption></figure>
+
+<ul class="dash">
+  <li>5가지 요약 수치 : 최솟값, 제 1사분위(Q1), 제2사분위(Q2, 중앙값), 제3사분위(Q3), 최댓값을 일컫는 말이다.</li>
+  <li>작성 방법</li>
+</ul>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:90px">(Step1)</td><td>주어진 데이터에서 각 사분위수를 계산한다.</td></tr>
+  <tr><td class="h">(Step2)</td><td>그래프에서 제1사분위와 제3사분위를 밑변으로 하는 직사각형을 그리고, 제2사분위에 해당하는 위치에 선분을 긋는다.</td></tr>
+  <tr><td class="h">(Step3)</td><td>사분위범위(IQR: Interquartile Range, Q3&#8722;Q1)를 계산한다.</td></tr>
+  <tr><td class="h">(Step4)</td><td>Q3과 차이가 1.5IQR 이내인 값 중에서 최댓값을 Q3과 직선으로 연결하고, 마찬가지로 Q1과 차이가 1.5IQR 이내인 값 중에서 최솟값을 Q1과 연결한다.</td></tr>
+  <tr><td class="h">(Step5)</td><td>Q3보다 1.5IQR 이상 초과하는 값과 Q1보다 1.5IQR 이상 미달하는 값은 점이나, 원, 별표 등으로 따로 표시한다(이상치 점).</td></tr>
+</table>
+</div>
+
+<div class="page-mark">1-257</div>
+
+<h3 id="s1-exam"><span class="exam-kicker">합격을 다지는</span> 예상문제</h3>
+
+<div class="exam">
+<div class="eq"><div class="eq-t"><span class="eq-n">01</span> 탐색적 데이터 분석 및 필요성에 대한 설명으로 <u>틀린</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>수집한 데이터가 들어왔을 때, 다양한 방법을 통해서 자료를 관찰하고 이해하는 과정을 의미하는 것이다.</li>
+  <li>데이터의 분포 및 값을 검토함으로써 데이터가 표현하는 현상을 이해할 수 있다.</li>
+  <li>문제점 발견 시 본 분석 전 데이터의 수집 의사를 결정할 수 있다.</li>
+  <li>최초의 가설에 집중하여 원하는 패턴과 양상에 맞는지에 집중하여 검증하는 데 노력한다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">02</span> 탐색적 분석의 절차에 대한 설명이다. 다음 중 옳은 것을 모두 고른 것은?</div>
+<div class="boxlist">
+(가) 분석의 목적과 변수가 무엇인지, 개별변수의 이름이나 설명을 가지는지 확인한다.<br>
+(나) 데이터의 문제성을 확인한다. 즉, 데이터의 결측치의 유무, 이상치의 유무 등을 확인하고 추가적으로 분포상의 이상 형태, Head 또는 Tail 부분을 확인한다.<br>
+(다) 데이터의 개별 속성 값이 예상한 범위 분포를 가지는지 확인한다.<br>
+(라) 관계속성 확인 절차를 가진다. 즉, 개별 데이터 간의 속성 관찰에서 보지 못한 데이터 간의 속성(예: 상관관계 등)을 확인한다.
+</div>
+<ol class="circled q-opt">
+  <li>가, 나</li>
+  <li>가, 다</li>
+  <li>가, 나, 라</li>
+  <li>가, 나, 다, 라</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">03</span> 이상치 발견의 통계적 기법 활용을 설명한 것 중 옳은 것은?</div>
+<ol class="circled q-opt">
+  <li>데이터의 중심을 알기 위해서는 평균(mean), 중앙값(median), 최빈값(mode), 첨도(kurtosis)를 사용할 수 있다.</li>
+  <li>데이터의 분산도를 알기 위해서는 범위(range), 분산(variance) 왜도(skewness)를 사용할 수 있다.</li>
+  <li>평균에는 집합 내 모든 데이터 값이 반영되기 때문에, 이상값의 영향을 받는다.</li>
+  <li>중앙값은 전체변수의 범위 중에서 가운데값을 사용하므로 이상값의 크기에 영향을 받는다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">04</span> 상관분석의 기본가정에 대한 용어와 설명을 연결한 것 중 <u>틀린</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>선형성 : 두 변인 X와 Y의 관계가 직선적인지를 알아보는 것으로 이 가정은 분포를 나타내는 산점도를 통하여 확인할 수 있다.</li>
+  <li>동변량성 : X의 값에 관계없이 Y의 흩어진 정도가 다른 정도를 의미한다.</li>
+  <li>두 변인의 정규분포성 : 두 변인의 측정치 분포가 모집단에서 모두 정규분포를 이루는 것이다.</li>
+  <li>무선독립표본 : 모집단에서 표본을 뽑을 때 표본대상이 확률적으로 선정된다는 것이다.</li>
+</ol></div>
+
+<div class="page-mark">1-258</div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">05</span> 피어슨 상관계수(Pearson Correlation Coefficient)에 대한 설명으로 옳은 것은?</div>
+<ol class="circled q-opt">
+  <li>두 변수 X와 Y 간의 비선형 상관관계를 계량화한 수치이다.</li>
+  <li>두 변수 간의 연관 관계가 있는지를 밝혀 주며 자료에 이상점이 있거나 표본크기가 작을 때 유용하다.</li>
+  <li>피어슨 상관계수는 +1과 &#8722;1 사이의 값을 가지며, +1은 완벽한 양의 선형 상관관계, 0은 선형 상관관계 없음, &#8722;1은 완벽한 음의 선형 상관관계를 의미한다.</li>
+  <li>데이터가 서열자료인 경우 즉 자료의 값 대신 순위를 이용하는 경우의 상관계수로서, 데이터를 작은 것부터 차례로 순위를 매겨 서열 순서로 바꾼 뒤 순위를 이용해 상관계수를 구한다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">06</span> 피어슨 상관계수 값과 산점도 그림의 연결이 바르지 <u>못한</u> 것은?</div>
+<figure><img src="figs/fig_1-258_01.png" alt="문항 06 산점도 4종 — ① 음의 방향으로 기울어진 타원 분포에 −1<ρ<0, ② 세로로 선 원형 분포에 0<ρ<1, ③ 우하향 직선 배열에 ρ=−1, ④ 우상향 직선 배열에 ρ=+1"></figure>
+</div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">07</span> 자료의 특성을 수치적 결과로 나타내는 기초통계 방법을 나열한 것이다. 다음 중 성질이 <u>다른</u> 하나는?</div>
+<ol class="circled q-opt">
+  <li>산술평균</li>
+  <li>기하평균</li>
+  <li>최빈값</li>
+  <li>범위</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">08</span> 다음 아래의 자료에서 분산, 평균, 중앙값을 구하시오.</div>
+<div class="boxlist" style="text-align:center">101, 103, 105, 107, 109</div>
+<ol class="circled q-opt">
+  <li>평균 105, 분산 7.5, 중앙값 105</li>
+  <li>평균 104.5, 분산 8, 중앙값 104.5</li>
+  <li>평균 105, 분산 8, 중앙값 105</li>
+  <li>평균 106.5, 분산 8.5, 중앙값 106.5</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">09</span> 다음의 자료가 있을 때</div>
+<div class="boxlist" style="text-align:center">5, 9, 10, 12, 13, 14, 15, 17, 18, 18, 20, 24, 24, 25</div>
+<div class="procbox">&sum;<sup>n</sup><sub>i=1</sub> (x<sub>i</sub> &#8722; A) = 0</div>
+<p>위 식을 만족하는 A 값은? (여기서 x<sub>i</sub>는 위의 자료를 말함)</p>
+<ol class="circled q-opt">
+  <li>16</li>
+  <li>6</li>
+  <li>15</li>
+  <li>17</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">10</span> 포트폴리오의 투자수익률, GDP 성장률 등의 연간 자료에 대해서 알맞은 기술적 통계량인 평균은 무엇인가?</div>
+<ol class="circled q-opt">
+  <li>산술평균</li>
+  <li>조화평균</li>
+  <li>기술평균</li>
+  <li>기하평균</li>
+</ol></div>
+
+<div class="page-mark">1-259</div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">11</span> 100명의 여자에 대한 신장과 체중을 비교한 자료이다. 체중의 개인차가 신장의 개인차보다 크다고 할 수 있는가?</div>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:90px"></td><td class="h">평균</td><td class="h">표준편차</td></tr>
+  <tr><td class="h">체중</td><td>52.3kg</td><td>2.54kg</td></tr>
+  <tr><td class="h">신장</td><td>152.7 cm</td><td>2.28cm</td></tr>
+</table>
+</div>
+<ol class="circled q-opt">
+  <li>체중에 대한 개인차가 크다.</li>
+  <li>신장에 대한 개인차가 크다.</li>
+  <li>체중에 대한 개인차와 신장에 대한 개인차는 동일하다.</li>
+  <li>체중과 신장의 개인차는 알 수 없다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">12</span> 왜도에 대한 설명으로 <u>틀린</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>기초 통계량 중 자료분포의 형태를 알아보는 기초통계량이다.</li>
+  <li>분포가 어느 한쪽으로 치우친(비대칭: asymmetry) 정도를 나타내는 통계적 척도이다.</li>
+  <li>산출공식에 의해 오른쪽으로 더 길면 음의 값이 되고 왼쪽으로 더 길면 양의 값이 된다. 분포가 좌우대칭이면 0이 된다.</li>
+  <li>왜도 산출공식은 [ (1/n)&sum;<sup>n</sup><sub>i=1</sub>(x<sub>i</sub>&#8722;x̄)<sup>3</sup> ] / [ (1/n)&sum;<sup>n</sup><sub>i=1</sub>(x<sub>i</sub>&#8722;x̄)<sup>2</sup> ]<sup>3/2</sup> 이다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">13</span> 평균이 50, 중앙값이 30, 표준편차가 5인 분포의 피어슨 비대칭 계수와 특징을 잘 설명한 것은?</div>
+<ol class="circled q-opt">
+  <li>계수 = 12, 왼쪽으로 긴꼬리(오른쪽으로 치우침)</li>
+  <li>계수 = &#8722;12, 왼쪽으로 긴꼬리(오른쪽으로 치우침)</li>
+  <li>계수 = 12, 오른쪽으로 긴꼬리(왼쪽으로 치우침)</li>
+  <li>계수 = &#8722;12, 오른쪽으로 긴꼬리(왼쪽으로 치우침)</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">14</span> 다음 자료에 대해서 사분위범위를 구하시오.</div>
+<div class="boxlist" style="text-align:center">8, 10, 12, 13, 15, 17, 17, 18, 19, 23, 24</div>
+<ol class="circled q-opt">
+  <li>6</li>
+  <li>7</li>
+  <li>8</li>
+  <li>9</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">15</span> 정규분포에 대한 분포의 모습을 설명한 것 중 <u>틀린</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>왜도는 0이다.</li>
+  <li>좌우가 서로 대칭인 형태의 분포의 모습을 가지고 있다.</li>
+  <li>평균 중앙값 최빈값 순으로 크기 나열이 가능하다(평균&gt;중앙값&gt;최빈값).</li>
+  <li>첨도는 3이다.</li>
+</ol></div>
+</div>
+
+<div class="page-mark">1-260</div>
+
+<h3 id="s1-exam-ans"><span class="exam-kicker">합격을 다지는</span> 예상문제 정답 &amp; 해설</h3>
+
+<div class="anskey">
+  <div class="anskey-head">SECTION 01</div>
+  <div class="anskey-grid">
+    <span>01 ④</span><span>02 ④</span><span>03 ③</span><span>04 ②</span><span>05 ③</span>
+    <span>06 ②</span><span>07 ④</span><span>08 ③</span><span>09 ①</span><span>10 ④</span>
+    <span>11 ①</span><span>12 ③</span><span>13 ③</span><span>14 ②</span><span>15 ③</span>
+  </div>
+</div>
+
+<div class="sols">
+<div class="sol-item"><div class="sol-h"><b>01</b> ④</div><p>다양한 각도에서 데이터를 살펴보는 과정을 통해 문제정의 단계에서 인지 못한 새로운 양상 · 패턴을 발견할 수 있다. 그러므로 새로운 양상을 발견 시 초기설정 문제의 가설을 수정하거나 또는 새로운 가설을 설립할 수 있다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>02</b> ④</div><p>탐색적 데이터분석의 분석과정 및 절차의 4가지 항목이다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>03</b> ③</div><p>첨도, 왜도는 데이터의 분포모양에 해당된다. 중앙값은 전체변수의 범위에서 가운데가 아니라 관찰된 변수들 중의 가운데값이므로 이상값의 영향을 받지 않는다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>04</b> ②</div><p>동변량성 : X의 값에 관계없이 Y의 흩어진 정도가 같은 것을 의미한다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>05</b> ③</div><p>피어슨 상관계수는 두 변수 X와 Y 간의 선형 상관관계를 계량화한 수치이다.</p>
+  <p class="avoid"><span class="avoid-tag">오답 피하기</span> ②, ④는 스피어만 상관계수에 대한 설명이다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>06</b> ②</div><p>②그림은 ρ = 0 이다..</p></div>
+<div class="sol-item"><div class="sol-h"><b>07</b> ④</div><p>산술평균, 기하평균, 최빈값은 중심화 경향 기초통계량이고 범위는 산포도(퍼짐정도)에 대한 기초통계량이다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>08</b> ③</div>
+  <div class="eqbox">
+    <div class="eqline">평균 = <span class="fr"><span class="nu">101+103+105+107+109</span><span class="de">5</span></span> = <span class="fr"><span class="nu">525</span><span class="de">5</span></span> = 105</div>
+    <div class="eqline">분산 = <span class="fr"><span class="nu">(101−105)<sup>2</sup>+(103−105)<sup>2</sup>+(105−105)<sup>2</sup>+(107−105)<sup>2</sup>+(109−105)<sup>2</sup></span><span class="de">5</span></span></div>
+    <div class="eqline">= <span class="fr"><span class="nu">16+4+0+4+16</span><span class="de">5</span></span> = 8</div>
+    <div class="eqline">중앙값 = 105</div>
+  </div></div>
+<div class="sol-item"><div class="sol-h"><b>09</b> ①</div><p>산술평균 x의 성질로</p>
+  <div class="eqbox">Σ(<i>x<sub>i</sub></i> − <i>x̄</i>) = 0</div>
+  <p>자료 −산술평균의 전체의 합은 편차를 의미하며 그 값은 0이 된다.<br>그러므로 문제의 답은 x을 구하면 되고 그 값은 16이다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>10</b> ④</div><p>비율의 성격을 가지는 자료에 대한 기술적 통계량(평균)은 기하 평균을 사용한다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>11</b> ①</div><p>체중에 대한 CV = 2.54/52.3 X 100 = 4.857%<br>신장에 대한 CV = 2.28/152.7 X 100 = 1.493%이므로<br>체중에 대한 CV가 더 큼 → 산포도가 넓으므로 개인차가 크다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>12</b> ③</div><p>오른쪽으로 더 길면 양의 값이 되고 왼쪽으로 더 길면 음의 값이 된다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>13</b> ③</div>
+  <div class="eqbox">
+    <div class="eqline">피어슨의 비대칭 계수 = <span class="fr"><span class="nu">3(평균 − 중앙값)</span><span class="de">표준편차</span></span></div>
+    <div class="eqline">= <span class="fr"><span class="nu">3(50 − 30)</span><span class="de">5</span></span> = <span class="fr"><span class="nu">60</span><span class="de">5</span></span> = 12 &gt; 0</div>
+  </div>
+  <p>오른쪽으로 긴꼬리(왼쪽으로 치우침)를 가지는 분포의 형태로 파악이 가능하다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>14</b> ②</div><p>Q1=(11+1)×(25/100)=3이므로 3번째 수치인 12이고 Q3=(11+1)(75/100)=9이므로 9번째 수치 19이다. 따라서 사분위범위는 19−12=7이 된다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>15</b> ③</div><p>정규분포 모양의 특징은 좌우가 대칭인 형태로 왜도의 값이 0이 되며 이 경우 평균=중앙값=최빈값이 된다. 첨도의 경우는 3이 된다.</p></div>
+</div>
+
+<div class="page-mark">1-261</div>
+
+<h2 id="s2">SECTION 02 고급 데이터 탐색</h2>
+<p class="sec-meta"><span class="freq-tag">출제빈도 상 | 중 | <b>하</b></span></p>
+<p class="tagline"><span class="tagbox">빈출 태그</span> 시공간 데이터 · 다변량 분석 · 비정형 데이터 · 데이터 마이닝</p>
+
+<h3 id="s2-01"><span class="num">01</span> 시공간 데이터 탐색</h3>
+
+<h4 id="s2-01-1">1) 시공간 데이터의 개념</h4>
+<ul class="dash">
+  <li>기본적으로 <mark>공간적 정보(데이터)에 시간의 흐름(이력정보 등)이 결합된 다차원 데이터</mark>를 다루는 것을 지칭한다.</li>
+  <li>무선이동 통신기술의 발달로 인해 데이터의 통신 및 처리를 다루는 이동 컴퓨팅 등의 분야에서 관심을 가지는 데이터 분야로 특히 스마트폰의 발전으로 그 중요성이 커지고 있다.</li>
+</ul>
+
+<h5>① 시간 데이터</h5>
+<p>기존 데이터는 어느 한 시점에 대한 스냅샷 정보이다. 그래서 데이터에 유효 시간, 거래 시간, 사용자 정의 시간과 같은 연관된 시간 표현을 정의한다.</p>
+<ul class="dash">
+  <li>유효 시간 : 데이터가 발생하거나 소멸된 시간</li>
+  <li>거래 시간 : 관리 시스템을 통해 처리된 시간</li>
+  <li>사용자 정의 시간 : 유효 시간이나 거래 시간이 없는 경우 사용자가 정의</li>
+  <li>스냅샷 데이터 : 시간 개념이 필요하지 않아 거래, 유효시간 미지원</li>
+  <li>거래 시간 데이터, 유효 시간 데이터 : 각각 거래, 유효시간만 지원</li>
+  <li>이원 시간 데이터 : 둘 다 지원</li>
+</ul>
+
+<h5>② 공간 데이터</h5>
+<p>공간 데이터는 기존 데이터베이스보다 복잡하고 다양한 유형의 값을 가지므로 효율적으로 관리, 저장, 이용하는 데 초점을 맞춘다.</p>
+<aside class="note"><b>래스터 데이터(Raster Data)</b><br>그리드에서 픽셀로 표현</aside>
+<ul class="dash">
+  <li>비공간 타입 : 기본적인 데이터 유형을 가진 속성</li>
+  <li>래스터 공간 타입 : 실세계에 존재하는 객체의 이미지</li>
+  <li>벡터 공간 타입 : 점, 선, 면 등의 요소로 구성</li>
+  <li>기하학적 타입 : 벡터 타입의 요소로부터 거리, 면적, 길이 등과 같은 유클리드 기하학 계산 값으로 표현</li>
+  <li>위상적 타입 : 공간 객체 간의 관계를 표현하며, 방위, 공간 객체 간의 중첩, 포함, 교차, 분리 등과 같은 위치적 관계로 대량의 공간을 필요로 해서 일반적으로 저장되지 않고 보통 공간객체로부터 동적으로 계산</li>
+</ul>
+
+<div class="page-mark">1-262</div>
+
+<h5>③ 공간 데이터 모델</h5>
+<ul class="dash">
+  <li>관계형 모델 : 데이터의 표현이 유연하지 못하며 실세계 공간의 객체의 특징을 적절히 표현하지 못하는 문제점이 있다.</li>
+  <li>객체지향 모델
+    <ul class="dash2">
+      <li>비 구조적이고 복잡한 데이터를 자연스럽게 표현한다.</li>
+      <li>데이터 계층 구조를 이용한 연산이 쉽다.</li>
+      <li>새로운 함수의 확장이 쉽다.</li>
+      <li>데이터 무결성 검사가 쉽다.</li>
+      <li>설계 단계 모델−구현 단계 모델 사이의 불일치 문제를 줄인다.</li>
+    </ul></li>
+</ul>
+
+<h5>④ 시공간 데이터</h5>
+<p>시간과 공간 데이터의 결합 형태를 지칭한다.</p>
+<ul class="dash">
+  <li>실제 객체들은 공간적 정보뿐만 아니라 시간적 정보와도 연관이 있다. 기본적으로 위치 · 영역과 같은 공간 정보는 시간의 흐름에 따라서 변화를 하기 때문이다.</li>
+</ul>
+
+<h4 id="s2-01-2">2) 시공간 데이터 분석</h4>
+<h5>① 시공간 데이터에 대한 질의어</h5>
+<aside class="note">시공간 테이블의 정의문은 점, 선, 면 등의 공간속성 타입이 추가되어 있다.</aside>
+<ul class="dash">
+  <li>시공간자료 정의언어 : 시공간 테이블 인덱스 및 뷰(view)의 정의문, 변경문 등이 포함되어 있다. 이 자료는 공간적 속성과 시간적 속성을 동시에 포함한다.</li>
+  <li>시공간자료 조작언어 : 객체의 삽입, 삭제, 변경 등의 검색문이 있다. 이 문장들은 시간지원 연산자와 공간 연산자를 포함하며 이를 통해 객체에 대한 공간 관리와 이력정보를 제공한다.</li>
+</ul>
+<h5>② 시공간 데이터의 연산</h5>
+<ul class="dash">
+  <li>시공간위상 관계연산 : 공간위상 연산자는 두 객체 간 공간영역상의 관계에 대해서 참 · 거짓을 반환하는 연산으로 대표적으로 교차(intersection) 연산자는 선과 선의 교차, 선과 면의 교차 여부를 반환한다. 시간관계의 경우는 두 객체의 유효시간 정보를 기반으로 선후관계를 평가하여 참 · 거짓을 반환하는 연산자이다.</li>
+  <li>시공간기하 연산 : 공간기하 연산자와 시간구성 연산자의 결합이다. 공간기하 연산자는 두 객체 간의 거리(distance) 연산을 지칭하며 시간 구성 연산자는 주어진 객체의 유효시간값에 대하여 지정된 시간 혹은 다른 객체의 유효시간값과의 계산을 통해 객체의 유효시간값을 변경하는 연산이다.</li>
+</ul>
+
+<h4 id="s2-01-3">3) 적용 및 응용분야</h4>
+<ul class="dash">
+  <li>시공간 데이터 기술은 지리정보 시스템, 위치기반 서비스, 차량 위치추적 서비스 등에 활용된다.</li>
+</ul>
+
+<div class="page-mark">1-263</div>
+
+<h3 id="s2-02"><span class="num">02</span> 다변량 데이터 탐색</h3>
+<p>다변량 데이터 탐색은 기본적으로 변수들 간 인과관계의 규명과 분석을 하는 것이다. 변수들 간의 상관관계를 이용하여 변수를 축약하거나 개체들을 분류하고 관련된 분석방법 등을 동원하여 데이터 분석을 하는 것이다.</p>
+
+<h4 id="s2-02-1">1) 종속변수와 독립변수 사이의 인과 관계</h4>
+<h5>① 다중회귀(Multiple Regression)</h5>
+<p>독립변수가 2개 이상인 회귀모형을 지칭하며 <mark>각 독립변수는 종속변수와 선형관계에 있음을 가정</mark>한다.</p>
+<aside class="note">
+  <b>독립변수</b><br>종속변수에 영향을 줄 것으로 기대되거나 종속 변수의 변화를 예측할 수 있다고 여겨지는 변수
+  <hr><b>종속변수</b><br>독립변수의 변화에 의해 영향을 받을 것으로 기대되는 변수
+</aside>
+<ul class="dash">
+  <li>장점
+    <ul class="dash2">
+      <li>변수를 추가하여 분석내용의 질적 향상을 도모할 수 있다(단순회귀분석의 단점을 극복할 수 있다).</li>
+      <li>종속변수를 설명하는 독립변수가 두 개일 때 단순회귀모형을 설정한다면 모형설정(specification)이 부정확할 뿐 아니라 종속변수에 대한 중요한 독립변수를 누락함으로써 계수 추정량에 대해 편이(bias)를 야기시킬 수 있다. 이때 다중회귀분석을 통해 편이를 제거할 수 있다.</li>
+    </ul></li>
+  <li>일반형식
+    <ul class="dash2">
+      <li>종속변수 Y에 대해서 <i>X</i>1, <i>X</i>2, ⋯, <i>Xk</i>의 독립변수 <i>k</i>개가 존재하여 종속변수를 설명한다.</li>
+    </ul></li>
+</ul>
+<div class="eqbox"><i>Y</i> = <i>α</i><sub>1</sub><i>X</i><sub>1</sub> + <i>α</i><sub>2</sub><i>X</i><sub>2</sub> + ⋯ + <i>α<sub>k</sub></i><i>X<sub>k</sub></i> + <i>β</i> + <i>ε<sub>k</sub></i></div>
+<p>여기서 설명변수는 <i>k</i>개이며 추정해야 할 모수는 <i>α<sub>i</sub></i>, i=1, 2,⋯, <i>k</i>, <i>β</i> 포함 <i>k</i>+1개이다(<i>α<sub>i</sub></i>, i=1, 2,⋯, <i>k</i>는 기울기, <i>β</i>는 절편).</p>
+<aside class="note">
+  <b>오차항</b><br>관측치와 모예측치 간 편차 차이
+  <hr><b>잔차항</b><br>관측치와 표본예측치 간 편차 차이
+  <hr>모집단 전체를 대상으로 예측결과를 이야기할 때는 오차항, 표본만으로 한정 시에는 잔차항
+</aside>
+<ul class="dash">
+  <li>기본가정
+    <ul class="dash2">
+      <li>회귀모형은 모수에 대해 선형인 모형이다.</li>
+      <li>오차항의 평균은 0이다.</li>
+      <li>오차항의 분산은 모든 관찰치에 대해 σ2의 일정한 분산을 갖는다.</li>
+      <li>서로 다른 관찰치 간의 오차항은 상관이 없다(오차항은 서로 독립이며 공분산은 0).</li>
+      <li>오차항의 각 독립변수 역시 독립인 관계이다.</li>
+      <li>오차항은 정규분포를 따르며 <i>N</i>(<i>0</i>, <i>σ</i>2)이다.</li>
+    </ul></li>
+  <li>분석 방법
+    <ul class="dash2">
+      <li>최소자승법을 이용하여 결과를 도출할 수 있다(해당 내용은 PART 03 빅데이터 모델링에서 자세히 다룬다).</li>
+    </ul></li>
+</ul>
+
+<div class="page-mark">1-264</div>
+
+<h5>② 로지스틱 회귀(Logistic Regression)<sup class="star">★</sup></h5>
+<p>영국의 통계학자인 D. R. Cox가 1958년에 제안한 확률 모델로 <mark>독립변수의 선형결합을 이용하여 사건의 발생 가능성을 예측하는 데 사용되는 통계 기법</mark>이다.</p>
+<aside class="note">
+  <b class="star-b">★ 로지스틱 회귀</b><br>종속변수가 이항형 문제(유효한 범주의 개수가 두 개인 경우)를 지칭할 때 사용
+  <hr><b>이항형 데이터</b><br>성공 아니면 실패, 남성 및 여성 등 두 변수를 선정하여 둘에 대한 빈도수 및 비율 분포 특성을 파악할 수 있는 데이터
+  <hr><b>이항분포(Binomial Distribution)</b><br>베르누이 시행을 n번 독립적으로 시행할 때 성공횟수를 X로 정의한 이산확률분포<br>(세부내용은 PART 02 − CHAPTER 03 참고)
+</aside>
+<ul class="dash">
+  <li>로지스틱 회귀 모델은 종속변수와 독립변수 사이의 관계에 있어서 선형 모델과 차이점을 지니고 있다. 첫 번째 차이점은 이항형인 데이터에 적용하였을 때 종속변수 y의 결과가 범위[0,1]로 제한된다는 것이고 두 번째 차이점은 종속변수가 이진적이기 때문에 조건부 확률 <i>P</i>(<i>y</i> | <i>x</i>)의 분포가 정규분포 대신 이항 분포를 따른다는 점이다.</li>
+</ul>
+<div class="eqbox"><i>G</i>(<i>x</i>) = <span class="fr"><span class="nu"><i>e<sup>x</sup></i></span><span class="de">1 + <i>e<sup>x</sup></i></span></span> : 로지스틱 모형 함수(시그모이드 함수)</div>
+<ul class="dash">
+  <li>독립변수는 실제 값, 이진 값, 카테고리 등 어떤 형태든 될 수 있다. 종속변수의 형태는 연속 변수(수입, 나이, 혈압) 또는 이산 변수(성별, 인종)로 구분된다.</li>
+  <li>만약, 특정 이산 변수값의 후보가 2개 이상 존재한다면 일반적으로 해당 후보들을 임시 변수로 변환하여 로지스틱 회귀를 수행한다.</li>
+</ul>
+
+<h5>③ 분산분석(Analysis of Variance, ANOVA)</h5>
+<p>분산분석은 3개 이상의 표본들의 차이를 표본평균 간의 분산과 표본 내의 관측치 간 분산을 비교하여 가설을 검정하는 것이다.</p>
+<ul class="dash">
+  <li>일원분산분석(One−Way ANOVA) : 단 하나의 인자에 근거하여 여러 수준으로 나누어지는 분석이다.</li>
+  <li>일원분산분석의 특징
+    <ul class="dash2">
+      <li>일원분산분석은 단일용인변수(독립변수)에 의해 종속변수에 대한 평균치의 차이를 검정하는 데 이용한다.</li>
+      <li>일원분산분석을 위해서는 종속변수(등간 척도)와 정수값을 갖는 요인변수가 각 하나여야 하고 요인변수가 정의되어야 한다.
+        <div class="ex"><span class="ex-tag">예</span> 3학급(A반, B반, C반) 간 성적의 평균 차이가 존재할 것이다.</div>
+        <div class="ex"><span class="ex-tag">예</span> 판매방법이나 지역에 따라 자사 매출액 평균에 차이가 존재하는가?</div></li>
+    </ul></li>
+</ul>
+
+<h5>④ 다변량 분산분석(Multi Variate ANOVA)</h5>
+<p>측정형 변수, 종속변수가 2개 이상인 분산분석이다.</p>
+<ul class="dash">
+  <li>이원분산분석(Two−Way ANOVA) : 두 개 이상의 인자에 근거하여 여러 수준으로 나누어지는 분석이다.</li>
+  <li>이원분산분석의 특징
+    <ul class="dash2">
+      <li>이원분산분석은 일원분산분석과는 달리 독립변인의 수가 둘이다.</li>
+      <li>만약 연구자의 관심이 한 변수에 따른 종속변수의 영향이 아니라 두 개 이상의 변수, 예를 들어 성별변수와 연령변수에 따라 직무만족도가 어떻게 차이나는가를 알아보고자 한다면 이원분산분석을 해야 한다.</li>
+    </ul></li>
+</ul>
+
+<div class="page-mark">1-265</div>
+
+<h4 id="s2-02-2">2) 공분산과 독립성 관계</h4>
+<aside class="note">
+  <b>공분산(covariance)</b><br>두 개의 확률 변수의 상관정도를 나타내는 값
+  <hr>공분산이 0이면 두 변수 간의 선형적인 관계가 없음을 의미하나 두 변수가 완전히 독립적이라는 것은 아니다.
+</aside>
+<p>서로 독립적인 변수는 통계적으로 독립적인 사건으로 볼 수 있으며, 한 변수의 변화가 다른 변수에 영향을 미치지 않는 관계를 가지고 있다. 이러한 경우 공분산은 0이 되며, 공분산 행렬의 비대각 성분은 모두 0이 된다.</p>
+<p>그러나 공분산이 0이라고 해서 항상 독립적인 관계인 것은 아니다. 예를 들어, 두 변수가 비선형적인 관계를 가지고 있을 수 있으며, 이러한 경우에도 공분산은 0이 될 수 있다. 또한, 다른 종류의 관계(이차항 관계, 상호작용 효과 등)가 존재할 수도 있다. 이 경우에는 공분산이 0이 되지 않을 수도 있다.</p>
+<div class="boxlist">
+<ul class="dash">
+  <li>두 확률변수가 상호 독립이면 Cov(A, B) = 0이다.</li>
+  <li>그러나 Cov(A, B) = 0이라고 해서 두 확률변수 A, B가 상호 독립이라고 할 수는 없다.</li>
+</ul>
+</div>
+<ul class="dash">
+  <li>변수 간의 독립성 여부를 판단하기 위해서는 공분산 이외의 다른 통계적 검정이나 분석을 사용해야 한다.</li>
+</ul>
+
+<h4 id="s2-02-3">3) 두 확률분포 간의 독립성 확인</h4>
+<h5>① 분포의 독립성 확인</h5>
+<p>두 확률변수의 결합 확률분포를 확인하여 독립성을 판단할 수 있다. 두 변수가 상호 독립이라면, 결합 확률분포는 두 개별 변수의 확률분포의 곱과 동일해야 한다. 즉, P(X, Y) = P(X) ＊ P(Y)의 관계를 만족해야 한다.</p>
+<h5>② 공분산 및 상관 계수 확인</h5>
+<p>두 확률변수의 공분산과 상관계수를 계산하여 판단할 수 있다. 두 변수가 상호 독립이라면 공분산은 0이 되며, 상관계수도 0이 된다.</p>
+<h5>③ 독립성 검정</h5>
+<p>독립성을 확인하기 위해 독립성 검정을 수행할 수 있다. 대표적인 검정 방법으로는 카이제곱 독립성 검정이 있다. 이 검정은 주어진 데이터에서 두 변수 간의 독립성을 검정하는 방법으로, 유의수준을 설정하여 검정 결과를 해석할 수 있다.</p>
+
+<h4 id="s2-02-4">4) 변수축약</h4>
+<p>변수들 간의 상관관계를 이용하여 변수를 줄이는 방법으로 변수유도기법이라고도 한다.</p>
+<h5>① 주성분 분석(Principal Component Analysis, PCA)</h5>
+<ul class="dash">
+  <li>다변량자료에서 존재하는 비정규성(abnormality)이나 이상치(outlier)를 발견하기 위하여 변수들의 상관관계(또는 공분산)가 존재하지 않는 새로운 변수(주성분)를 구하는 것을 지칭한다.</li>
+  <li>주성분 분석은 <i>N</i>개의 변수로부터 서로 독립인 <i>K</i>(&lt;<i>N</i>)개의 주성분을 구해 원 변수의 차원을 줄이는 방법이다.</li>
+</ul>
+
+<div class="page-mark">1-266</div>
+
+<h5>② 요인 분석(Factor Analysis)</h5>
+<p>다수의 변수들의 상관관계를 분석하여 공통차원들을 통해 축약해 나가는 방법으로 이해하면 된다. 즉, 다수의 변수들 간 정보손실을 최소화하면서 소수의 요인(Factor)으로 축약하는 것이다.</p>
+<ul class="dash">
+  <li>요인 분석의 특징
+    <ul class="dash2">
+      <li>독립변수와 종속변수의 개념이 없다.</li>
+      <li>추론통계가 아닌 기술통계기법에 의해 수행할 수 있다(상관분석 등).</li>
+    </ul></li>
+  <li>요인 분석의 목적
+    <ul class="dash2">
+      <li>변수 축소 : 여러 개의 관련변수가 하나의 요인으로 묶인다.</li>
+      <li>변수 제거 : 요인에 포함되지 않거나 포함되더라도 중요도가 낮은 변수를 찾을 수 있다.</li>
+      <li>변수 특성 파악 : 관련된 변수들의 묶음으로 상호독립특성을 파악하기 용이해진다.</li>
+      <li>측정항목의 타당성 평가 : 그룹이 되지 않은 변수의 특성을 구분할 수 있게 된다.</li>
+      <li>요인점수를 통한 변수 생성 : 회귀분석, 군집분석, 판별분석 등에 적용 가능한 변수를 생성할 수 있다.</li>
+    </ul></li>
+</ul>
+
+<h5>③ 정준상관분석(Canonical Analysis)</h5>
+<aside class="note">
+  <b>canonical</b><br>표준(기준)이 되는
+  <hr>변수집단 간의 상관구조를 가장 잘 설명하는 집단 내 변수들의 선형결합(정준변수)를 찾는 과정이다.
+</aside>
+<p>두 변수집단 간의 연관성(Association)을 각 변수집단에 속한 변수들의 선형결합(Linear Combination)의 상관계수를 이용하여 분석하는 방법이다(일반화된 상관계수).</p>
+<div class="boxlist">
+<p>스트레스하에서 심리적 상황을 나타내는 변수들과 육체적인 변수들이 어떻게 상호 작용하는지에 관심이 있다면, 심리적인 것들로 간주되는 불안도, 집중력 정도 등의 변수들과 혈압, 맥박, 심전도 등과 같은 육체적 측면의 변수들을 측정하고, 이들 사이의 연관성을 보는 것이 바람직할 것이다.</p>
+<p>이때, 각 변수집단에 속하는 변수들의 선형결합은 선형결합들 사이의 상관관계가 최대가 되도록 가중값(weight)을 결정하여 구성한다.</p>
+</div>
+<ul class="dash">
+  <li>정준변수(Canonical Variable) : 새로 만들어진 선형결합이다.</li>
+  <li>정준상관계수(Canonical Correlation Coefficient) : 정준변수들 사이의 상관계수이다.</li>
+</ul>
+<p>두 집단에 속하는 변수들의 개수 중에서 변수의 개수가 적은 집단에 속하는 변수의 개수만큼의 정준변수가 만들어질 수 있다.</p>
+<ul class="dash">
+  <li>정준분석과 회귀분석의 차이점
+    <ul class="dash2">
+      <li>회귀분석의 경우 하나의 반응변수를 여러 개의 설명변수로 설명하고자 할 때, 가장 설명력이 높은 변수들의 선형결합을 찾아 이들 사이의 인과관계를 생각하는 반면에 정준분석에서는 이와 같은 인과성이 없다.</li>
+    </ul></li>
+</ul>
+
+<div class="page-mark">1-267</div>
+
+<h4 id="s2-02-5">5) 개체유도</h4>
+<p>개체들의 특성을 측정한 변수들의 상관관계를 이용하여 유사한 개체를 분류하는 방법이다.</p>
+<h5>① 군집 분석(Cluster Analysis)</h5>
+<aside class="note">
+  <b>군집 분석</b><br>대표적 비지도학습, 각 데이터의 유사성을 측정하여 다수의 군집으로 나누고 군집 간 상이성을 확인
+  <hr><b>공간적 거리로 시각화</b><br>민코프스키 함수, 유클리드 함수 등
+</aside>
+<p>변수 또는 개체(item)들이 속한 <mark>모집단 또는 범주에 대한 사전정보가 없는 경우에 관측값들 사이의 거리(또는 유사성)를 이용</mark>하여 변수 또는 개체들을 자연스럽게 몇 개의 그룹 또는 군집(cluster)으로 나누는 분석기법이다.</p>
+<ul class="dash">
+  <li>군집 간의 거리에 대한 정의가 가장 중요한 부분으로 거리의 정의에 따라서 유사성에 대한 척도가 형성된다.</li>
+  <li>계층적(hierarchical) 방법 : 가까운 개체끼리 차례로 묶거나 멀리 떨어진 개체를 차례로 분리해 가는 군집방법으로 한 번 병합된 개체는 다시 분리되지 않는 것이 특징이다.</li>
+  <li>비계층적(nonhierarchical) 방법 또는 최적분화(partitioning) 방법 : 다변량 자료의 산포를 나타내는 여러가지 측도를 이용하여 이들 판정기준을 최적화시키는 방법으로 군집을 나누는 방법이다. 한 번 분리된 개체도 반복적으로 시행하는 과정에서 재분류될 수 있는 것이 특징이다.</li>
+  <li>조밀도에 의한 방법 : 데이터가 분포한 특성에 따라 군집을 나누는 방법이다.</li>
+  <li>그래프를 이용하는 방법 : 다차원 자료들을 2차원 또는 3차원으로 축소할 수 있다면 시각적 차원에서 자연스러운 군집을 형성할 수 있다.</li>
+</ul>
+
+<h5>② 다차원 척도법(Multi−Dimensional Scaling, MDS)</h5>
+<p>다차원 척도법은 다차원 관측값 또는 개체들 간의 거리(distance) 또는 비유사성(dissimilarity)을 이용하여 개체들을 원래의 차원보다 낮은 차원(보통 2차원)의 공간상에 위치시켜(spatial configuration) 개체들 사이의 구조 또는 관계를 쉽게 파악하고자 하는 데 목적이 있다.</p>
+<ul class="dash">
+  <li>차원의 축소와 개체들의 상대적 위치 등을 통해 개체들 사이의 관계를 쉽게 파악하고, 공간적 배열에 대한 주관적인 해석에 중점을 두고 있다.</li>
+</ul>
+
+<h5>③ 판별 분석(Discriminant Analysis)</h5>
+<p>2개 이상의 그룹으로 나누어진 개체에 대해 분류에 영향을 미칠 것 같은 특성(변수)을 측정하고 이를 이용하여 새로운 개체를 분류하는 방법이다.</p>
+<ul class="dash">
+  <li>로지스틱 판별분석(Logistic Discriminant Analysis) : 분류를 하는 도구(판별식)를 로지스틱 회귀분석을 이용하여 분류하는 방법이다.</li>
+</ul>
+
+<div class="page-mark">1-268</div>
+
+<h3 id="s2-03"><span class="num">03</span> 비정형 데이터 탐색</h3>
+
+<h4 id="s2-03-1">1) 비정형 데이터(Unstructured Data)</h4>
+<p>비정형 데이터(비구조화 데이터, 비구조적 데이터)는 미리 정의된 데이터 모델이 없거나 미리 정의된 방식으로 정리되지 않은 정보를 말한다.</p>
+<aside class="note">비정형 데이터는 데이터 구조가 없어 그 자체만으로 내용에 대한 질의 처리를 할 수 없다. 따라서 데이터의 특징을 추출하여 반정형 또는 정형으로 변환하는 전처리가 필요하다.</aside>
+
+<h5>① 비정형 데이터의 특징</h5>
+<ul class="dash">
+  <li>비정형 정보는 일반적으로 텍스트 중심으로 되어 있으며 날짜, 숫자, 사실과 같은 데이터도 포함할 수 있다.</li>
+  <li>변칙과 모호함이 발생하므로 데이터베이스의 칸 형식의 폼에 저장되거나 문서에 주석화된(의미적으로 태그된) 데이터에 비해 전통적인 프로그램을 사용하여 이해하는 것을 불가능하게 만든다.</li>
+</ul>
+
+<div class="tbl-cap">데이터의 형태와 데이터 수집 간의 관계</div>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:210px">형태</th><th>특징</th></tr>
+  <tr><td class="h">정형 데이터<br>(Structured Data)</td><td><ul class="dash"><li>내부 시스템인 경우가 대부분이라 수집이 쉽다.</li><li>파일 형태의 스프레드시트라도 내부에 형식을 가지고 있어 처리가 쉬운 편이다.</li></ul></td></tr>
+  <tr><td class="h">반정형 데이터<br>(Semi−structured Data)</td><td>보통 API 형태로 제공되기 때문에 데이터 처리 기술이 요구된다.</td></tr>
+  <tr><td class="h">비정형 데이터<br>(Unstructured Data)</td><td>텍스트 마이닝 혹은 파일일 경우 파일을 데이터 형태로 파싱해야 하기 때문에 수집 데이터 처리가 어렵다.</td></tr>
+</table>
+</div>
+<aside class="note"><b>API</b><br>운영체제와 응용프로그램 사이에 사용되는 언어 형식</aside>
+
+<h5>② 비정형 데이터 관리 및 분석 의미 도출</h5>
+<ul class="dash">
+  <li>정형 데이터는 데이터 저장의 효율성 측면에서 사전에 정의된 규칙에 따라 저장 · 관리되었으나 비정형의 경우는 규격화의 어려움이 있어 저장 · 관리의 어려움이 있다.</li>
+  <li>정형 데이터에 비해 차지하는 저장 공간이 넓다.</li>
+  <li>정형화되지 않은 데이터로 분석이 용이하지 않은 부분이 있다.</li>
+</ul>
+
+<h4 id="s2-03-2">2) 비정형 데이터의 분석</h4>
+<h5>① 데이터 마이닝(Data Mining)</h5>
+<aside class="note"><b>SOM(Self-Organizing Map)</b><br>자기조직화 지도</aside>
+<p>대규모로 저장된 데이터 안에서 체계적이고 자동적으로 <mark>통계적 규칙이나 패턴을 분석하여 가치 있는 정보를 추출</mark>하는 과정이다.</p>
+<ul class="dash">
+  <li>데이터 마이닝은 통계학에서 패턴 인식에 이르는 다양한 계량 기법을 사용한다.</li>
+  <li>데이터 마이닝 기법은 통계학 쪽에서 발전한 탐색적 자료분석, 가설 검정, 다변량 분석, 시계열 분석, 일반선형모형 등의 방법론이 쓰인다.</li>
+  <li>데이터베이스 쪽에서 발전한 OLAP(온라인 분석 처리, On−Line Analytic Processing), 인공지능 진영에서 발전한 SOM, 신경망, 전문가 시스템 등의 기술적인 방법론이 쓰인다.</li>
+</ul>
+
+<div class="page-mark">1-269</div>
+
+<aside class="note">데이터 마이닝의 필수 요소는 신뢰도가 높은 충분한 자료이다.</aside>
+<ul class="dash">
+  <li>데이터 마이닝 적용 분야
+    <ul class="dash2">
+      <li>신용평점 시스템(Credit Scoring System)의 신용평가모형 개발, 사기탐지 시스템(Fraud Detection System), 장바구니 분석(Market Basket Analysis), 최적 포트폴리오 구축과 같이 다양한 산업 분야에서 광범위하게 사용되고 있다.</li>
+      <li>분류(Classification) : 일정한 집단에 대한 특정 정의를 통해 분류 및 구분을 추론한다.
+        <div class="ex"><span class="ex-tag">예</span> 경쟁자에게로 이탈한 고객</div></li>
+      <li>군집화(Clustering) : 구체적인 특성을 공유하는 군집을 찾는다. 군집화는 미리 정의된 특성에 대한 정보를 가지지 않는다는 점에서 분류와 다르다.
+        <div class="ex"><span class="ex-tag">예</span> 유사 행동 집단의 구분</div></li>
+      <li>연관성(Association) : 동시에 발생한 사건 간의 관계를 정의한다.
+        <div class="ex"><span class="ex-tag">예</span> 장바구니에 동시에 들어가는 상품들의 관계 규명</div></li>
+      <li>연속성(Sequencing) : 특정 기간에 걸쳐 발생하는 관계를 규명한다. 기간의 특성을 제외하면 연관성 분석과 유사하다.
+        <div class="ex"><span class="ex-tag">예</span> 슈퍼마켓과 금융상품 사용에 대한 반복 방문</div></li>
+      <li>예측(Forecasting) : 대용량 데이터집합 내의 패턴을 기반으로 미래를 예측한다.
+        <div class="ex"><span class="ex-tag">예</span> 각종 수요예측</div></li>
+    </ul></li>
+  <li>데이터 마이닝의 단점
+    <ul class="dash2">
+      <li>자료에 의존하여 현상을 해석하고 개선하려고 하기 때문에 자료가 현실을 충분히 반영하지 못한 상태에서 정보를 추출한 모형을 개발할 경우 잘못된 모형을 구축하는 오류를 범할 수가 있다.</li>
+    </ul></li>
+</ul>
+
+<h5>② <mark>텍스트 마이닝(Text Mining)</mark></h5>
+<aside class="note"><b>n-gram</b><br>통계학 기반의 언어 모델, 주어진 텍스트로부터 n개 단어의 연속적 나열을 하나의 토큰으로 간주</aside>
+<p>전통적인 데이터 마이닝의 한계를 벗어난 방법으로 인간의 언어로 이루어진 비정형 텍스트 데이터들을 자연어 처리방식을 이용하여 대규모 문서에서 정보 추출, 연계성 파악, 분류 및 군집화, 요약 등을 통해 데이터의 숨겨진 의미를 발견하는 기법이다.</p>
+<ul class="dash">
+  <li>자연어 처리(Natural Language Process, NLP)
+    <ul class="dash2">
+      <li>인간의 언어 현상을 컴퓨터와 같은 기계를 이용해서 모사할 수 있도록 연구하고 이를 구현하는 인공지능의 주요 분야 중 하나다.</li>
+      <li>자연 언어 처리는 연구 대상이 언어이기 때문에 당연하게도 언어 자체를 연구하는 언어학과 언어 현상의 내적 기재를 탐구하는 언어 인지 과학과 연관이 깊다.</li>
+      <li>구현을 위해 수학적 · 통계적 도구를 많이 활용하며 특히 기계학습 도구를 많이 사용하는 대표적인 분야이다. 정보검색, QA 시스템, 문서 자동분류, 신문기사 클러스터링, 대화형 Agent 등 다양한 응용이 이루어지고 있다.</li>
+    </ul></li>
+</ul>
+
+<div class="page-mark">1-270</div>
+
+<h5>③ 오피니언 마이닝(Opinion Mining)</h5>
+<p>오피니언 마이닝은 텍스트 마이닝의 한 분류로서, 특정 주제에 대한 사람들의 주관적 의견을 통계 · 수치화해 객관적 정보로 바꾸는 빅데이터 분석기술이다.</p>
+<ul class="dash">
+  <li>텍스트 마이닝과 같이 문장을 분석하기 때문에 자연어 처리 방법(NLP)을 사용하지만, <mark>텍스트 마이닝은 문장 내 주제를 파악하고 오피니언 마이닝은 감정 · 뉘앙스 · 태도 등을 판별</mark>한다는 차이가 있다. 이 때문에 감정 분석(Sentiment Analysis)이라고도 불린다.</li>
+  <li>적용 분야
+    <ul class="dash2">
+      <li>텍스트 내 정보를 파악하기 위해 문장 구조, 문장 간의 관계, 어휘 등을 분석해 키워드와 연관된 감성 어휘의 빈도를 중립 · 긍정 · 부정으로 분류하고 그 강도를 평가한다.</li>
+      <li>특정 서비스 및 상품에 대한 시장 규모 예측, 소비자의 반응, 입소문 분석 등에 활용되고 있으며, 최근 많은 기업이 자사와 자사 상품 관련 댓글 · SNS 등을 실시간으로 분석해 이미지를 파악하고 대응 전략을 세워 사용하고 있다.</li>
+    </ul></li>
+</ul>
+
+<h5>④ 웹 마이닝(Web Mining)</h5>
+<aside class="note"><b>로그(Log)</b><br>컴퓨터의 처리 내용이나 이용 상황을 시간의 흐름에 따라 기록한 것</aside>
+<p>웹 마이닝 또는 웹 데이터 마이닝은 일반적으로 웹 자원으로부터 의미있는 패턴, 추세 등을 도출해 내는 것을 지칭한다.</p>
+<ul class="dash">
+  <li>기기 내 쌓이는 로그, 사용자 행동 및 작성 콘텐츠 등 모든 것을 포함한다. 이러한 데이터를 분석하여 유용한 정보를 추출, 통찰(insight)을 얻어 내는 것이 핵심이다.</li>
+  <li>웹 마이닝의 특징
+    <ul class="dash2">
+      <li>웹 환경에서 얻어지는 고객의 정보, 특정 행위, 패턴 등의 정보를 이용하여 다양한 활동(마케팅 등)에 활용할 수 있다.</li>
+      <li>데이터 마이닝을 이용하여 문서들과 서비스로부터 정보를 추출할 수 있다.</li>
+      <li>대량의 로그기록을 기반으로 정보를 수집하고 자료를 정제한다.</li>
+      <li>웹상의 고객의 행동기록과 CRM 등을 연결하는 등 다양한 서비스에 접목이 가능하다(연관 분류 등의 데이터 마이닝 기법을 동시 적용가능).</li>
+    </ul></li>
+  <li>웹 마이닝의 유형
+    <ul class="dash2">
+      <li>웹구조 마이닝(Web Structure Mining) : 웹 사이트로부터 구조적 요약정보를 추출하는 것이다.</li>
+      <li>웹내용 마이닝(Web Contents Mining) : 웹사이트 또는 페이지로부터 의미 있는 내용을 추출하는 것을 말한다.</li>
+      <li>웹사용 마이닝(Web Usage Mining) : 웹상의 사용자의 행동 등 패턴으로부터 통찰을 이끌어 내는 방법을 말한다.</li>
+    </ul></li>
+</ul>
+
+<div class="page-mark">1-271</div>
+
+<h3 id="s2-exam"><span class="exam-kicker">합격을 다지는</span> 예상문제</h3>
+
+<div class="exam">
+<div class="eq"><div class="eq-t"><span class="eq-n">01</span> 시간데이터의 정의와 의미 연결이 <u>틀린</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>유효 시간 : 객체가 발생하거나 소멸된 시간</li>
+  <li>거래 시간 : 관리 시스템을 통해 처리된 시간</li>
+  <li>스냅샷 데이터 : 시간 개념이 필요하지 않아 거래, 유효시간을 미지원하는 데이터</li>
+  <li>다변량 데이터 : 거래 시간과 유효 시간을 동시에 지원하는 데이터</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">02</span> 다음은 어떤 공간데이터 용어의 정의인가?</div>
+<div class="boxlist">공간 객체 간 관계를 표현하며 방위, 공간 객체 간의 중첩, 포함, 교차, 분리 등과 같은 위치적 관계</div>
+<ol class="circled q-opt">
+  <li>비 공간 타입</li><li>레스터 공간 타입</li><li>벡터 공간 타입</li><li>위상적 공간 타입</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">03</span> 다음은 시공간 정의언어와 조작언어에 대한 설명이다. <u>틀린</u> 것을 고르시오.</div>
+<ol class="circled q-opt">
+  <li>시공간자료 정의언어에는 시공간테이블 인덱스 및 뷰(view)의 정의문, 변경문 등이 포함되어 있다.</li>
+  <li>시공간자료 조작언어에는 시공간테이블의 정의문이 포함되며 점, 선, 면 등의 공간속성 타입이 추가되어 있다.</li>
+  <li>시공간 조작언어는 객체의 삽입, 삭제, 변경 등의 검색문이 있다.</li>
+  <li>시공간자료 조작언어는 시간지원 연산자와 공간 연산자를 포함하며 이를 통해 객체에 대한 공간관리와 이력정보를 제공한다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">04</span> 두 개의 연속형 변수가 있다. 둘 사이의 함수적 관계를 분석하려고 할 때, 가장 적합한 분석 방법은?</div>
+<ol class="circled q-opt">
+  <li>교차분석</li><li>분산분석</li><li>회귀분석</li><li>판별분석</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">05</span> 다중회귀분석을 하는 데 있어서 기본 가정 중 <u>틀린</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>회귀모형은 모수에 대해 선형인 모형이다.</li>
+  <li>오차항의 분산은 모든 관찰치에 대해 σ<sup>2</sup>의 일정한 분산을 갖는다.</li>
+  <li>서로 다른 관찰치 간의 오차항은 상관이 없다(오차항은 서로 독립이며 공분산은 1).</li>
+  <li>오차항은 정규분포를 따르며 N(0,σ<sup>2</sup>)이다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">06</span> 로지스틱 분석에서 사용하는 시그모이드 함수식으로 올바른 것은?</div>
+<ol class="circled q-opt">
+  <li><i>G</i>(<i>x</i>) = <span class="fr"><span class="nu"><i>e<sup>x</sup></i></span><span class="de">1 + <i>e<sup>x</sup></i></span></span></li>
+  <li><i>G</i>(<i>x</i>) = <span class="fr"><span class="nu"><i>e<sup>−x</sup></i></span><span class="de">1 + <i>e<sup>x</sup></i></span></span></li>
+  <li><i>G</i>(<i>x</i>) = <span class="fr"><span class="nu"><i>e<sup>x</sup></i></span><span class="de">1 + <i>e<sup>−x</sup></i></span></span></li>
+  <li><i>G</i>(<i>x</i>) = <span class="fr"><span class="nu"><i>e<sup>−x</sup></i></span><span class="de">1 + <i>e<sup>−x</sup></i></span></span></li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">07</span> 다음은 어떤 분석에 대한 내용인지 고르시오.</div>
+<div class="boxlist">텍스트 내 정보를 파악하기 위해 문장 구조, 문장 간의 관계, 어휘 등을 분석해 키워드와 연관된 감성 어휘의 빈도를 중립 · 긍정 · 부정으로 분류하고 그 강도를 평가한다.</div>
+<ol class="circled q-opt">
+  <li>오피니언 마이닝</li><li>웹 콘텐츠 마이닝</li><li>자연어처리</li><li>군집분석</li>
+</ol></div>
+
+</div>
+<div class="page-mark">1-272</div>
+<div class="exam">
+<div class="eq"><div class="eq-t"><span class="eq-n">08</span> 일원분산분석의 정의와 특성을 연결시킨 것 중 <u>틀린</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>하나의 인자에 근거하여 여러 수준으로 나누어지는 분석이다.</li>
+  <li>단일용인변수(독립변수)에 의해 종속변수에 대한 최빈값의 차이를 검정하는 데 이용한다.</li>
+  <li>종속변수(등간 척도)와 정수값을 갖는 요인변수가 각 하나여야 하고 요인변수가 정의되어야 한다.</li>
+  <li>“A반, B반, C반 간 성적의 평균 차이가 존재할 것이다.”는 일원분산분석의 예이다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">09</span> 요인분석의 목적이 <u>아닌</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>변수특성파악 : 관련된 변수들의 묶음으로 상호독립특성을 파악할 수 있다.</li>
+  <li>측정항목의 타당성 평가 : 그룹이 되지 않은 변수의 특성을 구분할 수 있게 된다.</li>
+  <li>분포분석 : 추론통계의 의한 분석을 통해 수행한다.</li>
+  <li>요인점수를 통한 변수생성 : 회귀분석, 군집분석, 판별분석 등에 적용 가능한 변수를 생성할 수 있다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">10</span> 다음은 어떤 분석에 대한 설명인가?</div>
+<div class="boxlist">변수 또는 개체(item)들이 속한 모집단 또는 범주에 대한 사전정보가 없는 경우에 관측값들 사이의 거리(또는 유사성)를 이용하여 변수 또는 개체들을 자연스럽게 몇 개의 그룹으로 나누는 분석법으로 정의한다.</div>
+<ol class="circled q-opt">
+  <li>판별분석</li><li>로지스틱 판별분석</li><li>정준분석</li><li>군집분석</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">11</span> 정준분석의 설명으로 <u>틀린</u> 것은?</div>
+<ol class="circled q-opt">
+  <li>두 변수집단 간의 연관성(Association)을 각 변수집단에 속한 변수들의 선형결합(Linear Combination)의 상관계수를 이용하여 분석하는 방법이다.</li>
+  <li>정준상관계수(Canonical Correlation Coefficient)는 정준변수들 사이의 상관계수이다.</li>
+  <li>두 집단에 속하는 변수들의 개수 중에서 변수의 개수가 적은 집단에 속하는 변수의 개수만큼의 정준변수가 만들어질 수 있다.</li>
+  <li>정준분석의 경우 하나의 반응변수를 여러 개의 설명변수로 설명하고자 할 때, 가장 설명력이 높은 변수들의 선형결합을 찾아 이들 사이의 인과관계를 생각하는 방법이다.</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">12</span> 다음은 어떤 데이터에 대한 설명인가?</div>
+<div class="boxlist">변칙과 모호함이 발생하므로 데이터베이스 형식으로 저장된 데이터나 문서에 주석화된(의미적으로 태그된) 데이터에 비해 전통적인 프로그램을 사용하여 이해하는 것을 불가능하게 만든다.</div>
+<ol class="circled q-opt">
+  <li>정형 데이터</li><li>반정형 데이터</li><li>부정형 데이터</li><li>비정형 데이터</li>
+</ol></div>
+
+<div class="eq"><div class="eq-t"><span class="eq-n">13</span> 데이터 마이닝에 대한 설명으로 옳지 <u>않은</u> 것을 고르시오.</div>
+<ol class="circled q-opt">
+  <li>대규모로 저장된 데이터 안에서 체계적이고 자동적으로 통계적 규칙이나 패턴을 분석하여 가치 있는 정보를 추출하는 과정이다.</li>
+  <li>데이터베이스 쪽에서 발전한 OLAP(온라인 분석 처리), 인공지능 진영에서 발전한 SOM, 신경망, 전문가 시스템 등의 기술적인 방법론이 쓰인다.</li>
+  <li>자료가 현실을 충분히 반영하지 못한 상태에서 정보를 추출한 모형을 개발할 경우 잘못된 모형을 구축할 수 있다.</li>
+  <li>다수의 변수들의 상관관계를 분석하여 공통차원들을 통해 축약해 나가는 방법이다.</li>
+</ol></div>
+</div>
+
+<div class="page-mark">1-273</div>
+
+<h3 id="s2-exam-ans"><span class="exam-kicker">합격을 다지는</span> 예상문제 정답 &amp; 해설</h3>
+
+<div class="anskey">
+  <div class="anskey-head">SECTION 02</div>
+  <div class="anskey-grid">
+    <span>01 ④</span><span>02 ④</span><span>03 ②</span><span>04 ③</span><span>05 ③</span>
+    <span>06 ①</span><span>07 ①</span><span>08 ②</span><span>09 ③</span><span>10 ④</span>
+    <span>11 ④</span><span>12 ④</span><span>13 ④</span>
+  </div>
+</div>
+
+<div class="sols">
+<div class="sol-item"><div class="sol-h"><b>01</b> ④</div><p>거래, 유효시간과 스냅샷데이터를 동시에 지원하는 데이터는 이원시간 데이터이다. 다변량 데이터는 2개 이상의 변수로 구성된 데이터를 말한다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>02</b> ④</div><p>위상적 타입 : 공간 객체 간의 관계를 표현하며, 방위, 공간 객체 간의 중첩, 포함, 교차, 분리 등과 같은 위치적 관계</p></div>
+<div class="sol-item"><div class="sol-h"><b>03</b> ②</div><p>시공간자료 정의언어에는 공간적 속성과 시간적 속성을 동시에 포함하며 시공간 테이블의 정의문은 점, 선, 면 등의 공간속성 타입이 추가되어 있다.</p>
+  <p class="avoid"><span class="avoid-tag">오답 피하기</span> ②번은 시공간 정의언어의 내용이다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>04</b> ③</div><p>두 개의 변수를 독립변수, 종속변수로서 함수적 관계를 분석하는 방법은 회귀분석이다.</p>
+  <p class="avoid"><span class="avoid-tag">오답 피하기</span> 교차분석은 명목자료 및 서열자료의 독립성, 동질성, 적합성을 분석하는 데 사용된다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>05</b> ③</div><p>서로 다른 관찰치 간의 오차항은 상관이 없다(오차항은 서로 독립이며 공분산은 0).</p></div>
+<div class="sol-item"><div class="sol-h"><b>06</b> ①</div><p>로지스틱 회귀의 모델은 종속 변수와 독립 변수 사이의 관계에 있어서 선형 모델과 차이점을 지니고 있다. 첫 번째 차이점은 이항형인 데이터에 적용하였을 때 종속 변수 y의 결과가 범위[0,1]로 제한된다는 것이고 두 번째 차이점은 종속 변수가 이진적이기 때문에 조건부 확률(P(y | x))의 분포가 정규분포 대신 이항 분포를 따른다는 점이다.</p>
+  <div class="eqbox"><i>G</i>(<i>x</i>) = <span class="fr"><span class="nu"><i>e<sup>x</sup></i></span><span class="de">1 + <i>e<sup>x</sup></i></span></span> : 로지스틱 모형 함수(시그모이드 함수)</div></div>
+<div class="sol-item"><div class="sol-h"><b>07</b> ①</div><p>오피니언 마이닝은 텍스트 마이닝의 한 분류로서, 특정 주제에 대한 사람들의 주관적 의견을 통계 · 수치화해 객관적 정보로 바꾸는 빅데이터 분석기술이다. 텍스트 내 정보를 파악하기 위해 문장 구조, 문장 간의 관계, 어휘 등을 분석해 키워드와 연관된 감성 어휘의 빈도를 중립 · 긍정 · 부정으로 분류하고 그 강도를 평가한다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>08</b> ②</div><p>단일용인변수(독립변수)에 의해 종속변수에 대한 평균치의 차이를 검정하는 데 이용한다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>09</b> ③</div><p>요인분석의 목적에는 분포분석이 없으며 요인분석의 특성상 추론통계가 아닌 기술 통계에 의한 분석이 그 특징이다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>10</b> ④</div><p>군집분석 : 변수 또는 개체(item)들이 속한 모집단 또는 범주에 대한 사전정보가 없는 경우에 관측값들 사이의 거리(또는 유사성)를 이용하여 변수 또는 개체들을 자연스럽게 몇 개의 그룹 또는 군집(cluster)으로 나누는 분석법으로 정의한다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>11</b> ④</div><p>회귀분석의 경우 하나의 반응변수를 여러 개의 설명변수로 설명하고자 할 때, 가장 설명력이 높은 변수들의 선형결합을 찾아 이들 사이의 인과관계를 생각하는 반면에 정준분석에서는 이와 같은 인과성이 없다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>12</b> ④</div><p><b>비정형 데이터의 특징</b><br>변칙과 모호함이 발생하므로 데이터베이스 형식으로 저장된 데이터나 문서에 주석화된(의미적으로 태그된) 데이터에 비해 전통적인 프로그램을 사용하여 이해하는 것을 불가능하게 만든다.</p></div>
+<div class="sol-item"><div class="sol-h"><b>13</b> ④</div>
+  <p class="avoid"><span class="avoid-tag">오답 피하기</span> ④번은 요인분석에 대한 내용이다.</p></div>
+</div>
+
+<!-- NEXT-CHUNK-ANCHOR -->
+
+  </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  var main = document.getElementById('main');
+  var toc  = document.getElementById('toc');
+  var heads = main.querySelectorAll('h2[id], h3[id], h4[id]');
+  var items = [];
+
+  heads.forEach(function(h){
+    var lv = h.tagName === 'H2' ? 1 : (h.tagName === 'H3' ? 2 : 3);
+    var li = document.createElement('li');
+    li.className = 'lv' + lv;
+    var a = document.createElement('a');
+    a.href = '#' + h.id;
+    a.textContent = (h.dataset.toc || h.textContent).replace(/^●\s*/, '').trim();
+    li.appendChild(a);
+    toc.appendChild(li);
+    items.push({h:h, a:a});
+  });
+
+  // scrollspy
+  var current = null;
+  function spy(){
+    var best = null, bestTop = -Infinity;
+    var line = 120;
+    items.forEach(function(it){
+      var top = it.h.getBoundingClientRect().top;
+      if (top <= line && top > bestTop){ bestTop = top; best = it; }
+    });
+    if (!best) best = items[0];
+    if (best && best.a !== current){
+      if (current) current.classList.remove('active');
+      current = best.a;
+      current.classList.add('active');
+      var sb = document.getElementById('sidebar');
+      var r = current.getBoundingClientRect(), sr = sb.getBoundingClientRect();
+      if (r.top < sr.top + 40 || r.bottom > sr.bottom - 40){
+        sb.scrollTop += (r.top - sr.top) - sb.clientHeight/2;
+      }
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if (!ticking){ ticking = true; requestAnimationFrame(function(){ spy(); ticking = false; }); }
+  }, {passive:true});
+  spy();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,2341 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1과목 전 회차 한번에 풀기 · 빅데이터분석기사</title>
+<style>:root{
+  --accent:#2E8B7A; --accent-soft:#BBDDD5; --accent-pale:#EAF4F1;
+  --navy:#1F3A63; --ink:#222; --line:#DDD; --side-bg:#FAFAF9; --sidebar-w:270px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;color:var(--ink);
+  font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",system-ui,sans-serif;
+  font-size:15px;line-height:1.75;word-break:keep-all}
+
+#layout{display:flex;align-items:flex-start}
+#sidebar{width:var(--sidebar-w);flex:0 0 var(--sidebar-w);position:sticky;top:0;
+  height:100vh;overflow-y:auto;background:var(--side-bg);
+  border-right:1px solid var(--line);padding:16px 0 60px}
+.side-head{padding:0 16px 12px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.side-head a{display:block;font-size:14px;font-weight:700;color:var(--accent);text-decoration:none}
+.side-head span{display:block;font-size:11.5px;color:#777;margin-top:2px}
+ul.parts,#toc{list-style:none;margin:0;padding:0;font-size:13px}
+ul.parts li.grp{padding:12px 16px 4px;font-size:11.5px;font-weight:700;
+  color:#999;letter-spacing:.03em}
+ul.parts a{display:flex;justify-content:space-between;gap:8px;
+  padding:5px 16px;color:#444;text-decoration:none;border-left:3px solid transparent}
+ul.parts a span{color:#aaa;font-size:11.5px;flex:0 0 auto}
+ul.parts a:hover{background:#F0F0EE;color:var(--accent)}
+ul.parts a.on{background:var(--accent-pale);color:var(--accent);
+  border-left-color:var(--accent);font-weight:700}
+.toc-head{padding:16px 16px 6px;margin-top:8px;border-top:1px solid var(--line);
+  font-size:11.5px;font-weight:700;color:#999}
+#toc a{display:block;padding:4px 16px;color:#555;text-decoration:none;
+  border-left:3px solid transparent;line-height:1.4}
+#toc a:hover{background:#F0F0EE;color:var(--accent)}
+#toc a.active{background:var(--accent-pale);color:var(--accent);
+  border-left-color:var(--accent);font-weight:700}
+#toc .l2 a{padding-left:28px;font-size:12.5px}
+#toc .l3 a{padding-left:40px;font-size:12px;color:#777}
+
+#main{flex:1 1 auto;min-width:0;padding:34px 40px 120px}
+.wrap{max-width:880px;margin:0 auto}
+
+.crumb{font-size:12.5px;color:#888;margin:0 0 4px;letter-spacing:.02em}
+h1{font-size:26px;margin:0 0 6px;color:var(--accent)}
+.src{font-size:12.5px;color:#888;margin:0 0 28px}
+
+.page-mark{margin:30px 0 10px;padding:1px 0 1px 9px;border-left:3px solid var(--accent-soft);
+  font-size:11.5px;color:#bbb;letter-spacing:.04em}
+h3{font-size:19px;margin:34px 0 14px;padding:9px 14px;background:var(--accent);
+  color:#fff;border-radius:4px;border-left:7px solid var(--navy)}
+h4{font-size:16.5px;margin:26px 0 10px;padding-bottom:6px;
+  border-bottom:2px solid var(--accent-soft)}
+h5{font-size:15px;margin:20px 0 8px;color:var(--accent)}
+h5::before{content:"● ";font-size:10px;vertical-align:2px}
+
+p{margin:0 0 9px}
+ul{list-style:none;margin:0 0 12px;padding:0}
+ul.dash>li{position:relative;padding-left:14px;margin:3px 0}
+ul.dash>li::before{content:"·";position:absolute;left:3px;color:var(--accent)}
+ul.numlist>li{margin:3px 0;padding-left:4px}
+
+p.note{background:#F6F6F4;border-left:3px solid #D6D6D2;border-radius:0 4px 4px 0;
+  padding:9px 13px;margin:10px 0;font-size:13.5px;color:#4A4A4A}
+p.mnemo{display:inline-block;background:#FFF6D9;border:1px solid #EBD9A0;border-radius:14px;
+  padding:3px 14px;margin:8px 0;font-size:13.5px;font-weight:700;color:#7A5E12}
+p.mnemo::before{content:"☞ "}
+
+figure{margin:16px 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid #EEE;border-radius:4px}
+
+/* index */
+.index{padding:44px 24px 100px}
+.index h2{font-size:17px;margin:34px 0 12px;padding:8px 14px;background:var(--accent-pale);
+  color:#26705F;border-radius:4px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.card{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:8px;
+  text-decoration:none;color:var(--ink);background:#fff;transition:.15s}
+.card:hover{border-color:var(--accent);box-shadow:0 2px 10px rgba(46,139,122,.13)}
+.card b{display:block;font-size:15px;margin-bottom:4px}
+.card span{font-size:12px;color:#999}
+
+@media(max-width:900px){
+  #layout{display:block}
+  #sidebar{position:static;width:auto;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+  #main{padding:22px 16px 70px}
+}
+
+details.ov{margin:0 0 14px;border:1px solid var(--line);border-radius:6px;padding:10px 14px;background:#fff}
+details.ov summary{cursor:pointer;font-size:13px;color:var(--accent);font-weight:700;user-select:none}
+details.ov img{display:block;max-width:100%;margin-top:12px;border:1px solid #EEE;border-radius:4px}
+
+/* 수식 — 원문 이미지 그대로 */
+img.eq{display:inline-block;vertical-align:middle;max-width:100%;
+  height:auto;margin:2px 0 2px 4px}
+p.eqline{margin:6px 0 6px 14px}
+
+/* ---------- 확인 문제 ---------- */
+.quiz{margin:26px 0;border:1px solid var(--accent-soft);border-radius:8px;
+  background:#FCFEFD;overflow:hidden}
+.qtoggle{display:flex;align-items:center;gap:8px;width:100%;
+  padding:12px 16px;border:0;background:var(--accent-pale);color:#26705F;
+  font:700 14px/1.4 inherit;text-align:left;cursor:pointer}
+.qtoggle:hover{background:#DDEDE8}
+.qtoggle .arw{display:inline-block;transition:transform .18s;font-size:12px}
+.qtoggle[aria-expanded="true"] .arw{transform:rotate(180deg)}
+.qtoggle .score{margin-left:auto;font-size:12.5px;font-weight:700}
+.qbody{padding:6px 18px 18px}
+ol.qlist{list-style:none;margin:0;padding:0;counter-reset:none}
+li.q{padding:16px 0;border-bottom:1px dashed #DDE7E4}
+li.q:last-child{border-bottom:0}
+.qt{margin:0 0 9px;font-size:14.8px;line-height:1.6}
+.qt b{color:var(--accent);margin-right:4px}
+.opts{display:flex;flex-direction:column;gap:2px}
+label.opt{display:flex;gap:7px;align-items:flex-start;padding:5px 9px;
+  border-radius:5px;cursor:pointer;font-size:14.2px;line-height:1.55}
+label.opt:hover{background:#F1F7F5}
+label.opt input{margin:5px 0 0;flex:0 0 auto}
+label.opt .mk{flex:0 0 auto;color:#666}
+/* 채점 결과 표시 */
+.quiz.graded label.opt{cursor:default}
+.quiz.graded label.opt input{pointer-events:none}
+label.opt.correct{background:#E8F6EC;box-shadow:inset 0 0 0 1px #9FD3AE}
+label.opt.wrong{background:#FDECEC;box-shadow:inset 0 0 0 1px #E3A6A6}
+label.opt.correct .mk::after{content:" ✔";color:#1E7A3C;font-weight:700}
+label.opt.wrong .mk::after{content:" ✘";color:#C0392B;font-weight:700}
+li.q.ok  > .qt::after{content:" 정답";color:#1E7A3C;font-size:12px;font-weight:700;margin-left:6px}
+li.q.ng  > .qt::after{content:" 오답";color:#C0392B;font-size:12px;font-weight:700;margin-left:6px}
+li.q.na  > .qt::after{content:" 미응답";color:#999;font-size:12px;font-weight:700;margin-left:6px}
+.exp{display:none;margin:9px 0 0;padding:10px 13px;background:#F6F6F4;
+  border-left:3px solid var(--accent-soft);border-radius:0 4px 4px 0;
+  font-size:13.4px;color:#444;line-height:1.65}
+.quiz.graded .exp{display:block}
+.exp b{color:var(--accent)}
+.qbar{display:flex;align-items:center;gap:8px;margin-top:16px;
+  padding-top:14px;border-top:1px solid #E6EFEC}
+.btn{padding:7px 16px;border-radius:5px;border:1px solid var(--accent);
+  background:var(--accent);color:#fff;font:700 13px inherit;cursor:pointer}
+.btn.reset{background:#fff;color:var(--accent)}
+.btn:hover{opacity:.88}
+.qbar .result{font-size:13.5px;font-weight:700;color:#26705F}
+
+/* ---------- 수식 (원문을 직접 옮겨 적은 텍스트) ---------- */
+.eqbox{margin:12px 0 12px 14px;padding:10px 16px;
+  background:#FAFBFB;border-left:3px solid var(--accent-soft);border-radius:0 4px 4px 0;
+  font-size:15.5px;line-height:2.4;overflow-x:auto}
+.eqbox i,.eqtext i{font-family:"Cambria Math","Cambria","Times New Roman",serif;
+  font-style:italic}
+.eqtext{margin:8px 0 10px 14px;line-height:1.95}
+.eqline{margin:4px 0}
+/* 분수 */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;
+  text-align:center;margin:0 3px;line-height:1.25}
+.fr>.nu{padding:0 5px 1px;border-bottom:1.3px solid currentColor}
+.fr>.de{padding:1px 5px 0}
+/* 제곱근 */
+.sq{border-top:1.3px solid currentColor;padding:1px 3px 0 2px;margin-left:1px}
+.sq::before{content:"√";border-top:0;margin-left:-11px;padding-right:1px;
+  display:inline-block;transform:translateY(-1px)}
+.eqbox sup,.eqtext sup,.eqbox sub,.eqtext sub{font-size:.72em}
+
+/* ---------- 인쇄 / PDF ---------- */
+@media print{
+  @page{size:A4;margin:14mm 12mm}
+  body{font-size:10.6pt;line-height:1.62}
+  #sidebar{display:none !important}
+  #layout{display:block}
+  #main{padding:0}
+  .wrap{max-width:none}
+  .crumb{font-size:9pt}
+  h1{font-size:19pt;margin-bottom:2mm}
+  .src{font-size:9pt;margin-bottom:6mm}
+  h3{font-size:13.5pt;margin:7mm 0 3mm;-webkit-print-color-adjust:exact;
+     print-color-adjust:exact;break-after:avoid}
+  h4{font-size:12pt;margin:5mm 0 2mm;break-after:avoid}
+  h5{font-size:11pt;margin:4mm 0 1.5mm;break-after:avoid}
+  ul,figure,table,.eqbox,.eqtext{break-inside:avoid}
+  figure img{max-height:88mm}
+  .page-mark{font-size:8pt;color:#bbb}
+  p.note,p.mnemo,.eqbox{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  /* 문제는 펼친 상태로, 해설까지 함께 인쇄 */
+  .quiz{break-inside:auto;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .qtoggle{cursor:default}
+  .qtoggle .arw,.qtoggle .score{display:none}
+  .qbody{display:block !important}
+  .qbar{display:none}
+  li.q{break-inside:avoid}
+  .exp{display:block !important}
+  label.opt input{display:none}
+  label.opt{padding:2px 6px}
+  a{color:inherit;text-decoration:none}
+}
+
+/* ================= 모의고사 전용 ================= */
+
+.ex-head{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:0 0 18px;
+  background:var(--side-bg)}
+.ex-head .ex-meta{font-size:13px;color:#777;margin:0 0 10px}
+.ex-head .ex-meta b{color:var(--accent)}
+
+/* 실전 / 학습 모드 */
+.ex-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ex-bar button{font:inherit;font-size:13px;cursor:pointer;border:1px solid var(--line);
+  background:#fff;color:#444;border-radius:8px;padding:7px 12px}
+.ex-bar button:hover{border-color:var(--accent);color:var(--accent)}
+.ex-bar button.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.ex-bar .ex-primary{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:700}
+.ex-bar .ex-primary:hover{background:#16305a;color:#fff}
+.ex-sep{flex:1 1 auto}
+#ex-timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:15px;color:var(--navy);
+  padding:6px 10px;border-radius:8px;background:#fff;border:1px solid var(--line)}
+#ex-timer.warn{color:#C0392B;border-color:#E8B4AA;background:#FDF2F0}
+
+/* 문항 바로가기 */
+.ex-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:6px;
+  margin:12px 0 0}
+.ex-nav a{display:block;text-align:center;padding:6px 0;font-size:12.5px;text-decoration:none;
+  border:1px solid var(--line);border-radius:6px;color:#888;background:#fff}
+.ex-nav a.done{border-color:var(--accent);color:var(--accent);background:var(--accent-pale);
+  font-weight:700}
+.ex-nav a.ok{border-color:#7BC49A;background:#E9F6EE;color:#2E7D4F;font-weight:700}
+.ex-nav a.ng{border-color:#E5A9A0;background:#FDEEEB;color:#C0392B;font-weight:700}
+
+/* 문항 */
+.ex-q{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:0 0 14px;
+  scroll-margin-top:14px}
+.ex-q > .ex-qh{display:flex;gap:8px;align-items:baseline;margin:0 0 4px}
+.ex-q .ex-no{flex:0 0 auto;font-weight:700;color:var(--accent);font-size:15px}
+.ex-q .ex-tags{margin-left:auto;display:flex;gap:5px;flex-wrap:wrap}
+.ex-q .ex-tags span{font-size:10.5px;color:#999;border:1px solid var(--line);
+  border-radius:10px;padding:1px 7px;white-space:nowrap}
+.ex-q .ex-tags .lv-어려움{color:#C0392B;border-color:#E8C4BE}
+.ex-q .ex-tags .lv-보통{color:#B07A18;border-color:#EBD9A0}
+.ex-q .ex-tags .lv-쉬움{color:#2E7D4F;border-color:#B6DCC4}
+.ex-q .ex-body{margin:0 0 10px;line-height:1.75}
+
+.ex-opts{list-style:none;margin:0;padding:0}
+.ex-opts li{margin:0 0 5px}
+.ex-opts label{display:flex;gap:8px;align-items:flex-start;cursor:pointer;
+  padding:6px 9px;border:1px solid transparent;border-radius:7px;line-height:1.6}
+.ex-opts label:hover{background:#F4F7F6}
+.ex-opts input{display:none}
+.ex-opts .mk{flex:0 0 auto;color:#aaa;font-size:14px}
+.ex-opts input:checked + .mk{color:var(--accent);font-weight:700}
+.ex-opts label.picked{border-color:var(--accent-soft);background:var(--accent-pale)}
+.ex-opts label.correct{border-color:#7BC49A;background:#E9F6EE}
+.ex-opts label.correct .mk{color:#2E7D4F}
+.ex-opts label.wrong{border-color:#E5A9A0;background:#FDEEEB}
+.ex-opts label.wrong .mk{color:#C0392B}
+.ex-opts label.correct .tx::after{content:" ✔";color:#2E7D4F;font-weight:700}
+.ex-opts label.wrong .tx::after{content:" ✘";color:#C0392B;font-weight:700}
+
+.ex-exp{display:none;margin:10px 0 0;padding:10px 13px;border-radius:0 6px 6px 0;
+  border-left:3px solid var(--accent-soft);background:#F6F8F7;font-size:13.5px;line-height:1.7}
+.ex-q.show .ex-exp{display:block}
+.ex-exp .ex-ref{display:block;margin-top:8px;padding-top:6px;font-size:12px;color:#888;
+  border-top:1px dashed var(--line)}
+.ex-exp .ex-ref.out{color:#C0392B}     /* 요약노트에 없는 항목 — 따로 공부해야 함 */
+
+.ex-q.ok{border-color:#B6DCC4}
+.ex-q.ng{border-color:#E8C4BE}
+.ex-q.na{border-color:#DDD;background:#FAFAFA}
+.ex-q.ok .ex-no::after{content:" 정답";font-size:12px;color:#2E7D4F}
+.ex-q.ng .ex-no::after{content:" 오답";font-size:12px;color:#C0392B}
+.ex-q.na .ex-no::after{content:" 미응답";font-size:12px;color:#999}
+body.ex-review .ex-q.ok{display:none}          /* 오답만 다시 풀기 */
+body.ex-review .ex-q.rv-hide{display:none}     /* 저장된 오답만 다시 풀기(채점 전) */
+
+/* ---------- 좁은 화면 : 사이드바 서랍 ----------
+   900px 이하에서는 summary.css 가 사이드바를 본문 위에 쌓아 두는데(스크롤하면 사라짐),
+   시험지에서는 문항 바로가기를 계속 써야 하므로 왼쪽 서랍으로 바꾸고
+   플로팅 '☰ 문항' 단추로 여닫는다. */
+#sb-toggle{display:none;position:fixed;left:12px;bottom:14px;z-index:930;
+  border:1px solid var(--line);background:#fff;color:#444;border-radius:22px;
+  padding:9px 15px;font:700 13px/1.2 inherit;cursor:pointer;
+  box-shadow:0 4px 14px rgba(0,0,0,.16)}
+body.sb-open #sb-toggle{background:var(--accent);border-color:var(--accent);color:#fff}
+#sb-backdrop{display:none;position:fixed;inset:0;z-index:915;background:rgba(0,0,0,.28)}
+@media(max-width:900px){
+  #sb-toggle{display:inline-flex}
+  #sidebar{position:fixed;left:0;top:0;bottom:0;width:280px;max-width:82vw;
+    height:100vh;z-index:920;background:var(--side-bg);
+    border-right:1px solid var(--line);border-bottom:0;overflow-y:auto;
+    transform:translateX(-102%);transition:transform .18s ease;
+    padding:16px 0 70px}
+  body.sb-open #sidebar{transform:none;box-shadow:6px 0 22px rgba(0,0,0,.22)}
+  body.sb-open #sb-backdrop{display:block}
+}
+@media print{ #sb-toggle,#sb-backdrop{display:none !important} }
+
+/* ---------- 관련 요약 개념 (문항 밑 접이식 패널) ----------
+   학습 모드에서는 답을 고르기 전에도 문항 아래에 ▽ 로 보이고, 펼치면 해설도 함께 열린다.
+   실전 모드에서는 채점 뒤(문항이 .show 가 된 뒤)에만 보인다. */
+details.ex-concept{display:none;margin:6px 0 0;padding:8px 0 0;border-top:1px dashed #CFE0DA}
+body.ex-study .ex-q details.ex-concept,
+body.ex-concepts .ex-q details.ex-concept,
+.ex-q.show details.ex-concept{display:block}
+.ex-concept summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--accent);
+  -webkit-user-select:none;user-select:none;list-style:none;display:inline-block}
+.ex-concept summary::-webkit-details-marker{display:none}
+.ex-concept summary::before{content:"▽ ";font-size:10px;vertical-align:1px}
+.ex-concept[open]>summary::before{content:"△ "}
+.ex-concept summary:hover{text-decoration:underline}
+.ex-concept .cbody{margin-top:8px;padding:11px 14px;background:#F7FAF9;
+  border-left:3px solid var(--accent-soft);border-radius:0 6px 6px 0;
+  font-size:13.2px;line-height:1.72;color:#3E3E3E;overflow-x:auto}
+.ex-concept .cbody p{margin:0 0 7px}
+.ex-concept .cbody p.ct{margin:10px 0 6px;color:#26705F}
+.ex-concept .cbody p.ct:first-child{margin-top:0}
+.ex-concept .cbody ul,.ex-concept .cbody ol{margin:0 0 8px;padding-left:4px}
+.ex-concept .cbody table{border-collapse:collapse;margin:8px 0;font-size:12.6px}
+.ex-concept .cbody td,.ex-concept .cbody th{border:1px solid var(--line);padding:4px 8px}
+.ex-concept .cbody aside{background:#FFFDF2;border:1px solid #EBE3C2;border-radius:6px;
+  padding:8px 11px;margin:8px 0;font-size:12.6px}
+.ex-concept .cbody .ct-more{color:#999;font-size:12px;margin-top:8px}
+@media print{ .ex-concept{display:none} }
+
+/* 결과 */
+#ex-result{display:none;border:2px solid var(--accent);border-radius:12px;padding:18px;
+  margin:0 0 18px;background:#fff}
+#ex-result.show{display:block}
+#ex-result h2{margin:0 0 4px;font-size:20px;color:var(--navy)}
+#ex-result .ex-score{font-size:34px;font-weight:700;color:var(--accent);
+  font-variant-numeric:tabular-nums}
+#ex-result .ex-score small{font-size:15px;color:#999;font-weight:400}
+#ex-result .ex-verdict{display:inline-block;margin-left:10px;padding:4px 12px;border-radius:14px;
+  font-size:13px;font-weight:700}
+#ex-result .ex-verdict.pass{background:#E9F6EE;color:#2E7D4F;border:1px solid #7BC49A}
+#ex-result .ex-verdict.fail{background:#FDEEEB;color:#C0392B;border:1px solid #E5A9A0}
+#ex-result .ex-lines{margin:12px 0 0;font-size:13.5px;color:#555;line-height:1.9}
+#ex-result table{border-collapse:collapse;margin:10px 0 0;font-size:13px;width:100%}
+#ex-result th,#ex-result td{border:1px solid var(--line);padding:5px 9px;text-align:left}
+#ex-result th{background:var(--side-bg);color:#666;font-weight:700}
+#ex-result td.n{text-align:right;font-variant-numeric:tabular-nums}
+
+#ex-hist{margin:12px 0 0;font-size:12.5px;color:#888}
+#ex-hist b{color:var(--accent)}
+
+@media print{
+  .ex-bar,#ex-timer,.ex-nav,#ex-hist{display:none !important}
+  .ex-q{break-inside:avoid}
+  .ex-q .ex-exp{display:block}
+}
+@media(max-width:900px){
+  /* 좁은 화면에서는 사이드바가 본문 위로 오므로, 20칸 그리드를 한 줄로 눕혀
+     가로로 넘긴다. 안 그러면 문항에 닿기까지 한참을 내려야 한다. */
+  .ex-nav{display:flex;flex-wrap:nowrap;overflow-x:auto;padding:0 16px 6px;
+    -webkit-overflow-scrolling:touch}
+  .ex-nav a{flex:0 0 36px}
+  /* 가로 줄에서는 과목 이름표가 눌리지 않게 제 너비를 지킨다 */
+  .ex-navgrp{flex:0 0 auto;align-self:center;margin:0 4px 0 0}
+  #ex-result .ex-score{font-size:28px}
+  #sidebar ul.parts a{padding:4px 16px}
+}
+
+/* 아직 만들지 않은 과목 — 목차 카드와 사이드바 모두 흐리게 */
+.card.soon{opacity:.5;cursor:default;border-style:dashed}
+.card.soon:hover{border-color:var(--line);box-shadow:none}
+#sidebar ul.parts a.soon{color:#bbb;cursor:default}
+#sidebar ul.parts a.soon:hover{background:none;color:#bbb}
+/* ===== 4과목 통합 실전 모의고사 ===== */
+.ex-part{margin:26px 0 12px;padding:9px 14px;border-radius:8px;font-size:16px;
+  background:var(--accent-pale);color:var(--navy);border:1px solid var(--accent-soft)}
+.ex-part:first-of-type{margin-top:4px}
+.ex-part small{float:right;font-weight:400;color:#888;font-size:12.5px;padding-top:3px}
+.ex-navgrp{grid-column:1/-1;margin:8px 0 1px;font-size:11.5px;color:#999;font-weight:700}
+.ex-navgrp:first-child{margin-top:0}
+#ex-result table.ex-subj{margin-bottom:14px}
+#ex-result table.ex-subj td.okc{color:#2E7D4F;font-weight:700}
+#ex-result table.ex-subj td.ngc{color:#C0392B;font-weight:700}
+#ex-result .ex-lines b.ng{color:#C0392B}
+@media print{ .ex-part{break-before:page} .ex-part:first-of-type{break-before:auto} }
+
+/* 문제 안 〈보기〉 상자 (기출 사례형 지문) */
+.q-spec{margin:10px 0 4px;padding:10px 14px;background:#F7F9F8;border:1px solid #DDE7E4;
+  border-radius:8px;font-size:14.2px}
+.q-spec__label{display:inline-block;font-size:11.5px;font-weight:700;color:#26705F;
+  background:var(--accent-pale);border-radius:10px;padding:1px 10px;margin-bottom:6px}
+.ex-body table{border-collapse:collapse;margin:8px 0;font-size:13.5px}
+.ex-body td,.ex-body th{border:1px solid var(--line);padding:4px 9px}
+
+/* 과목별 전 회차 한번에 풀기 — 회차 구분선 */
+.ex-part.rd{margin-top:44px;border-top:3px solid var(--accent);border-radius:0 0 8px 8px;
+  padding-top:12px;font-size:17px}
+.ex-part.rd:first-of-type{margin-top:4px}
+</style></head><body>
+<div id="layout">
+<nav id="sidebar">
+  <div class="side-head"><a href="index.html">빅데이터분석기사 필기 교재</a><span>한번에 풀기 · 1과목</span></div>
+  <ul class="parts"><li class="grp">한번에 풀기 · 과목별 전 회차</li>
+<li><a href="exam_1과목_전회차_빅데이터분석기획.html" class="on">1과목 빅데이터 분석 기획 <span>40문항</span></a></li>
+<li><a href="exam_2과목_전회차_빅데이터탐색.html">2과목 빅데이터 탐색 <span>40문항</span></a></li>
+<li><a href="exam_3과목_전회차_빅데이터모델링.html">3과목 빅데이터 모델링 <span>40문항</span></a></li>
+<li><a href="exam_4과목_전회차_빅데이터결과해석.html">4과목 빅데이터 결과해석 <span>40문항</span></a></li>
+<li class="grp">회차별 시험지</li>
+<li><a href="exam_1회차_1과목_빅데이터분석기획.html">1회차 <span>기본</span></a></li>
+<li><a href="exam_2회차_1과목_빅데이터분석기획.html">2회차 <span>계산·응용</span></a></li>
+<li class="grp">목차</li>
+<li><a href="index.html">전체 목차</a></li></ul>
+  <div class="toc-head">문항 바로가기</div>
+  <div class="ex-nav" id="ex-nav"><span class="ex-navgrp">1회차</span><a href="#q1">1</a><a href="#q2">2</a><a href="#q3">3</a><a href="#q4">4</a><a href="#q5">5</a><a href="#q6">6</a><a href="#q7">7</a><a href="#q8">8</a><a href="#q9">9</a><a href="#q10">10</a><a href="#q11">11</a><a href="#q12">12</a><a href="#q13">13</a><a href="#q14">14</a><a href="#q15">15</a><a href="#q16">16</a><a href="#q17">17</a><a href="#q18">18</a><a href="#q19">19</a><a href="#q20">20</a><span class="ex-navgrp">2회차</span><a href="#q21">21</a><a href="#q22">22</a><a href="#q23">23</a><a href="#q24">24</a><a href="#q25">25</a><a href="#q26">26</a><a href="#q27">27</a><a href="#q28">28</a><a href="#q29">29</a><a href="#q30">30</a><a href="#q31">31</a><a href="#q32">32</a><a href="#q33">33</a><a href="#q34">34</a><a href="#q35">35</a><a href="#q36">36</a><a href="#q37">37</a><a href="#q38">38</a><a href="#q39">39</a><a href="#q40">40</a></div>
+</nav>
+<main id="main"><div class="wrap">
+<p class="crumb">모의고사 · 과목별 전 회차 한번에 풀기</p>
+<h1>1과목 · 빅데이터 분석 기획 <small>1~2회차 통합</small></h1>
+
+<div class="ex-head" id="exam" data-minutes="60" data-full="1"
+     data-subjects="1회차|2회차" data-partlabel="회차">
+  <p class="ex-meta">객관식 <b>40문항</b> · 제한 시간 <b>60분</b> ·
+     회차마다 <b>40% 이상 &amp; 전체 평균 60% 이상</b> —
+     <span id="ex-progress">0 / 40 문항 응답</span></p>
+  <div class="ex-bar">
+    <button type="button" id="ex-real" class="on">실전 모드</button>
+    <button type="button" id="ex-realc">실전 모드(내용 포함)</button>
+    <button type="button" id="ex-study">학습 모드</button>
+    <button type="button" id="ex-review">틀린 문항만</button>
+    <button type="button" id="ex-reset">다시 풀기</button>
+    <span class="ex-sep"></span>
+    <span id="ex-timer">남은 시간 60:00</span>
+    <button type="button" id="ex-submit" class="ex-primary">채점하기</button>
+  </div>
+  <p id="ex-hist"></p>
+</div>
+
+<div id="ex-result"></div>
+
+<h2 class="ex-part rd" id="p1">1회차 · 기본<small>1 ~ 20번</small></h2>
+<section class="ex-q" id="q1" data-ans="0" data-area="빅데이터의 이해" data-subj="1"><div class="ex-qh"><span class="ex-no">1.</span><span class="ex-tags"><span>빅데이터의 이해</span><span class="lv-쉬움">쉬움</span><span>사례적용</span></span></div><div class="ex-body">다음 중 정성적 데이터(Qualitative Data)에 해당하는 것으로 가장 적절한 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q1" value="0"><span class="mk">①</span><span class="tx">고객센터에 접수된 불만 상담 텍스트</span></label></li><li><label><input type="radio" name="q1" value="1"><span class="mk">②</span><span class="tx">지난달 지점별 매출액(원)</span></label></li><li><label><input type="radio" name="q1" value="2"><span class="mk">③</span><span class="tx">서버의 시간당 접속 횟수</span></label></li><li><label><input type="radio" name="q1" value="3"><span class="mk">④</span><span class="tx">제품별 재고 수량</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — 정성적 데이터는 문자와 같은 텍스트로 구성되며 함축적 의미를 지니고 있는 데이터다. 상담 텍스트가 이에 해당한다. 나머지 셋은 숫자로 이루어진 정량적 데이터로, 데이터베이스·스프레드시트 등의 형태로 관리되며 통계 분석이 용이하다.<span class="ex-ref ">근거 · 책 1-20</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-20쪽</summary><div class="cbody"><p class="ct"><b>SECTION 01 빅데이터 개요 및 활용</b></p>
+<p class="sec-meta"><span class="freq-tag">출제빈도 상 | 중 | <b>하</b></span></p>
+<p class="tagline"><span class="tagbox">빈출 태그</span> 정량적 · 정성적 · 정형 · 반정형 · 비정형 · 데이터베이스 · DW · 빅데이터 · 데이터 사이언스</p>
+
+<p class="ct"><b><span class="num">01</span> 데이터와 정보</b></p>
+<p>데이터는 1646년 영국 문헌에 처음 등장하였으며, ‘주어진 것’이란 의미를 갖는 라틴어 dare(주다, to give)의 과거분사형으로 사용되었다.</p>
+<aside class="note">데이터는 1940년대 이후 자연과학과 함께 다양한 사회과학이 발전하면서, 과거 관념적이고 추상적인 개념에서 기술적이며 사실적인 의미로 변화되었다.</aside>
+
+<p class="ct"><b>1) 데이터의 정의</b></p>
+<ul class="dash">
+  <li>데이터는 추론과 추정의 근거를 이루는 사실이다.</li>
+  <li>현실 세계에서 관찰하거나 측정하여 수집한 사실이다.</li>
+</ul>
+
+<p class="ct"><b>2) 데이터의 특징</b></p>
+<ul class="dash">
+  <li><mark>단순한 객체로도 가치가 있으며 다른 객체와의 상호관계 속에서 더 큰 가치를 갖는다.</mark></li>
+  <li>객관적 사실이라는 존재적 특성을 갖는다.</li>
+  <li>추론, 추정, 예측, 전망을 위한 근거로써 당위적 특성을 갖는다.</li>
+</ul>
+
+<p class="ct"><b>3) 데이터의 구분</b></p>
+<ol class="circled">
+  <li><b>정량적 데이터(Quantitative Data)</b> : 주로 숫자로 이루어진 데이터이다.
+    <div class="ex"><span class="ex-tag">예</span> 2020년, 100km/h 등</div></li>
+  <li><b>정성적 데이터(Qualitative Data)</b> : 문자와 같은 텍스트로 구성되며 함축적 의미를 지니고 있는 데이터이다.
+    <div class="ex"><span class="ex-tag">예</span> 철수가 시험에 합격하였다.</div></li>
+</ol>
+<div class="tbl-cap">정량적 데이터와 정성적 데이터의 비교</div>
+<div class="table-scroll">
+<table>
+  <tr><th></th><th>정량적 데이터</th><th>정성적 데이터</th></tr>
+  <tr><td class="h">유형</td><td>정형 데이터, 반정형 데이터</td><td>비정형 데이터</td></tr>
+  <tr><td class="h">특징</td><td>여러 요소의 결합으로 의미 부여</td><td>객체 하나가 함축된 의미 내포</td></tr>
+  <tr><td class="h">관점</td><td>주로 객관적 내용</td><td>주로 주관적 내용</td></tr>
+  <tr><td class="h">구성</td><td>수치나 기호 등</td><td>문자나 언어 등</td></tr>
+  <tr><td class="h">형태</td><td>데이터베이스, 스프레드시트 등</td><td>웹 로그, 텍스트 파일 등</td></tr>
+  <tr><td class="h">위치</td><td>DBMS, 로컬 시스템 등 내부</td><td>웹사이트, 모바일 플랫폼 등 외부</td></tr>
+  <tr><td class="h">분석</td><td>통계 분석 시 용이</td><td>통계 분석 시 어려움</td></tr>
+</table>
+</div>
+<div class="tip"><span class="tip-head">기적의 TIP</span>데이터의 형태를 구분할 수 있어야 한다.</div></div></details></section>
+<section class="ex-q" id="q2" data-ans="2" data-area="빅데이터의 이해" data-subj="1"><div class="ex-qh"><span class="ex-no">2.</span><span class="ex-tags"><span>빅데이터의 이해</span><span class="lv-보통">보통</span><span>부정형</span></span></div><div class="ex-body">노나카 이쿠지로의 지식창조 매커니즘 4단계에 대한 설명으로 옳지 않은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q2" value="0"><span class="mk">①</span><span class="tx">공통화(Socialization) : 서로의 경험이나 인식을 공유하며 한 차원 높은 암묵지로 발전시킨다.</span></label></li><li><label><input type="radio" name="q2" value="1"><span class="mk">②</span><span class="tx">표출화(Externalization) : 암묵지가 구체화되어 외부(형식지)로 표현된다.</span></label></li><li><label><input type="radio" name="q2" value="2"><span class="mk">③</span><span class="tx">연결화(Combination) : 전달받은 형식지를 다시 개인의 것으로 만든다.</span></label></li><li><label><input type="radio" name="q2" value="3"><span class="mk">④</span><span class="tx">내면화(Internalization)는 형식지가 개인의 암묵지로 체화되는 과정이다.</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — ③은 내면화에 대한 설명이다. 연결화(Combination)는 <b>형식지를 재분류하여 체계화</b>하는 단계다. 공통화 → 표출화 → 연결화 → 내면화의 순환으로 지식이 창조된다.<span class="ex-ref ">근거 · 책 1-22</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-22쪽</summary><div class="cbody"><p class="ct"><b>7) 지식창조 매커니즘</b></p>
+<p>암묵지와 형식지 간 상호작용을 위한 일본의 경영학자 노나카 이쿠지로의 지식창조 매커니즘은 다음의 4단계로 구성된다.</p>
+<ol class="circled">
+  <li><b>공통화(Socialization)</b> : 서로의 경험이나 인식을 공유하며 한 차원 높은 암묵지로 발전시킨다.</li>
+  <li><b>표출화(Externalization)</b> : 암묵지가 구체화되어 외부(형식지)로 표현된다.</li>
+  <li><b>연결화(Combination)</b> : 형식지를 재분류하여 체계화한다.</li>
+  <li><b>내면화(Internalization)</b> : 전달받은 형식지를 다시 개인의 것으로 만든다.</li>
+</ol>
+
+<aside class="note">
+  <b>암묵지</b><br>학습과 경험을 통하여 개인에게 체화되어 있지만 겉으로 드러나지 않는 지식
+  <hr><b>형식지</b><br>명시적으로 알 수 있는 형태, 형식을 갖추어 표현되고 공유가 가능한 지식
+</aside>
+
+<p class="ct"><b>8) 데이터, 정보, 지식, 지혜</b></p>
+<p>데이터, 정보, 지식, 지혜는 인간의 사회활동 속에서 가치창출을 위한 일련의 프로세스로 연결되어 기능한다.</p>
+<div class="tbl-cap">지식의 피라미드(가치창출 프로세스)</div>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h">지혜<br>(Wisdom)</td><td>축적된 지식을 통해 근본적인 원리를 이해하고 아이디어를 결합하여 도출한 창의적 산물이다.<div class="ex"><span class="ex-tag">예</span> 다른 상품들도 온라인 쇼핑 시 오프라인 상점보다 저렴할 것이다.</div></td></tr>
+  <tr><td class="h">지식<br>(Knowledge)</td><td>상호 연결된 정보를 구조화하여 유의미한 정보를 분류하고 개인적인 경험을 결합시켜 내재화한 고유의 결과물이다.<div class="ex"><span class="ex-tag">예</span> 오프라인 상점보다 저렴한 온라인 쇼핑으로 노트북을 구매할 것이다.</div></td></tr>
+  <tr><td class="h">정보<br>(Information)</td><td>데이터를 가공하거나 처리하여 데이터 간 관계를 분석하고 그 속에서 도출된 의미를 말하며, 항상 유용한 것은 아니다.<div class="ex"><span class="ex-tag">예</span> 오프라인 상점보다 온라인 쇼핑 시 노트북 가격이 더 저렴하다.</div></td></tr>
+  <tr><td class="h">데이터<br>(Data)</td><td>현실 세계에서 관찰하거나 측정하여 수집한 사실이나 값으로 개별 데이터로는 그 의미가 중요하지 않은 객관적인 사실이다.<div class="ex"><span class="ex-tag">예</span> 온라인 쇼핑 시 노트북 가격은 100만 원이며, 오프라인 상점의 노트북 가격은 150만 원이다.</div></td></tr>
+</table>
+</div>
+<aside class="note">데이터의 정확성은 정보, 지식, 지혜와의 상호관계에서 지대한 영향을 미치며, 가치창출에 있어 핵심적인 역할을 한다.</aside></div></details></section>
+<section class="ex-q" id="q3" data-ans="3" data-area="빅데이터의 이해" data-subj="1"><div class="ex-qh"><span class="ex-no">3.</span><span class="ex-tags"><span>빅데이터의 이해</span><span class="lv-보통">보통</span><span>개념</span></span></div><div class="ex-body">빅데이터 플랫폼이 해소하는 부하에 대한 설명이다. 부하의 종류가 나머지와 다른 하나는?</div><ul class="ex-opts"><li><label><input type="radio" name="q3" value="0"><span class="mk">①</span><span class="tx">연산 과정에서 CPU, GPU, 메모리 등을 사용하며 생기는 부하</span></label></li><li><label><input type="radio" name="q3" value="1"><span class="mk">②</span><span class="tx">클러스터에서의 효과적인 자원 할당으로 제어할 수 있는 부하</span></label></li><li><label><input type="radio" name="q3" value="2"><span class="mk">③</span><span class="tx">분산처리 시 노드(Node) 간의 통신 과정에서 생기는 부하</span></label></li><li><label><input type="radio" name="q3" value="3"><span class="mk">④</span><span class="tx">파일 시스템 개선과 데이터베이스 성능 향상으로 제어할 수 있는 부하</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — ④는 <b>저장 부하</b>에 대한 설명이다. ①·②는 컴퓨팅 부하(연산 자원 사용, 클러스터 자원 할당으로 제어), ③은 네트워크 부하다. 저장 부하는 입력·중간 가공·출력 데이터 등 여러 단계에서 발생하며 파일 시스템 개선, 메모리와 파일 시스템의 효과적 사용, 데이터베이스 성능 향상으로 제어한다.<span class="ex-ref ">근거 · 책 1-45</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-45쪽</summary><div class="cbody"><p class="ct"><b>2) 빅데이터 플랫폼의 기능</b></p>
+<p>빅데이터를 처리하는 과정에서 부하 발생은 불가피하며, 빅데이터 플랫폼은 이러한 부하들을 기술적인 요소들을 결합하여 해소한다.</p>
+<p class="ct"><b>① 컴퓨팅 부하 발생</b></p>
+<ul class="dash">
+  <li>빅데이터를 처리하고자 할 때 연산과정에서 CPU, GPU, 메모리 등을 사용하며 부하가 발생한다.</li>
+  <li>빅데이터 플랫폼을 통한 CPU 성능 향상 및 클러스터(Cluster)에서의 효과적인 자원 할당을 통해 부하를 제어할 수 있다.</li>
+</ul>
+<aside class="note"><b>클러스터</b><br>여러 대의 컴퓨터들이 연결되어 하나의 시스템처럼 동작하는 컴퓨터들의 집합</aside>
+<p class="ct"><b>② 저장 부하 발생</b></p>
+<ul class="dash">
+  <li>빅데이터 처리 과정의 입력 데이터, 중간 가공 데이터, 출력 데이터 등 여러 단계에서 부하가 발생한다.</li>
+  <li>빅데이터 플랫폼을 통한 파일 시스템 개선, 메모리와 파일 시스템의 효과적인 사용 및 데이터베이스 성능 향상으로 제어할 수 있다.</li>
+</ul>
+<p class="ct"><b>③ 네트워크 부하 발생</b></p>
+<ul class="dash">
+  <li>빅데이터를 처리하는 과정에서 분산처리를 하고자 할 때 노드(Node) 간의 통신 과정에서 부하가 발생한다.</li>
+  <li>빅데이터 플랫폼을 통한 대역폭의 효과적 분배 및 네트워크상에서 최단거리에 위치한 노드를 탐색하여 제어할 수 있다.</li>
+</ul>
+<aside class="note"><b>노드</b>
+  <ul class="dash">
+    <li>지역 네트워크에 연결된 컴퓨터와 그 안에 속한 장비들을 통틀어 일컫는 용어</li>
+    <li>자료구조에서는 데이터의 기본 단위를 의미</li>
+  </ul>
+</aside>
+
+<p class="ct"><b>3) 빅데이터 플랫폼의 조건</b></p>
+<p>빅데이터 플랫폼은 서비스 사용자와 제공자 어느 한쪽에 치우쳐서는 안 되며 모두가 만족할 수 있는 환경을 제공하여야 한다.</p>
+<p class="ct"><b>① 서비스 사용자 측면에서의 체크리스트</b></p>
+<div class="boxlist">
+<ul class="dash">
+  <li>주어진 문제를 해결하기에 충분한 요소들을 제공하는 환경인가?</li>
+  <li>편리한 사용자 인터페이스(UI: User Interface)를 제공하는가?</li>
+</ul>
+</div>
+<p class="ct"><b>② 서비스 제공자 측면에서의 체크리스트</b></p>
+<div class="boxlist">
+<ul class="dash">
+  <li>성능적인 문제가 발생하지 않도록 충분한 관리 기능을 제공하는가?</li>
+  <li>사용자 접속 및 인증을 관리할 수 있는 기능을 제공하는가?</li>
+  <li>효율적인 운영을 위한 자원 관리 기능을 제공하는가?</li>
+  <li>서비스 품질 관리를 위한 각종 지표들을 충분히 제공하는가?</li>
+  <li>안전한 서비스 제공을 위한 보안적인 요소들을 갖추고 있는가?</li>
+  <li>플랫폼 도입을 통해 비용 절감을 이룰 수 있는가?</li>
+</ul>
+</div></div></details></section>
+<section class="ex-q" id="q4" data-ans="0" data-area="빅데이터의 이해" data-subj="1"><div class="ex-qh"><span class="ex-no">4.</span><span class="ex-tags"><span>빅데이터의 이해</span><span class="lv-쉬움">쉬움</span><span>개념</span></span></div><div class="ex-body">여러 소스에서 지속적으로 발생하는 스트림 데이터를 대상으로, 데이터가 발생·유입되는 즉시 패턴을 분석하여 실시간으로 의미 있는 정보를 추출·대응하는 기술은?</div><ul class="ex-opts"><li><label><input type="radio" name="q4" value="0"><span class="mk">①</span><span class="tx">CEP(Complex Event Processing)</span></label></li><li><label><input type="radio" name="q4" value="1"><span class="mk">②</span><span class="tx">OLAP(Online Analytical Processing)</span></label></li><li><label><input type="radio" name="q4" value="2"><span class="mk">③</span><span class="tx">ETL(Extract, Transform, Load)</span></label></li><li><label><input type="radio" name="q4" value="3"><span class="mk">④</span><span class="tx">EAI(Enterprise Application Integration)</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — 복합 이벤트 처리(CEP)에 대한 설명이다. 이벤트 데이터는 대량으로 지속해서 입력되고 시간 순서가 중요하며 끝이 없는 스트림 데이터로, 전통적 관계형 데이터베이스로는 실시간 처리에 한계가 있어 CEP 를 활용한다.<span class="ex-ref ">근거 · 책 1-53</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-53쪽</summary><div class="cbody"><div class="tbl-cap">맵리듀스 처리단계</div>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:120px">1단계</td><td>입력 데이터를 읽고 분할한다.</td></tr>
+  <tr><td class="h">2단계</td><td>분할된 데이터를 할당해 맵 작업을 수행한 후, 그 결과인 중간 데이터를 통합 및 재분할한다.</td></tr>
+  <tr><td class="h">3단계</td><td>통합 및 재분할된 중간 데이터를 셔플(Shuffle)한다.</td></tr>
+  <tr><td class="h">4단계</td><td>셔플된 중간 데이터를 이용해 리듀스 작업을 수행한다.</td></tr>
+  <tr><td class="h">5단계</td><td>출력 데이터를 생성하고, 맵리듀스 처리를 종료한다.</td></tr>
+</table>
+</div>
+<aside class="note"><b>셔플</b><br>n개의 데이터가 어떤 순서대로 정렬되어 있을 때, 그 순서를 무작위로 섞는 알고리즘</aside>
+
+<div class="tip tip-more"><span class="tip-head tip-head-more">더 알기 TIP</span>
+  <p class="tip-title">맵리듀스 처리</p>
+  <p>[ABR], [CCR], [ACB] 데이터를 입력받아 각 원소의 개수를 구하고자 한다.</p>
+  <ul class="dash">
+    <li>입력받은 데이터를 3개로 균등하게 분할한다.</li>
+    <li>분할된 3개의 데이터를 할당하여 맵 작업을 수행한 후, 그 중간 결과값을 [A], [B], [C], [R]처럼 같은 값끼리 통합 및 재분할한다.</li>
+    <li>통합 및 재분할된 중간 결과값을 셔플한다.</li>
+    <li>셔플된 중간 결과값을 이용해 리듀스 작업을 수행하여 [A], [B], [C], [R] 각각의 개수를 구한다.</li>
+  </ul>
+  
+</div>
+
+<p class="ct"><b>⑥ 복합 이벤트 처리(CEP, Complex Event Processing)</b></p>
+<p>여러 소스에서 지속적으로 발생하는 이벤트를 대상으로, 실시간으로 의미 있는 정보를 추출하여 이에 대응하는 기능을 수행하는 것이다.</p>
+<ul class="dash">
+  <li>이벤트 데이터는 스트림 데이터로써 대량으로 지속해서 입력되는 데이터, 시간 순서가 중요한 데이터, 끝이 없는 데이터 등이다.</li>
+  <li>전통적 관계형 데이터베이스는 스트림 데이터의 실시간 처리 분석에 한계가 있으나 CEP는 데이터가 발생<span class="unclear" title="원문에 깨진 글자(¡ ¤)가 인쇄되어 있음 — 가운뎃점(·)으로 추정">·</span>유입되는 즉시 패턴을 분석하여 신속히 처리한다.</li>
+  <li>직관적인 비즈니스 규칙을 기반으로 이벤트를 정의하므로 비즈니스 부서와 IT · 개발 부서 간의 원활한 의사소통을 지원한다.</li>
+</ul>
+<aside class="note">CEP는 실시간 발생 이벤트 중에서 의미 있는 이벤트를 식별할 수 있도록 이벤트 발생 조건과 규칙을 정의하여 처리한다.</aside></div></details></section>
+<section class="ex-q" id="q5" data-ans="2" data-area="빅데이터의 이해" data-subj="1"><div class="ex-qh"><span class="ex-no">5.</span><span class="ex-tags"><span>빅데이터의 이해</span><span class="lv-보통">보통</span><span>개념</span></span></div><div class="ex-body">데이터 사이언티스트의 역량 중 성격이 다른 하나는?</div><ul class="ex-opts"><li><label><input type="radio" name="q5" value="0"><span class="mk">①</span><span class="tx">통찰력 있는 분석력과 창의적 사고</span></label></li><li><label><input type="radio" name="q5" value="1"><span class="mk">②</span><span class="tx">설득력 있는 전달력과 스토리텔링</span></label></li><li><label><input type="radio" name="q5" value="2"><span class="mk">③</span><span class="tx">분산 처리 기술과 프로그래밍 활용 능력</span></label></li><li><label><input type="radio" name="q5" value="3"><span class="mk">④</span><span class="tx">다분야 간 협력을 이끄는 커뮤니케이션</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — ③은 이론적 지식과 숙련된 기술 활용을 뜻하는 <b>하드 스킬</b>이고, 나머지 셋(통찰·전달력·협력)은 <b>소프트 스킬</b>이다. 데이터 사이언티스트에게는 두 역량이 모두 요구된다.<span class="ex-ref ">근거 · 책 1-39</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-39쪽</summary><div class="cbody"><div class="check">
+<div class="check-head">개념 체크</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">1</span> 다음 중 빅데이터 조직 구성에 대한 설명으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>전문인력을 중심으로 전사 또는 특정 부서 내 조직으로 구성한다.</li>
+    <li>집중형, 기능형, 분산형 형태의 조직으로 구성할 수 있다.</li>
+    <li>조직원의 분석 역량 향상을 위한 교육담당 인력도 필요하다.</li>
+    <li>기능형 조직의 경우 분석전담조직이 필요하지만, 분산형 조직은 필요치 않다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ④</div>
+  <ul class="dash sol">
+    <li>통계학이나 분석 방법에 대한 지식과 분석 경험이 있는 분석인력을 중심으로 전사 또는 특정 부서 내 조직으로 구성하여 운영한다.</li>
+    <li>전사 분석 업무를 별도의 전담조직에서 수행하는 집중형, 각 현업 부서에서 분석 업무를 직접 수행하는 기능형, 분석 전문 인력을 현업 부서에 배치하여 분석 업무를 수행하는 분산형 조직으로 구성할 수 있다.</li>
+    <li>분석조직뿐 아니라 관련 부서 조직원의 분석 역량 향상을 위한 교육담당 인력도 필요하다.</li>
+    <li>분석전담조직(DSCoE: Data Science Center of Excellence)은 집중형, 분산형 조직에서는 필요하지만, 기능형 조직에서는 필요하지 않다.</li>
+  </ul>
+</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">2</span> 다음 중 데이터 사이언스의 한계에 대한 설명으로 잘못된 것은?</div>
+  <ol class="circled q-opt">
+    <li>아무리 정량적인 분석이라 할지라도 모든 분석은 가정에 근거한다.</li>
+    <li>분석 과정에서 가정과 같이 인간의 해석이 개입되는 단계가 불가피하다.</li>
+    <li>분석 결과를 바라보는 사람에 따라 서로 다른 해석과 결론을 내릴 수 있다.</li>
+    <li>데이터에서 상관관계를 발견하더라도 인과관계를 찾아내지 못한다면 신뢰할 수 없다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ④</div>
+  <ul class="dash sol">
+    <li>연관성분석과 같이 데이터 분석을 통해 발견되는 패턴만으로도 충분히 의미를 가지는 경우도 있으며, 반드시 인과관계를 찾아내야만 데이터 분석 결과를 신뢰할 수 있는 것은 아니다.</li>
+  </ul>
+</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">3</span> 다음 중 데이터 사이언티스트가 갖추어야 할 소프트 스킬로 옳은 것은?</div>
+  <ol class="circled q-opt">
+    <li>관련 기법에 대한 이해</li>
+    <li>통찰력 있는 분석</li>
+    <li>분석 기술에 대한 숙련</li>
+    <li>빅데이터에 대한 이론적 지식</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ②</div>
+  <ul class="dash sol">
+    <li>소프트 스킬은 통찰력 있는 분석, 설득력 있는 전달, 다분야 간 협력을 말하며, 하드 스킬은 빅데이터에 대한 이론적 지식과 분석 기술에 대한 숙련을 말한다.</li>
+  </ul>
+</div>
+</div></div></details></section>
+<section class="ex-q" id="q6" data-ans="0" data-area="빅데이터 기술 및 제도" data-subj="1"><div class="ex-qh"><span class="ex-no">6.</span><span class="ex-tags"><span>빅데이터 기술 및 제도</span><span class="lv-보통">보통</span><span>개념</span></span></div><div class="ex-body">맵리듀스(MapReduce)의 처리 단계를 순서대로 바르게 나열한 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q6" value="0"><span class="mk">①</span><span class="tx">입력 분할 → 맵 → 셔플 → 리듀스 → 출력</span></label></li><li><label><input type="radio" name="q6" value="1"><span class="mk">②</span><span class="tx">입력 분할 → 셔플 → 맵 → 리듀스 → 출력</span></label></li><li><label><input type="radio" name="q6" value="2"><span class="mk">③</span><span class="tx">입력 분할 → 맵 → 리듀스 → 셔플 → 출력</span></label></li><li><label><input type="radio" name="q6" value="3"><span class="mk">④</span><span class="tx">셔플 → 입력 분할 → 맵 → 리듀스 → 출력</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — 맵리듀스는 데이터를 균등하게 <b>분할</b>하고, 분할된 데이터에 <b>맵</b> 작업을 수행한 뒤 중간 데이터를 통합·재분할하여 <b>셔플</b>하고, 셔플된 중간 데이터로 <b>리듀스</b> 작업을 수행해 출력 데이터를 생성하며 종료한다.<span class="ex-ref ">근거 · 책 1-52</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-52쪽</summary><div class="cbody"><div class="tbl-cap">분산 병렬 컴퓨팅 시 고려사항</div>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:210px">문제</th><th>설명</th></tr>
+  <tr><td class="h">전체 작업의 배분 문제</td><td><ul class="dash"><li>전체 작업을 잘 쪼개어 여러 개의 작은 작업으로 나눠야 한다.</li></ul></td></tr>
+  <tr><td class="h">각 프로세서에서 계산된<br>중간 결과물을<br>프로세서 간 주고받는<br>문제</td><td><ul class="dash"><li>효율적인 통신은 성능과 직결된다.</li><li>보통 단일 시스템은 전체 작업을 노드의 수만큼 균등하게 나눈다.</li><li>이종 시스템은 컴퓨팅 능력에 따라 전체 작업을 배분한다.</li><li>노드 간의 통신을 최소화하는 기법 등이 반영되면 자원을 좀 더 효율적으로 사용할 수 있어 성능 향상에 도움이 된다.</li></ul></td></tr>
+  <tr><td class="h">서로 다른 프로세서 간<br>동기화 문제</td><td><ul class="dash"><li>데이터 병렬 처리에서 동기적 방법을 사용할 경우 프로세서는 특정 계산이 끝나거나 특정 데이터를 넘겨받을 때까지 반드시 대기하여야 한다.</li><li>동기적 방법의 경우 송신자는 수신자에게서 데이터를 받았다는 응답이 올 때까지 대기하여야 한다.</li><li>비동기적 방법에서는 결과 메시지를 보낸 즉시 다음 작업을 계속할 수 있다.</li><li>비동기적 방법의 경우 프로세서는 기다릴 필요가 없지만, 계산 과정이 적합한지는 확인해야 한다.</li></ul></td></tr>
+</table>
+</div>
+<p class="ct"><b>③ 하둡(Hadoop)</b></p>
+<p><mark>분산 처리 환경에서 대용량 데이터 처리 및 분석을 지원하는 오픈 소스 소프트웨어 프레임워크이다.</mark></p>
+<ul class="dash">
+  <li>야후에서 최초로 개발했으며, 지금은 아파치 소프트웨어 재단에서 프로젝트로 관리되고 있다.</li>
+  <li>하둡 분산파일시스템인 HDFS와 분산칼럼기반 데이터베이스인 Hbase, 분산 컴퓨팅 지원 프레임워크인 맵리듀스(MapReduce)로 구성되어 있다.</li>
+  <li>분산파일시스템을 통해 수 천대의 장비에 대용량 파일을 나누어 저장할 수 있는 기능을 제공한다.
+    <ul class="dash2"><li>분산파일시스템에 저장된 대용량의 데이터들을 맵리듀스를 이용하여 실시간으로 처리 및 분석 가능하다.</li></ul></li>
+  <li>하둡의 부족한 기능을 보완하는 하둡 에코시스템이 등장하여 다양한 솔루션을 제공한다.</li>
+</ul>
+<aside class="note"><b>HDFS</b><br>Hadoop Distributed File System</aside>
+<p class="ct"><b>④ 아파치 스파크(Apache Spark)</b></p>
+<p>실시간 분산형 컴퓨팅 플랫폼으로 In-Memory 방식으로 처리를 하며 하둡보다 처리속도가 빠르다.</p>
+<ul class="dash">
+  <li>스칼라 언어로 개발되었지만 스칼라뿐만 아니라 Java, R, Python을 지원한다.</li>
+</ul>
+<p class="ct"><b>⑤ 맵리듀스(MapReduce)</b></p>
+<p>구글에서 개발한 방대한 양의 데이터를 신속하게 처리하는 프로그래밍 모델로 <mark>효과적인 병렬 및 분산 처리를 지원한다.</mark></p>
+<ul class="dash">
+  <li>런타임(Runtime)에서의 입력 데이터 분할, 작업 스케줄링, 노드 고장, 노드 간의 데이터 전송 작업이 맵리듀스 처리 성능에 많은 영향을 미친다.</li>
+</ul>
+<aside class="note"><b>맵리듀스</b><br>분산 병렬 데이터 처리 기술의 표준</aside></div></details></section>
+<section class="ex-q" id="q7" data-ans="3" data-area="빅데이터 기술 및 제도" data-subj="1"><div class="ex-qh"><span class="ex-no">7.</span><span class="ex-tags"><span>빅데이터 기술 및 제도</span><span class="lv-보통">보통</span><span>짝짓기</span></span></div><div class="ex-body">개인정보 비식별 조치의 사례와 기법을 짝지은 것으로 옳지 않은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q7" value="0"><span class="mk">①</span><span class="tx">홍길동, 35세 → 홍○동, 30대 : 데이터 마스킹과 범주화</span></label></li><li><label><input type="radio" name="q7" value="1"><span class="mk">②</span><span class="tx">성명을 임꺽정 등 일반화된 이름으로 사전에 규칙을 정해 대체 : 휴리스틱 가명화</span></label></li><li><label><input type="radio" name="q7" value="2"><span class="mk">③</span><span class="tx">주민등록번호를 일정한 규칙의 알고리즘으로 암호화하여 대체 : 암호화</span></label></li><li><label><input type="radio" name="q7" value="3"><span class="mk">④</span><span class="tx">개인별 소득을 부서 전체의 합계·평균값으로만 표시 : 교환 방법(Swapping)</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — 개인 값을 전체 혹은 부분의 통계 값(합계·평균)으로 바꾸는 것은 <b>총계처리(Aggregation)</b>다. 교환 방법(Swapping)은 데이터베이스의 레코드를 사전에 정해진 외부의 변수(항목) 값과 연계하여 교환하는 기법이다.<span class="ex-ref ">근거 · 책 1-70</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-70쪽</summary><div class="cbody"><p class="ct"><b>③ 개인정보 비식별화 조치 가이드라인의 단계별 조치 기준</b></p>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:110px">단계</th><th>기준</th></tr>
+  <tr><td class="h">사전<br>검토</td><td>〈개인정보 해당 여부 검토〉<ul class="dash"><li>빅데이터 분석 등을 위해 정보를 처리하려는 사업자 등은 해당 정보가 개인정보인지 여부에 대해 개인정보 해당 여부 판단 기준을 참조하여 판단</li><li>해당 정보가 개인정보에 해당하지 않는 것이 명백한 경우에는 별도 조치 없이 빅데이터 분석 등에 활용 가능하고, 해당한다고 판단되는 경우 다음 단계의 조치 필요</li></ul></td></tr>
+  <tr><td class="h">비식별<br>조치</td><td>〈비식별 조치기법 적용〉<ul class="dash"><li>식별자(Identifier) 조치 기준
+    <ul class="dash2"><li>정보 집합물에 포함된 식별자는 원칙적으로 삭제 조치</li><li>데이터 이용 목적상 반드시 필요한 식별자는 비식별 조치 후 활용</li></ul></li>
+    <li>속성자(Attribute value) 조치 기준
+    <ul class="dash2"><li>정보 집합물에 포함된 속성자도 데이터 이용 목적과 관련이 없는 경우에는 원칙적으로 삭제</li><li>데이터 이용 목적과 관련이 있는 속성자 중 식별요소가 있는 경우에는 가명처리, 총계처리 등의 기법을 활용하여 비식별 조치 필요</li><li>희귀병명, 희귀경력 등의 속성자는 구체적인 상황에 따라 개인 식별 가능성이 매우 높으므로 엄격한 비식별 조치 필요</li></ul></li></ul></td></tr>
+  <tr><td class="h">적정성<br>평가</td><td>〈k-익명성 모델 활용〉<ul class="dash"><li>적정성 평가 필요성
+    <ul class="dash2"><li>비식별 조치가 충분하지 않은 경우 공개 정보 등 다른 정보와의 결합, 다양한 추론 기법 등을 통해 개인이 식별될 우려</li><li>개인정보 보호책임자 책임 하에 외부전문가가 참여하는 「비식별 조치 적정성 평가단」을 구성, 개인식별 가능성에 대한 엄격한 평가 필요</li><li>적정성 평가 시 프라이버시 보호 모델 중 k-익명성을 활용</li><li>k-익명성은 최소한의 평가수단이며, 필요시 추가적인 평가모델(l-다양성, t-근접성) 활용</li></ul></li>
+    <li>적정성 평가 절차
+    <ul class="dash2"><li>기초자료 작성 : 개인정보처리자는 적정성 평가에 필요한 데이터 명세, 비식별 조치현황, 이용기관의 관리 수준 등 기초자료 작성</li><li>평가단 구성 : 개인정보 보호책임자가 3명 이상으로 평가단을 구성 (외부전문가는 과반수 이상)</li><li>평가 수행 : 평가단은 개인정보처리자가 작성한 기초자료와 k-익명성 모델을 활용하여 비식별 조치 수준의 적정성을 평가</li><li>추가 비식별 조치 : 개인정보처리자는 평가결과가 ‘부적정’인 경우 평가단의 의견을 반영하여 추가적인 비식별 조치 수행</li><li>데이터 활용 : 비식별 조치가 적정하다고 평가 받은 경우에는 빅데이터 분석 등에 이용 또는 제공이 허용</li></ul></li></ul></td></tr>
+  <tr><td class="h">사후<br>관리</td><td>〈비식별 정보 안전 조치〉<ul class="dash"><li>비식별 조치된 정보가 유출되는 경우 다른 정보와 결합하여 식별될 우려가 있으므로 필수적인 보호조치 이행
+    <ul class="dash2"><li>관리적 보호조치 : 비식별 정보파일에 대한 관리 담당자 지정, 비식별 조치 관련 정보공유 금지, 이용 목적 달성시 파기 등의 조치 필요</li><li>기술적 보호조치 : 비식별 정보파일에 대한 접근통제, 접속기록 관리, 보안 프로그램 설치 · 운영 등의 조치 필요</li></ul></li>
+    <li>비식별 정보 유출 시 보호조치
+    <ul class="dash2"><li>유출 원인 분석 및 추가 유출 방지를 위한 관리적 · 기술적 보호조치</li><li>유출된 비식별 정보의 회수 · 파기</li></ul></li></ul>
+    〈재식별 가능성 모니터링〉<ul class="dash"><li>비식별 정보를 이용하거나 제3자에게 제공하려는 사업자 등은 해당 정보의 재식별 가능성을 정기적으로 모니터링 필요</li><li>모니터링 결과, 다음의 점검 항목 중 어느 하나에 해당되는 경우에는 추가적인 비식별 조치 강구</li><li>비식별 정보를 제공 · 위탁한 자가 재식별 가능성을 발견한 경우에는 이를 즉시 그 정보를 처리하고 있는 자에게 통지하고 처리 중단 요구 및 해당 정보를 회수 · 파기하는 등 조치 필요</li></ul>
+    〈비식별 정보 제공 및 위탁계약 시 준수사항〉<ul class="dash"><li>비식별된 정보를 제3의 기관에 제공하거나, 처리 위탁하는 경우 재식별 위험관리에 관한 내용을 계약서에 포함
+    <ul class="dash2"><li>재식별 금지 : 비식별 정보를 제공받거나 처리를 위탁 받은 사업자 등은 다른 정보와 결합을 통해 재식별 시도가 금지됨을 명시</li><li>재제공 또는 재위탁 제한 : 비식별 정보를 제공하거나 처리를 위탁하는 자는 재제공 또는 재위탁 가능 범위를 정하여 계약서에 명시</li><li>재식별 위험 시 통지 : 재식별이 되거나 그 가능성이 높아지는 상황이 발생한 경우에는 데이터 처리 중지 및 비식별 정보 제공자 또는 위탁자에게 통지 의무 등 명시</li></ul></li></ul>
+    〈재식별 시 조치요령〉<ul class="dash"><li>비식별 정보가 재식별된 경우에는 신속하게 그 정보의 처리를 중단하고 해당 개인정보가 유출되지 않도록 조치 필요</li><li>재식별된 정보는 즉시 파기 조치하되, 해당 정보를 다시 활용하려면 비식별 조치 절차 다시 수행</li></ul></td></tr>
+</table>
+</div></div></details></section>
+<section class="ex-q" id="q8" data-ans="3" data-area="빅데이터 기술 및 제도" data-subj="1"><div class="ex-qh"><span class="ex-no">8.</span><span class="ex-tags"><span>빅데이터 기술 및 제도</span><span class="lv-어려움">어려움</span><span>부정형</span></span></div><div class="ex-body">비식별 정보의 사후관리에 대한 설명으로 옳지 않은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q8" value="0"><span class="mk">①</span><span class="tx">비식별 정보를 이용하거나 제3자에게 제공하려는 사업자는 재식별 가능성을 정기적으로 모니터링해야 한다.</span></label></li><li><label><input type="radio" name="q8" value="1"><span class="mk">②</span><span class="tx">재식별 가능성을 발견한 제공·위탁자는 즉시 그 정보의 처리 중단을 요구하고 해당 정보를 회수·파기하는 등의 조치가 필요하다.</span></label></li><li><label><input type="radio" name="q8" value="2"><span class="mk">③</span><span class="tx">비식별 정보가 재식별된 경우 신속하게 처리를 중단하고 해당 개인정보가 유출되지 않도록 조치해야 한다.</span></label></li><li><label><input type="radio" name="q8" value="3"><span class="mk">④</span><span class="tx">재식별된 정보는 즉시 파기하지 않고 보관하며, 재식별 원인을 규명한 뒤에만 파기할 수 있다.</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — 재식별된 정보는 <b>즉시 파기 조치</b>하되, 해당 정보를 다시 활용하려면 비식별 조치 절차를 다시 수행해야 한다. 원인 규명을 이유로 재식별 상태의 정보를 보관하는 것은 교재의 조치요령에 어긋난다.<span class="ex-ref ">근거 · 책 1-70</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-70쪽</summary><div class="cbody"><p class="ct"><b>③ 개인정보 비식별화 조치 가이드라인의 단계별 조치 기준</b></p>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:110px">단계</th><th>기준</th></tr>
+  <tr><td class="h">사전<br>검토</td><td>〈개인정보 해당 여부 검토〉<ul class="dash"><li>빅데이터 분석 등을 위해 정보를 처리하려는 사업자 등은 해당 정보가 개인정보인지 여부에 대해 개인정보 해당 여부 판단 기준을 참조하여 판단</li><li>해당 정보가 개인정보에 해당하지 않는 것이 명백한 경우에는 별도 조치 없이 빅데이터 분석 등에 활용 가능하고, 해당한다고 판단되는 경우 다음 단계의 조치 필요</li></ul></td></tr>
+  <tr><td class="h">비식별<br>조치</td><td>〈비식별 조치기법 적용〉<ul class="dash"><li>식별자(Identifier) 조치 기준
+    <ul class="dash2"><li>정보 집합물에 포함된 식별자는 원칙적으로 삭제 조치</li><li>데이터 이용 목적상 반드시 필요한 식별자는 비식별 조치 후 활용</li></ul></li>
+    <li>속성자(Attribute value) 조치 기준
+    <ul class="dash2"><li>정보 집합물에 포함된 속성자도 데이터 이용 목적과 관련이 없는 경우에는 원칙적으로 삭제</li><li>데이터 이용 목적과 관련이 있는 속성자 중 식별요소가 있는 경우에는 가명처리, 총계처리 등의 기법을 활용하여 비식별 조치 필요</li><li>희귀병명, 희귀경력 등의 속성자는 구체적인 상황에 따라 개인 식별 가능성이 매우 높으므로 엄격한 비식별 조치 필요</li></ul></li></ul></td></tr>
+  <tr><td class="h">적정성<br>평가</td><td>〈k-익명성 모델 활용〉<ul class="dash"><li>적정성 평가 필요성
+    <ul class="dash2"><li>비식별 조치가 충분하지 않은 경우 공개 정보 등 다른 정보와의 결합, 다양한 추론 기법 등을 통해 개인이 식별될 우려</li><li>개인정보 보호책임자 책임 하에 외부전문가가 참여하는 「비식별 조치 적정성 평가단」을 구성, 개인식별 가능성에 대한 엄격한 평가 필요</li><li>적정성 평가 시 프라이버시 보호 모델 중 k-익명성을 활용</li><li>k-익명성은 최소한의 평가수단이며, 필요시 추가적인 평가모델(l-다양성, t-근접성) 활용</li></ul></li>
+    <li>적정성 평가 절차
+    <ul class="dash2"><li>기초자료 작성 : 개인정보처리자는 적정성 평가에 필요한 데이터 명세, 비식별 조치현황, 이용기관의 관리 수준 등 기초자료 작성</li><li>평가단 구성 : 개인정보 보호책임자가 3명 이상으로 평가단을 구성 (외부전문가는 과반수 이상)</li><li>평가 수행 : 평가단은 개인정보처리자가 작성한 기초자료와 k-익명성 모델을 활용하여 비식별 조치 수준의 적정성을 평가</li><li>추가 비식별 조치 : 개인정보처리자는 평가결과가 ‘부적정’인 경우 평가단의 의견을 반영하여 추가적인 비식별 조치 수행</li><li>데이터 활용 : 비식별 조치가 적정하다고 평가 받은 경우에는 빅데이터 분석 등에 이용 또는 제공이 허용</li></ul></li></ul></td></tr>
+  <tr><td class="h">사후<br>관리</td><td>〈비식별 정보 안전 조치〉<ul class="dash"><li>비식별 조치된 정보가 유출되는 경우 다른 정보와 결합하여 식별될 우려가 있으므로 필수적인 보호조치 이행
+    <ul class="dash2"><li>관리적 보호조치 : 비식별 정보파일에 대한 관리 담당자 지정, 비식별 조치 관련 정보공유 금지, 이용 목적 달성시 파기 등의 조치 필요</li><li>기술적 보호조치 : 비식별 정보파일에 대한 접근통제, 접속기록 관리, 보안 프로그램 설치 · 운영 등의 조치 필요</li></ul></li>
+    <li>비식별 정보 유출 시 보호조치
+    <ul class="dash2"><li>유출 원인 분석 및 추가 유출 방지를 위한 관리적 · 기술적 보호조치</li><li>유출된 비식별 정보의 회수 · 파기</li></ul></li></ul>
+    〈재식별 가능성 모니터링〉<ul class="dash"><li>비식별 정보를 이용하거나 제3자에게 제공하려는 사업자 등은 해당 정보의 재식별 가능성을 정기적으로 모니터링 필요</li><li>모니터링 결과, 다음의 점검 항목 중 어느 하나에 해당되는 경우에는 추가적인 비식별 조치 강구</li><li>비식별 정보를 제공 · 위탁한 자가 재식별 가능성을 발견한 경우에는 이를 즉시 그 정보를 처리하고 있는 자에게 통지하고 처리 중단 요구 및 해당 정보를 회수 · 파기하는 등 조치 필요</li></ul>
+    〈비식별 정보 제공 및 위탁계약 시 준수사항〉<ul class="dash"><li>비식별된 정보를 제3의 기관에 제공하거나, 처리 위탁하는 경우 재식별 위험관리에 관한 내용을 계약서에 포함
+    <ul class="dash2"><li>재식별 금지 : 비식별 정보를 제공받거나 처리를 위탁 받은 사업자 등은 다른 정보와 결합을 통해 재식별 시도가 금지됨을 명시</li><li>재제공 또는 재위탁 제한 : 비식별 정보를 제공하거나 처리를 위탁하는 자는 재제공 또는 재위탁 가능 범위를 정하여 계약서에 명시</li><li>재식별 위험 시 통지 : 재식별이 되거나 그 가능성이 높아지는 상황이 발생한 경우에는 데이터 처리 중지 및 비식별 정보 제공자 또는 위탁자에게 통지 의무 등 명시</li></ul></li></ul>
+    〈재식별 시 조치요령〉<ul class="dash"><li>비식별 정보가 재식별된 경우에는 신속하게 그 정보의 처리를 중단하고 해당 개인정보가 유출되지 않도록 조치 필요</li><li>재식별된 정보는 즉시 파기 조치하되, 해당 정보를 다시 활용하려면 비식별 조치 절차 다시 수행</li></ul></td></tr>
+</table>
+</div></div></details></section>
+<section class="ex-q" id="q9" data-ans="2" data-area="빅데이터 기술 및 제도" data-subj="1"><div class="ex-qh"><span class="ex-no">9.</span><span class="ex-tags"><span>빅데이터 기술 및 제도</span><span class="lv-어려움">어려움</span><span>부정형</span></span></div><div class="ex-body">개인신용정보의 처리 위탁에 대한 설명으로 옳지 않은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q9" value="0"><span class="mk">①</span><span class="tx">신용정보회사 등은 업무 범위에서 의뢰인의 동의를 받아 다른 신용정보회사에 신용정보의 수집·조사를 위탁할 수 있다.</span></label></li><li><label><input type="radio" name="q9" value="1"><span class="mk">②</span><span class="tx">특정 신용정보주체를 식별할 수 있는 정보는 암호화하거나 봉함 등의 보호조치를 하여야 한다.</span></label></li><li><label><input type="radio" name="q9" value="2"><span class="mk">③</span><span class="tx">수탁자에 대한 교육은 위탁 계약 시 1회만 실시하면 된다.</span></label></li><li><label><input type="radio" name="q9" value="3"><span class="mk">④</span><span class="tx">위탁계약의 이행에 필요한 경우로서 수집된 신용정보의 처리를 위탁하기 위해 제공하는 경우 정보주체의 동의를 받지 않아도 된다.</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — 신용정보가 분실·도난·유출·변조 또는 훼손당하지 않도록 수탁자를 <b>연 1회 이상</b> 교육하여야 한다. 1회로 끝나는 것이 아니라 지속적인 의무다.<span class="ex-ref ">근거 · 책 1-66</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-66쪽</summary><div class="cbody"><p class="ct"><b>② 신용정보의 범위(제2조 제1호 및 제2호, 제34조 제1항)</b></p>
+<ul class="dash">
+  <li>“신용정보”란 금융거래 등 상거래에 있어서 거래 상대방의 신용을 판단할 때 필요한 정보로서 다음 각 목의 정보를 말한다.<br>
+    가. 특정 신용정보주체를 식별할 수 있는 정보<br>
+    나. 신용정보주체의 거래내용을 판단할 수 있는 정보<br>
+    다. 신용정보주체의 신용도를 판단할 수 있는 정보<br>
+    라. 신용정보주체의 신용거래능력을 판단할 수 있는 정보<br>
+    마. 그 밖에 가목부터 라목까지와 유사한 정보</li>
+</ul>
+<p class="ct"><b>③ 개인신용정보</b></p>
+<ul class="dash">
+  <li>“개인신용정보”란 신용정보 중 개인의 신용도와 신용거래능력 등을 판단할 때 필요한 정보를 말한다.</li>
+  <li>“개인신용정보”는 기업 및 법인에 관한 정보를 제외한 살아 있는 개인에 관한 정보로서 성명 · 주민등록번호 등을 통하여 개인을 알아볼 수 있는 정보이며, 신용정보주체의 거래내용, 신용도, 신용거래능력 등과 결합되는 경우에만 개인신용정보에 해당한다.</li>
+</ul>
+<aside class="note">성명과 연락처만을 처리하는 경우에는 개인정보를 처리하는 것이며, 성명과 연락처 및 거래금액을 함께 처리하는 경우에는 개인신용정보를 처리하는 것으로 해석된다.</aside>
+<p class="ct"><b>④ 개인신용정보의 처리 위탁</b></p>
+<ul class="dash">
+  <li>신용정보회사 등은 그 업무 범위에서 의뢰인의 동의를 받아 다른 신용정보회사에 신용정보의 수집 · 조사를 위탁할 수 있다.</li>
+  <li>개인신용정보 처리에 대한 업무 위탁의 경우에는 수집된 신용정보의 처리를 자본금 또는 자본총액이 1억 원 이상인 기업으로서 신용정보관리 · 보호인 등을 지정한 자에게 위탁할 수 있다.</li>
+  <li>신용정보회사, 신용정보집중기관, 은행, 금융지주회사, 금융투자업자, 보험회사 등은 신용정보 처리 위탁 시 금융위원회에 보고해야 하며, 이에 관한 구체적 사항은 「금융회사의 정보처리 업무 위탁에 관한 규정」에 따른다.</li>
+  <li>특정 신용정보주체를 식별할 수 있는 정보는 암호화하거나 봉함 등의 보호조치를 하여야 하며, 신용정보가 분실 · 도난 · 유출 · 변조 또는 훼손당하지 않도록 수탁자를 연 1회 이상 교육하여야 한다.</li>
+  <li>위탁계약의 이행에 필요한 경우로서 수집된 신용정보의 처리를 위탁하기 위하여 제공하는 경우 정보주체의 동의를 받지 않아도 된다<span class="cite">(신용정보보호법 제17조, 동법 시행령 제14조)</span>.</li>
+</ul>
+<p class="ct"><b>⑤ 개인신용정보의 제3자 제공</b></p>
+<ul class="dash">
+  <li>개인신용정보를 타인에게 제공하려는 경우 정보주체에 서비스 제공을 위하여 필수적 동의 사항과 그 밖의 선택적 동의 사항을 구분하여 설명한 후 각각 동의를 받도록 하고 있다<span class="cite">(신용정보보호법 제32조, 제34조 등)</span>.</li>
+  <li>기타 개인정보 제공 시 개인정보보호법이 적용된다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q10" data-ans="0" data-area="빅데이터 기술 및 제도" data-subj="1"><div class="ex-qh"><span class="ex-no">10.</span><span class="ex-tags"><span>빅데이터 기술 및 제도</span><span class="lv-쉬움">쉬움</span><span>개념</span></span></div><div class="ex-body">정보주체가 본인의 데이터에 대한 권리를 가지고, 본인이 원하는 방식으로 자신의 데이터를 관리·활용하도록 하는 패러다임은?</div><ul class="ex-opts"><li><label><input type="radio" name="q10" value="0"><span class="mk">①</span><span class="tx">마이데이터(MyData)</span></label></li><li><label><input type="radio" name="q10" value="1"><span class="mk">②</span><span class="tx">데이터 거버넌스</span></label></li><li><label><input type="radio" name="q10" value="2"><span class="mk">③</span><span class="tx">데이터 사이언스</span></label></li><li><label><input type="radio" name="q10" value="3"><span class="mk">④</span><span class="tx">오픈 데이터</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — 마이데이터는 정보 활용의 주체를 기관에서 <b>정보주체(개인)</b>로 옮겨, 개인이 자기 정보를 적극적으로 관리·통제하고 신용관리·자산관리 등에 능동적으로 활용하는 개념이다.<span class="ex-ref ">근거 · 책 1-35</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-35쪽</summary><div class="cbody"><p class="ct"><b>⑤ 데이터 권리 시대</b></p>
+
+<ul class="dash">
+  <li>개인이 자신의 데이터를 자신을 위해서 사용한다.
+    <ul class="dash2"><li>데이터의 원래 소유자인 개인이 <mark>자신의 데이터에 대한 권리를 보유하고 있으며 스스로 행사할 수 있어야 한다는</mark> 마이데이터(My Data)가 등장하였다.</li></ul></li>
+  <li>데이터 권리를 개인이 갖게 된다는 것은 산업이 데이터를 중심으로 재편될 수 있다는 뜻이다.
+    <ul class="dash2">
+      <li>데이터는 기본적으로 거래 행위의 부산물이었다. 기업들은 개인과 거래를 하는 과정에서 개인의 데이터가 있어야 했고, 이를 확보하였지만 몇 가지 문제(유출, 미동의 활용, 데이터의 산재)를 일으켰다.</li>
+      <li>개인의 데이터를 관리해 줄 수 있는 서비스와 필요한 수요자에게 데이터를 팔아 주는 서비스가 나타날 수 있다.</li>
+      <li>개인은 스스로 데이터를 만들고 자신이 만든 데이터를 기반으로 하는 비즈니스 모델을 구상할 수 있다.</li>
+      <li>기존 기업들은 개인 데이터 사용에 제약을 받게 됨으로써 고객 접점을 상실하게 될 수 있다.</li>
+    </ul></li>
+  <li>데이터의 공정한 사용이 보장되어야 하며, 데이터 독점이 유발할 수 있는 경제 독점이 방지되어야 한다.</li>
+</ul>
+<aside class="note">
+  <b>마이데이터</b><br>개인 데이터의 활용처와 활용범위 등에 대한 정보주체의 능동적인 의사결정을 지원, 개인정보 자기결정권 보장
+  <hr>데이터 연결과 데이터 권리는 개인 데이터가 완전하게 보호되며, 개인은 자신의 데이터를 완전하게 통제할 수 있다는 믿음이 보편화되어야 한다.
+</aside>
+
+<p class="ct"><b>2) 데이터 산업의 구조</b></p>
+<p class="ct"><b>① 인프라 영역</b></p>
+<ul class="dash">
+  <li>데이터 수집, 저장, 분석, 관리 등의 기능을 담당한다.</li>
+  <li>컴퓨터나 네트워크 장비 및 스토리지 같은 하드웨어 영역이 있다.</li>
+  <li>데이터를 관리하고 분석하기 위한 소프트웨어 영역이 있다.</li>
+</ul>
+<p class="ct"><b>② 서비스 영역</b></p>
+<ul class="dash">
+  <li>데이터를 활용하기 위한 교육이나 컨설팅 또는 솔루션을 제공한다.</li>
+  <li>데이터 그 자체를 제공하거나 이를 가공한 정보를 제공한다.</li>
+  <li>데이터를 처리하는 역할을 담당하기도 한다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q11" data-ans="0" data-area="데이터분석 계획" data-subj="1"><div class="ex-qh"><span class="ex-no">11.</span><span class="ex-tags"><span>데이터분석 계획</span><span class="lv-쉬움">쉬움</span><span>개념</span></span></div><div class="ex-body">문제가 무엇인지 명확하지 않아, 축적된 데이터를 탐색하고 그 결과로부터 인사이트를 도출해 가는 분석 과제 발굴 방식은?</div><ul class="ex-opts"><li><label><input type="radio" name="q11" value="0"><span class="mk">①</span><span class="tx">상향식 접근(Bottom-Up)</span></label></li><li><label><input type="radio" name="q11" value="1"><span class="mk">②</span><span class="tx">하향식 접근(Top-Down)</span></label></li><li><label><input type="radio" name="q11" value="2"><span class="mk">③</span><span class="tx">폭포수 모형</span></label></li><li><label><input type="radio" name="q11" value="3"><span class="mk">④</span><span class="tx">나선형 모형</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — 문제 정의 자체가 어려운 경우 데이터에서 출발해 통찰을 얻는 방식이 <b>상향식 접근</b>이다. 하향식 접근은 문제가 주어지고 이에 대한 해법을 찾기 위해 각 과정이 체계적으로 단계화되어 수행되는 방식이다.<span class="ex-ref ">근거 · 책 1-92</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-92쪽</summary><div class="cbody"><p class="ct"><b>2) 하향식 접근 방식(Top Down Approach)</b></p>
+<p>하향식 접근 방식은 문제가 주어지고 이에 대한 해법을 찾기 위하여 각 과정이 체계적으로 단계화되어 수행하는 방식이다.</p>
+<aside class="note"><b>하향식 접근 방식</b><br>전통적 분석 과제 발굴 방식이다. 단, 근래의 문제들은 변화가 심하여 문제를 사전에 정확하게 정의하기 어렵다.</aside>
+
+<div class="tbl-cap">하향식 접근 방식의 구성</div>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:150px">단계</th><th>내용</th></tr>
+  <tr><td class="h">문제 탐색</td><td>현황 분석, 인식된 문제점, 전략에서 기회나 문제를 탐색한다.</td></tr>
+  <tr><td class="h">문제 정의</td><td>해당 현실 문제를 데이터 관점의 문제로 정의한다.</td></tr>
+  <tr><td class="h">해결방안 탐색</td><td>데이터 관점의 문제를 해결하기 위한 방안을 탐색한다.</td></tr>
+  <tr><td class="h">타당성 평가</td><td>데이터 분석의 타당성을 평가한다.</td></tr>
+</table>
+</div>
+<p class="ct"><b>① 문제 탐색(Problem Discovery) 단계</b></p>
+<ul class="dash">
+  <li>개별적으로 인지하고 있는 문제를 단순하게 나열하는 것보다 전체적인 관점의 기준 모델을 활용하여 누락 없이 문제를 도출하고 식별해야 한다.</li>
+  <li>현재 데이터의 소유 여부와 데이터가 없는 경우 해결방안 등에 대한 세부적인 내용보다 문제를 해결하여 발생하는 가치에 중심을 두어야 한다.</li>
+</ul>
+<aside class="note">전체적인 관점의 기준 모델에는 기업 내 · 외부 환경을 포괄하는 비즈니스 모델과 외부 참조모델이 있다.</aside>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:190px">구분</th><th>내용</th></tr>
+  <tr><td class="h">비즈니스 모델 기반<br>문제 탐색</td><td><ul class="dash"><li>해당 기업이 사업 모델을 도식화한 비즈니스 모델 캔버스의 블록을 단순화하여 기회를 추가로 도출한다.</li><li>새로운 관점의 접근으로 새로운 유형의 분석 기회와 주제를 발굴한다.</li></ul></td></tr>
+  <tr><td class="h">외부 참조 모델 기반<br>문제 탐색</td><td><ul class="dash">
+    <li>문제와 과제를 도출하는 기준 모델로, 유사 또는 동종의 환경에서 기존에 수행한 분석 사례를 벤치마킹한다.</li>
+    <li>제공되는 산업별, 업무 서비스별 분석테마 후보 그룹을 통해 빠르고 쉬운(Quick &amp; Easy) 방식으로 접근한다.</li>
+    <li>필요한 분석 기회에 대한 아이디어 획득 및 적용할 분석테마 후보들을 브레인스토밍으로 빠르게 도출한다.</li>
+    <li>인사이트 도출 및 업무 활용 사례들을 발굴하여 자사의 업종과 업무 서비스에 적용할 수 있다.</li>
+    <li>후보 그룹을 통해 벤치마킹할 대상 분석 기회를 고려하면 좀 더 빠르고 쉽게 분석기회 도출이 가능하다.</li>
+    <li>평소에 가치 발굴 사례들을 정리해두면 과제 발굴과 탐색 시 빠르고 의미 있는 분석 기회 도출이 가능하다.</li>
+    <li>타 업무 및 분야의 데이터 분석 활용 사례를 정리해 둔다면 새로운 주제 탐색 시 용이하다.</li>
+  </ul></td></tr>
+</table>
+</div></div></details></section>
+<section class="ex-q" id="q12" data-ans="1" data-area="데이터분석 계획" data-subj="1"><div class="ex-qh"><span class="ex-no">12.</span><span class="ex-tags"><span>데이터분석 계획</span><span class="lv-보통">보통</span><span>개념</span></span></div><div class="ex-body">CRISP-DM 분석 방법론의 4계층을 상위에서 하위 순서로 바르게 나열한 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q12" value="0"><span class="mk">①</span><span class="tx">일반화 태스크 → 단계(Phases) → 프로세스 실행 → 세분화 태스크</span></label></li><li><label><input type="radio" name="q12" value="1"><span class="mk">②</span><span class="tx">단계(Phases) → 일반화 태스크 → 세분화 태스크 → 프로세스 실행</span></label></li><li><label><input type="radio" name="q12" value="2"><span class="mk">③</span><span class="tx">프로세스 실행 → 세분화 태스크 → 일반화 태스크 → 단계(Phases)</span></label></li><li><label><input type="radio" name="q12" value="3"><span class="mk">④</span><span class="tx">단계(Phases) → 세분화 태스크 → 일반화 태스크 → 프로세스 실행</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — 최상위 레벨은 여러 개의 <b>단계(Phases)</b>로 구성되고, 일반화 태스크(데이터 마이닝의 단일 프로세스를 완전하게 수행하는 단위) → 세분화 태스크(일반화 태스크를 구체적으로 수행) → 프로세스 실행(데이터 마이닝을 구체적으로 실행) 순으로 내려간다.<span class="ex-ref ">근거 · 책 1-105</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-105쪽</summary><div class="cbody"><p class="ct"><b>5) CRISP–DM 분석 방법론</b></p>
+<p>CRISP–DM(Cross Industry Standard Process for Data Mining)은 계층적 프로세스 모델로써 4계층으로 구성된 데이터 마이닝 프로세스이다.</p>
+<aside class="note"><b>CRISP–DM</b>
+  <ul class="dash"><li>데이터 탐색과 이해 및 데이터를 통한 문제 인식과 해결이 가능</li><li>비즈니스 요구사항에 맞게 데이터 마이닝을 반복적으로 수행할 수 있음</li></ul>
+</aside>
+<p class="ct"><b>① CRISP–DM 분석 방법론의 4계층</b></p>
+<ul class="dash">
+  <li>최상위 레벨 : 여러 개의 단계(Phases)로 구성된다.</li>
+  <li>일반화 태스크(Generic Tasks) : 데이터 마이닝의 단일 프로세스를 완전하게 수행하는 단위이다.</li>
+  <li>세분화 태스크(Specialized Tasks) : 일반화 태스크를 구체적으로 수행한다.</li>
+  <li>프로세스 실행(Process Instances) : 데이터 마이닝을 구체적으로 실행한다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q13" data-ans="3" data-area="데이터분석 계획" data-subj="1"><div class="ex-qh"><span class="ex-no">13.</span><span class="ex-tags"><span>데이터분석 계획</span><span class="lv-어려움">어려움</span><span>부정형</span></span></div><div class="ex-body">KDD 분석 방법론의 9가지 프로세스에 대한 설명으로 옳지 않은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q13" value="0"><span class="mk">①</span><span class="tx">분석 대상 비즈니스 도메인의 이해에서 출발한다.</span></label></li><li><label><input type="radio" name="q13" value="1"><span class="mk">②</span><span class="tx">잡음(Noise)과 이상값(Outlier)을 제거하는 정제 작업을 수행한다.</span></label></li><li><label><input type="radio" name="q13" value="2"><span class="mk">③</span><span class="tx">분석 목적에 맞는 변수를 찾고 필요시 데이터의 차원을 축소한다.</span></label></li><li><label><input type="radio" name="q13" value="3"><span class="mk">④</span><span class="tx">데이터 마이닝 기법 선택 이전에 데이터 마이닝을 먼저 시행한다.</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — KDD 는 도메인 이해 → 데이터셋 선택·생성 → 정제/선처리 → 데이터 변경(변수 탐색·차원 축소) → <b>기법 선택 → 알고리즘 선택 → 마이닝 시행</b> → 결과 해석 → 지식 활용의 순서다. 기법·알고리즘을 선택한 뒤에 마이닝을 시행한다.<span class="ex-ref ">근거 · 책 1-104</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-104쪽</summary><div class="cbody"><div class="check">
+<div class="check-head">개념 체크 (이어짐)</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">2</span> 다음 중 소프트웨어개발생명주기에 대한 설명으로 옳은 것은?</div>
+  <ol class="circled q-opt">
+    <li>폭포수 모형은 의사소통을 향상시킨다.</li>
+    <li>나선형 모형은 계획수립, 위험분석, 개발, 고객평가 단계로 구성되어 있다.</li>
+    <li>원형 모형은 이해하기 쉽고 관리가 용이하다.</li>
+    <li>반복적 모형은 증분형 모형과 진화형 모형이 존재하며, 진화형 모형의 품질이 더 우수하다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ②</div>
+  <ul class="dash sol">
+    <li>폭포수 모형은 요구사항 도출이 어려우며, 원형 모형이 의사소통을 향상시킨다.</li>
+    <li>원형 모형은 사용자로 하여금 완제품으로 오해 받기 쉽고 폐기되는 프로토타입이 존재하며, 폭포수 모형이 이해하기 쉽고 관리가 용이하다.</li>
+    <li>증분형 모형과 진화형 모형은 서로 필요성이 다를 뿐이며, 증분형 모형은 폭포수 모형의 변형으로 각 증분을 따로 개발 및 통합하여 개발 기간을 단축시키고, 진화형 모형은 시스템의 요구사항을 사전에 정의하기 어려운 경우 사용하여 개발의 어려움을 최소화하는 것이다.</li>
+  </ul>
+</div>
+</div>
+
+<p class="ct"><b>4) KDD 분석 방법론</b></p>
+<p>KDD(Knowledge Discovery in Database)는 1996년 Fayyad가 통계적인 패턴이나 지식을 탐색하는 데 활용할 수 있도록 체계적으로 정리한 프로파일링 기술 기반의 데이터 마이닝 프로세스이다.</p>
+<aside class="note"><b>KDD 분석 방법론</b>
+  <ul class="dash"><li>데이터 마이닝, 기계학습, 인공지능, 패턴인식, 시각화 등에 응용 가능</li><li>데이터에서 패턴을 찾는 과정을 9개의 프로세스로 제시</li></ul>
+</aside>
+<p class="ct"><b>① KDD 분석 방법론의 9가지 프로세스</b></p>
+<div class="boxlist">
+<ol class="numlist">
+  <li>분석 대상 비즈니스 도메인의 이해</li>
+  <li>분석 대상 데이터셋 선택과 생성</li>
+  <li>데이터에 포함되어 있는 잡음(Noise)과 이상값(Outlier) 등을 제거하는 정제작업이나 선처리</li>
+  <li>분석 목적에 맞는 변수를 찾고 필요시 데이터의 차원을 축소하는 데이터 변경</li>
+  <li>분석 목적에 맞는 데이터 마이닝 기법 선택</li>
+  <li>분석 목적에 맞는 데이터 마이닝 알고리즘 선택</li>
+  <li>데이터 마이닝 시행</li>
+  <li>데이터 마이닝 결과에 대한 해석</li>
+  <li>데이터 마이닝에서 발견된 지식 활용</li>
+</ol>
+</div>
+<p class="ct"><b>② <mark>KDD 분석 방법론의 분석절차</mark></b></p>
+<p>데이터 분석은 데이터셋(Dataset) 선택, 데이터 전처리, 데이터 변환, 데이터 마이닝, 데이터 마이닝 결과 평가 총 5단계에 걸쳐 진행된다.</p>
+<aside class="note"><b>이상값(outlier, 이상치)</b><br>일반적 추세에서 많이 벗어난 값</aside>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:50px">단계</th><th style="width:170px"></th><th>내용</th></tr>
+  <tr><td class="h">1</td><td class="h">데이터셋 선택<br>(Selection)</td><td><ul class="dash"><li>분석대상 비즈니스 도메인에 대한 이해 및 프로젝트 목표의 정확한 설정을 선행한다.</li><li>데이터베이스 또는 원시 데이터에서 분석에 필요한 데이터를 선택한다.</li><li>필요시에 목표 데이터를 추가적으로 구성하여 활용한다.</li></ul></td></tr>
+  <tr><td class="h">2</td><td class="h">데이터 전처리<br>(Preprocessing)</td><td><ul class="dash"><li>잡음(Noise)과 이상값(Outlier), 결측치(Missing Value)를 식별하고 필요시 제거하거나 대체한다.</li><li>데이터가 추가적으로 필요한 경우 데이터셋 선택 절차부터 다시 실행한다.</li></ul></td></tr>
+  <tr><td class="h">3</td><td class="h">데이터 변환<br>(Transformation)</td><td><ul class="dash"><li>분석 목적에 맞는 변수를 선택하거나 데이터의 차원 축소 등을 수행한다.</li><li>학습용 데이터와 검증용 데이터로 데이터를 분리한다.</li></ul></td></tr>
+  <tr><td class="h">4</td><td class="h">데이터 마이닝<br>(Data Mining)</td><td><ul class="dash"><li>분석 목적에 맞는 데이터 마이닝 기법 및 알고리즘을 선택하여 분석을 수행한다.</li><li>필요시 데이터 전처리와 데이터 변환 절차를 추가로 실행하여 데이터 분석 결과의 품질을 높일 수 있다.</li></ul></td></tr>
+  <tr><td class="h">5</td><td class="h">데이터 마이닝<br>결과 평가<br>(Interpretation/<br>Evaluation)</td><td><ul class="dash"><li>분석 결과에 대한 해석과 평가 및 분석 목적과의 일치성을 확인한다.</li><li>발견된 지식을 업무에 활용하기 위한 방안을 모색한다.</li><li>필요한 경우 데이터셋 선택부터 데이터 마이닝 절차까지 반복하여 수행한다.</li></ul></td></tr>
+</table>
+</div></div></details></section>
+<section class="ex-q" id="q14" data-ans="1" data-area="데이터분석 계획" data-subj="1"><div class="ex-qh"><span class="ex-no">14.</span><span class="ex-tags"><span>데이터분석 계획</span><span class="lv-보통">보통</span><span>개념</span></span></div><div class="ex-body">난이도와 시급성을 기준으로 한 분석 과제 우선순위 포트폴리오에서, 적용 우선순위 기준을 시급성에 둘 경우의 순서로 옳은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q14" value="0"><span class="mk">①</span><span class="tx">III → I → IV → II</span></label></li><li><label><input type="radio" name="q14" value="1"><span class="mk">②</span><span class="tx">III → IV → I → II</span></label></li><li><label><input type="radio" name="q14" value="2"><span class="mk">③</span><span class="tx">I → II → III → IV</span></label></li><li><label><input type="radio" name="q14" value="3"><span class="mk">④</span><span class="tx">IV → III → II → I</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — 가장 우선 적용이 필요한 영역은 3사분면(III)이고, 우선순위가 낮은 영역은 2사분면(II)이다. 기준을 <b>시급성</b>에 두면 III → IV → I → II, <b>난이도</b>에 두면 III → I → IV → II 순이 된다.<span class="ex-ref ">근거 · 책 1-88</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-88쪽</summary><div class="cbody"><ul class="dash">
+  <li>조직의 상황에 따라 난이도를 조율한다.
+    <ul class="dash2">
+      <li>분석 준비도와 성숙도 진단 결과를 활용해 조직의 분석 수준을 파악한다.</li>
+      <li>파악된 수준을 기초로 하여 적용 범위와 수행 방법별 난이도를 조정한다.</li>
+    </ul></li>
+</ul>
+
+<p class="ct"><b>3) 분석 과제 우선순위 선정 및 조정</b></p>
+<p class="ct"><b>① 포트폴리오 사분면 분석 기법 활용 : 난이도와 시급성을 기준으로 분석 과제 유형을 분류하여 4분면에 배치한다.</b></p>
+
+<aside class="note">왼쪽 상단이 1사분면이다.</aside>
+<p class="ct"><b>② 매트릭스 내 분석 과제 우선순위 선정</b></p>
+<ul class="dash">
+  <li>가장 우선적으로 분석 과제 적용이 필요한 영역은 3사분면(III 영역)이다.</li>
+  <li>우선순위가 낮은 영역은 2사분면(II 영역)이다.</li>
+  <li>적용 우선순위 기준을 시급성에 둘 경우 순서 : III → IV → I → II 영역</li>
+  <li>적용 우선순위 기준을 난이도에 둘 경우 순서 : III → I → IV → II 영역</li>
+</ul>
+<aside class="note">
+  Investment는 난이도를 결정하고, Return은 시급성을 결정한다.
+  <hr>시급성은 전략적 가치를 어느 시점에 둘 것인지 의미하므로, 난이도를 조절하지 않는다면 그 다음 가치 창출이 기대되는 III → IV 순으로 우선순위가 된다.
+  <hr>난이도는 현재 시점에서 적용 가능한지를 의미하므로, 어려운 단기 과제의 난이도를 조절하여 III → I 순으로 우선순위가 된다.
+</aside>
+<p class="ct"><b>③ 매트릭스 내 분석 과제 우선순위 조정</b></p>
+<ul class="dash">
+  <li>시급성이 높고 난이도가 높은 1사분면(I 영역)은 의사결정을 통해 적용 우선순위를 조정할 수 있다.</li>
+  <li>데이터 양과 특성, 분석 범위 등에 따라 난이도를 조율하여 적용 우선순위를 조정할 수 있다.
+    <div class="ex"><span class="ex-tag">예</span> 난이도를 조율하여 1사분면에서 3사분면으로 이동</div></li>
+</ul>
+<p class="ct"><b>④ 분석 과제 우선순위 조정 시 고려사항</b></p>
+<ul class="dash">
+  <li>기술적 요소에 따른 적용 우선순위 조정
+    <ul class="dash2">
+      <li>대용량 데이터 분석은 데이터 저장, 처리, 분석을 위한 새로운 기술 요소들로 인하여 운영중인 시스템에 영향을 줄 수 있다.</li>
+      <li>기존 시스템에 미치는 영향을 최소화하여 적용하거나 운영중인 시스템과 별도로 시행하여 난이도 조율을 통한 우선순위를 조정할 수 있다.</li>
+    </ul></li>
+  <li>분석 범위에 따른 우선순위 조정
+    <ul class="dash2">
+      <li>분석 과제의 전체 범위를 한 번에 일괄적으로 적용하여 추진할 수 있다.</li>
+      <li>분석 과제 중 일부만 PoC로 진행하고 평가 후에 범위를 확대할 수 있다.</li>
+    </ul></li>
+</ul></div></details></section>
+<section class="ex-q" id="q15" data-ans="3" data-area="데이터분석 계획" data-subj="1"><div class="ex-qh"><span class="ex-no">15.</span><span class="ex-tags"><span>데이터분석 계획</span><span class="lv-보통">보통</span><span>부정형</span></span></div><div class="ex-body">분석 성숙도 모델에 대한 설명으로 옳지 않은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q15" value="0"><span class="mk">①</span><span class="tx">조직의 데이터 분석 능력과 분석 결과 활용 수준을 평가하여 현재 상태를 점검한다.</span></label></li><li><label><input type="radio" name="q15" value="1"><span class="mk">②</span><span class="tx">비즈니스 부문, 조직 및 역량 부문, IT 부문의 3개 부문을 대상으로 실시한다.</span></label></li><li><label><input type="radio" name="q15" value="2"><span class="mk">③</span><span class="tx">성숙도 수준에 따라 도입, 활용, 확산, 최적화 단계로 구분한다.</span></label></li><li><label><input type="radio" name="q15" value="3"><span class="mk">④</span><span class="tx">조직 내 분석 업무 도입을 목적으로 6개 영역의 현재 수준을 파악하는 진단 방법이다.</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — ④는 <b>분석 준비도(Readiness)</b>에 대한 설명이다. 준비도는 총 6가지 영역을 대상으로 현재 수준을 파악하며, 일정 수준 이상 충족하면 분석 업무를 도입하고 그렇지 못하면 분석 환경을 먼저 조성한다.<span class="ex-ref ">근거 · 책 1-122</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-122쪽</summary><div class="cbody"><aside class="note"><b>OLAP</b><br>사용자가 대용량 데이터를 쉽고 다양한 관점에서 추출 및 분석할 수 있도록 지원하는 기술<hr><b>샌드박스</b><br>보호된 영역 내에서 프로그램을 동작시키는 것, 보안 모델</aside>
+
+<p class="ct"><b>② 분석 성숙도 모델의 특징</b></p>
+<ul class="dash">
+  <li>비즈니스 부문, 조직 및 역량 부문, IT 부문 총 3개 부문을 대상으로 실시한다.</li>
+  <li>성숙도 수준에 따라 도입, 활용, 확산, 최적화 단계로 구분한다.</li>
+</ul>
+
+<p class="ct"><b>③ 분석 성숙도 모델의 상세화</b></p>
+
+<aside class="note">데이터를 얼마나 잘 수집, 분석, 소비 및 채택할 수 있는지가 성숙도를 결정한다.</aside>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:90px">단계</td><td class="h">도입 단계</td><td class="h">활용 단계</td><td class="h">확산 단계</td><td class="h">최적화 단계</td></tr>
+  <tr>
+    <td class="h">설명</td>
+    <td>분석을 시작하여 환경과 시스템을 구축</td>
+    <td>분석 결과를 실제 업무에 적용</td>
+    <td>전사 차원에서 분석을 관리하고 공유</td>
+    <td>분석을 진화시켜서 혁신 및 성과 향상에 기여</td>
+  </tr>
+  <tr>
+    <td class="h">비즈니스<br>부문</td>
+    <td><ul class="dash"><li>실적분석 및 통계</li><li>정기보고 수행</li><li>운영 데이터 기반</li></ul></td>
+    <td><ul class="dash"><li>미래 결과 예측</li><li>시뮬레이션</li><li>운영 데이터 기반</li></ul></td>
+    <td><ul class="dash"><li>전사 성과 실시간 분석</li><li>프로세스 혁신 3.0</li><li>분석규칙 관리</li><li>이벤트 관리</li></ul></td>
+    <td><ul class="dash"><li>외부 환경분석 활용</li><li>최적화 업무 적용</li><li>실시간 분석</li><li>비즈니스 모델 진화</li></ul></td>
+  </tr>
+  <tr>
+    <td class="h">조직 ·<br>역량부문</td>
+    <td><ul class="dash"><li>일부 부서에서 수행</li><li>담당자 역량에 의존</li></ul></td>
+    <td><ul class="dash"><li>전문 담당부서에서 수행</li><li>분석기법 도입</li><li>관리자가 분석 수행</li></ul></td>
+    <td><ul class="dash"><li>전사 모든 부서 수행</li><li>분석 COE 조직 운영</li><li>데이터 사이언티스트 확보</li></ul></td>
+    <td><ul class="dash"><li>데이터 사이언스 그룹</li><li>경영진 분석 활용</li><li>전략 연계</li></ul></td>
+  </tr>
+  <tr>
+    <td class="h">IT 부문</td>
+    <td><ul class="dash"><li>Data Warehouse</li><li>Data Mart</li><li>ETL/EAI</li><li>OLAP</li></ul></td>
+    <td><ul class="dash"><li>실시간 대시보드</li><li>통계 분석 환경</li></ul></td>
+    <td><ul class="dash"><li>빅데이터 관리 환경</li><li>시뮬레이션 · 최적화</li><li>비주얼 분석</li><li>분석 전용 서버</li></ul></td>
+    <td><ul class="dash"><li>분석 협업환경</li><li>분석 Sandbox</li><li>프로세스 내재화</li><li>빅데이터 분석</li></ul></td>
+  </tr>
+</table>
+</div>
+
+<p class="ct"><b>4) 분석 수준진단 결과</b></p>
+<p class="ct"><b>① 분석 준비도 및 성숙도 진단 결과</b></p>
+<ul class="dash">
+  <li>조직의 현재 데이터 분석 수준을 객관적으로 파악할 수 있다.
+    <ul class="dash2">
+      <li>타사의 데이터 분석 수준과 비교하여 데이터 분석 경쟁력 확보 및 강화를 위한 목표 수준 설정이 가능하다.</li>
+    </ul></li>
+</ul></div></details></section>
+<section class="ex-q" id="q16" data-ans="1" data-area="데이터 수집 및 저장 계획" data-subj="1"><div class="ex-qh"><span class="ex-no">16.</span><span class="ex-tags"><span>데이터 수집 및 저장 계획</span><span class="lv-쉬움">쉬움</span><span>짝짓기</span></span></div><div class="ex-body">데이터 수집 기술과 그 용도를 짝지은 것으로 옳지 않은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q16" value="0"><span class="mk">①</span><span class="tx">스쿱(Sqoop) : 관계형 데이터베이스의 정형 데이터를 하둡으로 가져온다.</span></label></li><li><label><input type="radio" name="q16" value="1"><span class="mk">②</span><span class="tx">크롤링(Crawling) : 조직 내부 관계형 데이터베이스의 스키마를 변환한다.</span></label></li><li><label><input type="radio" name="q16" value="2"><span class="mk">③</span><span class="tx">스크래피(Scrapy) : 파이썬 기반 프레임워크로 웹사이트를 크롤링한다.</span></label></li><li><label><input type="radio" name="q16" value="3"><span class="mk">④</span><span class="tx">플럼(Flume) : 로그나 스트리밍 데이터를 수집한다.</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — 크롤링은 <b>인터넷상에서 제공되는 웹 문서·콘텐츠를 수집</b>하는 비정형 데이터 수집 기술이다. 관계형 데이터베이스의 정형 데이터 수집·이관에는 스쿱(Sqoop) 등을 사용한다.<span class="ex-ref ">근거 · 책 1-153</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-153쪽</summary><div class="cbody"><p class="ct"><b>⑤ 로그/센서 데이터 수집을 위한 아파치 플럼(Flume) 기술</b></p>
+
+<aside class="note"><b>플럼(Flume)</b><br>분산 환경에서 대량의 로그 데이터를 효과적으로 수집, 전송할 수 있는 서비스</aside>
+
+<ul class="dash">
+  <li>아파치 플럼(Flume)은 대용량의 로그 데이터를 효과적으로 수집, 집계, 이동시키는 신뢰성 있는 분산 서비스를 제공하는 솔루션이다.</li>
+  <li>스트리밍(Streaming) 데이터 흐름에 기반을 둔 간단하고 유연한 구조를 가진다.</li>
+  <li>플럼에서 하나의 에이전트는 소스, 채널, 싱크로 구성된다. 소스는 웹서버, 로그데이터서버 등 원시데이터소스와 연결되며, 소스로부터 들어오는 데이터는 큐의 구조를 갖는 채널로 들어간 후, 싱크를 통해 목표 시스템으로 전달된다.</li>
+  <li>아파치 플럼 특징
+    <ul class="dash2">
+      <li>플럼은 로그 데이터 수집과 네트워크 트래픽 데이터, 소셜 미디어 데이터, 이메일 메시지 등 대량의 이벤트 데이터 전송을 위해 사용된다.</li>
+    </ul></li>
+</ul>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:220px">특징</td><td class="h">설명</td></tr>
+  <tr><td>신뢰성(reliability)</td><td>장애 시 로그 데이터의 유실 없이 전송을 보장한다.</td></tr>
+  <tr><td>확장성(scalability)</td><td>수평 확장이 가능하여 분산 수집 가능한 구조이다.</td></tr>
+  <tr><td>효율성(efficiency)</td><td>커스터마이징 가능하면서 고성능을 제공한다.</td></tr>
+</table>
+</div>
+
+<p class="ct"><b>⑥ 웹 및 소셜 데이터 수집을 위한 스크래피(Scrapy) 기술</b></p>
+
+<aside class="note"><b>Scrapy</b>
+<ul class="dash">
+  <li>파이썬으로 작성된 오픈소스 웹 크롤링 프레임워크</li>
+  <li>데이터 마이닝, 정보 처리, 이력 기록 같은 다양한 애플리케이션에 유용하게 사용</li>
+</ul>
+</aside>
+
+<ul class="dash">
+  <li>웹사이트를 크롤링하고 구조화된 데이터를 수집하는 도구이다.</li>
+  <li>API를 이용하여 다양한 형식의 데이터를 추출할 수 있어, 범용 웹크롤러로 사용될 수 있다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q17" data-ans="1" data-area="데이터 수집 및 저장 계획" data-subj="1"><div class="ex-qh"><span class="ex-no">17.</span><span class="ex-tags"><span>데이터 수집 및 저장 계획</span><span class="lv-쉬움">쉬움</span><span>개념</span></span></div><div class="ex-body">대규모 분산 환경에서 로그 데이터를 수집하는 기술이 아닌 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q17" value="0"><span class="mk">①</span><span class="tx">Apache Chukwa</span></label></li><li><label><input type="radio" name="q17" value="1"><span class="mk">②</span><span class="tx">스쿱(Sqoop)</span></label></li><li><label><input type="radio" name="q17" value="2"><span class="mk">③</span><span class="tx">스크라이브(Scribe)</span></label></li><li><label><input type="radio" name="q17" value="3"><span class="mk">④</span><span class="tx">카프카(Kafka)</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — 스쿱은 <b>관계형 데이터베이스의 정형 데이터</b>를 하둡 생태계로 옮기는 기술이다. Chukwa 는 분산 환경의 로그를 수집해 HDFS에 저장·분석하는 시스템이고, 카프카·스크라이브는 대용량 실시간 로그 처리를 위한 분산 스트리밍 플랫폼이다.<span class="ex-ref ">근거 · 책 1-151</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-151쪽</summary><div class="cbody"><aside class="note">비정형 데이터 수집 기술은 반정형 데이터에도 적용이 가능하다.<hr><b>Apache Chukwa</b><br>대규모 분산 환경에서 로그 데이터를 수집해 HDFS에 저장 · 분석하는 시스템<hr><b>카프카(Kafka), 스크라이브(Scribe)</b><br>대용량 실시간 로그 처리를 위한 분산 스트리밍 플랫폼<hr><b>마이그레이션(migration)</b><br>하나의 운영환경으로부터 더 나은 운영환경(또는 그 반대방향)으로 옮기는 과정</aside>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:110px">데이터 유형</td><td class="h" style="width:300px">데이터 수집 방식/기술</td><td class="h">설명</td></tr>
+  <tr><td class="h" rowspan="5">비정형<br>데이터</td><td>크롤링(Crawling)</td><td>인터넷상에서 제공되는 다양한 웹 사이트로부터 소셜 네트워크 정보, 뉴스, 게시판 등으로부터 웹 문서 및 정보를 수집하는 기술이다.</td></tr>
+  <tr><td>RSS(Rich Site Summary)</td><td>블로그, 뉴스, 쇼핑몰 등의 웹 사이트에 게시된 새로운 글을 공유하기 위해 XML 기반으로 정보를 배포하는 프로토콜이다.</td></tr>
+  <tr><td>Open API</td><td>응용 프로그램을 통해 실시간으로 데이터를 수신할 수 있도록 공개된 API다.</td></tr>
+  <tr><td>척와(Chukwa)</td><td>분산 시스템으로부터 데이터를 수집, 하둡 파일 시스템에 저장 실시간으로 분석할 수 있는 기능을 제공한다.</td></tr>
+  <tr><td>카프카(Kafka)</td><td>대용량 실시간 로그처리를 위한 분산 스트리밍 플랫폼 기술이다.</td></tr>
+  <tr><td class="h" rowspan="4">반정형<br>데이터</td><td>플럼(Flume)</td><td>분산 환경에서 대량의 로그 데이터를 수집 전송하고 분석하는 기능을 제공한다.</td></tr>
+  <tr><td>스크라이브(Scribe)</td><td>다수의 수집 대상 서버로부터 실시간으로 데이터를 수집, 분산 시스템에 데이터를 저장하는 기능을 제공한다.</td></tr>
+  <tr><td>센싱(Sencing)</td><td>센서로부터 수집 및 생성된 데이터를 네트워크를 통해 활용하여 수집하는 기능을 제공한다.</td></tr>
+  <tr><td>스트리밍(Streaming)<br>&#8211; TCP, UDP, Bluetooth, RFID</td><td>네트워크를 통해 센서 데이터 및 오디오, 비디오 등의 미디어 데이터를 실시간으로 수집하는 기술이다.</td></tr>
+</table>
+</div>
+
+<p class="ct"><b>② ETL(Extract Transform Load)</b></p>
+<ul class="dash">
+  <li>하나 이상의 데이터 소스로부터 데이터 웨어하우스, 데이터 마트, 데이터 통합, 데이터 이동(Migration) 등 다양한 응용시스템을 위한 데이터 구축에 필요한 핵심 기술이다.</li>
+  <li>ETL은 <mark>추출(Extract), 변환(Transform), 적재(Load)</mark>의 3단계 프로세스로 구성된다.</li>
+</ul>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:220px">프로세스</td><td class="h">설명</td></tr>
+  <tr><td>데이터 추출(Extract)</td><td>하나 또는 그 이상의 데이터 원천으로부터 데이터를 획득한다.</td></tr>
+  <tr><td>데이터 변환(Transform)</td><td>목표로 하는 형식이나 구조로 데이터를 변환한다.<br>데이터 정제, 변환, 표준화, 통합 등을 진행한다.</td></tr>
+  <tr><td>데이터 적재(Load)</td><td>변환이 완료된 데이터를 특정 목표 시스템에 저장한다.</td></tr>
+</table>
+</div></div></details></section>
+<section class="ex-q" id="q18" data-ans="2" data-area="데이터 수집 및 저장 계획" data-subj="1"><div class="ex-qh"><span class="ex-no">18.</span><span class="ex-tags"><span>데이터 수집 및 저장 계획</span><span class="lv-어려움">어려움</span><span>부정형</span></span></div><div class="ex-body">NoSQL 데이터베이스에 대한 설명으로 옳지 않은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q18" value="0"><span class="mk">①</span><span class="tx">빅데이터 처리를 위한 비관계형 데이터베이스 관리 시스템이다.</span></label></li><li><label><input type="radio" name="q18" value="1"><span class="mk">②</span><span class="tx">대규모 확대가 가능한 수평적 확장성이 특징이다.</span></label></li><li><label><input type="radio" name="q18" value="2"><span class="mk">③</span><span class="tx">데이터를 테이블로 정리해 사용하는 데 무리가 없는 경우에도 RDBMS보다 NoSQL 사용이 항상 우선된다.</span></label></li><li><label><input type="radio" name="q18" value="3"><span class="mk">④</span><span class="tx">데이터 항목에 새로운 업데이트가 없으면 모든 접근이 마지막 업데이트 값을 반환하는 궁극적 일관성 모델을 활용한다.</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — 데이터를 테이블로 정리하고 사용하는 데 무리가 없다면 <b>RDBMS가 적합하며 NoSQL을 사용할 필요가 없다</b>. NoSQL은 수평적 확장성·유연한 스키마가 필요한 대용량 처리 환경에서 강점을 가진다.<span class="ex-ref ">근거 · 책 1-193</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-193쪽</summary><div class="cbody"><aside class="note"><b>궁극적 일관성(Eventual Consistency)</b><br>분산 컴퓨팅에 쓰이는 일관성 모델의 하나, 데이터 항목에 새로운 업데이트가 없을 시 해당 항목에 대한 모든 접근들은 마지막 업데이트된 값을 반환하는 것을 비공식적으로 보장</aside>
+
+<p class="ct"><b>4) 빅데이터 저장시스템 선정을 위한 분석</b></p>
+<p class="ct"><b>① 기능성 비교분석</b></p>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:160px">구분</td><td class="h">내용</td></tr>
+  <tr><td>데이터 모델</td><td><ul class="dash"><li>데이터를 테이블로 정리하고 사용하는데 무리가 없다면, RDBMS가 필요하고 NoSQL을 사용할 필요가 없다.</li><li>MongoDB는 RDBMS보다 한층 유연한 스키마를 활용하는 것이 가능하므로, RDBMS에서 문서 중심의 데이터 모델로 전환하는 데 도움이 된다.</li><li>Apache CouchDB는 데이터 저장소에 대한 인터페이스로 RESTful HTTP를 지원하므로 상대적으로 웹기반 시스템을 구축하는 데 장점이 있는 document 데이터베이스 시스템이다.</li><li>단순 key-value 쌍을 저장하여 대규모 사용자와 부하 분산을 위한 안정적인 분산 저장소가 필요할 경우, Dynamo나 Redis를 선택하면 된다.</li><li>Cassandra, HyperTable, HBase는 column family 중심의 데이터베이스 시스템으로 극단적인 확장성을 보장할 수 있다는 장점이 있다.</li></ul></td></tr>
+  <tr><td>확장성</td><td><ul class="dash"><li>확장성에서는 HBase, Cassandra, HyperTable과 같은 column-oriented 데이터베이스가 가장 뛰어난 것으로 알려져 있다.</li><li>Redis와 같은 인메모리 방식의 데이터베이스와 MongoDB, CouchDB와 같은 document 데이터베이스가 약간 뒤처지는 것으로 알려져 있다.</li></ul></td></tr>
+  <tr><td>트랜잭션<br>일관성</td><td><ul class="dash"><li>트랜잭션의 일관성은 데이터 수정, 삭제 등의 작업이 빈번하게 일어나는 환경에서는 중요도가 높지만, 배치중심의 하둡 기반 분석환경에서는 중요도가 그리 높지 않다.</li><li>트랜잭션의 일관성이 중요한 분야에서는 RDBMS를 선택해야 하며, 그렇지 않은 때에만 NoSQL을 선택하여야 한다.</li></ul></td></tr>
+  <tr><td>질의 지원</td><td><ul class="dash"><li>MongoDB는 SQL과 유사한 문법에 기반을 두어 쉽게 학습할 수 있는 우수한 질의 인터페이스를 지원한다.</li><li>CouchDB도 MongoDB에 비해 뒤처지지 않으며, 뷰 개념을 이해하고 활용하면 간편하다.</li><li>key-value 데이터베이스의 대표 격인 Redis도 풍부한 질의기능을 제공한다.</li><li>HBase나 HyperTable은 자체 질의지원 기능은 제공하지 않으나 Hive를 통해 SQL과 유사한 형태의 질의기능을 사용할 수 있다는 장점이 있다.</li></ul></td></tr>
+  <tr><td>접근성</td><td><ul class="dash"><li>MongoDB를 접근하기 위한 드라이버는 아주 다양하며, 현존하는 주류 라이브러리용 드라이버를 대부분 지원하고 있다.</li><li>CouchDB는 웹 통신을 지원하는 프로그래밍 언어라면 다 사용이 가능하다.</li><li>Redis, HBase, HyperTable, Cassandra는 대부분의 프로그래밍 언어에서 연결이 가능하도록 언어 바인딩을 지원한다.</li></ul></td></tr>
+</table>
+</div>
+
+<p class="ct"><b>② 분석방식 및 환경</b></p>
+<ul class="dash">
+  <li>빅데이터 저장 방식은 파일 시스템 형식으로 저장하는 방식, NoSQL 저장시스템을 사용하는 방식, RDBMS에 기반을 둔 데이터 웨어하우스 방식이 있다.</li>
+  <li>필요로 하는 분석 및 검색결과가 상시로 온라인 형식으로 필요한지, 분석가를 통해 별도의 프로세스를 거쳐 제공받는지 등을 구분하여 저장 방식과 환경을 선택한다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q19" data-ans="1" data-area="데이터 수집 및 저장 계획" data-subj="1"><div class="ex-qh"><span class="ex-no">19.</span><span class="ex-tags"><span>데이터 수집 및 저장 계획</span><span class="lv-보통">보통</span><span>짝짓기</span></span></div><div class="ex-body">수집 데이터의 변환·저장 방식과 그 저장 기술을 짝지은 것으로 옳지 않은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q19" value="0"><span class="mk">①</span><span class="tx">비정형 데이터를 정형 형태로 저장 : 관계형 데이터베이스</span></label></li><li><label><input type="radio" name="q19" value="1"><span class="mk">②</span><span class="tx">키-값 형태로 저장 : 관계형 데이터베이스</span></label></li><li><label><input type="radio" name="q19" value="2"><span class="mk">③</span><span class="tx">주제별, 시계열적으로 저장 : 데이터 웨어하우스</span></label></li><li><label><input type="radio" name="q19" value="3"><span class="mk">④</span><span class="tx">수집 데이터를 분산파일시스템으로 저장 : HDFS</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — 키-값(Key-Value) 형태의 저장은 <b>NoSQL</b>의 방식이다. 관계형 데이터베이스는 테이블(행·열) 구조로 저장하며 MySQL, Oracle, DB2, PostgreSQL 등이 대표적이다.<span class="ex-ref ">근거 · 책 1-184</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-184쪽</summary><div class="cbody"><p class="ct"><b>SECTION 02 데이터 적재 및 저장</b></p>
+<p class="sec-meta"><span class="freq-tag">출제빈도 상 | 중 | <b>하</b></span></p>
+<p class="tagline"><span class="tagbox">빈출 태그</span> 적재 · 플루언티드(Fluentd) · NoSQL DBMS · 저장시스템 선정 · 접근성 제어</p>
+
+<aside class="note">분산된 여러 서버에서 데이터를 수집하는 플랫폼과 저장 방법의 중요성이 점점 더 커지고 있다.</aside>
+
+<p class="ct"><b><span class="num">01</span> 데이터 적재</b></p>
+
+<p class="ct"><b>1) 데이터 적재 도구</b></p>
+<ul class="dash">
+  <li>수집한 데이터는 빅데이터 분석을 위한 저장 시스템에 적재해야 한다.</li>
+  <li>적재할 데이터의 유형과 실시간 처리 여부에 따라 관계형 데이터베이스, HDFS를 비롯한 분산파일시스템, NoSQL 저장 시스템에 데이터를 적재할 수 있다.</li>
+  <li>수집된 데이터를 저장시스템에 적재 시 Fluentd, Flume, Scribe, Logstash와 같은 데이터 수집 도구들을 이용하여 적재하는 방법들도 있다.</li>
+</ul>
+
+<p class="ct"><b>① 데이터 수집 도구를 이용한 데이터 적재</b></p>
+
+<aside class="note"><b>JSON<br>(JavaScript Object Notation)</b><br>속성-값 쌍 또는 키-값 쌍으로 이루어진 데이터 오브젝트를 전달하기 위해 인간이 읽을 수 있는 텍스트를 사용하는 개방형 표준 포맷</aside>
+
+<ul class="dash">
+  <li>로그 수집을 해야 하는 각 서버에 Fluentd를 설치하면, 서버에서 로그를 수집해서 중앙 로그 저장소로 전송한다.</li>
+  <li>Fluentd는 가장 단순한 구성에서는 로그 수집 에이전트 역할만 수행하나, 확장하면 각 서버의 Fluentd가 수집한 로그를 중앙 Fluentd로 전달하고, 중앙 Fluentd가 이를 로그 저장소에 저장하는 계층형 구조로도 구성할 수 있다.</li>
+  <li>중간에 Fluentd를 두는 이유는, 이 Fluentd가 먼저 들어오는 로그들을 수집해서 로그 저장소에 넣기 전에 로그 트래픽을 속도 조절하고 로그저장소의 용량에 맞게 트래픽을 조정할 수 있기 때문이다.
+    <ul class="dash2">
+      <li>또한 로그를 여러 저장소에 복제해서 저장하거나 로그의 종류에 따라서 다른 로그 저장소로 라우팅할 수 있다.</li>
+    </ul></li>
+  <li>Fluentd 로그 수집기는 로그화 시킬 소스 데이터에 대한 환경 설정, 추출한 데이터를 어디로 전달할 것인지에 대한 설정, 실행 주기 설정 등을 통하여 다양한 데이터 수집이 가능하다.</li>
+</ul>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:220px">데이터 수집 도구</td><td class="h">설명</td></tr>
+  <tr><td>플루언티드(Fluentd)</td><td><ul class="dash"><li>트레저 데이터(Treasure Data)에서 개발된 크로스 플랫폼 오픈 소스 데이터 수집 소프트웨어이다.</li><li>사용자의 로그를 다양한 형태로 입력받아 JSON 포맷으로 변환한 뒤 다양한 형태로 출력한다.</li></ul></td></tr>
+  <tr><td>플럼(Flume)</td><td><ul class="dash"><li>많은 양의 로그 데이터를 효율적으로 수집, 취합, 이동하기 위한 분산형 소프트웨어이다.</li><li>로그 데이터 수집과 네트워크 트래픽 데이터, 소셜 미디어 데이터, 이메일 메시지 데이터 등 대량의 이벤트 데이터 전송을 위해 사용한다.</li></ul></td></tr>
+  <tr><td>스크라이브(Scribe)</td><td><ul class="dash"><li>수많은 서버로부터 실시간으로 스트리밍되는 로그 데이터를 집약시키기 위한 서버이다.</li><li>클라이언트 사이드의 수정 없이 스케일링 가능하고 확장이 가능하다.</li></ul></td></tr>
+  <tr><td>로그스태시(Logstash)</td><td><ul class="dash"><li>다양한 소스에서 데이터를 수집하여 변환한 후 자주 사용하는 저장소로 전송하는 도구이다.</li></ul></td></tr>
+</table>
+</div></div></details></section>
+<section class="ex-q" id="q20" data-ans="2" data-area="데이터 수집 및 저장 계획" data-subj="1"><div class="ex-qh"><span class="ex-no">20.</span><span class="ex-tags"><span>데이터 수집 및 저장 계획</span><span class="lv-쉬움">쉬움</span><span>개념</span></span></div><div class="ex-body">ETL(Extract, Transform, Load)에 대한 설명으로 가장 적절한 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q20" value="0"><span class="mk">①</span><span class="tx">보호된 영역 안에서 프로그램을 동작시키는 보안 모델이다.</span></label></li><li><label><input type="radio" name="q20" value="1"><span class="mk">②</span><span class="tx">웹사이트의 문서와 콘텐츠를 자동으로 수집한다.</span></label></li><li><label><input type="radio" name="q20" value="2"><span class="mk">③</span><span class="tx">하나 이상의 소스 데이터를 정제·표준화·통합 등의 과정으로 변환한 후 목표 시스템에 저장한다.</span></label></li><li><label><input type="radio" name="q20" value="3"><span class="mk">④</span><span class="tx">데이터 항목의 마지막 업데이트 값 반환을 보장하는 일관성 모델이다.</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — ETL은 소스 데이터를 <b>추출(Extract)</b>하고 정제·표준화·통합 등으로 <b>변환(Transform)</b>한 뒤 목표 시스템에 <b>적재(Load)</b>하는 기술이다. ②는 크롤링, ①은 샌드박스, ④는 궁극적 일관성에 대한 설명이다.<span class="ex-ref ">근거 · 책 1-150</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-150쪽</summary><div class="cbody"><p class="ct"><b>② 데이터의 수집 주기</b></p>
+<ul class="dash">
+  <li>내부 데이터는 조직 내부에서 습득할 수 있는 데이터로 실시간으로 수집하여 분석할 수 있도록 한다.</li>
+  <li>외부 데이터는 일괄 수집으로 끝날지, 일정 주기로 데이터를 수집할지를 결정하여 수집 데이터 관리 정책을 정해야 한다.</li>
+</ul>
+
+<p class="ct"><b>③ 데이터의 수집 방법</b></p>
+<ul class="dash">
+  <li>내부 데이터는 분석에 적합한 정형화된 형식으로 수집되기 때문에 가공에 많은 노력을 기울이지 않아도 된다.</li>
+  <li>외부 데이터는 분석 목표에 맞는 데이터를 탐색, 수집하고, 분석 목표에 맞게 수집 데이터를 변환하는 노력이 필요하다.</li>
+</ul>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:120px">구분</td><td class="h" style="width:38%">내부 데이터</td><td class="h">외부 데이터</td></tr>
+  <tr><td>업무 협의</td><td>조직 내부의 협의에 따른 데이터 수집</td><td>외부 조직의 데이터 필요시 상호 협약에 의한 수집</td></tr>
+  <tr><td>수집 경로</td><td>인터페이스 생성</td><td>인터넷을 통한 연결</td></tr>
+  <tr><td>수집 대상</td><td>파일 시스템, DBMS, 센서 등</td><td>협약에 의한 DBMS 데이터, 웹 페이지, 소셜 데이터, 문서 등</td></tr>
+</table>
+</div>
+
+<p class="ct"><b>4) 데이터 수집 기술</b></p>
+
+<aside class="note">2014년 이후에는 데이터 거래소를 통한 데이터 유통이 활성화되고 있어 이를 통해서도 필요데이터를 습득할 수 있다.</aside>
+
+<p class="ct"><b>① 데이터 유형별 데이터 수집 기술</b></p>
+<p>수집 시스템 사양 설계를 위해 수집 데이터 유형을 파악하여 그에 맞는 수집 기술을 선정할 수 있다.</p>
+
+<div class="tip"><span class="tip-head">기적의 TIP</span>데이터 유형에 따라 적용할 수 있는 수집 기술을 알아두자.</div>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:110px">데이터 유형</td><td class="h" style="width:300px">데이터 수집 방식/기술</td><td class="h">설명</td></tr>
+  <tr><td class="h" rowspan="5">정형<br>데이터</td><td>ETL(Extract Transform Load)</td><td>수집 대상 데이터를 추출 및 가공하여 데이터 웨어하우스에 저장하는 기술이다.</td></tr>
+  <tr><td>FTP(File Transfer Protocol)</td><td>TCP/IP나 UDP 프로토콜을 통해 원격지 시스템으로부터 파일을 송수신하는 기술이다.</td></tr>
+  <tr><td>API(Application Programming Interface)</td><td>솔루션 제조사 및 3rd party 소프트웨어로 제공되는 도구로, 시스템 간 연동을 통해 실시간으로 데이터를 수신할 수 있도록 기능을 제공하는 인터페이스이다.</td></tr>
+  <tr><td>DBToDB</td><td>데이터베이스 관리시스템(DBMS) 간 데이터를 동기화 또는 전송하는 방법이다.</td></tr>
+  <tr><td>스쿱(Sqoop)</td><td>관계형 데이터베이스(RDBMS)와 하둡(hadoop) 간 데이터를 전송하는 방법이다.</td></tr>
+</table>
+</div></div></details></section>
+<h2 class="ex-part rd" id="p2">2회차 · 계산·응용<small>21 ~ 40번</small></h2>
+<section class="ex-q" id="q21" data-ans="0" data-area="빅데이터의 이해" data-subj="2"><div class="ex-qh"><span class="ex-no">21.</span><span class="ex-tags"><span>빅데이터의 이해</span><span class="lv-쉬움">쉬움</span><span>개념</span></span></div><div class="ex-body">데이터 크기 단위를 작은 것부터 큰 순서로 바르게 나열한 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q21" value="0"><span class="mk">①</span><span class="tx">페타바이트(PB) → 엑사바이트(EB) → 제타바이트(ZB) → 요타바이트(YB)</span></label></li><li><label><input type="radio" name="q21" value="1"><span class="mk">②</span><span class="tx">엑사바이트(EB) → 페타바이트(PB) → 요타바이트(YB) → 제타바이트(ZB)</span></label></li><li><label><input type="radio" name="q21" value="2"><span class="mk">③</span><span class="tx">제타바이트(ZB) → 엑사바이트(EB) → 페타바이트(PB) → 요타바이트(YB)</span></label></li><li><label><input type="radio" name="q21" value="3"><span class="mk">④</span><span class="tx">페타바이트(PB) → 제타바이트(ZB) → 엑사바이트(EB) → 요타바이트(YB)</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — PB(10<sup>15</sup>) → EB(10<sup>18</sup>) → ZB(10<sup>21</sup>) → YB(10<sup>24</sup>) 순으로 1,000배씩 커진다. 2의 거듭제곱 기준으로는 2<sup>50</sup>, 2<sup>60</sup>, 2<sup>70</sup>, 2<sup>80</sup> 이다.<span class="ex-ref ">근거 · 책 1-29</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-29쪽</summary><div class="cbody"><div class="tip"><span class="tip-head">기적의 TIP</span>가트너의 3V에 대해 구분할 수 있어야 한다.</div>
+
+<p class="ct"><b>2) 빅데이터의 특징</b></p>
+<p>빅데이터 용어가 사용된 초기에 가트너(Gartner) 그룹은 3V(규모, 유형, 속도)로 빅데이터의 특징을 설명했으며, 최근에는 빅데이터 분석을 통해 얻을 수 있는 가치와 데이터에 대한 품질의 중요성이 강조되고 있다.</p>
+<div class="tbl-cap">빅데이터의 특징</div>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:60px">광의</th><th style="width:70px">협의</th><th style="width:140px">특징</th><th>내용</th></tr>
+  <tr>
+    <td class="h" rowspan="5">5V</td>
+    <td class="h" rowspan="3">3V</td>
+    <td class="h">규모(Volume)</td>
+    <td><ul class="dash"><li>데이터 양이 급격하게 증가(대용량화)</li><li>기존 데이터 관리 시스템의 성능적 한계 도달</li></ul></td>
+  </tr>
+  <tr><td class="h">유형(Variety)</td><td><ul class="dash"><li>데이터의 종류와 근원 확대(다양화)</li><li>정형 데이터 외 반정형 및 비정형 데이터로 확장</li></ul></td></tr>
+  <tr><td class="h">속도(Velocity)</td><td><ul class="dash"><li>데이터 수집과 처리 속도의 변화(고속화)</li><li>대용량 데이터의 신속하고 즉각적인 분석 요구</li></ul></td></tr>
+  <tr>
+    <td class="h" rowspan="2">+2V</td>
+    <td class="h">품질(Veracity)</td>
+    <td><ul class="dash"><li>데이터의 신뢰성, 정확성, 타당성 보장이 필수</li><li>고품질의 데이터에서 고수준 인사이트 도출 가능</li></ul></td>
+  </tr>
+  <tr><td class="h">가치(Value)</td><td><ul class="dash"><li>대용량의 데이터 안에 숨겨진 가치 발굴이 중요</li><li>다른 데이터들과 연계 시 가치가 배로 증대</li></ul></td></tr>
+</table>
+</div>
+<div class="tbl-cap">전통적 데이터와 빅데이터 비교</div>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:130px"></th><th>전통적 데이터</th><th>빅데이터</th></tr>
+  <tr><td class="h">규모</td><td>기가바이트(GB) 이하</td><td>테라바이트(TB) 이상</td></tr>
+  <tr><td class="h">처리단위</td><td>시간 또는 일 단위 처리</td><td>실시간 처리</td></tr>
+  <tr><td class="h">유형</td><td>정형 데이터</td><td>정형+반정형, 비정형 데이터</td></tr>
+  <tr><td class="h">처리방식</td><td>중앙집중식 처리</td><td>분산 처리</td></tr>
+  <tr><td class="h">시스템</td><td>Relational DBMS</td><td>Hadoop, HDFS, Hbase, NoSQL 등</td></tr>
+</table>
+</div>
+<aside class="note">
+  바이트(byte)는 컴퓨터가 조작하는 정보의 최소 처리 단위이다.<br>
+  1KB = 1024byte = 2^10 ≒ 10^3
+  <div class="table-scroll" style="margin-top:8px">
+  <table class="mini">
+    <tr><td>킬로바이트(KB)</td><td>2^10</td><td>10^3</td></tr>
+    <tr><td>메가바이트(MB)</td><td>2^20</td><td>10^6</td></tr>
+    <tr><td>기가바이트(GB)</td><td>2^30</td><td>10^9</td></tr>
+    <tr><td>테라바이트(TB)</td><td>2^40</td><td>10^12</td></tr>
+    <tr><td>페타바이트(PB)</td><td>2^50</td><td>10^15</td></tr>
+    <tr><td>엑사바이트(EB)</td><td>2^60</td><td>10^18</td></tr>
+    <tr><td>제타바이트(ZB)</td><td>2^70</td><td>10^21</td></tr>
+    <tr><td>요타바이트(YB)</td><td>2^80</td><td>10^24</td></tr>
+  </table>
+  </div>
+</aside></div></details></section>
+<section class="ex-q" id="q22" data-ans="0" data-area="빅데이터의 이해" data-subj="2"><div class="ex-qh"><span class="ex-no">22.</span><span class="ex-tags"><span>빅데이터의 이해</span><span class="lv-보통">보통</span><span>계산</span></span></div><div class="ex-body">맵리듀스로 [A,B,R], [C,C,R], [A,C,B] 세 데이터를 입력받아 각 원소의 개수를 구했다. 최종 리듀스 결과에서 원소 C의 개수는?</div><ul class="ex-opts"><li><label><input type="radio" name="q22" value="0"><span class="mk">①</span><span class="tx">3</span></label></li><li><label><input type="radio" name="q22" value="1"><span class="mk">②</span><span class="tx">2</span></label></li><li><label><input type="radio" name="q22" value="2"><span class="mk">③</span><span class="tx">1</span></label></li><li><label><input type="radio" name="q22" value="3"><span class="mk">④</span><span class="tx">4</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — 각 분할 데이터에 맵 작업으로 원소별 개수를 세면 C는 [C,C,R]에서 2개, [A,C,B]에서 1개다. 셔플로 같은 키(C)끼리 모은 뒤 리듀스에서 합치면 <b>2 + 1 = 3</b>이 된다. (A=2, B=2, R=2)<span class="ex-ref ">근거 · 책 1-52</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-52쪽</summary><div class="cbody"><div class="tbl-cap">분산 병렬 컴퓨팅 시 고려사항</div>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:210px">문제</th><th>설명</th></tr>
+  <tr><td class="h">전체 작업의 배분 문제</td><td><ul class="dash"><li>전체 작업을 잘 쪼개어 여러 개의 작은 작업으로 나눠야 한다.</li></ul></td></tr>
+  <tr><td class="h">각 프로세서에서 계산된<br>중간 결과물을<br>프로세서 간 주고받는<br>문제</td><td><ul class="dash"><li>효율적인 통신은 성능과 직결된다.</li><li>보통 단일 시스템은 전체 작업을 노드의 수만큼 균등하게 나눈다.</li><li>이종 시스템은 컴퓨팅 능력에 따라 전체 작업을 배분한다.</li><li>노드 간의 통신을 최소화하는 기법 등이 반영되면 자원을 좀 더 효율적으로 사용할 수 있어 성능 향상에 도움이 된다.</li></ul></td></tr>
+  <tr><td class="h">서로 다른 프로세서 간<br>동기화 문제</td><td><ul class="dash"><li>데이터 병렬 처리에서 동기적 방법을 사용할 경우 프로세서는 특정 계산이 끝나거나 특정 데이터를 넘겨받을 때까지 반드시 대기하여야 한다.</li><li>동기적 방법의 경우 송신자는 수신자에게서 데이터를 받았다는 응답이 올 때까지 대기하여야 한다.</li><li>비동기적 방법에서는 결과 메시지를 보낸 즉시 다음 작업을 계속할 수 있다.</li><li>비동기적 방법의 경우 프로세서는 기다릴 필요가 없지만, 계산 과정이 적합한지는 확인해야 한다.</li></ul></td></tr>
+</table>
+</div>
+<p class="ct"><b>③ 하둡(Hadoop)</b></p>
+<p><mark>분산 처리 환경에서 대용량 데이터 처리 및 분석을 지원하는 오픈 소스 소프트웨어 프레임워크이다.</mark></p>
+<ul class="dash">
+  <li>야후에서 최초로 개발했으며, 지금은 아파치 소프트웨어 재단에서 프로젝트로 관리되고 있다.</li>
+  <li>하둡 분산파일시스템인 HDFS와 분산칼럼기반 데이터베이스인 Hbase, 분산 컴퓨팅 지원 프레임워크인 맵리듀스(MapReduce)로 구성되어 있다.</li>
+  <li>분산파일시스템을 통해 수 천대의 장비에 대용량 파일을 나누어 저장할 수 있는 기능을 제공한다.
+    <ul class="dash2"><li>분산파일시스템에 저장된 대용량의 데이터들을 맵리듀스를 이용하여 실시간으로 처리 및 분석 가능하다.</li></ul></li>
+  <li>하둡의 부족한 기능을 보완하는 하둡 에코시스템이 등장하여 다양한 솔루션을 제공한다.</li>
+</ul>
+<aside class="note"><b>HDFS</b><br>Hadoop Distributed File System</aside>
+<p class="ct"><b>④ 아파치 스파크(Apache Spark)</b></p>
+<p>실시간 분산형 컴퓨팅 플랫폼으로 In-Memory 방식으로 처리를 하며 하둡보다 처리속도가 빠르다.</p>
+<ul class="dash">
+  <li>스칼라 언어로 개발되었지만 스칼라뿐만 아니라 Java, R, Python을 지원한다.</li>
+</ul>
+<p class="ct"><b>⑤ 맵리듀스(MapReduce)</b></p>
+<p>구글에서 개발한 방대한 양의 데이터를 신속하게 처리하는 프로그래밍 모델로 <mark>효과적인 병렬 및 분산 처리를 지원한다.</mark></p>
+<ul class="dash">
+  <li>런타임(Runtime)에서의 입력 데이터 분할, 작업 스케줄링, 노드 고장, 노드 간의 데이터 전송 작업이 맵리듀스 처리 성능에 많은 영향을 미친다.</li>
+</ul>
+<aside class="note"><b>맵리듀스</b><br>분산 병렬 데이터 처리 기술의 표준</aside></div></details></section>
+<section class="ex-q" id="q23" data-ans="3" data-area="빅데이터의 이해" data-subj="2"><div class="ex-qh"><span class="ex-no">23.</span><span class="ex-tags"><span>빅데이터의 이해</span><span class="lv-쉬움">쉬움</span><span>짝짓기</span></span></div><div class="ex-body">빅데이터 활용을 위한 3대 요소와 그 내용을 짝지은 것으로 옳지 않은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q23" value="0"><span class="mk">①</span><span class="tx">자원(Resource) : 정형·반정형·비정형 데이터를 실시간으로 수집한다.</span></label></li><li><label><input type="radio" name="q23" value="1"><span class="mk">②</span><span class="tx">기술(Technology) : 분산 파일 시스템으로 대용량 데이터를 분산 처리한다.</span></label></li><li><label><input type="radio" name="q23" value="2"><span class="mk">③</span><span class="tx">인력(People) : 알고리즈미스트, 데이터사이언티스트가 해당한다.</span></label></li><li><label><input type="radio" name="q23" value="3"><span class="mk">④</span><span class="tx">자본(Capital) : 빅데이터 3대 요소 중 가장 중요한 요소다.</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — 빅데이터 활용을 위한 3대 요소는 <b>자원·기술·인력</b>이다. 자본은 교재가 제시하는 3요소에 포함되지 않는다.<span class="ex-ref ">근거 · 책 1-30</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-30쪽</summary><div class="cbody"><p class="ct"><b>3) 빅데이터의 활용</b></p>
+<div class="tbl-cap">빅데이터의 활용을 위한 3요소</div>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:200px">구성 요소</th><th>내용</th></tr>
+  <tr><td class="h">자원(Resource)<br>[빅데이터]</td><td><ul class="dash"><li>정형, 반정형, 비정형 데이터를 실시간으로 수집한다.</li><li>수집된 데이터를 전처리 과정을 통해 품질을 향상시킨다.</li></ul></td></tr>
+  <tr><td class="h">기술(Technology)<br>[빅데이터플랫폼, AI]</td><td><ul class="dash"><li>분산 파일 시스템을 통해 대용량 데이터를 분산 처리한다.</li><li>데이터마이닝 등을 통해 데이터를 분석 및 시각화한다.</li><li>데이터를 스스로 학습, 처리할 수 있는 AI 기술을 활용한다.</li></ul></td></tr>
+  <tr><td class="h">인력(People)<br>[알고리즈미스트,<br>데이터사이언티스트]</td><td><ul class="dash"><li>통계학, 수학, 컴퓨터공학, 경영학 분야 전문지식을 갖춘다.</li><li>도메인 지식을 습득하여 데이터 분석 및 결과를 해석한다.</li></ul></td></tr>
+</table>
+</div>
+<aside class="note">빅데이터 활용을 위한 3대 요소로는 자원, 기술, 인력이 있다.</aside>
+
+<div class="tbl-cap">빅데이터의 활용을 위한 기본 테크닉</div>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:140px">테크닉</th><th>설명</th><th>예시</th></tr>
+  <tr><td class="h">연관규칙학습</td><td>변인들 간 주목할 만한 상관관계가 있는지 찾아내는 방법</td><td>도시락을 구매하는 사람이 음료수를 더 많이 구매하는가?</td></tr>
+  <tr><td class="h">유형분석</td><td>문서를 분류하거나 조직을 그룹화할 때 사용</td><td>이것은 어떤 특성을 가진 집단에 속하는가?</td></tr>
+  <tr><td class="h">유전 알고리즘</td><td>최적화가 필요한 문제를 생물 진화의 과정을 모방하여 점진적으로 해결책을 찾는 방법</td><td>시청률을 최고치로 하기 위해 어떤 프로그램을 어떤 시간에 방송해야 하는가?</td></tr>
+  <tr><td class="h">기계학습</td><td>데이터로부터 학습한 알려진 특성을 활용하여 예측</td><td>시청 기록을 바탕으로 어떤 영화를 가장 보고 싶어하는가?</td></tr>
+  <tr><td class="h">회귀분석</td><td>독립변수가 종속변수에 미치는 영향을 분석할 때 사용</td><td>경력과 학력이 연봉에 미치는 영향은?</td></tr>
+  <tr><td class="h">감정분석</td><td>특정 주제에 대해 말을 하거나 글을 쓴 사람의 감정을 분석</td><td>새로운 할인 정책에 대한 고객의 평은 어떤가?</td></tr>
+  <tr><td class="h">소셜네트워크<br>(사회관계망)분석</td><td>특정인과 다른 사람의 관계를 파악하고 영향력 있는 사람을 분석할 때 사용</td><td>고객들 간 관계망은 어떻게 구성되는가?</td></tr>
+</table>
+</div></div></details></section>
+<section class="ex-q" id="q24" data-ans="0" data-area="빅데이터의 이해" data-subj="2"><div class="ex-qh"><span class="ex-no">24.</span><span class="ex-tags"><span>빅데이터의 이해</span><span class="lv-보통">보통</span><span>사례적용</span></span></div><div class="ex-body">베테랑 정비사가 오랜 경험으로 익힌 고장 진단 노하우를 정리하여 사내 매뉴얼 문서로 만들었다. 지식창조 매커니즘에서 이 과정에 해당하는 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q24" value="0"><span class="mk">①</span><span class="tx">표출화(Externalization)</span></label></li><li><label><input type="radio" name="q24" value="1"><span class="mk">②</span><span class="tx">공통화(Socialization)</span></label></li><li><label><input type="radio" name="q24" value="2"><span class="mk">③</span><span class="tx">연결화(Combination)</span></label></li><li><label><input type="radio" name="q24" value="3"><span class="mk">④</span><span class="tx">내면화(Internalization)</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — 개인에게 체화된 <b>암묵지(노하우)가 문서라는 형식지로 표현</b>되었으므로 표출화다. 공통화는 경험 공유로 암묵지를 발전시키는 것, 연결화는 형식지의 재분류·체계화, 내면화는 형식지를 다시 개인의 것으로 만드는 과정이다.<span class="ex-ref ">근거 · 책 1-22</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-22쪽</summary><div class="cbody"><p class="ct"><b>7) 지식창조 매커니즘</b></p>
+<p>암묵지와 형식지 간 상호작용을 위한 일본의 경영학자 노나카 이쿠지로의 지식창조 매커니즘은 다음의 4단계로 구성된다.</p>
+<ol class="circled">
+  <li><b>공통화(Socialization)</b> : 서로의 경험이나 인식을 공유하며 한 차원 높은 암묵지로 발전시킨다.</li>
+  <li><b>표출화(Externalization)</b> : 암묵지가 구체화되어 외부(형식지)로 표현된다.</li>
+  <li><b>연결화(Combination)</b> : 형식지를 재분류하여 체계화한다.</li>
+  <li><b>내면화(Internalization)</b> : 전달받은 형식지를 다시 개인의 것으로 만든다.</li>
+</ol>
+
+<aside class="note">
+  <b>암묵지</b><br>학습과 경험을 통하여 개인에게 체화되어 있지만 겉으로 드러나지 않는 지식
+  <hr><b>형식지</b><br>명시적으로 알 수 있는 형태, 형식을 갖추어 표현되고 공유가 가능한 지식
+</aside>
+
+<p class="ct"><b>8) 데이터, 정보, 지식, 지혜</b></p>
+<p>데이터, 정보, 지식, 지혜는 인간의 사회활동 속에서 가치창출을 위한 일련의 프로세스로 연결되어 기능한다.</p>
+<div class="tbl-cap">지식의 피라미드(가치창출 프로세스)</div>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h">지혜<br>(Wisdom)</td><td>축적된 지식을 통해 근본적인 원리를 이해하고 아이디어를 결합하여 도출한 창의적 산물이다.<div class="ex"><span class="ex-tag">예</span> 다른 상품들도 온라인 쇼핑 시 오프라인 상점보다 저렴할 것이다.</div></td></tr>
+  <tr><td class="h">지식<br>(Knowledge)</td><td>상호 연결된 정보를 구조화하여 유의미한 정보를 분류하고 개인적인 경험을 결합시켜 내재화한 고유의 결과물이다.<div class="ex"><span class="ex-tag">예</span> 오프라인 상점보다 저렴한 온라인 쇼핑으로 노트북을 구매할 것이다.</div></td></tr>
+  <tr><td class="h">정보<br>(Information)</td><td>데이터를 가공하거나 처리하여 데이터 간 관계를 분석하고 그 속에서 도출된 의미를 말하며, 항상 유용한 것은 아니다.<div class="ex"><span class="ex-tag">예</span> 오프라인 상점보다 온라인 쇼핑 시 노트북 가격이 더 저렴하다.</div></td></tr>
+  <tr><td class="h">데이터<br>(Data)</td><td>현실 세계에서 관찰하거나 측정하여 수집한 사실이나 값으로 개별 데이터로는 그 의미가 중요하지 않은 객관적인 사실이다.<div class="ex"><span class="ex-tag">예</span> 온라인 쇼핑 시 노트북 가격은 100만 원이며, 오프라인 상점의 노트북 가격은 150만 원이다.</div></td></tr>
+</table>
+</div>
+<aside class="note">데이터의 정확성은 정보, 지식, 지혜와의 상호관계에서 지대한 영향을 미치며, 가치창출에 있어 핵심적인 역할을 한다.</aside></div></details></section>
+<section class="ex-q" id="q25" data-ans="0" data-area="빅데이터의 이해" data-subj="2"><div class="ex-qh"><span class="ex-no">25.</span><span class="ex-tags"><span>빅데이터의 이해</span><span class="lv-쉬움">쉬움</span><span>개념</span></span></div><div class="ex-body">다수의 컴퓨터를 마치 하나인 것처럼 묶어 대용량 데이터를 처리하는 오픈소스 프레임워크는?</div><ul class="ex-opts"><li><label><input type="radio" name="q25" value="0"><span class="mk">①</span><span class="tx">하둡(Hadoop)</span></label></li><li><label><input type="radio" name="q25" value="1"><span class="mk">②</span><span class="tx">DBMS</span></label></li><li><label><input type="radio" name="q25" value="2"><span class="mk">③</span><span class="tx">OLAP</span></label></li><li><label><input type="radio" name="q25" value="3"><span class="mk">④</span><span class="tx">FTP</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — <b>하둡</b>은 다수의 컴퓨터를 하나처럼 묶어 대용량 데이터를 분산 처리하는 오픈소스 프레임워크로, 분산 파일 시스템(HDFS)과 맵리듀스 등을 포함한다.<span class="ex-ref ">근거 · 책 1-49</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-49쪽</summary><div class="cbody"><p class="ct"><b><span class="num">02</span> 빅데이터 처리기술</b></p>
+
+<p class="ct"><b>1) <mark>빅데이터 처리과정과 요소기술</mark></b></p>
+
+<div class="tip"><span class="tip-head">기적의 TIP</span>단계별로 어떤 과정이 진행되는지 이해해야 한다.</div>
+
+<p class="ct"><b>① 생성</b></p>
+<ul class="dash">
+  <li>데이터베이스나 파일 관리 시스템과 같은 내부 데이터가 있다.</li>
+  <li>인터넷으로 연결된 외부로부터 생성된 파일이나 데이터가 있다.</li>
+</ul>
+<p class="ct"><b>② 수집</b></p>
+<ul class="dash">
+  <li>크롤링을 통해 데이터 원천으로부터 데이터를 검색하여 수집한다.</li>
+  <li>ETL을 통해 소스 데이터로부터 추출하고, 변환하여, 적재한다.</li>
+  <li>단순한 수집이 아니라 검색 및 수집, 변환 과정을 모두 포함한다.</li>
+  <li>로그 수집기나, 센서 네트워크 및 Open API 등을 활용할 수 있다.</li>
+</ul>
+<aside class="note"><b>크롤링(Crawling)</b><br>웹사이트 등 외부에 저장되어 있는 정보자원을 자동화된 방법으로 수집, 분류, 저장하는 것</aside>
+<p class="ct"><b>③ 저장(공유)</b></p>
+<ul class="dash">
+  <li>저렴한 비용으로 데이터를 쉽고 빠르게 많이 저장한다.</li>
+  <li>정형 데이터뿐만 아니라 반정형, 비정형 데이터도 포함한다.</li>
+  <li>병렬 DBMS나 하둡(Hadoop), NoSQL 등 다양한 기술을 사용할 수 있다.</li>
+  <li>시스템 간의 데이터를 서로 공유할 수 있다.</li>
+</ul>
+<aside class="note"><b>하둡</b><br>분산 파일 시스템과 분산 처리 시스템을 제공하는 아파치 소프트웨어 재단의 오픈 소스 프레임워크</aside>
+<p class="ct"><b>④ 처리</b></p>
+<ul class="dash">
+  <li>데이터를 효과적으로 처리하는 기술이 필요한 단계이다.</li>
+  <li>분산 병렬 및 인메모리(In-memory) 방식으로 실시간 처리한다.</li>
+  <li>대표적으로 하둡(Hadoop)의 맵리듀스(MapReduce)를 활용할 수 있다.</li>
+</ul>
+<aside class="note"><b>인메모리</b><br>디스크가 아닌 메인 메모리에 데이터를 저장하는 기술</aside>
+<p class="ct"><b>⑤ 분석</b></p>
+<ul class="dash">
+  <li>데이터를 신속하고 정확하게 분석하여 비즈니스에 기여한다.</li>
+  <li>특정 분야 및 목적의 특성에 맞는 분석 기법 선택이 중요하다.</li>
+  <li>통계분석, 데이터 마이닝, 텍스트 마이닝, 기계학습 방법 등이 있다.</li>
+</ul>
+<p class="ct"><b>⑥ 시각화</b></p>
+<ul class="dash">
+  <li>빅데이터 처리 및 분석 결과를 사용자에게 보여주는 기술이다.</li>
+  <li>다양한 수치나 관계 등을 표, 그래프 등을 이용해 쉽게 표현하고 탐색이나 해석에 활용한다.</li>
+  <li>정보 시각화 기술, 시각화 도구, 편집 기술, 실시간 자료 시각화 기술로 구성되어 있다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q26" data-ans="0" data-area="빅데이터 기술 및 제도" data-subj="2"><div class="ex-qh"><span class="ex-no">26.</span><span class="ex-tags"><span>빅데이터 기술 및 제도</span><span class="lv-보통">보통</span><span>계산</span></span></div><div class="ex-body">비식별 데이터셋에서 동일한 값을 가진 레코드를 5개 이상으로 만드는 k-익명성(k=5)을 적용했다. 이때 특정 개인이 식별될 확률은 최대 얼마인가?</div><ul class="ex-opts"><li><label><input type="radio" name="q26" value="0"><span class="mk">①</span><span class="tx">20%</span></label></li><li><label><input type="radio" name="q26" value="1"><span class="mk">②</span><span class="tx">5%</span></label></li><li><label><input type="radio" name="q26" value="2"><span class="mk">③</span><span class="tx">50%</span></label></li><li><label><input type="radio" name="q26" value="3"><span class="mk">④</span><span class="tx">80%</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — k-익명성은 동일한 값을 가진 레코드를 k개 이상으로 하여 특정 개인을 식별할 확률을 <b>1/k</b>로 만든다. k=5 이면 1/5 = <b>20%</b> 이하가 된다.<span class="ex-ref ">근거 · 책 1-69</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-69쪽</summary><div class="cbody"><p class="ct"><b><span class="num">06</span> 개인정보 비식별화</b></p>
+
+<p class="ct"><b>1) 개인정보 비식별화의 개요</b></p>
+<p class="ct"><b>① 비식별 정보</b></p>
+<ul class="dash">
+  <li>정보의 집합물에 대해 「개인정보 비식별 조치 가이드라인」에 따라 적정하게 ‘비식별 조치’된 정보를 말한다.</li>
+</ul>
+<p class="ct"><b>② 비식별 조치</b></p>
+<ul class="dash">
+  <li>정보의 집합물에서 <mark>개인을 식별할 수 있는 요소를 전부 또는 일부 삭제하거나 대체</mark> 등의 방법을 통해 개인을 알아볼 수 없도록 하는 조치를 말한다.</li>
+</ul>
+<aside class="note">익명 데이터는 데이터를 수집하는 단계에서 특정 개인을 식별할 수 없는 형태로 수집하는 것으로 비식별 정보와는 특성이 다르다.</aside>
+<p class="ct"><b>③ 비식별 정보의 활용</b></p>
+<ul class="dash">
+  <li>비식별 정보는 개인정보가 아닌 정보로 추정되므로 정보주체로부터의 별도 동의없이 해당 정보를 이용하거나 제3자에게 제공할 수 있다.
+    <ul class="dash2"><li>다만, 불특정 다수에게 공개되는 경우에는 다른 정보를 보유하고 있는 누군가에 의해 해당 정보주체가 식별될 가능성이 있으므로 비식별 정보의 공개는 원칙적으로 금지된다.</li></ul></li>
+</ul>
+<p class="ct"><b>④ 비식별 정보의 보호</b></p>
+<ul class="dash">
+  <li>비식별 정보는 개인정보가 아닌 것으로 추정되지만, 새로운 결합 기술이 나타나거나 결합 가능한 정보가 증가하는 경우 정보주체가 ‘재식별’될 가능성이 있다.</li>
+  <li>비식별 정보를 처리하는 자(비식별 정보를 제공받은 자 포함)가 해당 정보를 이용하는 과정에서 재식별하게 된 경우에는 해당 정보를 즉시 처리중지하고 파기하여야 한다.</li>
+  <li>비식별 정보라고 하더라도 필수적인 관리적 · 기술적 보호조치는 이행해야 한다.</li>
+</ul>
+
+<p class="ct"><b>2) 개인정보 비식별화 조치 가이드라인</b></p>
+<p>데이터 이용 과정에서 개인정보 침해 · 방지를 위해 개인정보를 비식별 조치하는 절차 및 방법에 대한 가이드라인으로, 개인정보를 비식별 조치하여 이용 또는 제공하려는 사업자 등이 준수하여야 할 기준을 제시한다.</p>
+<p class="ct"><b>① 개인정보 비식별화 조치 가이드라인의 추진배경</b></p>
+<ul class="dash">
+  <li>정부 3.0 및 빅데이터 활용 확산에 따른 데이터 활용가치가 증대되고 있다.</li>
+  <li>개인정보 보호 강화에 대한 사회적 요구가 지속되고 있다.</li>
+</ul>
+<aside class="note">통계법 등 관련법령에 따라 개인정보를 수집 · 이용하는 경우에는 당해 법령에 따라 처리해야 한다.</aside>
+<p class="ct"><b>② 개인정보 비식별화 조치 가이드라인의 단계별 조치사항</b></p>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:120px">단계</th><th>조치사항</th><th style="width:190px">데이터</th></tr>
+  <tr><td class="h">사전 검토</td><td>개인정보에 해당하는지 여부를 검토한 후, 개인정보가 아닌 것이 명백한 경우 법적 규제 없이 자유롭게 활용</td><td>개인정보, 식별정보</td></tr>
+  <tr><td class="h">비식별 조치</td><td>정보 집합물(데이터 셋)에서 개인을 식별할 수 있는 요소를 전부 또는 일부 삭제하거나 대체하는 등의 방법을 활용, 개인을 알아볼 수 없도록 하는 조치</td><td>가명, 총계, 삭제,<br>범주화, 마스킹</td></tr>
+  <tr><td class="h">적정성 평가</td><td>다른 정보와 쉽게 결합하여 개인을 식별할 수 있는지를 「비식별 조치 적정성 평가단」을 통해 평가</td><td>k-익명성, l-다양성,<br>t-근접성, m-유일성</td></tr>
+  <tr><td class="h">사후 관리</td><td>비식별 정보 안전조치, 재식별 가능성 모니터링 등 비식별 정보 활용 과정에서 재식별 방지를 위해 필요한 조치 수행</td><td>관리적/기술적 보호조치</td></tr>
+</table>
+</div>
+<aside class="note">
+  <b>k-익명성</b><br>동일한 값을 가진 레코드를 k개 이상으로 하여 특정 개인을 식별할 확률을 1/k로 함
+  <hr><b>l-다양성</b><br>각 레코드는 최소 l개 이상의 다양성을 가지도록 하여 동질성 또는 배경지식 등에 의한 추론을 방지
+  <hr><b>t-근접성</b><br>전체 데이터 집합의 정보 분포와 특정 정보의 분포 차이를 t 이하로 하여 추론 방지
+  <hr><b>m-유일성</b><br>비식별 데이터셋의 속성을 조합했을 때 동일한 값을 m개 이상으로 하여 추론 방지
+</aside></div></details></section>
+<section class="ex-q" id="q27" data-ans="3" data-area="빅데이터 기술 및 제도" data-subj="2"><div class="ex-qh"><span class="ex-no">27.</span><span class="ex-tags"><span>빅데이터 기술 및 제도</span><span class="lv-어려움">어려움</span><span>짝짓기</span></span></div><div class="ex-body">프라이버시 보호 모델과 그 설명을 짝지은 것으로 옳지 않은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q27" value="0"><span class="mk">①</span><span class="tx">k-익명성 : 동일한 값의 레코드를 k개 이상으로 하여 식별 확률을 1/k로 한다.</span></label></li><li><label><input type="radio" name="q27" value="1"><span class="mk">②</span><span class="tx">l-다양성 : 각 레코드가 최소 l개 이상의 다양성을 가지게 하여 동질성·배경지식에 의한 추론을 방지한다.</span></label></li><li><label><input type="radio" name="q27" value="2"><span class="mk">③</span><span class="tx">t-근접성 : 전체 데이터 집합의 정보 분포와 특정 정보의 분포 차이를 t 이하로 하여 추론을 방지한다.</span></label></li><li><label><input type="radio" name="q27" value="3"><span class="mk">④</span><span class="tx">m-유일성 : 모든 레코드의 값을 m개의 동일한 값으로 통일하는 모델이다.</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — m-유일성은 레코드 값을 통일하는 모델이 아니다. k-익명성·l-다양성·t-근접성·m-유일성은 비식별 조치의 적정성 평가에 활용되는 프라이버시 보호 모델들로, 적정성 평가 시에는 주로 k-익명성을 활용한다.<span class="ex-ref ">근거 · 책 1-69</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-69쪽</summary><div class="cbody"><p class="ct"><b><span class="num">06</span> 개인정보 비식별화</b></p>
+
+<p class="ct"><b>1) 개인정보 비식별화의 개요</b></p>
+<p class="ct"><b>① 비식별 정보</b></p>
+<ul class="dash">
+  <li>정보의 집합물에 대해 「개인정보 비식별 조치 가이드라인」에 따라 적정하게 ‘비식별 조치’된 정보를 말한다.</li>
+</ul>
+<p class="ct"><b>② 비식별 조치</b></p>
+<ul class="dash">
+  <li>정보의 집합물에서 <mark>개인을 식별할 수 있는 요소를 전부 또는 일부 삭제하거나 대체</mark> 등의 방법을 통해 개인을 알아볼 수 없도록 하는 조치를 말한다.</li>
+</ul>
+<aside class="note">익명 데이터는 데이터를 수집하는 단계에서 특정 개인을 식별할 수 없는 형태로 수집하는 것으로 비식별 정보와는 특성이 다르다.</aside>
+<p class="ct"><b>③ 비식별 정보의 활용</b></p>
+<ul class="dash">
+  <li>비식별 정보는 개인정보가 아닌 정보로 추정되므로 정보주체로부터의 별도 동의없이 해당 정보를 이용하거나 제3자에게 제공할 수 있다.
+    <ul class="dash2"><li>다만, 불특정 다수에게 공개되는 경우에는 다른 정보를 보유하고 있는 누군가에 의해 해당 정보주체가 식별될 가능성이 있으므로 비식별 정보의 공개는 원칙적으로 금지된다.</li></ul></li>
+</ul>
+<p class="ct"><b>④ 비식별 정보의 보호</b></p>
+<ul class="dash">
+  <li>비식별 정보는 개인정보가 아닌 것으로 추정되지만, 새로운 결합 기술이 나타나거나 결합 가능한 정보가 증가하는 경우 정보주체가 ‘재식별’될 가능성이 있다.</li>
+  <li>비식별 정보를 처리하는 자(비식별 정보를 제공받은 자 포함)가 해당 정보를 이용하는 과정에서 재식별하게 된 경우에는 해당 정보를 즉시 처리중지하고 파기하여야 한다.</li>
+  <li>비식별 정보라고 하더라도 필수적인 관리적 · 기술적 보호조치는 이행해야 한다.</li>
+</ul>
+
+<p class="ct"><b>2) 개인정보 비식별화 조치 가이드라인</b></p>
+<p>데이터 이용 과정에서 개인정보 침해 · 방지를 위해 개인정보를 비식별 조치하는 절차 및 방법에 대한 가이드라인으로, 개인정보를 비식별 조치하여 이용 또는 제공하려는 사업자 등이 준수하여야 할 기준을 제시한다.</p>
+<p class="ct"><b>① 개인정보 비식별화 조치 가이드라인의 추진배경</b></p>
+<ul class="dash">
+  <li>정부 3.0 및 빅데이터 활용 확산에 따른 데이터 활용가치가 증대되고 있다.</li>
+  <li>개인정보 보호 강화에 대한 사회적 요구가 지속되고 있다.</li>
+</ul>
+<aside class="note">통계법 등 관련법령에 따라 개인정보를 수집 · 이용하는 경우에는 당해 법령에 따라 처리해야 한다.</aside>
+<p class="ct"><b>② 개인정보 비식별화 조치 가이드라인의 단계별 조치사항</b></p>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:120px">단계</th><th>조치사항</th><th style="width:190px">데이터</th></tr>
+  <tr><td class="h">사전 검토</td><td>개인정보에 해당하는지 여부를 검토한 후, 개인정보가 아닌 것이 명백한 경우 법적 규제 없이 자유롭게 활용</td><td>개인정보, 식별정보</td></tr>
+  <tr><td class="h">비식별 조치</td><td>정보 집합물(데이터 셋)에서 개인을 식별할 수 있는 요소를 전부 또는 일부 삭제하거나 대체하는 등의 방법을 활용, 개인을 알아볼 수 없도록 하는 조치</td><td>가명, 총계, 삭제,<br>범주화, 마스킹</td></tr>
+  <tr><td class="h">적정성 평가</td><td>다른 정보와 쉽게 결합하여 개인을 식별할 수 있는지를 「비식별 조치 적정성 평가단」을 통해 평가</td><td>k-익명성, l-다양성,<br>t-근접성, m-유일성</td></tr>
+  <tr><td class="h">사후 관리</td><td>비식별 정보 안전조치, 재식별 가능성 모니터링 등 비식별 정보 활용 과정에서 재식별 방지를 위해 필요한 조치 수행</td><td>관리적/기술적 보호조치</td></tr>
+</table>
+</div>
+<aside class="note">
+  <b>k-익명성</b><br>동일한 값을 가진 레코드를 k개 이상으로 하여 특정 개인을 식별할 확률을 1/k로 함
+  <hr><b>l-다양성</b><br>각 레코드는 최소 l개 이상의 다양성을 가지도록 하여 동질성 또는 배경지식 등에 의한 추론을 방지
+  <hr><b>t-근접성</b><br>전체 데이터 집합의 정보 분포와 특정 정보의 분포 차이를 t 이하로 하여 추론 방지
+  <hr><b>m-유일성</b><br>비식별 데이터셋의 속성을 조합했을 때 동일한 값을 m개 이상으로 하여 추론 방지
+</aside></div></details></section>
+<section class="ex-q" id="q28" data-ans="3" data-area="빅데이터 기술 및 제도" data-subj="2"><div class="ex-qh"><span class="ex-no">28.</span><span class="ex-tags"><span>빅데이터 기술 및 제도</span><span class="lv-보통">보통</span><span>부정형</span></span></div><div class="ex-body">비식별 조치 적정성 평가에 대한 설명으로 옳지 않은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q28" value="0"><span class="mk">①</span><span class="tx">비식별 조치가 충분하지 않으면 다른 정보와의 결합·추론으로 개인이 식별될 우려가 있어 평가가 필요하다.</span></label></li><li><label><input type="radio" name="q28" value="1"><span class="mk">②</span><span class="tx">개인정보 보호책임자 책임 하에 평가단을 구성한다.</span></label></li><li><label><input type="radio" name="q28" value="2"><span class="mk">③</span><span class="tx">외부전문가가 참여하는 「비식별 조치 적정성 평가단」을 구성한다.</span></label></li><li><label><input type="radio" name="q28" value="3"><span class="mk">④</span><span class="tx">적정성 평가는 내부 직원만으로 비공개 수행해야 한다.</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — 적정성 평가는 개인정보 보호책임자 책임 하에 <b>외부전문가가 참여하는</b> 평가단을 구성하여 개인식별 가능성을 엄격하게 평가한다. 내부 직원만으로 수행하는 것이 아니다.<span class="ex-ref ">근거 · 책 1-70</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-70쪽</summary><div class="cbody"><p class="ct"><b>③ 개인정보 비식별화 조치 가이드라인의 단계별 조치 기준</b></p>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:110px">단계</th><th>기준</th></tr>
+  <tr><td class="h">사전<br>검토</td><td>〈개인정보 해당 여부 검토〉<ul class="dash"><li>빅데이터 분석 등을 위해 정보를 처리하려는 사업자 등은 해당 정보가 개인정보인지 여부에 대해 개인정보 해당 여부 판단 기준을 참조하여 판단</li><li>해당 정보가 개인정보에 해당하지 않는 것이 명백한 경우에는 별도 조치 없이 빅데이터 분석 등에 활용 가능하고, 해당한다고 판단되는 경우 다음 단계의 조치 필요</li></ul></td></tr>
+  <tr><td class="h">비식별<br>조치</td><td>〈비식별 조치기법 적용〉<ul class="dash"><li>식별자(Identifier) 조치 기준
+    <ul class="dash2"><li>정보 집합물에 포함된 식별자는 원칙적으로 삭제 조치</li><li>데이터 이용 목적상 반드시 필요한 식별자는 비식별 조치 후 활용</li></ul></li>
+    <li>속성자(Attribute value) 조치 기준
+    <ul class="dash2"><li>정보 집합물에 포함된 속성자도 데이터 이용 목적과 관련이 없는 경우에는 원칙적으로 삭제</li><li>데이터 이용 목적과 관련이 있는 속성자 중 식별요소가 있는 경우에는 가명처리, 총계처리 등의 기법을 활용하여 비식별 조치 필요</li><li>희귀병명, 희귀경력 등의 속성자는 구체적인 상황에 따라 개인 식별 가능성이 매우 높으므로 엄격한 비식별 조치 필요</li></ul></li></ul></td></tr>
+  <tr><td class="h">적정성<br>평가</td><td>〈k-익명성 모델 활용〉<ul class="dash"><li>적정성 평가 필요성
+    <ul class="dash2"><li>비식별 조치가 충분하지 않은 경우 공개 정보 등 다른 정보와의 결합, 다양한 추론 기법 등을 통해 개인이 식별될 우려</li><li>개인정보 보호책임자 책임 하에 외부전문가가 참여하는 「비식별 조치 적정성 평가단」을 구성, 개인식별 가능성에 대한 엄격한 평가 필요</li><li>적정성 평가 시 프라이버시 보호 모델 중 k-익명성을 활용</li><li>k-익명성은 최소한의 평가수단이며, 필요시 추가적인 평가모델(l-다양성, t-근접성) 활용</li></ul></li>
+    <li>적정성 평가 절차
+    <ul class="dash2"><li>기초자료 작성 : 개인정보처리자는 적정성 평가에 필요한 데이터 명세, 비식별 조치현황, 이용기관의 관리 수준 등 기초자료 작성</li><li>평가단 구성 : 개인정보 보호책임자가 3명 이상으로 평가단을 구성 (외부전문가는 과반수 이상)</li><li>평가 수행 : 평가단은 개인정보처리자가 작성한 기초자료와 k-익명성 모델을 활용하여 비식별 조치 수준의 적정성을 평가</li><li>추가 비식별 조치 : 개인정보처리자는 평가결과가 ‘부적정’인 경우 평가단의 의견을 반영하여 추가적인 비식별 조치 수행</li><li>데이터 활용 : 비식별 조치가 적정하다고 평가 받은 경우에는 빅데이터 분석 등에 이용 또는 제공이 허용</li></ul></li></ul></td></tr>
+  <tr><td class="h">사후<br>관리</td><td>〈비식별 정보 안전 조치〉<ul class="dash"><li>비식별 조치된 정보가 유출되는 경우 다른 정보와 결합하여 식별될 우려가 있으므로 필수적인 보호조치 이행
+    <ul class="dash2"><li>관리적 보호조치 : 비식별 정보파일에 대한 관리 담당자 지정, 비식별 조치 관련 정보공유 금지, 이용 목적 달성시 파기 등의 조치 필요</li><li>기술적 보호조치 : 비식별 정보파일에 대한 접근통제, 접속기록 관리, 보안 프로그램 설치 · 운영 등의 조치 필요</li></ul></li>
+    <li>비식별 정보 유출 시 보호조치
+    <ul class="dash2"><li>유출 원인 분석 및 추가 유출 방지를 위한 관리적 · 기술적 보호조치</li><li>유출된 비식별 정보의 회수 · 파기</li></ul></li></ul>
+    〈재식별 가능성 모니터링〉<ul class="dash"><li>비식별 정보를 이용하거나 제3자에게 제공하려는 사업자 등은 해당 정보의 재식별 가능성을 정기적으로 모니터링 필요</li><li>모니터링 결과, 다음의 점검 항목 중 어느 하나에 해당되는 경우에는 추가적인 비식별 조치 강구</li><li>비식별 정보를 제공 · 위탁한 자가 재식별 가능성을 발견한 경우에는 이를 즉시 그 정보를 처리하고 있는 자에게 통지하고 처리 중단 요구 및 해당 정보를 회수 · 파기하는 등 조치 필요</li></ul>
+    〈비식별 정보 제공 및 위탁계약 시 준수사항〉<ul class="dash"><li>비식별된 정보를 제3의 기관에 제공하거나, 처리 위탁하는 경우 재식별 위험관리에 관한 내용을 계약서에 포함
+    <ul class="dash2"><li>재식별 금지 : 비식별 정보를 제공받거나 처리를 위탁 받은 사업자 등은 다른 정보와 결합을 통해 재식별 시도가 금지됨을 명시</li><li>재제공 또는 재위탁 제한 : 비식별 정보를 제공하거나 처리를 위탁하는 자는 재제공 또는 재위탁 가능 범위를 정하여 계약서에 명시</li><li>재식별 위험 시 통지 : 재식별이 되거나 그 가능성이 높아지는 상황이 발생한 경우에는 데이터 처리 중지 및 비식별 정보 제공자 또는 위탁자에게 통지 의무 등 명시</li></ul></li></ul>
+    〈재식별 시 조치요령〉<ul class="dash"><li>비식별 정보가 재식별된 경우에는 신속하게 그 정보의 처리를 중단하고 해당 개인정보가 유출되지 않도록 조치 필요</li><li>재식별된 정보는 즉시 파기 조치하되, 해당 정보를 다시 활용하려면 비식별 조치 절차 다시 수행</li></ul></td></tr>
+</table>
+</div></div></details></section>
+<section class="ex-q" id="q29" data-ans="3" data-area="빅데이터 기술 및 제도" data-subj="2"><div class="ex-qh"><span class="ex-no">29.</span><span class="ex-tags"><span>빅데이터 기술 및 제도</span><span class="lv-보통">보통</span><span>부정형</span></span></div><div class="ex-body">"신용정보"와 "개인신용정보"에 대한 설명으로 옳지 않은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q29" value="0"><span class="mk">①</span><span class="tx">신용정보는 금융거래 등 상거래에서 거래 상대방의 신용을 판단할 때 필요한 정보다.</span></label></li><li><label><input type="radio" name="q29" value="1"><span class="mk">②</span><span class="tx">개인신용정보는 신용정보 중 개인의 신용도와 신용거래능력 등을 판단할 때 필요한 정보다.</span></label></li><li><label><input type="radio" name="q29" value="2"><span class="mk">③</span><span class="tx">개인신용정보는 기업 및 법인에 관한 정보를 제외한 살아 있는 개인에 관한 정보다.</span></label></li><li><label><input type="radio" name="q29" value="3"><span class="mk">④</span><span class="tx">기업의 재무제표도 개인신용정보에 해당한다.</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — 개인신용정보는 <b>기업·법인에 관한 정보를 제외한</b> 살아 있는 개인에 관한 정보로서, 신용정보주체의 거래내용·신용도·신용거래능력 등과 결합되는 경우에만 해당한다. 기업 재무제표는 개인신용정보가 아니다.<span class="ex-ref ">근거 · 책 1-65</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-65쪽</summary><div class="cbody"><p class="ct"><b>⑥ 비식별 개인정보의 이전</b></p>
+<ul class="dash">
+  <li>정보주체 또는 제3자의 이익을 부당하게 침해할 우려가 있는 경우는 제외한다.</li>
+  <li>통계작성 및 학술연구 등의 목적을 위하여 필요한 경우로서 ‘특정 개인을 알아볼 수 없는 형태로 개인정보’를 제공할 수 있도록 규정하고 있다<span class="cite">(개인정보보호법 제18조 제2항 제4호)</span>.</li>
+  <li>데이터 제공이 목적에 부합하는지, 특정 개인을 알아볼 수 없는 형태로 제공하는지에 대해 사전에 검토하여야 한다.</li>
+</ul>
+
+<p class="ct"><b>2) 정보통신망 이용촉진 및 정보보호 등에 관한 법률(정보통신망법)</b></p>
+<p class="ct"><b>① 정보통신망법의 개요</b></p>
+<ul class="dash">
+  <li>정보통신망의 개발과 보급 등 이용 촉진과 함께 통신망을 통해 활용되고 있는 정보보호에 관해 규정한 법률이다.</li>
+  <li>이용자의 동의를 받지 않고 개인정보를 수집하거나 제3자에게 개인정보를 제공한 경우, 법정대리인의 동의 없이 만 14세 미만의 아동의 개인정보를 수집한 경우, 악성프로그램을 전달 또는 유포한 경우 등은 5년 이하의 징역 또는 5,000만 원 이하의 벌금에 처해진다.</li>
+</ul>
+<p class="ct"><b>② 개인정보의 처리 위탁</b></p>
+<ul class="dash">
+  <li>원칙적으로는 개인정보 처리위탁을 받는 자, 개인정보 처리위탁을 하는 업무의 내용을 이용자에게 알리고 동의를 받아야 한다.</li>
+  <li>단, 정보통신서비스 제공자 등은 정보통신서비스의 제공에 관한 계약을 이행하고 이용자의 편의 증진 등을 위하여 필요한 경우에는 고지절차와 동의절차를 거치지 않고, 이용자에게 이에 관해 알리거나 개인정보 처리방침 등에 이를 공개할 수 있다<span class="cite">(정보통신망법 제25조 제2항)</span>.</li>
+  <li>만일 제3자에게 데이터 분석을 위탁할 경우, 해당 서비스가 정보통신서비스 제공에 관한 계약을 이행하고 이용자의 편의 증진을 위한 것인지 검토해야 한다.</li>
+</ul>
+
+<p class="ct"><b>3) 신용정보의 이용 및 보호에 관한 법률(신용정보보호법)</b></p>
+<p class="ct"><b>① 신용정보보호법의 개요</b></p>
+<ul class="dash">
+  <li>개인신용정보를 신용정보회사 등에게 제공하고자 하는 경우에 해당 개인으로부터 서면 또는 공인전자서명이 있는 전자문서에 의한 동의 등을 얻어야 한다.</li>
+  <li>신용정보주체는 신용정보회사 등이 본인에 관한 신용정보를 제공하는 때에는 제공받은 자, 그 이용 목적, 제공한 본인정보의 주요 내용 등을 통보하도록 요구하거나 인터넷을 통하여 조회할 수 있도록 요구할 수 있다.</li>
+  <li>신용정보회사 등이 보유하고 있는 본인정보의 제공 또는 열람을 청구할 수 있고, 사실과 다른 경우에는 정정을 청구할 수 있다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q30" data-ans="1" data-area="빅데이터 기술 및 제도" data-subj="2"><div class="ex-qh"><span class="ex-no">30.</span><span class="ex-tags"><span>빅데이터 기술 및 제도</span><span class="lv-보통">보통</span><span>사례적용</span></span></div><div class="ex-body">설문 응답자의 전화번호 뒷자리를 "010-1234-56**" 처럼 일부 기호로 가리는 비식별 기법은?</div><ul class="ex-opts"><li><label><input type="radio" name="q30" value="0"><span class="mk">①</span><span class="tx">총계처리</span></label></li><li><label><input type="radio" name="q30" value="1"><span class="mk">②</span><span class="tx">데이터 마스킹</span></label></li><li><label><input type="radio" name="q30" value="2"><span class="mk">③</span><span class="tx">데이터 삭제</span></label></li><li><label><input type="radio" name="q30" value="3"><span class="mk">④</span><span class="tx">휴리스틱 가명화</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — 식별 요소의 전부 또는 일부를 *, ○ 같은 기호로 가리는 기법은 <b>데이터 마스킹</b>이다. 총계처리는 통계값으로 대체, 데이터 삭제는 값 자체를 제거, 휴리스틱 가명화는 정해진 규칙·판단으로 다른 값으로 대체하는 기법이다.<span class="ex-ref ">근거 · 책 1-70</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-70쪽</summary><div class="cbody"><p class="ct"><b>③ 개인정보 비식별화 조치 가이드라인의 단계별 조치 기준</b></p>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:110px">단계</th><th>기준</th></tr>
+  <tr><td class="h">사전<br>검토</td><td>〈개인정보 해당 여부 검토〉<ul class="dash"><li>빅데이터 분석 등을 위해 정보를 처리하려는 사업자 등은 해당 정보가 개인정보인지 여부에 대해 개인정보 해당 여부 판단 기준을 참조하여 판단</li><li>해당 정보가 개인정보에 해당하지 않는 것이 명백한 경우에는 별도 조치 없이 빅데이터 분석 등에 활용 가능하고, 해당한다고 판단되는 경우 다음 단계의 조치 필요</li></ul></td></tr>
+  <tr><td class="h">비식별<br>조치</td><td>〈비식별 조치기법 적용〉<ul class="dash"><li>식별자(Identifier) 조치 기준
+    <ul class="dash2"><li>정보 집합물에 포함된 식별자는 원칙적으로 삭제 조치</li><li>데이터 이용 목적상 반드시 필요한 식별자는 비식별 조치 후 활용</li></ul></li>
+    <li>속성자(Attribute value) 조치 기준
+    <ul class="dash2"><li>정보 집합물에 포함된 속성자도 데이터 이용 목적과 관련이 없는 경우에는 원칙적으로 삭제</li><li>데이터 이용 목적과 관련이 있는 속성자 중 식별요소가 있는 경우에는 가명처리, 총계처리 등의 기법을 활용하여 비식별 조치 필요</li><li>희귀병명, 희귀경력 등의 속성자는 구체적인 상황에 따라 개인 식별 가능성이 매우 높으므로 엄격한 비식별 조치 필요</li></ul></li></ul></td></tr>
+  <tr><td class="h">적정성<br>평가</td><td>〈k-익명성 모델 활용〉<ul class="dash"><li>적정성 평가 필요성
+    <ul class="dash2"><li>비식별 조치가 충분하지 않은 경우 공개 정보 등 다른 정보와의 결합, 다양한 추론 기법 등을 통해 개인이 식별될 우려</li><li>개인정보 보호책임자 책임 하에 외부전문가가 참여하는 「비식별 조치 적정성 평가단」을 구성, 개인식별 가능성에 대한 엄격한 평가 필요</li><li>적정성 평가 시 프라이버시 보호 모델 중 k-익명성을 활용</li><li>k-익명성은 최소한의 평가수단이며, 필요시 추가적인 평가모델(l-다양성, t-근접성) 활용</li></ul></li>
+    <li>적정성 평가 절차
+    <ul class="dash2"><li>기초자료 작성 : 개인정보처리자는 적정성 평가에 필요한 데이터 명세, 비식별 조치현황, 이용기관의 관리 수준 등 기초자료 작성</li><li>평가단 구성 : 개인정보 보호책임자가 3명 이상으로 평가단을 구성 (외부전문가는 과반수 이상)</li><li>평가 수행 : 평가단은 개인정보처리자가 작성한 기초자료와 k-익명성 모델을 활용하여 비식별 조치 수준의 적정성을 평가</li><li>추가 비식별 조치 : 개인정보처리자는 평가결과가 ‘부적정’인 경우 평가단의 의견을 반영하여 추가적인 비식별 조치 수행</li><li>데이터 활용 : 비식별 조치가 적정하다고 평가 받은 경우에는 빅데이터 분석 등에 이용 또는 제공이 허용</li></ul></li></ul></td></tr>
+  <tr><td class="h">사후<br>관리</td><td>〈비식별 정보 안전 조치〉<ul class="dash"><li>비식별 조치된 정보가 유출되는 경우 다른 정보와 결합하여 식별될 우려가 있으므로 필수적인 보호조치 이행
+    <ul class="dash2"><li>관리적 보호조치 : 비식별 정보파일에 대한 관리 담당자 지정, 비식별 조치 관련 정보공유 금지, 이용 목적 달성시 파기 등의 조치 필요</li><li>기술적 보호조치 : 비식별 정보파일에 대한 접근통제, 접속기록 관리, 보안 프로그램 설치 · 운영 등의 조치 필요</li></ul></li>
+    <li>비식별 정보 유출 시 보호조치
+    <ul class="dash2"><li>유출 원인 분석 및 추가 유출 방지를 위한 관리적 · 기술적 보호조치</li><li>유출된 비식별 정보의 회수 · 파기</li></ul></li></ul>
+    〈재식별 가능성 모니터링〉<ul class="dash"><li>비식별 정보를 이용하거나 제3자에게 제공하려는 사업자 등은 해당 정보의 재식별 가능성을 정기적으로 모니터링 필요</li><li>모니터링 결과, 다음의 점검 항목 중 어느 하나에 해당되는 경우에는 추가적인 비식별 조치 강구</li><li>비식별 정보를 제공 · 위탁한 자가 재식별 가능성을 발견한 경우에는 이를 즉시 그 정보를 처리하고 있는 자에게 통지하고 처리 중단 요구 및 해당 정보를 회수 · 파기하는 등 조치 필요</li></ul>
+    〈비식별 정보 제공 및 위탁계약 시 준수사항〉<ul class="dash"><li>비식별된 정보를 제3의 기관에 제공하거나, 처리 위탁하는 경우 재식별 위험관리에 관한 내용을 계약서에 포함
+    <ul class="dash2"><li>재식별 금지 : 비식별 정보를 제공받거나 처리를 위탁 받은 사업자 등은 다른 정보와 결합을 통해 재식별 시도가 금지됨을 명시</li><li>재제공 또는 재위탁 제한 : 비식별 정보를 제공하거나 처리를 위탁하는 자는 재제공 또는 재위탁 가능 범위를 정하여 계약서에 명시</li><li>재식별 위험 시 통지 : 재식별이 되거나 그 가능성이 높아지는 상황이 발생한 경우에는 데이터 처리 중지 및 비식별 정보 제공자 또는 위탁자에게 통지 의무 등 명시</li></ul></li></ul>
+    〈재식별 시 조치요령〉<ul class="dash"><li>비식별 정보가 재식별된 경우에는 신속하게 그 정보의 처리를 중단하고 해당 개인정보가 유출되지 않도록 조치 필요</li><li>재식별된 정보는 즉시 파기 조치하되, 해당 정보를 다시 활용하려면 비식별 조치 절차 다시 수행</li></ul></td></tr>
+</table>
+</div></div></details></section>
+<section class="ex-q" id="q31" data-ans="2" data-area="데이터분석 계획" data-subj="2"><div class="ex-qh"><span class="ex-no">31.</span><span class="ex-tags"><span>데이터분석 계획</span><span class="lv-보통">보통</span><span>개념</span></span></div><div class="ex-body">사용자가 요구사항이나 데이터를 정확히 정의하기 어렵고 원천 데이터도 명확하지 않을 때, 일단 분석을 시도하고 결과를 확인하며 반복적으로 개선해 나가는 상향식 문제 해결 방식은?</div><ul class="ex-opts"><li><label><input type="radio" name="q31" value="0"><span class="mk">①</span><span class="tx">외부 참조 모델</span></label></li><li><label><input type="radio" name="q31" value="1"><span class="mk">②</span><span class="tx">폭포수 모형</span></label></li><li><label><input type="radio" name="q31" value="2"><span class="mk">③</span><span class="tx">프로토타이핑 접근법</span></label></li><li><label><input type="radio" name="q31" value="3"><span class="mk">④</span><span class="tx">비즈니스 모델 기반 발굴</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — <b>프로토타이핑 접근법</b>은 시행착오를 통해 문제 해결을 시도하는 방식으로, 완전하지는 않지만 신속하게 해결책·모형을 제시하고 이를 바탕으로 문제를 더 명확히 인식해 간다.<span class="ex-ref ">근거 · 책 1-96</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-96쪽</summary><div class="cbody"><p class="ct"><b>② 상향식 접근 방식의 등장배경</b></p>
+<ul class="dash">
+  <li>기존 하향식 접근 방식의 한계를 극복하기 위해 등장하였다.
+    <ul class="dash2">
+      <li>하향식 접근 방식은 솔루션 도출은 유효하지만 새로운 문제 탐색은 어렵다.</li>
+      <li>하향식 접근 방식은 복잡하고 다양한 환경에서 발생한 문제에는 부적합하다.</li>
+    </ul></li>
+  <li>논리적 단계별 접근법은 문제의 구조가 분명하고 이에 대한 해결책을 도출하기 위한 데이터가 분석가나 의사결정자에게 주어져 있음을 가정하고 있다.</li>
+</ul>
+<p class="ct"><b>③ 상향식 접근기반 전통적 분석 사고 극복방안</b></p>
+<ul class="dash">
+  <li>디자인 사고 접근법</li>
+</ul>
+
+<ul class="dash2" style="margin-left:14px">
+  <li>현장 관찰과 감정이입, 대상 관점으로의 전환을 수행한다.</li>
+  <li>통상적으로는 분석적으로 사물을 인식하려는 Why를 강조하나, 답을 미리 내는 것이 아니라 사물을 있는 그대로 인식하는 What 관점으로 접근한다.</li>
+  <li>객관적으로 존재하는 데이터 자체를 관찰하고 실제 행동으로 옮김으로써 대상을 좀 더 잘 이해하는 방식으로 접근한다.</li>
+</ul>
+<aside class="note">첫 단계로 감정이입(Empathize)을 특히 강조한다.</aside>
+<ul class="dash">
+  <li>비지도학습 방법에 의한 수행
+    <ul class="dash2">
+      <li>목표값을 사전에 학습하거나 정의하지 않고 데이터 자체만을 가지고 결과를 도출한다.</li>
+      <li>새로운 유형의 인사이트를 도출하기에 유용한 방식이다.</li>
+      <li>데이터 마이닝의 연관규칙분석, 군집분석이나 기술통계 및 프로파일링 등이 대표적이다.</li>
+    </ul></li>
+  <li>빅데이터 환경에서의 분석
+    <ul class="dash2">
+      <li>인과관계(Know–why)에서 상관관계(Know–affinity) 분석으로 이동하였다.</li>
+      <li>통계적 분석환경에서는 인과관계 분석을 위해 가설을 설정하고 이를 검증하기 위해 모집단으로부터 표본을 추출하여 가설검증을 하였다.</li>
+      <li>빅데이터 분석환경에서는 인과관계, 상관관계, 연관분석을 통하여 다양한 문제를 해결할 수 있다.</li>
+    </ul></li>
+</ul>
+<aside class="note">
+  비지도학습은 데이터 자체의 결합, 연관성, 유사성 등을 중심으로 데이터 상태를 표현하는 방식이다.
+  <hr>지도학습의 경우는 명확한 목적 하에 데이터를 분석한다.
+  <hr>폭포수 모형과 비슷한 하향식 접근 방식은 문제가 정형화되어 있고 문제해결을 위한 데이터가 완벽하게 존재해야만 효과적으로 사용할 수 있다.
+</aside>
+<p class="ct"><b>④ 상향식 접근 방식의 문제 해결 방법</b></p>
+<ul class="dash">
+  <li><mark>프로토타이핑 접근법</mark> : 일단 먼저 분석을 시도해 보고 그 결과를 확인하면서 반복적으로 개선해 나가는 방식이다.
+    <ul class="dash2">
+      <li>시행착오를 통하여 문제 해결을 시도하는 방식이다.</li>
+      <li>사용자가 요구사항이나 데이터를 정확히 정의하기 어렵고 원천 데이터도 명확하지 않을 때 주로 사용한다.</li>
+    </ul></li>
+</ul></div></details></section>
+<section class="ex-q" id="q32" data-ans="1" data-area="데이터분석 계획" data-subj="2"><div class="ex-qh"><span class="ex-no">32.</span><span class="ex-tags"><span>데이터분석 계획</span><span class="lv-어려움">어려움</span><span>개념</span></span></div><div class="ex-body">분석 방법론 계층 구조에서 최하위 계층인 스텝(Step)에 대한 설명으로 옳은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q32" value="0"><span class="mk">①</span><span class="tx">최상위 계층으로 여러 개의 태스크를 포함한다.</span></label></li><li><label><input type="radio" name="q32" value="1"><span class="mk">②</span><span class="tx">WBS의 워크패키지이며, 입력자료·처리 및 도구·출력자료로 구성된 단위 프로세스다.</span></label></li><li><label><input type="radio" name="q32" value="2"><span class="mk">③</span><span class="tx">소프트웨어개발생명주기(SDLC) 그 자체를 뜻한다.</span></label></li><li><label><input type="radio" name="q32" value="3"><span class="mk">④</span><span class="tx">분석 조직의 인력 구성 단위를 뜻한다.</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — 스텝은 <b>WBS(Work Breakdown Structure)의 워크패키지</b>로, 입력자료·처리 및 도구·출력자료로 구성된 단위 프로세스다. 계층 구조는 단계(Phase) → 태스크(Task) → 스텝(Step) 순으로 내려간다.<span class="ex-ref ">근거 · 책 1-99</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-99쪽</summary><div class="cbody"><ul class="dash">
+  <li>템플릿과 산출물(Templates &amp; Outputs)</li>
+  <li>어느 정도의 지식만 있으면 활용 가능한 수준의 난이도</li>
+</ul>
+<p class="ct"><b>② 분석 방법론의 생성과정(선순환 과정)</b></p>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:150px">형식화</td><td><ul class="dash"><li>개인의 암묵지가 조직의 형식지로 발전되었다.</li><li>분석가의 경험을 바탕으로 정리하여 문서화한다.</li></ul></td></tr>
+  <tr><td class="h">체계화</td><td><ul class="dash"><li>문서화한 최적화된 형식지로 전개됨으로써 방법론이 생성되었다.</li><li>문서에는 절차나 활동 및 작업, 산출물, 도구 등을 정의한다.</li></ul></td></tr>
+  <tr><td class="h">내재화</td><td><ul class="dash"><li>개인에게 전파되고 활용되어 암묵지로 발전되었다.</li><li>전파된 방법론을 학습하고 활용하여 내재화한다.</li></ul></td></tr>
+</table>
+</div>
+
+<aside class="note">분석 방법론은 일본의 경영학자 노나카 이쿠지로의 지식창조 매커니즘을 바탕으로 생성된다.</aside>
+
+<p class="ct"><b>2) 계층적 프로세스 모델 구성</b></p>
+<p>분석 방법론은 일반적으로 계층적 프로세스 모델 형태로 구성 가능하며, 단계, 태스크, 스텝 3계층으로 구성된다.</p>
+<p class="ct"><b>① 최상위 계층 – 단계(Phase)</b></p>
+<ul class="dash">
+  <li>프로세스 그룹을 통하여 완성된 단계별 산출물을 생성한다.</li>
+  <li>각 단계는 기준선으로 설정되어 관리되어야 하며 버전관리 등을 통하여 통제한다.</li>
+</ul>
+<p class="ct"><b>② 중간 계층 – 태스크(Task)</b></p>
+<ul class="dash">
+  <li>각 태스크는 단계를 구성하는 단위 활동이다.</li>
+  <li>물리적 또는 논리적 단위로 품질검토가 가능하다.</li>
+</ul>
+<p class="ct"><b>③ 최하위 계층 – 스텝(Step)</b></p>
+<ul class="dash">
+  <li>WBS(Work Breakdown Structure)의 워크패키지(Work Package)이다.</li>
+  <li>입력자료, 처리 및 도구, 출력자료로 구성된 단위 프로세스이다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q33" data-ans="3" data-area="데이터분석 계획" data-subj="2"><div class="ex-qh"><span class="ex-no">33.</span><span class="ex-tags"><span>데이터분석 계획</span><span class="lv-보통">보통</span><span>부정형</span></span></div><div class="ex-body">하향식 접근 방식과 폭포수 모형에 대한 설명으로 옳지 않은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q33" value="0"><span class="mk">①</span><span class="tx">하향식 접근은 폭포수 모형과 비슷한 성격을 가진다.</span></label></li><li><label><input type="radio" name="q33" value="1"><span class="mk">②</span><span class="tx">문제가 정형화되어 있을 때 효과적으로 사용할 수 있다.</span></label></li><li><label><input type="radio" name="q33" value="2"><span class="mk">③</span><span class="tx">문제해결을 위한 데이터가 완벽하게 존재해야 효과적이다.</span></label></li><li><label><input type="radio" name="q33" value="3"><span class="mk">④</span><span class="tx">요구사항이 불명확할수록 폭포수식 하향 접근이 유리하다.</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — 폭포수 모형과 비슷한 하향식 접근은 <b>문제가 정형화되어 있고 데이터가 완벽하게 존재</b>해야 효과적이다. 요구사항·데이터가 불명확할 때는 프로토타이핑(상향식) 방식이 적합하다.<span class="ex-ref ">근거 · 책 1-96</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-96쪽</summary><div class="cbody"><p class="ct"><b>② 상향식 접근 방식의 등장배경</b></p>
+<ul class="dash">
+  <li>기존 하향식 접근 방식의 한계를 극복하기 위해 등장하였다.
+    <ul class="dash2">
+      <li>하향식 접근 방식은 솔루션 도출은 유효하지만 새로운 문제 탐색은 어렵다.</li>
+      <li>하향식 접근 방식은 복잡하고 다양한 환경에서 발생한 문제에는 부적합하다.</li>
+    </ul></li>
+  <li>논리적 단계별 접근법은 문제의 구조가 분명하고 이에 대한 해결책을 도출하기 위한 데이터가 분석가나 의사결정자에게 주어져 있음을 가정하고 있다.</li>
+</ul>
+<p class="ct"><b>③ 상향식 접근기반 전통적 분석 사고 극복방안</b></p>
+<ul class="dash">
+  <li>디자인 사고 접근법</li>
+</ul>
+
+<ul class="dash2" style="margin-left:14px">
+  <li>현장 관찰과 감정이입, 대상 관점으로의 전환을 수행한다.</li>
+  <li>통상적으로는 분석적으로 사물을 인식하려는 Why를 강조하나, 답을 미리 내는 것이 아니라 사물을 있는 그대로 인식하는 What 관점으로 접근한다.</li>
+  <li>객관적으로 존재하는 데이터 자체를 관찰하고 실제 행동으로 옮김으로써 대상을 좀 더 잘 이해하는 방식으로 접근한다.</li>
+</ul>
+<aside class="note">첫 단계로 감정이입(Empathize)을 특히 강조한다.</aside>
+<ul class="dash">
+  <li>비지도학습 방법에 의한 수행
+    <ul class="dash2">
+      <li>목표값을 사전에 학습하거나 정의하지 않고 데이터 자체만을 가지고 결과를 도출한다.</li>
+      <li>새로운 유형의 인사이트를 도출하기에 유용한 방식이다.</li>
+      <li>데이터 마이닝의 연관규칙분석, 군집분석이나 기술통계 및 프로파일링 등이 대표적이다.</li>
+    </ul></li>
+  <li>빅데이터 환경에서의 분석
+    <ul class="dash2">
+      <li>인과관계(Know–why)에서 상관관계(Know–affinity) 분석으로 이동하였다.</li>
+      <li>통계적 분석환경에서는 인과관계 분석을 위해 가설을 설정하고 이를 검증하기 위해 모집단으로부터 표본을 추출하여 가설검증을 하였다.</li>
+      <li>빅데이터 분석환경에서는 인과관계, 상관관계, 연관분석을 통하여 다양한 문제를 해결할 수 있다.</li>
+    </ul></li>
+</ul>
+<aside class="note">
+  비지도학습은 데이터 자체의 결합, 연관성, 유사성 등을 중심으로 데이터 상태를 표현하는 방식이다.
+  <hr>지도학습의 경우는 명확한 목적 하에 데이터를 분석한다.
+  <hr>폭포수 모형과 비슷한 하향식 접근 방식은 문제가 정형화되어 있고 문제해결을 위한 데이터가 완벽하게 존재해야만 효과적으로 사용할 수 있다.
+</aside>
+<p class="ct"><b>④ 상향식 접근 방식의 문제 해결 방법</b></p>
+<ul class="dash">
+  <li><mark>프로토타이핑 접근법</mark> : 일단 먼저 분석을 시도해 보고 그 결과를 확인하면서 반복적으로 개선해 나가는 방식이다.
+    <ul class="dash2">
+      <li>시행착오를 통하여 문제 해결을 시도하는 방식이다.</li>
+      <li>사용자가 요구사항이나 데이터를 정확히 정의하기 어렵고 원천 데이터도 명확하지 않을 때 주로 사용한다.</li>
+    </ul></li>
+</ul></div></details></section>
+<section class="ex-q" id="q34" data-ans="2" data-area="데이터분석 계획" data-subj="2"><div class="ex-qh"><span class="ex-no">34.</span><span class="ex-tags"><span>데이터분석 계획</span><span class="lv-쉬움">쉬움</span><span>개념</span></span></div><div class="ex-body">마케팅, 소비자 인사이트, 제품 개발 등의 목적으로 사용되는 질적 데이터 수집 방법으로, 소수의 대상자를 모아 집단 면접으로 의견을 수집하는 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q34" value="0"><span class="mk">①</span><span class="tx">OLAP</span></label></li><li><label><input type="radio" name="q34" value="1"><span class="mk">②</span><span class="tx">WBS</span></label></li><li><label><input type="radio" name="q34" value="2"><span class="mk">③</span><span class="tx">FGI(Focus Group Interview)</span></label></li><li><label><input type="radio" name="q34" value="3"><span class="mk">④</span><span class="tx">ETL</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — <b>FGI</b>는 마케팅·소비자 인사이트·제품 개발·서비스 향상 등의 목적으로 사용되는 질적 연구 방법의 하나다. 설문조사·관찰 등과 함께 데이터 수집 방법으로 분류된다.<span class="ex-ref ">근거 · 책 1-131</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-131쪽</summary><div class="cbody"><p class="ct"><b>⑦ <mark>데이터 수집 방법</mark></b></p>
+
+<aside class="note"><b class="star-b">★ FGI</b><br>일반적으로 마케팅, 소비자 인사이트, 제품 개발, 서비스 향상 등의 목적으로 사용되는 질적 연구 방법 중 하나</aside>
+
+<ul class="dash">
+  <li>설문조사 : 설문조사는 사람들의 의견이나 행동에 대한 데이터를 수집하는 일반적인 방법으로 온라인 설문지, 전화 인터뷰, 직접 면접 등의 형태로 진행될 수 있으며, 개별 질문이나 척도를 사용하여 응답자의 의견을 수집한다.</li>
+  <li>관찰 : 관찰은 사람들의 행동, 사건 또는 상황을 직접 관찰하여 데이터를 수집하는 방법이다. 관찰은 실시간 또는 사전에 녹화된 비디오 또는 사진 등을 통해 이루어질 수 있으며, 이 방법은 사람들의 실제 행동을 측정하고 분석할 때 유용하다.</li>
+  <li>실험 : 실험은 특정 가설을 검증하기 위해 조작된 조건에서 데이터를 수집한다. 실험은 종종 실험 그룹과 대조 그룹으로 나뉘며, 서로 다른 처리를 받는 조건에서 차이를 비교하여 결과를 분석한다.</li>
+  <li>웹 크롤링 : 웹 크롤링은 웹 페이지를 자동으로 탐색하고 데이터를 추출하는 과정이다. 웹 크롤러는 웹사이트에서 정보를 수집하고, 텍스트, 이미지, 링크 등을 추출하여 분석한다.</li>
+  <li>소셜 미디어 분석 : 소셜 미디어 플랫폼에서 제공되는 데이터를 활용하여 트렌드, 의견, 감성 등을 분석하는 방법이다. 특정 키워드, 해시태그, 사용자 활동 등을 모니터링하여 데이터를 수집하고 분석할 수 있다.</li>
+  <li>데이터베이스 및 기존 데이터 활용 : 공공 데이터베이스, 기업 내부 데이터베이스, 과거 연구 등을 활용하여 데이터를 수집하고 분석할 수 있다.</li>
+  <li>FGI<sup class="star">★</sup>(Focused Group Interview, 집단면접) : FGI는 작은 그룹의 참가자들을 모아 집단적인 토론을 통해 의견과 경험을 수집하는 방법으로 일반적으로 6~12명의 참가자로 구성된 집단이 모여 진행되며, 주제와 관련된 질문들이 제시되어 참가자들은 서로의 의견을 나누고 토론한다. 이러한 토론은 구성원 간의 상호작용과 아이디어 교환을 통해 보다 깊은 인사이트를 얻을 수 있도록 도와준다.</li>
+  <li>스크래퍼(Scraper) : 스크래퍼는 웹 스크래핑(Web Scraping)을 수행하는 프로그램이나 도구이다. 웹 스크래핑은 웹 페이지의 내용을 자동으로 추출하여 데이터를 수집하는 과정이며, 스크래퍼는 웹사이트의 HTML 구조를 분석하고 필요한 정보를 추출하는 기능을 가진다.</li>
+</ul>
+
+<p class="ct"><b>2) 분석에 필요한 변수 정의</b></p>
+<p>데이터 분석 요건에 따라 도출된 활용 시나리오에 적합한 데이터의 유형 및 분석 변수를 정의한다.</p>
+
+<p class="ct"><b>① 데이터 수집 기획</b></p>
+<ul class="dash">
+  <li>데이터 수집 기법을 활용하여 필요 데이터를 배치 자동화로 수집한다.
+    <ul class="dash2">
+      <li>데이터 수집 타깃 시스템 또는 사이트를 선별한다.</li>
+      <li>수집 대상 화면, 텍스트를 위해 인덱스 생성을 기획한다.</li>
+      <li>대상 시스템별 데이터 수집을 위한 크롤러를 준비하고 저장소를 기획한다.</li>
+      <li>크롤링 주기, 대상 범위를 확정하고 데이터 수집을 기획한다.</li>
+    </ul></li>
+</ul></div></details></section>
+<section class="ex-q" id="q35" data-ans="1" data-area="데이터분석 계획" data-subj="2"><div class="ex-qh"><span class="ex-no">35.</span><span class="ex-tags"><span>데이터분석 계획</span><span class="lv-보통">보통</span><span>개념</span></span></div><div class="ex-body">난이도-시급성 포트폴리오에서 적용 우선순위 기준을 난이도에 둘 경우의 순서로 옳은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q35" value="0"><span class="mk">①</span><span class="tx">III → IV → I → II</span></label></li><li><label><input type="radio" name="q35" value="1"><span class="mk">②</span><span class="tx">III → I → IV → II</span></label></li><li><label><input type="radio" name="q35" value="2"><span class="mk">③</span><span class="tx">I → III → II → IV</span></label></li><li><label><input type="radio" name="q35" value="3"><span class="mk">④</span><span class="tx">II → I → IV → III</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — 기준을 <b>난이도</b>에 두면 III → I → IV → II 순이다. (시급성 기준이면 III → IV → I → II) 가장 우선 적용할 영역은 3사분면(III), 우선순위가 낮은 영역은 2사분면(II)이다.<span class="ex-ref ">근거 · 책 1-88</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-88쪽</summary><div class="cbody"><ul class="dash">
+  <li>조직의 상황에 따라 난이도를 조율한다.
+    <ul class="dash2">
+      <li>분석 준비도와 성숙도 진단 결과를 활용해 조직의 분석 수준을 파악한다.</li>
+      <li>파악된 수준을 기초로 하여 적용 범위와 수행 방법별 난이도를 조정한다.</li>
+    </ul></li>
+</ul>
+
+<p class="ct"><b>3) 분석 과제 우선순위 선정 및 조정</b></p>
+<p class="ct"><b>① 포트폴리오 사분면 분석 기법 활용 : 난이도와 시급성을 기준으로 분석 과제 유형을 분류하여 4분면에 배치한다.</b></p>
+
+<aside class="note">왼쪽 상단이 1사분면이다.</aside>
+<p class="ct"><b>② 매트릭스 내 분석 과제 우선순위 선정</b></p>
+<ul class="dash">
+  <li>가장 우선적으로 분석 과제 적용이 필요한 영역은 3사분면(III 영역)이다.</li>
+  <li>우선순위가 낮은 영역은 2사분면(II 영역)이다.</li>
+  <li>적용 우선순위 기준을 시급성에 둘 경우 순서 : III → IV → I → II 영역</li>
+  <li>적용 우선순위 기준을 난이도에 둘 경우 순서 : III → I → IV → II 영역</li>
+</ul>
+<aside class="note">
+  Investment는 난이도를 결정하고, Return은 시급성을 결정한다.
+  <hr>시급성은 전략적 가치를 어느 시점에 둘 것인지 의미하므로, 난이도를 조절하지 않는다면 그 다음 가치 창출이 기대되는 III → IV 순으로 우선순위가 된다.
+  <hr>난이도는 현재 시점에서 적용 가능한지를 의미하므로, 어려운 단기 과제의 난이도를 조절하여 III → I 순으로 우선순위가 된다.
+</aside>
+<p class="ct"><b>③ 매트릭스 내 분석 과제 우선순위 조정</b></p>
+<ul class="dash">
+  <li>시급성이 높고 난이도가 높은 1사분면(I 영역)은 의사결정을 통해 적용 우선순위를 조정할 수 있다.</li>
+  <li>데이터 양과 특성, 분석 범위 등에 따라 난이도를 조율하여 적용 우선순위를 조정할 수 있다.
+    <div class="ex"><span class="ex-tag">예</span> 난이도를 조율하여 1사분면에서 3사분면으로 이동</div></li>
+</ul>
+<p class="ct"><b>④ 분석 과제 우선순위 조정 시 고려사항</b></p>
+<ul class="dash">
+  <li>기술적 요소에 따른 적용 우선순위 조정
+    <ul class="dash2">
+      <li>대용량 데이터 분석은 데이터 저장, 처리, 분석을 위한 새로운 기술 요소들로 인하여 운영중인 시스템에 영향을 줄 수 있다.</li>
+      <li>기존 시스템에 미치는 영향을 최소화하여 적용하거나 운영중인 시스템과 별도로 시행하여 난이도 조율을 통한 우선순위를 조정할 수 있다.</li>
+    </ul></li>
+  <li>분석 범위에 따른 우선순위 조정
+    <ul class="dash2">
+      <li>분석 과제의 전체 범위를 한 번에 일괄적으로 적용하여 추진할 수 있다.</li>
+      <li>분석 과제 중 일부만 PoC로 진행하고 평가 후에 범위를 확대할 수 있다.</li>
+    </ul></li>
+</ul></div></details></section>
+<section class="ex-q" id="q36" data-ans="2" data-area="데이터 수집 및 저장 계획" data-subj="2"><div class="ex-qh"><span class="ex-no">36.</span><span class="ex-tags"><span>데이터 수집 및 저장 계획</span><span class="lv-보통">보통</span><span>개념</span></span></div><div class="ex-body">데이터베이스 구조 설계 절차 4단계를 순서대로 바르게 나열한 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q36" value="0"><span class="mk">①</span><span class="tx">DBMS 설치 → DBMS 구축 여부 결정 → 테이블 구조 설계 → 저장 데이터베이스 결정</span></label></li><li><label><input type="radio" name="q36" value="1"><span class="mk">②</span><span class="tx">테이블 구조 설계 → DBMS 설치 → 저장 데이터베이스 결정 → DBMS 구축 여부 결정</span></label></li><li><label><input type="radio" name="q36" value="2"><span class="mk">③</span><span class="tx">DBMS 구축 여부 결정 → 저장 데이터베이스 결정 → DBMS 설치 → 테이블 구조 설계</span></label></li><li><label><input type="radio" name="q36" value="3"><span class="mk">④</span><span class="tx">저장 데이터베이스 결정 → 테이블 구조 설계 → DBMS 구축 여부 결정 → DBMS 설치</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — 수집 대상·데이터 속성을 파악해 <b>구축 여부를 결정</b>하고, 상용·오픈소스 DBMS를 검토해 <b>저장 데이터베이스를 결정</b>한 뒤, <b>DBMS를 설치</b>하고 속성에 따라 <b>테이블 구조를 설계</b>·생성한다.<span class="ex-ref ">근거 · 책 1-159</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-159쪽</summary><div class="cbody"><p class="ct"><b>① DBMS 구축 여부 결정</b></p>
+<ul class="dash">
+  <li>수집 대상을 확인하고, 필요 데이터의 속성을 파악하여 DBMS 구축 여부를 결정한다.</li>
+  <li>수집 데이터의 특성에 따라 저장 데이터베이스 생성 여부를 결정한다.
+    <ul class="dash2">
+      <li>수집 데이터가 정형 데이터일 경우는 수집 솔루션을 거쳐 바로 데이터베이스에 저장하지만, 그렇지 않은 경우 저장하고자 하는 데이터베이스의 종류를 선택하고 데이터에 맞게 모델링을 한다.</li>
+    </ul></li>
+  <li>저장 데이터베이스는 분석이 쉬운 RDBMS를 보편적으로 사용한다.</li>
+</ul>
+
+<p class="ct"><b>② 저장 데이터베이스 결정</b></p>
+<ul class="dash">
+  <li>다양한 상용, 비상용, 오픈소스 DBMS를 검토한다.</li>
+</ul>
+
+<p class="ct"><b>③ DBMS 설치</b></p>
+<ul class="dash">
+  <li>선택한 DBMS를 설치하고, 정상적인 설치 여부를 확인한다.</li>
+</ul>
+
+<p class="ct"><b>④ 테이블 구조 설계</b></p>
+<ul class="dash">
+  <li>필요 데이터의 속성을 구체적으로 파악한다.</li>
+  <li>속성에 따라 테이블 구조를 설계하여 테이블을 생성한다.</li>
+</ul>
+
+<p class="ct"><b>3) 비정형/반정형 데이터의 변환</b></p>
+<p>데이터 전처리나 후처리가 수행되기 전에 비정형/반정형 데이터를 구조적 형태로 전환하여 저장하는 과정이다.</p>
+
+<p class="ct"><b>① 수집 데이터의 속성 구조 파악</b></p>
+<ul class="dash">
+  <li>수집할 데이터를 파악한다.<br><span class="ex-tag">예</span> title, votes, body, tags, link 등</li>
+  <li>수집할 데이터 구조를 정의하고 적절한 변수명으로 구분한다.</li>
+</ul>
+
+<p class="ct"><b>② 데이터 수집 절차에 대한 수행 코드 정의</b></p>
+<ul class="dash">
+  <li>추출하고자 하는 정보들의 위치와 정보 구조를 파악한다.</li>
+  <li>필요 데이터를 추출한다.</li>
+</ul>
+
+<p class="ct"><b>③ 데이터 저장 프로그램 작성</b></p>
+<ul class="dash">
+  <li>생성된 데이터베이스 테이블에 수집 데이터를 저장하는 프로그램을 작성한다.</li>
+</ul>
+
+<p class="ct"><b>④ 데이터베이스에 저장</b></p>
+<ul class="dash">
+  <li>데이터베이스 테이블로 수집 데이터를 저장한다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q37" data-ans="1" data-area="데이터 수집 및 저장 계획" data-subj="2"><div class="ex-qh"><span class="ex-no">37.</span><span class="ex-tags"><span>데이터 수집 및 저장 계획</span><span class="lv-보통">보통</span><span>사례적용</span></span></div><div class="ex-body">정형 데이터 품질 기준 중 "주문일은 배송일보다 이전 시점이어야 한다", "분기 매출액은 해당 3개월 매출액의 합과 같아야 한다" 는 규칙이 검증하는 품질 요소는?</div><ul class="ex-opts"><li><label><input type="radio" name="q37" value="0"><span class="mk">①</span><span class="tx">완전성</span></label></li><li><label><input type="radio" name="q37" value="1"><span class="mk">②</span><span class="tx">정확성</span></label></li><li><label><input type="radio" name="q37" value="2"><span class="mk">③</span><span class="tx">적시성</span></label></li><li><label><input type="radio" name="q37" value="3"><span class="mk">④</span><span class="tx">일관성</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — 값들 사이의 논리 규칙(선후 관계·합계 일치)을 만족하는지는 <b>정확성</b>에 대한 검증이다. 교재의 개념 체크(학기 시작일/종료일, 분기 매출 합계)와 같은 유형이다.<span class="ex-ref ">근거 · 책 1-179</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-179쪽</summary><div class="cbody"><div class="check">
+<div class="check-head">개념 체크</div>
+<div class="q">
+  <div class="q-title"><span class="q-no">1</span> 정형 데이터 품질 기준 중에서 아래의 규칙을 만족하는 것으로 옳은 것은?</div>
+  <div class="boxlist">(가) 학기 시작일은 학기 종료일보다 이전 시점이어야 한다.<br>(나) 1분기 매출액은 1월, 2월, 3월 매출액의 합계와 같아야 한다.</div>
+  <ol class="circled q-opt">
+    <li>정확성</li>
+    <li>완전성</li>
+    <li>적시성</li>
+    <li>일관성</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ①</div>
+  <ul class="dash sol">
+    <li>데이터 품질 관리 요소 중 정확성은 데이터 값이 실제 값과 일치해야 하는 것으로 날짜의 선후 관계 정확성, 계산/집계 정확성, 최신성, 업무규칙 정확성 등을 만족해야 한다. 보기의 (가)는 선후관계 정확성, (나)는 계산집계 정확성에 대한 조건이다.</li>
+  </ul>
+</div>
+
+<div class="q">
+  <div class="q-title"><span class="q-no">2</span> 정형 데이터 품질 기준 중에서 아래의 규칙을 만족하는 것으로 옳은 것은?</div>
+  <div class="boxlist">(가) 학생의 입학년도는 2001보다 크거나 같고 2022보다 작아야 한다.<br>(나) 학생의 휴대전화 번호는 010으로 시작하는 11자리 번호이다.</div>
+  <ol class="circled q-opt">
+    <li>정확성</li>
+    <li>완전성</li>
+    <li>적시성</li>
+    <li>유효성</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ④</div>
+  <ul class="dash sol">
+    <li>데이터 품질 관리 요소 중 유효성은 데이터 항목은 정해진 데이터 유효범위 및 도메인을 충족해야 한다는 것으로 보기의 (가)는 범위 유효성, (나)는 형식 유효성에 해당한다.</li>
+  </ul>
+</div>
+
+<div class="q">
+  <div class="q-title"><span class="q-no">3</span> 다음 중 데이터 프로파일링 기법을 통해 검증할 수 있는 것으로 틀린 것은?</div>
+  <ol class="circled q-opt">
+    <li>누락된 값을 찾아낸다.</li>
+    <li>유일해야 하는 칼럼의 중복값 존재 여부를 파악한다.</li>
+    <li>연락처가 최신의 것으로 업데이트 되었는지를 파악한다.</li>
+    <li>메타데이터를 이용해 데이터 형식의 불일치를 찾아낸다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ③</div>
+  <ul class="dash sol">
+    <li>데이터 프로파일링은 데이터 품질 진단을 위한 다양한 기법을 적용하며, 데이터 누락 값, 허용범위를 벗어나는 값, 형식 위반 등의 검사를 수행한다. 다만, 현실의 데이터가 반영된 것인지에 대한 확인은 별도의 검증 방법(휴대폰 인증, 이메일 인증 등)을 제공하지 않는 이상 프로파일링 만으로 진단하기 어렵다.</li>
+  </ul>
+</div>
+</div></div></details></section>
+<section class="ex-q" id="q38" data-ans="2" data-area="데이터 수집 및 저장 계획" data-subj="2"><div class="ex-qh"><span class="ex-no">38.</span><span class="ex-tags"><span>데이터 수집 및 저장 계획</span><span class="lv-쉬움">쉬움</span><span>부정형</span></span></div><div class="ex-body">데이터 품질 관리에 대한 설명으로 옳지 않은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q38" value="0"><span class="mk">①</span><span class="tx">가치성·정확성·유용성 있는 데이터를 확보하고 신뢰성 있는 데이터를 유지하는 관리 활동이다.</span></label></li><li><label><input type="radio" name="q38" value="1"><span class="mk">②</span><span class="tx">분석 결과의 신뢰성은 분석 데이터의 신뢰성과 직접 연계된다.</span></label></li><li><label><input type="radio" name="q38" value="2"><span class="mk">③</span><span class="tx">데이터 품질은 분석 품질과 무관하므로 별도 관리가 필요 없다.</span></label></li><li><label><input type="radio" name="q38" value="3"><span class="mk">④</span><span class="tx">품질 점검 중 오류 수정이 어려우면 데이터를 재수집한다.</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — <b>분석 품질을 좌우하는 것은 데이터 품질</b>이다. 품질 보증 체계를 수립해 점검을 수행하고 결과서를 작성하며, 오류 수정이 용이하지 않으면 재수집한다.<span class="ex-ref ">근거 · 책 1-173</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-173쪽</summary><div class="cbody"><div class="q">
+  <div class="q-title"><span class="q-no">2</span> 표 D의 구분 1, 2, 3에 대한 [상태]는 비식별화 결과에 대한 취약점을 보여준다. 이를 해결하기 위한 방법으로 옳은 것은?</div>
+  <ol class="circled q-opt">
+    <li>민감한 정보 영역에서 각 그룹별로 3개 이상의 서로 다른 값을 갖도록 한다.</li>
+    <li>전체 데이터의 분포를 조정하여 특정 그룹에 유사한 질병이 나오지 않도록 한다.</li>
+    <li>질병값을 다른 질병이름으로 대체한다.</li>
+    <li>하나의 그룹에 속하는 레코드의 수를 줄인다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ②</div>
+  <ul class="dash sol">
+    <li>t-근접성은 l-다양성의 취약점(쏠림 공격, 유사성 공격)을 보완하기 위한 모델로 값의 의미를 고려하는 모델이다. 동질 집합에서 특정 정보의 분포와 전체 데이터 집합에서 정보의 분포가 t 이하의 차이를 보이도록 조정한다.</li>
+  </ul>
+</div>
+
+<div class="q">
+  <div class="q-title"><span class="q-no">3</span> 개인정보 비식별 방법 중 데이터 범주화에 대한 것으로 옳은 것은?</div>
+  <ol class="circled q-opt">
+    <li>김만수 35세, 서울 거주 → 홍길동 35세, 부산 거주</li>
+    <li>김만수 35세, 서울 거주, OO대학 재학 → 김OO 35세, 서울 거주, OO 대학 재학</li>
+    <li>장민경, 35세 → 장씨, 30~40세</li>
+    <li>주민등록번호 653889-2001232 → 65년생 여자</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ③</div>
+  <ul class="dash sol">
+    <li>① 가명 처리, ② 데이터 마스킹, ③ 데이터 범주화, ④ 데이터 삭제의 예이다.</li>
+  </ul>
+</div>
+
+
+<p class="ct"><b><span class="num">05</span> 데이터 품질 검증</b></p>
+
+<p class="ct"><b>1) 데이터 품질 관리</b></p>
+<p class="ct"><b>① 데이터 품질 관리의 정의</b></p>
+<p>비즈니스 목표에 부합한 데이터 분석을 위해 가치성, 정확성, 유용성 있는 데이터를 확보하고, 신뢰성 있는 데이터를 유지하는 데 필요한 관리 활동이다.</p>
+
+<p class="ct"><b>② 데이터 품질 관리의 중요성</b></p>
+<ul class="dash">
+  <li>분석 결과의 신뢰성은 분석 데이터의 신뢰성과 직접 연계된다.</li>
+  <li>빅데이터의 특성을 반영한 데이터 품질 관리 체계를 구축하여 효과적인 분석결과를 도출하여야 한다.</li>
+</ul>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:240px">구분</td><td class="h">내용</td></tr>
+  <tr><td>분석 결과의 신뢰성 확보</td><td>분석 품질을 좌우하는 것은 데이터 품질이다.</td></tr>
+  <tr><td>일원화된 프로세스</td><td>업무 처리, 데이터 관리의 효율화를 도모한다.</td></tr>
+  <tr><td>데이터 활용도 향상</td><td>고품질 데이터 확보로 데이터 이용률을 향상시킨다.</td></tr>
+  <tr><td>양질의 데이터 확보</td><td>불필요한 데이터 제거를 통한 고품질 데이터의 준비도를 향상시킨다.</td></tr>
+</table>
+</div></div></details></section>
+<section class="ex-q" id="q39" data-ans="1" data-area="데이터 수집 및 저장 계획" data-subj="2"><div class="ex-qh"><span class="ex-no">39.</span><span class="ex-tags"><span>데이터 수집 및 저장 계획</span><span class="lv-쉬움">쉬움</span><span>개념</span></span></div><div class="ex-body">하나의 운영환경으로부터 더 나은 운영환경으로(또는 그 반대로) 데이터를 옮기는 과정을 뜻하는 용어는?</div><ul class="ex-opts"><li><label><input type="radio" name="q39" value="0"><span class="mk">①</span><span class="tx">크롤링(Crawling)</span></label></li><li><label><input type="radio" name="q39" value="1"><span class="mk">②</span><span class="tx">마이그레이션(Migration)</span></label></li><li><label><input type="radio" name="q39" value="2"><span class="mk">③</span><span class="tx">샌드박스(Sandbox)</span></label></li><li><label><input type="radio" name="q39" value="3"><span class="mk">④</span><span class="tx">셔플(Shuffle)</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — <b>마이그레이션</b>은 운영환경 간에 데이터·시스템을 옮기는 과정이다. 크롤링은 웹 수집, 샌드박스는 보호 영역 실행, 셔플은 순서를 무작위로 섞는 알고리즘이다.<span class="ex-ref ">근거 · 책 1-151</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-151쪽</summary><div class="cbody"><aside class="note">비정형 데이터 수집 기술은 반정형 데이터에도 적용이 가능하다.<hr><b>Apache Chukwa</b><br>대규모 분산 환경에서 로그 데이터를 수집해 HDFS에 저장 · 분석하는 시스템<hr><b>카프카(Kafka), 스크라이브(Scribe)</b><br>대용량 실시간 로그 처리를 위한 분산 스트리밍 플랫폼<hr><b>마이그레이션(migration)</b><br>하나의 운영환경으로부터 더 나은 운영환경(또는 그 반대방향)으로 옮기는 과정</aside>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:110px">데이터 유형</td><td class="h" style="width:300px">데이터 수집 방식/기술</td><td class="h">설명</td></tr>
+  <tr><td class="h" rowspan="5">비정형<br>데이터</td><td>크롤링(Crawling)</td><td>인터넷상에서 제공되는 다양한 웹 사이트로부터 소셜 네트워크 정보, 뉴스, 게시판 등으로부터 웹 문서 및 정보를 수집하는 기술이다.</td></tr>
+  <tr><td>RSS(Rich Site Summary)</td><td>블로그, 뉴스, 쇼핑몰 등의 웹 사이트에 게시된 새로운 글을 공유하기 위해 XML 기반으로 정보를 배포하는 프로토콜이다.</td></tr>
+  <tr><td>Open API</td><td>응용 프로그램을 통해 실시간으로 데이터를 수신할 수 있도록 공개된 API다.</td></tr>
+  <tr><td>척와(Chukwa)</td><td>분산 시스템으로부터 데이터를 수집, 하둡 파일 시스템에 저장 실시간으로 분석할 수 있는 기능을 제공한다.</td></tr>
+  <tr><td>카프카(Kafka)</td><td>대용량 실시간 로그처리를 위한 분산 스트리밍 플랫폼 기술이다.</td></tr>
+  <tr><td class="h" rowspan="4">반정형<br>데이터</td><td>플럼(Flume)</td><td>분산 환경에서 대량의 로그 데이터를 수집 전송하고 분석하는 기능을 제공한다.</td></tr>
+  <tr><td>스크라이브(Scribe)</td><td>다수의 수집 대상 서버로부터 실시간으로 데이터를 수집, 분산 시스템에 데이터를 저장하는 기능을 제공한다.</td></tr>
+  <tr><td>센싱(Sencing)</td><td>센서로부터 수집 및 생성된 데이터를 네트워크를 통해 활용하여 수집하는 기능을 제공한다.</td></tr>
+  <tr><td>스트리밍(Streaming)<br>&#8211; TCP, UDP, Bluetooth, RFID</td><td>네트워크를 통해 센서 데이터 및 오디오, 비디오 등의 미디어 데이터를 실시간으로 수집하는 기술이다.</td></tr>
+</table>
+</div>
+
+<p class="ct"><b>② ETL(Extract Transform Load)</b></p>
+<ul class="dash">
+  <li>하나 이상의 데이터 소스로부터 데이터 웨어하우스, 데이터 마트, 데이터 통합, 데이터 이동(Migration) 등 다양한 응용시스템을 위한 데이터 구축에 필요한 핵심 기술이다.</li>
+  <li>ETL은 <mark>추출(Extract), 변환(Transform), 적재(Load)</mark>의 3단계 프로세스로 구성된다.</li>
+</ul>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:220px">프로세스</td><td class="h">설명</td></tr>
+  <tr><td>데이터 추출(Extract)</td><td>하나 또는 그 이상의 데이터 원천으로부터 데이터를 획득한다.</td></tr>
+  <tr><td>데이터 변환(Transform)</td><td>목표로 하는 형식이나 구조로 데이터를 변환한다.<br>데이터 정제, 변환, 표준화, 통합 등을 진행한다.</td></tr>
+  <tr><td>데이터 적재(Load)</td><td>변환이 완료된 데이터를 특정 목표 시스템에 저장한다.</td></tr>
+</table>
+</div></div></details></section>
+<section class="ex-q" id="q40" data-ans="2" data-area="데이터 수집 및 저장 계획" data-subj="2"><div class="ex-qh"><span class="ex-no">40.</span><span class="ex-tags"><span>데이터 수집 및 저장 계획</span><span class="lv-어려움">어려움</span><span>부정형</span></span></div><div class="ex-body">빅데이터 저장시스템 선정을 위한 기능성 비교분석에 대한 설명으로 옳지 않은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q40" value="0"><span class="mk">①</span><span class="tx">데이터를 테이블로 정리해 사용하는 데 무리가 없다면 RDBMS가 적합하다.</span></label></li><li><label><input type="radio" name="q40" value="1"><span class="mk">②</span><span class="tx">MongoDB는 RDBMS보다 유연한 스키마를 활용할 수 있다.</span></label></li><li><label><input type="radio" name="q40" value="2"><span class="mk">③</span><span class="tx">MongoDB는 고정된 스키마를 강제하므로 문서 구조 변경이 불가능하다.</span></label></li><li><label><input type="radio" name="q40" value="3"><span class="mk">④</span><span class="tx">MongoDB는 RDBMS에서 문서 중심 데이터 모델로 전환하는 데 도움이 된다.</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — MongoDB는 <b>RDBMS보다 한층 유연한 스키마</b>를 활용하는 것이 가능한 문서 중심 NoSQL 데이터베이스다. 고정 스키마를 강제한다는 설명은 반대다.<span class="ex-ref ">근거 · 책 1-193</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-193쪽</summary><div class="cbody"><aside class="note"><b>궁극적 일관성(Eventual Consistency)</b><br>분산 컴퓨팅에 쓰이는 일관성 모델의 하나, 데이터 항목에 새로운 업데이트가 없을 시 해당 항목에 대한 모든 접근들은 마지막 업데이트된 값을 반환하는 것을 비공식적으로 보장</aside>
+
+<p class="ct"><b>4) 빅데이터 저장시스템 선정을 위한 분석</b></p>
+<p class="ct"><b>① 기능성 비교분석</b></p>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:160px">구분</td><td class="h">내용</td></tr>
+  <tr><td>데이터 모델</td><td><ul class="dash"><li>데이터를 테이블로 정리하고 사용하는데 무리가 없다면, RDBMS가 필요하고 NoSQL을 사용할 필요가 없다.</li><li>MongoDB는 RDBMS보다 한층 유연한 스키마를 활용하는 것이 가능하므로, RDBMS에서 문서 중심의 데이터 모델로 전환하는 데 도움이 된다.</li><li>Apache CouchDB는 데이터 저장소에 대한 인터페이스로 RESTful HTTP를 지원하므로 상대적으로 웹기반 시스템을 구축하는 데 장점이 있는 document 데이터베이스 시스템이다.</li><li>단순 key-value 쌍을 저장하여 대규모 사용자와 부하 분산을 위한 안정적인 분산 저장소가 필요할 경우, Dynamo나 Redis를 선택하면 된다.</li><li>Cassandra, HyperTable, HBase는 column family 중심의 데이터베이스 시스템으로 극단적인 확장성을 보장할 수 있다는 장점이 있다.</li></ul></td></tr>
+  <tr><td>확장성</td><td><ul class="dash"><li>확장성에서는 HBase, Cassandra, HyperTable과 같은 column-oriented 데이터베이스가 가장 뛰어난 것으로 알려져 있다.</li><li>Redis와 같은 인메모리 방식의 데이터베이스와 MongoDB, CouchDB와 같은 document 데이터베이스가 약간 뒤처지는 것으로 알려져 있다.</li></ul></td></tr>
+  <tr><td>트랜잭션<br>일관성</td><td><ul class="dash"><li>트랜잭션의 일관성은 데이터 수정, 삭제 등의 작업이 빈번하게 일어나는 환경에서는 중요도가 높지만, 배치중심의 하둡 기반 분석환경에서는 중요도가 그리 높지 않다.</li><li>트랜잭션의 일관성이 중요한 분야에서는 RDBMS를 선택해야 하며, 그렇지 않은 때에만 NoSQL을 선택하여야 한다.</li></ul></td></tr>
+  <tr><td>질의 지원</td><td><ul class="dash"><li>MongoDB는 SQL과 유사한 문법에 기반을 두어 쉽게 학습할 수 있는 우수한 질의 인터페이스를 지원한다.</li><li>CouchDB도 MongoDB에 비해 뒤처지지 않으며, 뷰 개념을 이해하고 활용하면 간편하다.</li><li>key-value 데이터베이스의 대표 격인 Redis도 풍부한 질의기능을 제공한다.</li><li>HBase나 HyperTable은 자체 질의지원 기능은 제공하지 않으나 Hive를 통해 SQL과 유사한 형태의 질의기능을 사용할 수 있다는 장점이 있다.</li></ul></td></tr>
+  <tr><td>접근성</td><td><ul class="dash"><li>MongoDB를 접근하기 위한 드라이버는 아주 다양하며, 현존하는 주류 라이브러리용 드라이버를 대부분 지원하고 있다.</li><li>CouchDB는 웹 통신을 지원하는 프로그래밍 언어라면 다 사용이 가능하다.</li><li>Redis, HBase, HyperTable, Cassandra는 대부분의 프로그래밍 언어에서 연결이 가능하도록 언어 바인딩을 지원한다.</li></ul></td></tr>
+</table>
+</div>
+
+<p class="ct"><b>② 분석방식 및 환경</b></p>
+<ul class="dash">
+  <li>빅데이터 저장 방식은 파일 시스템 형식으로 저장하는 방식, NoSQL 저장시스템을 사용하는 방식, RDBMS에 기반을 둔 데이터 웨어하우스 방식이 있다.</li>
+  <li>필요로 하는 분석 및 검색결과가 상시로 온라인 형식으로 필요한지, 분석가를 통해 별도의 프로세스를 거쳐 제공받는지 등을 구분하여 저장 방식과 환경을 선택한다.</li>
+</ul></div></details></section>
+</div></main>
+</div>
+<script>/* ================= 모의고사 =================
+   세 가지 모드로 쓴다.
+     실전 — 타이머를 걸고 끝까지 푼 뒤 한 번에 채점한다. 과락(40%)까지 판정한다.
+     실전(내용 포함) — 같은 시험지를 정답과 요약 개념까지 펼쳐 놓고 훑어보는 열람용.
+                       정답 보기에 체크가 미리 들어가 있고, 문항 아래 ▽ 관련 요약 개념을 펼칠 수 있다.
+                       점수가 의미 없으므로 타이머와 채점하기는 쉰다. 다른 모드로 돌아가면
+                       들어오기 전에 고른 답이 그대로 되살아난다.
+     학습 — 보기를 고르는 즉시 정답과 해설을 보여 준다.
+   응시 이력은 펜 모드와 같은 자리에 저장한다(서버가 있으면 디스크, 없으면 브라우저).
+--------------------------------------------------------------------------- */
+(function(){
+  var root = document.getElementById('exam');
+  if(!root) return;
+
+  var PASS_SUBJECT = 0.4;              // 과락 기준 — 과목당 40%
+  var FILE  = decodeURIComponent((location.pathname.split('/').pop() || 'exam'))
+                .replace(/\.html?$/i, '');
+  var KEY   = 'bdnote:exam:' + FILE;
+  var LIMIT = parseInt(root.getAttribute('data-minutes'), 10) || 30;
+  var FULL  = root.getAttribute('data-full') === '1';   // 4과목 통합 시험지
+  var PASS_TOTAL = 0.6;                // 합격 기준 — 전 과목 평균 60%
+  var SUBJ = (root.getAttribute('data-subjects') || '').split('|');
+  var PART = root.getAttribute('data-partlabel') || '과목';   // 통합 시험지의 구획 단위(과목/회차)
+  function partName(k, keys){                                // 구획 번호 → 표시 이름
+    if(PART === '과목') return k + '과목 · ' + (SUBJ[k - 1] || '');
+    return SUBJ[keys.indexOf(k)] || (k + PART);
+  }
+
+  var qs     = [].slice.call(document.querySelectorAll('.ex-q'));
+  var navBox = document.getElementById('ex-nav');
+  var navs   = navBox ? [].slice.call(navBox.querySelectorAll('a')) : [];
+  var elTimer= document.getElementById('ex-timer');
+  var elRes  = document.getElementById('ex-result');
+  var elHist = document.getElementById('ex-hist');
+
+  /* 'real'  실전 — 타이머 + 일괄 채점, 개념·해설 모두 감춤
+     'realc' 실전(내용 포함) — 실전과 똑같이 풀되 문항 아래 요약 개념만 열어 볼 수 있다
+     'study' 학습 — 보기를 고르면 즉시 채점·해설 */
+  var mode = 'real';
+  function isReal(){ return mode === 'real'; }    // 타이머·채점하기를 쓰는 모드
+  var savedPicks = null;                          // 실전(내용 포함)에 들어가기 전 고른 답
+  var graded = false, reviewing = false;
+  var left = LIMIT * 60, tick = null, started = false;
+
+  /* ---------- 저장 : 응시 이력 + 누적 오답 ----------
+     오답은 문항 번호로 저장해 두었다가 다음 방문에도 '틀린 문항만'으로 다시 풀 수 있다.
+     맞히면 목록에서 빠진다(오답 정복). 서버가 있으면 디스크에도 함께 저장된다. */
+  var API = null, hist = [], wrong = {};
+
+  function qNum(q){ return parseInt((q.id || '').replace(/^q/, ''), 10) || 0; }
+
+  function setWrongList(arr){
+    wrong = {};
+    (arr || []).forEach(function(n){ if(n > 0) wrong[n] = 1; });
+  }
+
+  function loadHist(){
+    try{
+      var s = localStorage.getItem(KEY);
+      if(s){
+        var o = JSON.parse(s);
+        if(o && o.hist instanceof Array) hist = o.hist;
+        if(o && o.wrong instanceof Array) setWrongList(o.wrong);
+      }
+    }catch(e){}
+    if(/^https?:$/.test(location.protocol) && window.fetch){
+      var url = 'api/state/' + encodeURIComponent(FILE) + '.exam';
+      fetch(url, {cache:'no-store'})
+        .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+        .then(function(o){
+          API = url;
+          if(o && o.hist instanceof Array) hist = o.hist;
+          if(o && o.wrong instanceof Array) setWrongList(o.wrong);
+          renderHist(); renderWrongBtn();
+        })
+        .catch(function(){ API = null; });
+    }
+    renderHist(); renderWrongBtn();
+  }
+
+  function saveHist(){
+    var body = {v:1, hist:hist.slice(-20),        // 최근 20회만 남긴다
+                wrong:Object.keys(wrong).map(Number).sort(function(a,b){return a-b;})};
+    try{ localStorage.setItem(KEY, JSON.stringify(body)); }catch(e){}
+    if(API){
+      fetch(API, {method:'PUT', headers:{'Content-Type':'application/json'},
+                  body:JSON.stringify(body)}).catch(function(){});
+    }
+  }
+
+  function wrongCount(){ return Object.keys(wrong).length; }
+
+  function renderWrongBtn(){
+    var b = document.getElementById('ex-review');
+    if(b){
+      var n = wrongCount();
+      b.textContent = '틀린 문항만' + (n ? ' (' + n + ')' : '');
+    }
+    var c = document.getElementById('ex-wclear');
+    if(c) c.style.display = wrongCount() ? '' : 'none';
+  }
+
+  function renderHist(){
+    if(!elHist) return;
+    if(!hist.length){ elHist.textContent = '아직 응시 기록이 없습니다.'; return; }
+    var last = hist.slice(-5).reverse().map(function(h){
+      return h.date + ' <b>' + h.right + '/' + h.total + '</b>';
+    }).join('  ·  ');
+    var best = hist.reduce(function(a, b){ return b.right > a.right ? b : a; });
+    elHist.innerHTML = '최근 기록 — ' + last + '   (최고 <b>' + best.right + '/' + best.total + '</b>)';
+  }
+
+  /* ---------- 타이머 ---------- */
+  function fmt(s){
+    var m = Math.floor(Math.abs(s) / 60), x = Math.abs(s) % 60;
+    return (s < 0 ? '+' : '') + m + ':' + (x < 10 ? '0' : '') + x;
+  }
+  function paintTimer(){
+    if(!elTimer) return;
+    if(mode === 'realc'){                 // 열람용 — 시간을 재지 않는다
+      elTimer.textContent = '열람 모드 — 정답·개념 표시';
+      elTimer.classList.remove('warn');
+      return;
+    }
+    elTimer.textContent = (isReal() ? '남은 시간 ' : '경과 ') + fmt(left);
+    elTimer.classList.toggle('warn', left <= 300);
+  }
+  function startTimer(){
+    if(started || !isReal() || graded) return;
+    started = true;
+    tick = setInterval(function(){
+      left--;
+      paintTimer();
+      if(left === 0) toast('시간이 다 됐습니다 — 지금까지 고른 답으로 채점할 수 있습니다');
+    }, 1000);
+  }
+  function stopTimer(){ clearInterval(tick); tick = null; }
+
+  /* ---------- 진행 상황 ---------- */
+  function pickedOf(q){
+    var ins = q.querySelectorAll('input[type=radio]');
+    for(var i = 0; i < ins.length; i++) if(ins[i].checked) return i;
+    return -1;
+  }
+  function refreshNav(){
+    qs.forEach(function(q, i){
+      var a = navs[i]; if(!a) return;
+      a.className = '';
+      if(graded) a.classList.add(q.classList.contains('ok') ? 'ok' : 'ng');
+      else if(pickedOf(q) >= 0) a.classList.add('done');
+    });
+    var n = qs.filter(function(q){ return pickedOf(q) >= 0; }).length;
+    var el = document.getElementById('ex-progress');
+    if(el) el.textContent = n + ' / ' + qs.length + ' 문항 응답';
+  }
+
+  /* ---------- 채점 ---------- */
+  function markOne(q){
+    var ans = parseInt(q.getAttribute('data-ans'), 10);
+    var labels = [].slice.call(q.querySelectorAll('label'));
+    var picked = pickedOf(q);
+    labels.forEach(function(l){ l.classList.remove('correct', 'wrong', 'picked'); });
+    q.classList.remove('ok', 'ng', 'na');
+    if(labels[ans]) labels[ans].classList.add('correct');
+    if(picked < 0) q.classList.add('na');
+    else if(picked === ans) q.classList.add('ok');
+    else { labels[picked].classList.add('wrong'); q.classList.add('ng'); }
+    q.classList.add('show');
+    return picked === ans;
+  }
+
+  function grade(){
+    if(graded) return;
+    graded = true;
+    stopTimer();
+    exitStoredReview();                     // 저장 오답 필터가 켜져 있었다면 풀고 채점한다
+    var right = 0, byArea = {}, bySubj = {};
+    qs.forEach(function(q){
+      var ok = markOne(q);
+      // 오답 정복 — 틀리거나 못 푼 문항은 목록에 넣고, 맞힌 문항은 뺀다
+      var n = qNum(q);
+      if(n){ if(ok) delete wrong[n]; else wrong[n] = 1; }
+      if(ok) right++;
+      var a = q.getAttribute('data-area') || '기타';
+      byArea[a] = byArea[a] || {n:0, r:0};
+      byArea[a].n++;
+      if(ok) byArea[a].r++;
+      var s = q.getAttribute('data-subj');
+      if(s){
+        bySubj[s] = bySubj[s] || {n:0, r:0};
+        bySubj[s].n++;
+        if(ok) bySubj[s].r++;
+      }
+    });
+    refreshNav();
+    showResult(right, byArea, bySubj);
+
+    var d = new Date();
+    hist.push({date: (d.getMonth() + 1) + '/' + d.getDate(),
+               right: right, total: qs.length,
+               sec: LIMIT * 60 - left, mode: mode});
+    saveHist(); renderHist(); renderWrongBtn();
+    document.body.classList.add('ex-graded');
+  }
+
+  function showResult(right, byArea, bySubj){
+    var total = qs.length;
+    var pct = Math.round(right / total * 100);
+    var pass = right >= Math.ceil(total * PASS_SUBJECT);
+    var used = LIMIT * 60 - left;
+    var rows = Object.keys(byArea).map(function(a){
+      var v = byArea[a];
+      return '<tr><td>' + a + '</td><td class="n">' + v.r + ' / ' + v.n + '</td>' +
+             '<td class="n">' + Math.round(v.r / v.n * 100) + '%</td></tr>';
+    }).join('');
+    var head, lines, subjTable = '';
+    if(FULL){
+      // 실제 시험과 같은 판정 — 과목마다 40% 이상이면서 전체 60% 이상이어야 합격
+      var keys = Object.keys(bySubj).sort(function(a, b){ return a - b; });
+      var under = keys.filter(function(k){
+        var v = bySubj[k];
+        return v.r < Math.ceil(v.n * PASS_SUBJECT);
+      });
+      var avgOk = right >= Math.ceil(total * PASS_TOTAL);
+      pass = !under.length && avgOk;
+      head = pass ? '합격' : '불합격';
+      var why = [];
+      if(under.length) why.push('과락 ' + under.map(function(k){
+        return partName(k, keys);
+      }).join(' · '));
+      if(!avgOk) why.push('평균 60% 미달');
+      lines = '합격 기준은 <b>' + PART + '마다 40% 이상</b> 이면서 ' +
+              '<b>전체 평균 60%(' + Math.ceil(total * PASS_TOTAL) + '문항) 이상</b> 입니다.' +
+              (why.length ? '<br><b class="ng">' + why.join(' / ') + '</b>' : '') +
+              '<br>걸린 시간 ' + fmt(used) + ' / 제한 ' + LIMIT + '분';
+      subjTable =
+        '<table class="ex-subj"><thead><tr><th>' + PART + '</th><th>맞힘</th><th>정답률</th>' +
+        '<th>과락(40%)</th></tr></thead><tbody>' +
+        keys.map(function(k){
+          var v = bySubj[k], ok = v.r >= Math.ceil(v.n * PASS_SUBJECT);
+          return '<tr><td>' + partName(k, keys) + '</td>' +
+                 '<td class="n">' + v.r + ' / ' + v.n + '</td>' +
+                 '<td class="n">' + Math.round(v.r / v.n * 100) + '%</td>' +
+                 '<td class="n ' + (ok ? 'okc' : 'ngc') + '">' +
+                 (ok ? '통과' : '과락') + '</td></tr>';
+        }).join('') + '</tbody></table>';
+    }else{
+      head = pass ? '과락 통과' : '과락';
+      lines = '이 과목의 과락 기준은 <b>40% (' + Math.ceil(total * PASS_SUBJECT) + '문항)</b> 입니다. ' +
+              '실제 합격은 여기에 더해 <b>4과목 평균 60%</b> 를 넘어야 합니다.<br>' +
+              '걸린 시간 ' + fmt(used) + ' / 제한 ' + LIMIT + '분';
+    }
+    elRes.innerHTML =
+      '<h2>채점 결과</h2>' +
+      '<div><span class="ex-score">' + right + '<small> / ' + total + '  (' + pct + '점)</small></span>' +
+      '<span class="ex-verdict ' + (pass ? 'pass' : 'fail') + '">' + head + '</span></div>' +
+      '<div class="ex-lines">' + lines + '</div>' + subjTable +
+      '<table><thead><tr><th>주요항목</th><th>맞힘</th><th>정답률</th></tr></thead>' +
+      '<tbody>' + rows + '</tbody></table>';
+    elRes.classList.add('show');
+    elRes.scrollIntoView({block:'start', behavior:'smooth'});
+  }
+
+  /* ---------- 다시 풀기 ---------- */
+  function reset(){
+    graded = false; reviewing = false; started = false;
+    savedPicks = null;                            // 실전(내용 포함)에서 담아 둔 답도 버린다
+    left = LIMIT * 60;
+    stopTimer(); paintTimer();
+    document.body.classList.remove('ex-graded', 'ex-review');
+    var rv = document.getElementById('ex-review');
+    if(rv) rv.classList.remove('on');
+    qs.forEach(function(q){
+      q.classList.remove('ok', 'ng', 'na', 'show', 'rv-hide');
+      q.querySelectorAll('input[type=radio]').forEach(function(r){ r.checked = false; });
+      q.querySelectorAll('label').forEach(function(l){
+        l.classList.remove('correct', 'wrong', 'picked');
+      });
+    });
+    elRes.classList.remove('show');
+    refreshNav();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  /* ---------- 알림 ---------- */
+  var toastEl = document.createElement('div');
+  toastEl.id = 'an-toast';                      // 펜 모드의 알림 상자를 같이 쓴다
+  document.body.appendChild(toastEl);
+  var tt = null;
+  function toast(m){
+    toastEl.textContent = m;
+    toastEl.classList.add('show');
+    clearTimeout(tt);
+    tt = setTimeout(function(){ toastEl.classList.remove('show'); }, 2400);
+  }
+
+  /* ---------- 이벤트 ---------- */
+  // 문항은 #exam(상단 바) 바깥에 있으므로 document 에서 받는다
+  document.addEventListener('change', function(ev){
+    if(ev.target.type !== 'radio') return;
+    var q = ev.target.closest('.ex-q');
+    if(!q) return;
+    q.querySelectorAll('label').forEach(function(l){ l.classList.remove('picked'); });
+    ev.target.closest('label').classList.add('picked');
+    if(mode === 'realc') return;                  // 열람용 — 진행 상황·오답에 넣지 않는다
+    startTimer();
+    if(mode === 'study' && !graded){              // 학습 모드는 즉시 채점 + 오답 즉시 반영
+      var ok = markOne(q), n = qNum(q);
+      if(n){ if(ok) delete wrong[n]; else wrong[n] = 1; }
+      saveHist(); renderWrongBtn();
+    }
+    refreshNav();
+  });
+
+  /* 실전(내용 포함) — 정답 보기에 체크를 넣고 정답 줄을 펼친다.
+     들어오기 전 상태를 savedPicks 에 담아 두었다가 모드를 벗어날 때 그대로 되돌린다. */
+  function fillAnswers(){
+    if(savedPicks === null) savedPicks = qs.map(pickedOf);
+    qs.forEach(function(q){
+      var ans = parseInt(q.getAttribute('data-ans'), 10);
+      var ins = [].slice.call(q.querySelectorAll('input[type=radio]'));
+      var labels = [].slice.call(q.querySelectorAll('label'));
+      labels.forEach(function(l){ l.classList.remove('correct', 'wrong', 'picked'); });
+      if(ins[ans]) ins[ans].checked = true;
+      if(labels[ans]) labels[ans].classList.add('correct', 'picked');
+      q.classList.add('show');                    // 정답 줄(.ex-exp) 열기
+    });
+  }
+
+  function restorePicks(){
+    if(savedPicks === null) return;
+    qs.forEach(function(q, i){
+      var ins = [].slice.call(q.querySelectorAll('input[type=radio]'));
+      var labels = [].slice.call(q.querySelectorAll('label'));
+      ins.forEach(function(r){ r.checked = false; });
+      labels.forEach(function(l){ l.classList.remove('correct', 'wrong', 'picked'); });
+      var p = savedPicks[i];
+      if(p >= 0 && ins[p]){ ins[p].checked = true; labels[p].classList.add('picked'); }
+      q.classList.remove('show', 'ok', 'ng', 'na');
+    });
+    savedPicks = null;
+  }
+
+  var MODES = ['real', 'realc', 'study'];
+  var MODE_TIP = {
+    real:  '실전 모드 — 다 푼 뒤 채점하기 를 누르세요',
+    realc: '실전 모드(내용 포함) — 정답에 체크를 해 두었습니다. 문항 아래 ▽ 관련 요약 개념도 펼쳐 보세요',
+    study: '학습 모드 — 보기를 고르면 바로 해설이 열립니다'
+  };
+
+  function setMode(m){
+    if(graded){ toast('채점을 마쳤습니다 — 다시 풀기 를 누른 뒤 바꿔 주세요'); return; }
+    var was = mode;
+    mode = m;
+    if(was === 'realc' && m !== 'realc') restorePicks();          // 채워 넣었던 정답을 걷는다
+    document.body.classList.toggle('ex-study', m === 'study');    // 학습 모드: 문항 아래 ▽ 개념 노출
+    document.body.classList.toggle('ex-concepts', m === 'realc'); // 실전(내용 포함): ▽ 개념 노출
+    MODES.forEach(function(k){
+      var b = document.getElementById('ex-' + k);
+      if(b) b.classList.toggle('on', m === k);
+    });
+    document.getElementById('ex-submit').style.display = isReal() ? '' : 'none';
+    if(m !== 'realc') qs.forEach(function(q){ q.classList.remove('show', 'ok', 'ng', 'na'); });
+    if(m === 'study'){
+      stopTimer(); started = false;
+      qs.forEach(function(q){ if(pickedOf(q) >= 0) markOne(q); });
+    }
+    if(m === 'realc'){
+      stopTimer(); started = false;
+      fillAnswers();
+    }
+    refreshNav();
+    paintTimer();
+    toast(MODE_TIP[m]);
+  }
+
+  MODES.forEach(function(k){
+    var b = document.getElementById('ex-' + k);
+    if(b) b.addEventListener('click', function(){ setMode(k); });
+  });
+  document.getElementById('ex-submit').addEventListener('click', function(){
+    var n = qs.filter(function(q){ return pickedOf(q) >= 0; }).length;
+    if(n < qs.length && !window.confirm((qs.length - n) + '문항이 비어 있습니다. 그대로 채점할까요?')) return;
+    grade();
+  });
+  document.getElementById('ex-reset').addEventListener('click', function(){
+    if(!window.confirm('고른 답과 채점 결과를 모두 지우고 처음부터 다시 풉니다. 계속할까요?')) return;
+    reset();
+  });
+  /* 저장 오답 필터(채점 전) 해제 — rv-hide 표시를 걷어낸다 */
+  function exitStoredReview(){
+    reviewing = false;
+    document.body.classList.remove('ex-review');
+    var b = document.getElementById('ex-review');
+    if(b) b.classList.remove('on');
+    qs.forEach(function(q){ q.classList.remove('rv-hide'); });
+  }
+
+  document.getElementById('ex-review').addEventListener('click', function(){
+    if(graded){                                   // 방금 채점한 결과 기준 필터
+      reviewing = !reviewing;
+      document.body.classList.toggle('ex-review', reviewing);
+      this.classList.toggle('on', reviewing);
+      toast(reviewing ? '틀린 문항만 보여 줍니다' : '전체 문항을 보여 줍니다');
+      return;
+    }
+    // 채점 전 — 지난 응시에서 저장된 오답으로 필터
+    var n = wrongCount();
+    if(!n){ toast('저장된 오답이 없습니다 — 채점하면 틀린 문항이 자동으로 저장됩니다'); return; }
+    if(reviewing){ exitStoredReview(); toast('전체 문항을 보여 줍니다'); return; }
+    reviewing = true;
+    qs.forEach(function(q){ q.classList.toggle('rv-hide', !wrong[qNum(q)]); });
+    document.body.classList.add('ex-review');
+    this.classList.add('on');
+    toast('지난 오답 ' + n + '문항만 보여 줍니다 — 풀고 채점하면 맞힌 문항은 목록에서 빠집니다');
+  });
+
+  /* 오답 초기화 단추 — 저장된 오답이 있을 때만 보인다 */
+  (function(){
+    var rv = document.getElementById('ex-review');
+    if(!rv || document.getElementById('ex-wclear')) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.id = 'ex-wclear';
+    b.textContent = '오답 초기화';
+    b.style.display = 'none';
+    rv.parentNode.insertBefore(b, rv.nextSibling);
+    b.addEventListener('click', function(){
+      var n = wrongCount();
+      if(!n){ toast('저장된 오답이 없습니다'); return; }
+      if(!window.confirm('저장된 오답 ' + n + '문항을 모두 지웁니다. 계속할까요?')) return;
+      wrong = {};
+      if(!graded) exitStoredReview();
+      saveHist(); renderWrongBtn();
+      toast('오답 기록을 초기화했습니다');
+    });
+  })();
+
+  /* ---------- 관련 요약 개념 ▽ : 펼치면 해설도 함께 연다 ---------- */
+  document.addEventListener('toggle', function(ev){
+    var d = ev.target;
+    if(!d || !d.classList || !d.classList.contains('ex-concept') || !d.open) return;
+    var q = d.closest('.ex-q');
+    if(q) q.classList.add('show');
+  }, true);
+
+  /* ---------- 좁은 화면 : 사이드바 서랍 토글 ---------- */
+  (function(){
+    var sb = document.getElementById('sidebar');
+    if(!sb || document.getElementById('sb-toggle')) return;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = 'sb-toggle';
+    btn.textContent = '☰ 문항';
+    document.body.appendChild(btn);
+    var bg = document.createElement('div');
+    bg.id = 'sb-backdrop';
+    document.body.appendChild(bg);
+    function close(){ document.body.classList.remove('sb-open'); }
+    btn.addEventListener('click', function(){
+      document.body.classList.toggle('sb-open');
+    });
+    bg.addEventListener('click', close);
+    sb.addEventListener('click', function(ev){        // 문항으로 이동하면 서랍을 닫는다
+      var a = ev.target.closest && ev.target.closest('a[href]');
+      if(a) close();
+    });
+  })();
+
+  /* 인쇄·PDF 로 뽑을 때는 해설을 모두 펼친다 */
+  window.addEventListener('beforeprint', function(){
+    qs.forEach(function(q){ q.classList.add('show'); });
+  });
+
+  paintTimer();
+  refreshNav();
+  loadHist();
+})();
+</script>
+</body></html>

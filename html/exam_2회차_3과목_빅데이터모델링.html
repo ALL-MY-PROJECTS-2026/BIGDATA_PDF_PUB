@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2회차 3과목 모의고사 · 빅데이터분석기사 필기 교재</title>
+<style>:root{
+  --accent:#2E8B7A; --accent-soft:#BBDDD5; --accent-pale:#EAF4F1;
+  --navy:#1F3A63; --ink:#222; --line:#DDD; --side-bg:#FAFAF9; --sidebar-w:270px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;color:var(--ink);
+  font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",system-ui,sans-serif;
+  font-size:15px;line-height:1.75;word-break:keep-all}
+
+#layout{display:flex;align-items:flex-start}
+#sidebar{width:var(--sidebar-w);flex:0 0 var(--sidebar-w);position:sticky;top:0;
+  height:100vh;overflow-y:auto;background:var(--side-bg);
+  border-right:1px solid var(--line);padding:16px 0 60px}
+.side-head{padding:0 16px 12px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.side-head a{display:block;font-size:14px;font-weight:700;color:var(--accent);text-decoration:none}
+.side-head span{display:block;font-size:11.5px;color:#777;margin-top:2px}
+ul.parts,#toc{list-style:none;margin:0;padding:0;font-size:13px}
+ul.parts li.grp{padding:12px 16px 4px;font-size:11.5px;font-weight:700;
+  color:#999;letter-spacing:.03em}
+ul.parts a{display:flex;justify-content:space-between;gap:8px;
+  padding:5px 16px;color:#444;text-decoration:none;border-left:3px solid transparent}
+ul.parts a span{color:#aaa;font-size:11.5px;flex:0 0 auto}
+ul.parts a:hover{background:#F0F0EE;color:var(--accent)}
+ul.parts a.on{background:var(--accent-pale);color:var(--accent);
+  border-left-color:var(--accent);font-weight:700}
+.toc-head{padding:16px 16px 6px;margin-top:8px;border-top:1px solid var(--line);
+  font-size:11.5px;font-weight:700;color:#999}
+#toc a{display:block;padding:4px 16px;color:#555;text-decoration:none;
+  border-left:3px solid transparent;line-height:1.4}
+#toc a:hover{background:#F0F0EE;color:var(--accent)}
+#toc a.active{background:var(--accent-pale);color:var(--accent);
+  border-left-color:var(--accent);font-weight:700}
+#toc .l2 a{padding-left:28px;font-size:12.5px}
+#toc .l3 a{padding-left:40px;font-size:12px;color:#777}
+
+#main{flex:1 1 auto;min-width:0;padding:34px 40px 120px}
+.wrap{max-width:880px;margin:0 auto}
+
+.crumb{font-size:12.5px;color:#888;margin:0 0 4px;letter-spacing:.02em}
+h1{font-size:26px;margin:0 0 6px;color:var(--accent)}
+.src{font-size:12.5px;color:#888;margin:0 0 28px}
+
+.page-mark{margin:30px 0 10px;padding:1px 0 1px 9px;border-left:3px solid var(--accent-soft);
+  font-size:11.5px;color:#bbb;letter-spacing:.04em}
+h3{font-size:19px;margin:34px 0 14px;padding:9px 14px;background:var(--accent);
+  color:#fff;border-radius:4px;border-left:7px solid var(--navy)}
+h4{font-size:16.5px;margin:26px 0 10px;padding-bottom:6px;
+  border-bottom:2px solid var(--accent-soft)}
+h5{font-size:15px;margin:20px 0 8px;color:var(--accent)}
+h5::before{content:"● ";font-size:10px;vertical-align:2px}
+
+p{margin:0 0 9px}
+ul{list-style:none;margin:0 0 12px;padding:0}
+ul.dash>li{position:relative;padding-left:14px;margin:3px 0}
+ul.dash>li::before{content:"·";position:absolute;left:3px;color:var(--accent)}
+ul.numlist>li{margin:3px 0;padding-left:4px}
+
+p.note{background:#F6F6F4;border-left:3px solid #D6D6D2;border-radius:0 4px 4px 0;
+  padding:9px 13px;margin:10px 0;font-size:13.5px;color:#4A4A4A}
+p.mnemo{display:inline-block;background:#FFF6D9;border:1px solid #EBD9A0;border-radius:14px;
+  padding:3px 14px;margin:8px 0;font-size:13.5px;font-weight:700;color:#7A5E12}
+p.mnemo::before{content:"☞ "}
+
+figure{margin:16px 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid #EEE;border-radius:4px}
+
+/* index */
+.index{padding:44px 24px 100px}
+.index h2{font-size:17px;margin:34px 0 12px;padding:8px 14px;background:var(--accent-pale);
+  color:#26705F;border-radius:4px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.card{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:8px;
+  text-decoration:none;color:var(--ink);background:#fff;transition:.15s}
+.card:hover{border-color:var(--accent);box-shadow:0 2px 10px rgba(46,139,122,.13)}
+.card b{display:block;font-size:15px;margin-bottom:4px}
+.card span{font-size:12px;color:#999}
+
+@media(max-width:900px){
+  #layout{display:block}
+  #sidebar{position:static;width:auto;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+  #main{padding:22px 16px 70px}
+}
+
+details.ov{margin:0 0 14px;border:1px solid var(--line);border-radius:6px;padding:10px 14px;background:#fff}
+details.ov summary{cursor:pointer;font-size:13px;color:var(--accent);font-weight:700;user-select:none}
+details.ov img{display:block;max-width:100%;margin-top:12px;border:1px solid #EEE;border-radius:4px}
+
+/* 수식 — 원문 이미지 그대로 */
+img.eq{display:inline-block;vertical-align:middle;max-width:100%;
+  height:auto;margin:2px 0 2px 4px}
+p.eqline{margin:6px 0 6px 14px}
+
+/* ---------- 확인 문제 ---------- */
+.quiz{margin:26px 0;border:1px solid var(--accent-soft);border-radius:8px;
+  background:#FCFEFD;overflow:hidden}
+.qtoggle{display:flex;align-items:center;gap:8px;width:100%;
+  padding:12px 16px;border:0;background:var(--accent-pale);color:#26705F;
+  font:700 14px/1.4 inherit;text-align:left;cursor:pointer}
+.qtoggle:hover{background:#DDEDE8}
+.qtoggle .arw{display:inline-block;transition:transform .18s;font-size:12px}
+.qtoggle[aria-expanded="true"] .arw{transform:rotate(180deg)}
+.qtoggle .score{margin-left:auto;font-size:12.5px;font-weight:700}
+.qbody{padding:6px 18px 18px}
+ol.qlist{list-style:none;margin:0;padding:0;counter-reset:none}
+li.q{padding:16px 0;border-bottom:1px dashed #DDE7E4}
+li.q:last-child{border-bottom:0}
+.qt{margin:0 0 9px;font-size:14.8px;line-height:1.6}
+.qt b{color:var(--accent);margin-right:4px}
+.opts{display:flex;flex-direction:column;gap:2px}
+label.opt{display:flex;gap:7px;align-items:flex-start;padding:5px 9px;
+  border-radius:5px;cursor:pointer;font-size:14.2px;line-height:1.55}
+label.opt:hover{background:#F1F7F5}
+label.opt input{margin:5px 0 0;flex:0 0 auto}
+label.opt .mk{flex:0 0 auto;color:#666}
+/* 채점 결과 표시 */
+.quiz.graded label.opt{cursor:default}
+.quiz.graded label.opt input{pointer-events:none}
+label.opt.correct{background:#E8F6EC;box-shadow:inset 0 0 0 1px #9FD3AE}
+label.opt.wrong{background:#FDECEC;box-shadow:inset 0 0 0 1px #E3A6A6}
+label.opt.correct .mk::after{content:" ✔";color:#1E7A3C;font-weight:700}
+label.opt.wrong .mk::after{content:" ✘";color:#C0392B;font-weight:700}
+li.q.ok  > .qt::after{content:" 정답";color:#1E7A3C;font-size:12px;font-weight:700;margin-left:6px}
+li.q.ng  > .qt::after{content:" 오답";color:#C0392B;font-size:12px;font-weight:700;margin-left:6px}
+li.q.na  > .qt::after{content:" 미응답";color:#999;font-size:12px;font-weight:700;margin-left:6px}
+.exp{display:none;margin:9px 0 0;padding:10px 13px;background:#F6F6F4;
+  border-left:3px solid var(--accent-soft);border-radius:0 4px 4px 0;
+  font-size:13.4px;color:#444;line-height:1.65}
+.quiz.graded .exp{display:block}
+.exp b{color:var(--accent)}
+.qbar{display:flex;align-items:center;gap:8px;margin-top:16px;
+  padding-top:14px;border-top:1px solid #E6EFEC}
+.btn{padding:7px 16px;border-radius:5px;border:1px solid var(--accent);
+  background:var(--accent);color:#fff;font:700 13px inherit;cursor:pointer}
+.btn.reset{background:#fff;color:var(--accent)}
+.btn:hover{opacity:.88}
+.qbar .result{font-size:13.5px;font-weight:700;color:#26705F}
+
+/* ---------- 수식 (원문을 직접 옮겨 적은 텍스트) ---------- */
+.eqbox{margin:12px 0 12px 14px;padding:10px 16px;
+  background:#FAFBFB;border-left:3px solid var(--accent-soft);border-radius:0 4px 4px 0;
+  font-size:15.5px;line-height:2.4;overflow-x:auto}
+.eqbox i,.eqtext i{font-family:"Cambria Math","Cambria","Times New Roman",serif;
+  font-style:italic}
+.eqtext{margin:8px 0 10px 14px;line-height:1.95}
+.eqline{margin:4px 0}
+/* 분수 */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;
+  text-align:center;margin:0 3px;line-height:1.25}
+.fr>.nu{padding:0 5px 1px;border-bottom:1.3px solid currentColor}
+.fr>.de{padding:1px 5px 0}
+/* 제곱근 */
+.sq{border-top:1.3px solid currentColor;padding:1px 3px 0 2px;margin-left:1px}
+.sq::before{content:"√";border-top:0;margin-left:-11px;padding-right:1px;
+  display:inline-block;transform:translateY(-1px)}
+.eqbox sup,.eqtext sup,.eqbox sub,.eqtext sub{font-size:.72em}
+
+/* ---------- 인쇄 / PDF ---------- */
+@media print{
+  @page{size:A4;margin:14mm 12mm}
+  body{font-size:10.6pt;line-height:1.62}
+  #sidebar{display:none !important}
+  #layout{display:block}
+  #main{padding:0}
+  .wrap{max-width:none}
+  .crumb{font-size:9pt}
+  h1{font-size:19pt;margin-bottom:2mm}
+  .src{font-size:9pt;margin-bottom:6mm}
+  h3{font-size:13.5pt;margin:7mm 0 3mm;-webkit-print-color-adjust:exact;
+     print-color-adjust:exact;break-after:avoid}
+  h4{font-size:12pt;margin:5mm 0 2mm;break-after:avoid}
+  h5{font-size:11pt;margin:4mm 0 1.5mm;break-after:avoid}
+  ul,figure,table,.eqbox,.eqtext{break-inside:avoid}
+  figure img{max-height:88mm}
+  .page-mark{font-size:8pt;color:#bbb}
+  p.note,p.mnemo,.eqbox{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  /* 문제는 펼친 상태로, 해설까지 함께 인쇄 */
+  .quiz{break-inside:auto;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .qtoggle{cursor:default}
+  .qtoggle .arw,.qtoggle .score{display:none}
+  .qbody{display:block !important}
+  .qbar{display:none}
+  li.q{break-inside:avoid}
+  .exp{display:block !important}
+  label.opt input{display:none}
+  label.opt{padding:2px 6px}
+  a{color:inherit;text-decoration:none}
+}
+
+/* ================= 모의고사 전용 ================= */
+
+.ex-head{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:0 0 18px;
+  background:var(--side-bg)}
+.ex-head .ex-meta{font-size:13px;color:#777;margin:0 0 10px}
+.ex-head .ex-meta b{color:var(--accent)}
+
+/* 실전 / 학습 모드 */
+.ex-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ex-bar button{font:inherit;font-size:13px;cursor:pointer;border:1px solid var(--line);
+  background:#fff;color:#444;border-radius:8px;padding:7px 12px}
+.ex-bar button:hover{border-color:var(--accent);color:var(--accent)}
+.ex-bar button.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.ex-bar .ex-primary{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:700}
+.ex-bar .ex-primary:hover{background:#16305a;color:#fff}
+.ex-sep{flex:1 1 auto}
+#ex-timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:15px;color:var(--navy);
+  padding:6px 10px;border-radius:8px;background:#fff;border:1px solid var(--line)}
+#ex-timer.warn{color:#C0392B;border-color:#E8B4AA;background:#FDF2F0}
+
+/* 문항 바로가기 */
+.ex-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:6px;
+  margin:12px 0 0}
+.ex-nav a{display:block;text-align:center;padding:6px 0;font-size:12.5px;text-decoration:none;
+  border:1px solid var(--line);border-radius:6px;color:#888;background:#fff}
+.ex-nav a.done{border-color:var(--accent);color:var(--accent);background:var(--accent-pale);
+  font-weight:700}
+.ex-nav a.ok{border-color:#7BC49A;background:#E9F6EE;color:#2E7D4F;font-weight:700}
+.ex-nav a.ng{border-color:#E5A9A0;background:#FDEEEB;color:#C0392B;font-weight:700}
+
+/* 문항 */
+.ex-q{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:0 0 14px;
+  scroll-margin-top:14px}
+.ex-q > .ex-qh{display:flex;gap:8px;align-items:baseline;margin:0 0 4px}
+.ex-q .ex-no{flex:0 0 auto;font-weight:700;color:var(--accent);font-size:15px}
+.ex-q .ex-tags{margin-left:auto;display:flex;gap:5px;flex-wrap:wrap}
+.ex-q .ex-tags span{font-size:10.5px;color:#999;border:1px solid var(--line);
+  border-radius:10px;padding:1px 7px;white-space:nowrap}
+.ex-q .ex-tags .lv-어려움{color:#C0392B;border-color:#E8C4BE}
+.ex-q .ex-tags .lv-보통{color:#B07A18;border-color:#EBD9A0}
+.ex-q .ex-tags .lv-쉬움{color:#2E7D4F;border-color:#B6DCC4}
+.ex-q .ex-body{margin:0 0 10px;line-height:1.75}
+
+.ex-opts{list-style:none;margin:0;padding:0}
+.ex-opts li{margin:0 0 5px}
+.ex-opts label{display:flex;gap:8px;align-items:flex-start;cursor:pointer;
+  padding:6px 9px;border:1px solid transparent;border-radius:7px;line-height:1.6}
+.ex-opts label:hover{background:#F4F7F6}
+.ex-opts input{display:none}
+.ex-opts .mk{flex:0 0 auto;color:#aaa;font-size:14px}
+.ex-opts input:checked + .mk{color:var(--accent);font-weight:700}
+.ex-opts label.picked{border-color:var(--accent-soft);background:var(--accent-pale)}
+.ex-opts label.correct{border-color:#7BC49A;background:#E9F6EE}
+.ex-opts label.correct .mk{color:#2E7D4F}
+.ex-opts label.wrong{border-color:#E5A9A0;background:#FDEEEB}
+.ex-opts label.wrong .mk{color:#C0392B}
+.ex-opts label.correct .tx::after{content:" ✔";color:#2E7D4F;font-weight:700}
+.ex-opts label.wrong .tx::after{content:" ✘";color:#C0392B;font-weight:700}
+
+.ex-exp{display:none;margin:10px 0 0;padding:10px 13px;border-radius:0 6px 6px 0;
+  border-left:3px solid var(--accent-soft);background:#F6F8F7;font-size:13.5px;line-height:1.7}
+.ex-q.show .ex-exp{display:block}
+.ex-exp .ex-ref{display:block;margin-top:8px;padding-top:6px;font-size:12px;color:#888;
+  border-top:1px dashed var(--line)}
+.ex-exp .ex-ref.out{color:#C0392B}     /* 요약노트에 없는 항목 — 따로 공부해야 함 */
+
+.ex-q.ok{border-color:#B6DCC4}
+.ex-q.ng{border-color:#E8C4BE}
+.ex-q.na{border-color:#DDD;background:#FAFAFA}
+.ex-q.ok .ex-no::after{content:" 정답";font-size:12px;color:#2E7D4F}
+.ex-q.ng .ex-no::after{content:" 오답";font-size:12px;color:#C0392B}
+.ex-q.na .ex-no::after{content:" 미응답";font-size:12px;color:#999}
+body.ex-review .ex-q.ok{display:none}          /* 오답만 다시 풀기 */
+body.ex-review .ex-q.rv-hide{display:none}     /* 저장된 오답만 다시 풀기(채점 전) */
+
+/* ---------- 좁은 화면 : 사이드바 서랍 ----------
+   900px 이하에서는 summary.css 가 사이드바를 본문 위에 쌓아 두는데(스크롤하면 사라짐),
+   시험지에서는 문항 바로가기를 계속 써야 하므로 왼쪽 서랍으로 바꾸고
+   플로팅 '☰ 문항' 단추로 여닫는다. */
+#sb-toggle{display:none;position:fixed;left:12px;bottom:14px;z-index:930;
+  border:1px solid var(--line);background:#fff;color:#444;border-radius:22px;
+  padding:9px 15px;font:700 13px/1.2 inherit;cursor:pointer;
+  box-shadow:0 4px 14px rgba(0,0,0,.16)}
+body.sb-open #sb-toggle{background:var(--accent);border-color:var(--accent);color:#fff}
+#sb-backdrop{display:none;position:fixed;inset:0;z-index:915;background:rgba(0,0,0,.28)}
+@media(max-width:900px){
+  #sb-toggle{display:inline-flex}
+  #sidebar{position:fixed;left:0;top:0;bottom:0;width:280px;max-width:82vw;
+    height:100vh;z-index:920;background:var(--side-bg);
+    border-right:1px solid var(--line);border-bottom:0;overflow-y:auto;
+    transform:translateX(-102%);transition:transform .18s ease;
+    padding:16px 0 70px}
+  body.sb-open #sidebar{transform:none;box-shadow:6px 0 22px rgba(0,0,0,.22)}
+  body.sb-open #sb-backdrop{display:block}
+}
+@media print{ #sb-toggle,#sb-backdrop{display:none !important} }
+
+/* ---------- 관련 요약 개념 (문항 밑 접이식 패널) ----------
+   학습 모드에서는 답을 고르기 전에도 문항 아래에 ▽ 로 보이고, 펼치면 해설도 함께 열린다.
+   실전 모드에서는 채점 뒤(문항이 .show 가 된 뒤)에만 보인다. */
+details.ex-concept{display:none;margin:6px 0 0;padding:8px 0 0;border-top:1px dashed #CFE0DA}
+body.ex-study .ex-q details.ex-concept,
+body.ex-concepts .ex-q details.ex-concept,
+.ex-q.show details.ex-concept{display:block}
+.ex-concept summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--accent);
+  -webkit-user-select:none;user-select:none;list-style:none;display:inline-block}
+.ex-concept summary::-webkit-details-marker{display:none}
+.ex-concept summary::before{content:"▽ ";font-size:10px;vertical-align:1px}
+.ex-concept[open]>summary::before{content:"△ "}
+.ex-concept summary:hover{text-decoration:underline}
+.ex-concept .cbody{margin-top:8px;padding:11px 14px;background:#F7FAF9;
+  border-left:3px solid var(--accent-soft);border-radius:0 6px 6px 0;
+  font-size:13.2px;line-height:1.72;color:#3E3E3E;overflow-x:auto}
+.ex-concept .cbody p{margin:0 0 7px}
+.ex-concept .cbody p.ct{margin:10px 0 6px;color:#26705F}
+.ex-concept .cbody p.ct:first-child{margin-top:0}
+.ex-concept .cbody ul,.ex-concept .cbody ol{margin:0 0 8px;padding-left:4px}
+.ex-concept .cbody table{border-collapse:collapse;margin:8px 0;font-size:12.6px}
+.ex-concept .cbody td,.ex-concept .cbody th{border:1px solid var(--line);padding:4px 8px}
+.ex-concept .cbody aside{background:#FFFDF2;border:1px solid #EBE3C2;border-radius:6px;
+  padding:8px 11px;margin:8px 0;font-size:12.6px}
+.ex-concept .cbody .ct-more{color:#999;font-size:12px;margin-top:8px}
+@media print{ .ex-concept{display:none} }
+
+/* 결과 */
+#ex-result{display:none;border:2px solid var(--accent);border-radius:12px;padding:18px;
+  margin:0 0 18px;background:#fff}
+#ex-result.show{display:block}
+#ex-result h2{margin:0 0 4px;font-size:20px;color:var(--navy)}
+#ex-result .ex-score{font-size:34px;font-weight:700;color:var(--accent);
+  font-variant-numeric:tabular-nums}
+#ex-result .ex-score small{font-size:15px;color:#999;font-weight:400}
+#ex-result .ex-verdict{display:inline-block;margin-left:10px;padding:4px 12px;border-radius:14px;
+  font-size:13px;font-weight:700}
+#ex-result .ex-verdict.pass{background:#E9F6EE;color:#2E7D4F;border:1px solid #7BC49A}
+#ex-result .ex-verdict.fail{background:#FDEEEB;color:#C0392B;border:1px solid #E5A9A0}
+#ex-result .ex-lines{margin:12px 0 0;font-size:13.5px;color:#555;line-height:1.9}
+#ex-result table{border-collapse:collapse;margin:10px 0 0;font-size:13px;width:100%}
+#ex-result th,#ex-result td{border:1px solid var(--line);padding:5px 9px;text-align:left}
+#ex-result th{background:var(--side-bg);color:#666;font-weight:700}
+#ex-result td.n{text-align:right;font-variant-numeric:tabular-nums}
+
+#ex-hist{margin:12px 0 0;font-size:12.5px;color:#888}
+#ex-hist b{color:var(--accent)}
+
+@media print{
+  .ex-bar,#ex-timer,.ex-nav,#ex-hist{display:none !important}
+  .ex-q{break-inside:avoid}
+  .ex-q .ex-exp{display:block}
+}
+@media(max-width:900px){
+  /* 좁은 화면에서는 사이드바가 본문 위로 오므로, 20칸 그리드를 한 줄로 눕혀
+     가로로 넘긴다. 안 그러면 문항에 닿기까지 한참을 내려야 한다. */
+  .ex-nav{display:flex;flex-wrap:nowrap;overflow-x:auto;padding:0 16px 6px;
+    -webkit-overflow-scrolling:touch}
+  .ex-nav a{flex:0 0 36px}
+  /* 가로 줄에서는 과목 이름표가 눌리지 않게 제 너비를 지킨다 */
+  .ex-navgrp{flex:0 0 auto;align-self:center;margin:0 4px 0 0}
+  #ex-result .ex-score{font-size:28px}
+  #sidebar ul.parts a{padding:4px 16px}
+}
+
+/* 아직 만들지 않은 과목 — 목차 카드와 사이드바 모두 흐리게 */
+.card.soon{opacity:.5;cursor:default;border-style:dashed}
+.card.soon:hover{border-color:var(--line);box-shadow:none}
+#sidebar ul.parts a.soon{color:#bbb;cursor:default}
+#sidebar ul.parts a.soon:hover{background:none;color:#bbb}
+/* ===== 4과목 통합 실전 모의고사 ===== */
+.ex-part{margin:26px 0 12px;padding:9px 14px;border-radius:8px;font-size:16px;
+  background:var(--accent-pale);color:var(--navy);border:1px solid var(--accent-soft)}
+.ex-part:first-of-type{margin-top:4px}
+.ex-part small{float:right;font-weight:400;color:#888;font-size:12.5px;padding-top:3px}
+.ex-navgrp{grid-column:1/-1;margin:8px 0 1px;font-size:11.5px;color:#999;font-weight:700}
+.ex-navgrp:first-child{margin-top:0}
+#ex-result table.ex-subj{margin-bottom:14px}
+#ex-result table.ex-subj td.okc{color:#2E7D4F;font-weight:700}
+#ex-result table.ex-subj td.ngc{color:#C0392B;font-weight:700}
+#ex-result .ex-lines b.ng{color:#C0392B}
+@media print{ .ex-part{break-before:page} .ex-part:first-of-type{break-before:auto} }
+
+/* 문제 안 〈보기〉 상자 (기출 사례형 지문) */
+.q-spec{margin:10px 0 4px;padding:10px 14px;background:#F7F9F8;border:1px solid #DDE7E4;
+  border-radius:8px;font-size:14.2px}
+.q-spec__label{display:inline-block;font-size:11.5px;font-weight:700;color:#26705F;
+  background:var(--accent-pale);border-radius:10px;padding:1px 10px;margin-bottom:6px}
+.ex-body table{border-collapse:collapse;margin:8px 0;font-size:13.5px}
+.ex-body td,.ex-body th{border:1px solid var(--line);padding:4px 9px}
+
+/* 과목별 전 회차 한번에 풀기 — 회차 구분선 */
+.ex-part.rd{margin-top:44px;border-top:3px solid var(--accent);border-radius:0 0 8px 8px;
+  padding-top:12px;font-size:17px}
+.ex-part.rd:first-of-type{margin-top:4px}
+</style></head><body>
+<div id="layout">
+<nav id="sidebar">
+  <div class="side-head"><a href="index.html">빅데이터분석기사 필기 교재</a><span>모의고사 2회차</span></div>
+  <ul class="parts"><li class="grp">2회차 · 과목</li>
+<li><a href="exam_2회차_1과목_빅데이터분석기획.html">1과목 빅데이터 분석 기획 <span>20문항</span></a></li>
+<li><a href="exam_2회차_2과목_빅데이터탐색.html">2과목 빅데이터 탐색 <span>20문항</span></a></li>
+<li><a href="exam_2회차_3과목_빅데이터모델링.html" class="on">3과목 빅데이터 모델링 <span>20문항</span></a></li>
+<li><a href="exam_2회차_4과목_빅데이터결과해석.html">4과목 빅데이터 결과해석 <span>20문항</span></a></li>
+<li><a href="exam_2회차_실전모의고사.html">실전 모의고사 <span>80문항</span></a></li>
+<li class="grp">다른 회차</li>
+<li><a href="exam_1회차_1과목_빅데이터분석기획.html">1회차 <span>기본</span></a></li>
+<li class="grp">한번에 풀기 · 과목별 전 회차</li>
+<li><a href="exam_1과목_전회차_빅데이터분석기획.html">1과목 빅데이터 분석 기획 <span>40문항</span></a></li>
+<li><a href="exam_2과목_전회차_빅데이터탐색.html">2과목 빅데이터 탐색 <span>40문항</span></a></li>
+<li><a href="exam_3과목_전회차_빅데이터모델링.html">3과목 빅데이터 모델링 <span>40문항</span></a></li>
+<li><a href="exam_4과목_전회차_빅데이터결과해석.html">4과목 빅데이터 결과해석 <span>40문항</span></a></li>
+<li class="grp">교재 전사</li>
+<li><a href="index.html">전체 목차</a></li></ul>
+  <div class="toc-head">문항 바로가기</div>
+  <div class="ex-nav" id="ex-nav"><a href="#q1">1</a><a href="#q2">2</a><a href="#q3">3</a><a href="#q4">4</a><a href="#q5">5</a><a href="#q6">6</a><a href="#q7">7</a><a href="#q8">8</a><a href="#q9">9</a><a href="#q10">10</a><a href="#q11">11</a><a href="#q12">12</a><a href="#q13">13</a><a href="#q14">14</a><a href="#q15">15</a><a href="#q16">16</a><a href="#q17">17</a><a href="#q18">18</a><a href="#q19">19</a><a href="#q20">20</a></div>
+</nav>
+<main id="main"><div class="wrap">
+<p class="crumb">교재 모의고사 2회차 · 계산·응용 강화 — 공식 적용과 사례 판단</p>
+<h1>3과목 · 빅데이터 모델링</h1>
+<p class="src">출제 범위 · 교재 PART 03 전사분 — CHAPTER 01 분석 모형 설계 (책 1-344 ~ 1-361)</p>
+<div class="ex-head" id="exam" data-minutes="30">
+  <p class="ex-meta">객관식 <b>20문항</b> · 제한 시간 <b>30분</b> ·
+     과락 기준 <b>40%</b> — <span id="ex-progress">0 / 20 문항 응답</span></p>
+  <div class="ex-bar">
+    <button type="button" id="ex-real" class="on">실전 모드</button>
+    <button type="button" id="ex-realc">실전 모드(내용 포함)</button>
+    <button type="button" id="ex-study">학습 모드</button>
+    <button type="button" id="ex-review">틀린 문항만</button>
+    <button type="button" id="ex-reset">다시 풀기</button>
+    <span class="ex-sep"></span>
+    <span id="ex-timer">남은 시간 30:00</span>
+    <button type="button" id="ex-submit" class="ex-primary">채점하기</button>
+  </div>
+  <p id="ex-hist"></p>
+</div>
+
+<div id="ex-result"></div>
+
+<section class="ex-q" id="q1" data-ans="0" data-area="분석 절차 수립"><div class="ex-qh"><span class="ex-no">1.</span><span class="ex-tags"><span>분석 절차 수립</span><span class="lv-쉬움">쉬움</span><span>사례적용</span></span></div><div class="ex-body">"신규 교육 프로그램이 성적을 향상시킨다"를 통계적으로 증명하려고 한다. 가설 설정으로 옳은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q1" value="0"><span class="mk">①</span><span class="tx">귀무가설 : 교육 프로그램은 성적 향상 효과가 없다.</span></label></li><li><label><input type="radio" name="q1" value="1"><span class="mk">②</span><span class="tx">귀무가설 : 교육 프로그램은 성적 향상 효과가 있다.</span></label></li><li><label><input type="radio" name="q1" value="2"><span class="mk">③</span><span class="tx">대립가설 : 교육 프로그램은 효과가 없다.</span></label></li><li><label><input type="radio" name="q1" value="3"><span class="mk">④</span><span class="tx">귀무가설과 대립가설 모두 효과가 있다로 설정한다.</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — 귀무가설은 "차이가 없다", "효과가 없다" 등의 상태를 가정하므로 <b>효과가 없다</b>로 설정하고, 증명하고자 하는 "효과가 있다"는 대립가설로 둔다.<span class="ex-ref ">근거 · 책 1-351</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-351쪽</summary><div class="cbody"><aside class="note">
+  <b class="star-b">기적의 TIP</b><br>분석 모델들에 대한 자세한 설명은 PART 03 – CHAPTER 02 분석기법 적용을 참고한다.
+  <hr><b>귀무가설</b><br>'영가설'이라고도 하며 대립가설에 상반되는 가설로서 기각되는 것이 예상되어 세워진 가설
+</aside>
+
+<div class="boxlist">
+<p>모든 분석 모형에서는 반드시 검증 및 테스트를 거친다.</p>
+<ul class="dash">
+  <li>분석용 데이터를 훈련용과 테스트용으로 분리한 다음, 분석용 데이터를 이용해 자체 검증한다.</li>
+  <li>실제 테스트에서는 신규 데이터에 모델을 적용하여 결과를 도출한다.</li>
+  <li>테스트 데이터의 비율은 분석용 데이터셋의 30% 정도를 이용하는 것이 일반적이나, 전체 데이터가 충분할 경우 6:4 또는 5:5로 분리하여 테스트 집단을 선정할 수 있다.</li>
+  <li>실제로 테스트하여 분석과 운영 간 연계를 검증할 수 있으며, 정상적으로 모델을 적용할 수 있는지에 대해 전체적인 분석 과정을 통합적으로 시험한다.</li>
+</ul>
+</div>
+
+<p class="ct"><b>3) 분석 모델링 설계와 검정 – 분석 목적에 기반한 가설검정 방법</b></p>
+
+<div class="tip tip-more">
+  <div class="tip-head tip-head-more">더 알기 TIP</div>
+  <p class="tip-title">통계적 가설검정</p>
+  <p>통계적 가설검정이란 통계적 추측의 하나로서, 모집단의 실제 값이 얼마가 된다는 주장에 대해 표본의 정보를 사용해서 가설의 합당성 여부를 판정하는 과정을 의미한다. 간단히 가설검정이라 부르는 경우가 많다.</p>
+  <p>통계적 가설은 통계학에서 사용하는 용어로, 하나의 특정 주장을 모수를 이용해 나타낸 형태를 지칭한다. 예를 들어 '미국 성인 여자는 키가 크다'는 통계적 가설이 될 수 없지만 '미국 성인여자의 평균 신장은 180이다'라는 것은 통계적 가설이 될 수 있다. 여기서 평균 신장은 모집단 특성을 나타내는 모수의 역할을 수행한다.</p>
+  <p>통계적 가설은 귀무가설과 이와 반대에 있는 대립가설로 나타난다.</p>
+</div>
+
+<p>가설검정은 다음과 같은 총 5단계의 절차를 거치게 된다.</p>
+
+<p class="ct"><b>① 유의수준 결정, 귀무가설과 대립가설 설정</b></p>
+<ul class="dash">
+  <li>귀무가설은 직접 검정 대상이 되는 가설이라고 할 수 있다. 다시 말해 '표본의 관찰을 통해 모집단은 ※※할 것이다'라고 내린 가설이다.</li>
+  <li>가설검정을 시행할 때는 귀무가설이 옳다는 가정하에 시작한다. 이것을 반대로 생각하면 진실일 가능성이 적어 처음부터 기각될 것이 예상되는 가설이다.</li>
+  <li>대립가설은 귀무가설이 기각이 될 때 받아들여지는 가설로 정의한다.</li>
+</ul>
+<p class="ct"><b>② 검정통계량의 설정</b></p>
+<ul class="dash">
+  <li>검정통계량은 가설을 검정하기 위한 기준으로 사용하는 값을 의미한다.</li>
+  <li>검정통계량이 확률분포 상에 어디에 위치하는지에 따라 귀무가설을 기각하거나 기각하지 않는다.</li>
+</ul>
+<p class="ct"><b>③ 기각역의 설정</b></p>
+<ul class="dash">
+  <li>기각역은 확률분포에서 귀무가설을 기각하는 영역을 말한다.</li>
+  <li>기각역에 검정통계량이 위치하면 귀무가설을 기각한다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q2" data-ans="0" data-area="분석 절차 수립"><div class="ex-qh"><span class="ex-no">2.</span><span class="ex-tags"><span>분석 절차 수립</span><span class="lv-보통">보통</span><span>사례적용</span></span></div><div class="ex-body">대립가설을 "공정 개선 후 불량률이 이전보다 낮아졌다"로 세웠다. 검증 방향으로 옳은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q2" value="0"><span class="mk">①</span><span class="tx">"작다"를 주장하므로 단측검정을 사용한다.</span></label></li><li><label><input type="radio" name="q2" value="1"><span class="mk">②</span><span class="tx">"같지 않다"가 아니므로 양측검정을 사용한다.</span></label></li><li><label><input type="radio" name="q2" value="2"><span class="mk">③</span><span class="tx">기각역이 분포 양쪽에 있는 검정을 사용한다.</span></label></li><li><label><input type="radio" name="q2" value="3"><span class="mk">④</span><span class="tx">검정 없이 채택한다.</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — 대립가설이 <b>~보다 작다(혹은 크다)</b>인 경우 귀무가설을 기각하는 영역이 한쪽 끝에 있는 <b>단측검정</b>을 사용한다. 양측검정은 대립가설이 "~가 아니다"일 때 쓴다.<span class="ex-ref ">근거 · 책 1-352</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-352쪽</summary><div class="cbody"><aside class="note">
+  <b>유의수준</b><br>귀무가설이 참임에도 불구하고 기각할 확률로 알파(α, alpha)값이라고도 부름
+  <hr><b class="star-b">기적의 TIP</b><br>추정과 검정의 더 자세한 내용은 PART 02 – CHAPTER 03 – SECTION 02 추론통계를 참고한다.
+</aside>
+
+<p class="ct"><b>④ 검정통계량 계산</b></p>
+<p>검정통계량의 계산식은 다음과 같다.</p>
+<div class="eqbox"><span class="fr"><span class="nu">(표본평균−모평균)</span><span class="de">(표본 표준편차)</span></span></div>
+<ul class="dash">
+  <li>신뢰수준 : 가설을 검정할 때 어느 정도로 검정할 것인지에 대한 수준을 말한다.</li>
+  <li>유의수준 : 가설을 검정할 때 일정 수준을 벗어나면 귀무가설이 오류라고 판단하는 수준을 말한다.
+    <ul class="dash2"><li>유의수준의 수학적 의미는 기각역들의 합이며, 1에서 신뢰수준을 뺀 값이기도 하다.</li></ul></li>
+</ul>
+
+<p class="ct"><b>⑤ 통계적인 의사결정(가설검정)</b></p>
+<p>가설검정에서의 검정 방법은 양측검정과 단측검정 두 가지가 있다.</p>
+<ul class="dash">
+  <li>양측검정이란 귀무가설을 기각하는 영역이 양쪽에 있는 검정을 말한다. 만약 <mark>대립가설이 ~가 아니다(크거나 작다)라면 양측검정을 사용</mark>한다.</li>
+</ul>
+
+<ul class="dash">
+  <li>단측검정이란 양측검정과는 달리 귀무가설을 기각하는 영역이 한쪽 끝에 있는 검정을 말한다. 만약 <mark>대립가설이 ~보다 작다 혹은 크다인 경우 단측검정을 사용</mark>한다.</li>
+</ul>
+
+<ul class="dash">
+  <li>통계적인 의사결정 단계에서는 계산한 검정 통계량을 t값 분포도와 비교하여 기각역에 속하는지 아닌지를 판단한다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q3" data-ans="0" data-area="분석 절차 수립"><div class="ex-qh"><span class="ex-no">3.</span><span class="ex-tags"><span>분석 절차 수립</span><span class="lv-보통">보통</span><span>계산</span></span></div><div class="ex-body">모평균 50, 모표준편차 6으로 관리되는 공정에서 36개의 표본을 뽑았더니 표본평균이 48이었다. 검정통계량 Z 값은?</div><ul class="ex-opts"><li><label><input type="radio" name="q3" value="0"><span class="mk">①</span><span class="tx">−2.0</span></label></li><li><label><input type="radio" name="q3" value="1"><span class="mk">②</span><span class="tx">−0.33</span></label></li><li><label><input type="radio" name="q3" value="2"><span class="mk">③</span><span class="tx">+2.0</span></label></li><li><label><input type="radio" name="q3" value="3"><span class="mk">④</span><span class="tx">−12.0</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — Z = (X̄ − μ) / (σ/√n) = (48 − 50) / (6/√36) = −2 / 1 = <b>−2.0</b>. 표본평균과 모평균의 차이를 표준오차로 나눈다.<span class="ex-ref ">근거 · 책 1-352</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-352쪽</summary><div class="cbody"><aside class="note">
+  <b>유의수준</b><br>귀무가설이 참임에도 불구하고 기각할 확률로 알파(α, alpha)값이라고도 부름
+  <hr><b class="star-b">기적의 TIP</b><br>추정과 검정의 더 자세한 내용은 PART 02 – CHAPTER 03 – SECTION 02 추론통계를 참고한다.
+</aside>
+
+<p class="ct"><b>④ 검정통계량 계산</b></p>
+<p>검정통계량의 계산식은 다음과 같다.</p>
+<div class="eqbox"><span class="fr"><span class="nu">(표본평균−모평균)</span><span class="de">(표본 표준편차)</span></span></div>
+<ul class="dash">
+  <li>신뢰수준 : 가설을 검정할 때 어느 정도로 검정할 것인지에 대한 수준을 말한다.</li>
+  <li>유의수준 : 가설을 검정할 때 일정 수준을 벗어나면 귀무가설이 오류라고 판단하는 수준을 말한다.
+    <ul class="dash2"><li>유의수준의 수학적 의미는 기각역들의 합이며, 1에서 신뢰수준을 뺀 값이기도 하다.</li></ul></li>
+</ul>
+
+<p class="ct"><b>⑤ 통계적인 의사결정(가설검정)</b></p>
+<p>가설검정에서의 검정 방법은 양측검정과 단측검정 두 가지가 있다.</p>
+<ul class="dash">
+  <li>양측검정이란 귀무가설을 기각하는 영역이 양쪽에 있는 검정을 말한다. 만약 <mark>대립가설이 ~가 아니다(크거나 작다)라면 양측검정을 사용</mark>한다.</li>
+</ul>
+
+<ul class="dash">
+  <li>단측검정이란 양측검정과는 달리 귀무가설을 기각하는 영역이 한쪽 끝에 있는 검정을 말한다. 만약 <mark>대립가설이 ~보다 작다 혹은 크다인 경우 단측검정을 사용</mark>한다.</li>
+</ul>
+
+<ul class="dash">
+  <li>통계적인 의사결정 단계에서는 계산한 검정 통계량을 t값 분포도와 비교하여 기각역에 속하는지 아닌지를 판단한다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q4" data-ans="0" data-area="분석 절차 수립"><div class="ex-qh"><span class="ex-no">4.</span><span class="ex-tags"><span>분석 절차 수립</span><span class="lv-보통">보통</span><span>계산</span></span></div><div class="ex-body">위 문항에서 유의수준 5%의 양측검정(임계치 ±1.96)을 적용할 때 통계적 의사결정으로 옳은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q4" value="0"><span class="mk">①</span><span class="tx">Z = −2.0 < −1.96 이므로 귀무가설을 기각한다.</span></label></li><li><label><input type="radio" name="q4" value="1"><span class="mk">②</span><span class="tx">Z = −2.0 > −1.96 이므로 귀무가설을 채택한다.</span></label></li><li><label><input type="radio" name="q4" value="2"><span class="mk">③</span><span class="tx">기각역과 무관하게 항상 채택한다.</span></label></li><li><label><input type="radio" name="q4" value="3"><span class="mk">④</span><span class="tx">표본을 다시 뽑아야 하므로 판단할 수 없다.</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — 검정통계량 −2.0 이 기각역(±1.96 밖)에 존재하므로 <b>귀무가설을 기각</b>한다. 검정통계량이 기각역에 존재하면 기각, 채택역에 존재하면 채택한다.<span class="ex-ref ">근거 · 책 1-352</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-352쪽</summary><div class="cbody"><aside class="note">
+  <b>유의수준</b><br>귀무가설이 참임에도 불구하고 기각할 확률로 알파(α, alpha)값이라고도 부름
+  <hr><b class="star-b">기적의 TIP</b><br>추정과 검정의 더 자세한 내용은 PART 02 – CHAPTER 03 – SECTION 02 추론통계를 참고한다.
+</aside>
+
+<p class="ct"><b>④ 검정통계량 계산</b></p>
+<p>검정통계량의 계산식은 다음과 같다.</p>
+<div class="eqbox"><span class="fr"><span class="nu">(표본평균−모평균)</span><span class="de">(표본 표준편차)</span></span></div>
+<ul class="dash">
+  <li>신뢰수준 : 가설을 검정할 때 어느 정도로 검정할 것인지에 대한 수준을 말한다.</li>
+  <li>유의수준 : 가설을 검정할 때 일정 수준을 벗어나면 귀무가설이 오류라고 판단하는 수준을 말한다.
+    <ul class="dash2"><li>유의수준의 수학적 의미는 기각역들의 합이며, 1에서 신뢰수준을 뺀 값이기도 하다.</li></ul></li>
+</ul>
+
+<p class="ct"><b>⑤ 통계적인 의사결정(가설검정)</b></p>
+<p>가설검정에서의 검정 방법은 양측검정과 단측검정 두 가지가 있다.</p>
+<ul class="dash">
+  <li>양측검정이란 귀무가설을 기각하는 영역이 양쪽에 있는 검정을 말한다. 만약 <mark>대립가설이 ~가 아니다(크거나 작다)라면 양측검정을 사용</mark>한다.</li>
+</ul>
+
+<ul class="dash">
+  <li>단측검정이란 양측검정과는 달리 귀무가설을 기각하는 영역이 한쪽 끝에 있는 검정을 말한다. 만약 <mark>대립가설이 ~보다 작다 혹은 크다인 경우 단측검정을 사용</mark>한다.</li>
+</ul>
+
+<ul class="dash">
+  <li>통계적인 의사결정 단계에서는 계산한 검정 통계량을 t값 분포도와 비교하여 기각역에 속하는지 아닌지를 판단한다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q5" data-ans="0" data-area="분석 절차 수립"><div class="ex-qh"><span class="ex-no">5.</span><span class="ex-tags"><span>분석 절차 수립</span><span class="lv-어려움">어려움</span><span>계산</span></span></div><div class="ex-body">모표준편차를 모르는 소표본(n=9)에서 t 검정통계량이 −2.0 으로 계산되었고, 기각역의 임계치는 ±t(0.025, 8) = ±2.306 이다. 의사결정으로 옳은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q5" value="0"><span class="mk">①</span><span class="tx">−2.0 은 −2.306 보다 크므로(기각역 밖) 귀무가설을 채택한다.</span></label></li><li><label><input type="radio" name="q5" value="1"><span class="mk">②</span><span class="tx">−2.0 은 임계치를 벗어나므로 귀무가설을 기각한다.</span></label></li><li><label><input type="radio" name="q5" value="2"><span class="mk">③</span><span class="tx">t 분포는 사용할 수 없으므로 Z 검정으로 바꾼다.</span></label></li><li><label><input type="radio" name="q5" value="3"><span class="mk">④</span><span class="tx">자유도는 9이므로 임계치가 잘못되었다.</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — t<sub>o</sub> = −2.0 &gt; −2.306 으로 <b>채택역에 존재</b>하므로 귀무가설을 채택한다. 같은 −2.0 이라도 Z 검정(±1.96)에서는 기각, 소표본 t 검정(±2.306)에서는 채택이 될 수 있다. 자유도는 n−1 = 8 이 맞다.<span class="ex-ref ">근거 · 책 1-353</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-353쪽</summary><div class="cbody"><p class="ct"><b>4) 분석 모델링 설계와 검정 – 추정 방법에 대한 기술 검토</b></p>
+<ul class="dash">
+  <li>전체적으로 데이터에 대한 전처리 과정을 마치게 되면 모형에 활용될 후보 변수와 후보 분석 모형에 사용할 알고리즘을 파악하게 된다.</li>
+  <li>기초 통계, 데이터 검증, 데이터 정제 등의 데이터 변환 과정을 거치면 후보 변수는 전처리 과정에서 선정된다.</li>
+  <li>분석 모형은 크게 분류예측 추천 등의 예측 분석, 과거 데이터를 기반하여 현재를 진단하는 현황 진단, 시뮬레이션과 제한된 환경 최적화를 모색하는 예측 최적화로 나누어진다.
+    <ul class="dash2">
+      <li>분석 모형을 선정하는 문제는 비즈니스 환경 여건이나 종속 변수의 유무에 따라 달라지기 때문에 종속 변수가 있는지 없는지를 살펴보아야 한다.</li>
+      <li>종속 변수의 유무에 따라 사용할 알고리즘이 제한을 받는다.</li>
+      <li>예를 들어 종속 변수가 없으면 사용할 수 있는 알고리즘이 군집과 원인 분석, 이상치, 연관 법칙 등으로 제한된다. 또한 변수의 속성에 따라 알고리즘의 선택이 달라진다.</li>
+    </ul></li>
+</ul>
+
+<div class="cchk">
+<div class="cchk-head">개념 체크</div>
+
+<p class="cchk-q"><span class="n">1</span> 가설 종류에 따라 기각역을 설정하는 방법이 달라지는데 귀무가설이 기각될 확률을 뜻하면서 통계적검정에서 대립가설을 기준으로 설정하는 이것은?</p>
+<ol class="circled q-opt">
+  <li>베타값</li>
+  <li>람다값</li>
+  <li>알파값</li>
+  <li>감마값</li>
+</ol>
+<div class="cchk-a"><span class="ans">정답 ③</span>
+<p>100번 실험을 했을 때 귀무가설이 기각되는 횟수를 5번으로 최대 허용한계를 정하는 것이 유의수준인 알파값이다.</p></div>
+
+<p class="cchk-q"><span class="n">2</span> 분석 모형 선정 시 (&nbsp;&nbsp;&nbsp;&nbsp;)가 없는 경우 지도학습 알고리즘을 적용하기 어렵기 때문에 비지도학습으로만 분석을 수행할 수 있다. (&nbsp;&nbsp;&nbsp;&nbsp;) 안에 알맞은 말은?</p>
+<ol class="circled q-opt">
+  <li>연관 변수</li>
+  <li>독립 변수</li>
+  <li>종속 변수</li>
+  <li>군집 변수</li>
+</ol>
+<div class="cchk-a"><span class="ans">정답 ③</span>
+<p>종속변수는 원인들에 의해 도출된 결과를 뜻하는 변수로 종속변수가 없게 되면 비지도학습으로 국한되어 알고리즘을 선택, 활용할 수 있게 된다.</p></div>
+</div></div></details></section>
+<section class="ex-q" id="q6" data-ans="1" data-area="분석 절차 수립"><div class="ex-qh"><span class="ex-no">6.</span><span class="ex-tags"><span>분석 절차 수립</span><span class="lv-쉬움">쉬움</span><span>개념</span></span></div><div class="ex-body">모표준편차를 모르고 표본표준편차만 알고 있는 경우의 평균 검정에 대한 설명으로 옳은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q6" value="0"><span class="mk">①</span><span class="tx">항상 Z 검정을 사용한다.</span></label></li><li><label><input type="radio" name="q6" value="1"><span class="mk">②</span><span class="tx">t 검정을 사용한다.</span></label></li><li><label><input type="radio" name="q6" value="2"><span class="mk">③</span><span class="tx">검정이 불가능하다.</span></label></li><li><label><input type="radio" name="q6" value="3"><span class="mk">④</span><span class="tx">카이제곱 검정을 사용한다.</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — 모표준편차를 모르는 경우에는 표본표준편차를 사용하는 <b>t 검정</b>을 활용한다. 자유도 n−1 인 t 분포의 임계치를 쓴다.<span class="ex-ref ">근거 · 책 1-353</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-353쪽</summary><div class="cbody"><p class="ct"><b>4) 분석 모델링 설계와 검정 – 추정 방법에 대한 기술 검토</b></p>
+<ul class="dash">
+  <li>전체적으로 데이터에 대한 전처리 과정을 마치게 되면 모형에 활용될 후보 변수와 후보 분석 모형에 사용할 알고리즘을 파악하게 된다.</li>
+  <li>기초 통계, 데이터 검증, 데이터 정제 등의 데이터 변환 과정을 거치면 후보 변수는 전처리 과정에서 선정된다.</li>
+  <li>분석 모형은 크게 분류예측 추천 등의 예측 분석, 과거 데이터를 기반하여 현재를 진단하는 현황 진단, 시뮬레이션과 제한된 환경 최적화를 모색하는 예측 최적화로 나누어진다.
+    <ul class="dash2">
+      <li>분석 모형을 선정하는 문제는 비즈니스 환경 여건이나 종속 변수의 유무에 따라 달라지기 때문에 종속 변수가 있는지 없는지를 살펴보아야 한다.</li>
+      <li>종속 변수의 유무에 따라 사용할 알고리즘이 제한을 받는다.</li>
+      <li>예를 들어 종속 변수가 없으면 사용할 수 있는 알고리즘이 군집과 원인 분석, 이상치, 연관 법칙 등으로 제한된다. 또한 변수의 속성에 따라 알고리즘의 선택이 달라진다.</li>
+    </ul></li>
+</ul>
+
+<div class="cchk">
+<div class="cchk-head">개념 체크</div>
+
+<p class="cchk-q"><span class="n">1</span> 가설 종류에 따라 기각역을 설정하는 방법이 달라지는데 귀무가설이 기각될 확률을 뜻하면서 통계적검정에서 대립가설을 기준으로 설정하는 이것은?</p>
+<ol class="circled q-opt">
+  <li>베타값</li>
+  <li>람다값</li>
+  <li>알파값</li>
+  <li>감마값</li>
+</ol>
+<div class="cchk-a"><span class="ans">정답 ③</span>
+<p>100번 실험을 했을 때 귀무가설이 기각되는 횟수를 5번으로 최대 허용한계를 정하는 것이 유의수준인 알파값이다.</p></div>
+
+<p class="cchk-q"><span class="n">2</span> 분석 모형 선정 시 (&nbsp;&nbsp;&nbsp;&nbsp;)가 없는 경우 지도학습 알고리즘을 적용하기 어렵기 때문에 비지도학습으로만 분석을 수행할 수 있다. (&nbsp;&nbsp;&nbsp;&nbsp;) 안에 알맞은 말은?</p>
+<ol class="circled q-opt">
+  <li>연관 변수</li>
+  <li>독립 변수</li>
+  <li>종속 변수</li>
+  <li>군집 변수</li>
+</ol>
+<div class="cchk-a"><span class="ans">정답 ③</span>
+<p>종속변수는 원인들에 의해 도출된 결과를 뜻하는 변수로 종속변수가 없게 되면 비지도학습으로 국한되어 알고리즘을 선택, 활용할 수 있게 된다.</p></div>
+</div></div></details></section>
+<section class="ex-q" id="q7" data-ans="2" data-area="분석 절차 수립"><div class="ex-qh"><span class="ex-no">7.</span><span class="ex-tags"><span>분석 절차 수립</span><span class="lv-쉬움">쉬움</span><span>계산</span></span></div><div class="ex-body">신뢰수준을 95%로 정하고 가설검정을 수행할 때 유의수준 α 는?</div><ul class="ex-opts"><li><label><input type="radio" name="q7" value="0"><span class="mk">①</span><span class="tx">0.5</span></label></li><li><label><input type="radio" name="q7" value="1"><span class="mk">②</span><span class="tx">0.95</span></label></li><li><label><input type="radio" name="q7" value="2"><span class="mk">③</span><span class="tx">0.05</span></label></li><li><label><input type="radio" name="q7" value="3"><span class="mk">④</span><span class="tx">0.025</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — 유의수준은 <b>1 − 신뢰수준</b> = 1 − 0.95 = <b>0.05</b> 이며, 수학적으로 기각역들의 합과 같다.<span class="ex-ref ">근거 · 책 1-352</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-352쪽</summary><div class="cbody"><aside class="note">
+  <b>유의수준</b><br>귀무가설이 참임에도 불구하고 기각할 확률로 알파(α, alpha)값이라고도 부름
+  <hr><b class="star-b">기적의 TIP</b><br>추정과 검정의 더 자세한 내용은 PART 02 – CHAPTER 03 – SECTION 02 추론통계를 참고한다.
+</aside>
+
+<p class="ct"><b>④ 검정통계량 계산</b></p>
+<p>검정통계량의 계산식은 다음과 같다.</p>
+<div class="eqbox"><span class="fr"><span class="nu">(표본평균−모평균)</span><span class="de">(표본 표준편차)</span></span></div>
+<ul class="dash">
+  <li>신뢰수준 : 가설을 검정할 때 어느 정도로 검정할 것인지에 대한 수준을 말한다.</li>
+  <li>유의수준 : 가설을 검정할 때 일정 수준을 벗어나면 귀무가설이 오류라고 판단하는 수준을 말한다.
+    <ul class="dash2"><li>유의수준의 수학적 의미는 기각역들의 합이며, 1에서 신뢰수준을 뺀 값이기도 하다.</li></ul></li>
+</ul>
+
+<p class="ct"><b>⑤ 통계적인 의사결정(가설검정)</b></p>
+<p>가설검정에서의 검정 방법은 양측검정과 단측검정 두 가지가 있다.</p>
+<ul class="dash">
+  <li>양측검정이란 귀무가설을 기각하는 영역이 양쪽에 있는 검정을 말한다. 만약 <mark>대립가설이 ~가 아니다(크거나 작다)라면 양측검정을 사용</mark>한다.</li>
+</ul>
+
+<ul class="dash">
+  <li>단측검정이란 양측검정과는 달리 귀무가설을 기각하는 영역이 한쪽 끝에 있는 검정을 말한다. 만약 <mark>대립가설이 ~보다 작다 혹은 크다인 경우 단측검정을 사용</mark>한다.</li>
+</ul>
+
+<ul class="dash">
+  <li>통계적인 의사결정 단계에서는 계산한 검정 통계량을 t값 분포도와 비교하여 기각역에 속하는지 아닌지를 판단한다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q8" data-ans="3" data-area="분석 절차 수립"><div class="ex-qh"><span class="ex-no">8.</span><span class="ex-tags"><span>분석 절차 수립</span><span class="lv-보통">보통</span><span>개념</span></span></div><div class="ex-body">분석 목적에 기반한 가설검정 방법의 절차를 순서대로 바르게 나열한 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q8" value="0"><span class="mk">①</span><span class="tx">통계적 의사결정 → 검정통계량 설정 → 계산 → 가설 설정 → 기각역 설정</span></label></li><li><label><input type="radio" name="q8" value="1"><span class="mk">②</span><span class="tx">검정통계량 계산 → 가설 설정 → 기각역 설정 → 유의수준 결정 → 통계적 의사결정</span></label></li><li><label><input type="radio" name="q8" value="2"><span class="mk">③</span><span class="tx">기각역 설정 → 유의수준 결정 → 가설 설정 → 통계적 의사결정 → 검정통계량 계산</span></label></li><li><label><input type="radio" name="q8" value="3"><span class="mk">④</span><span class="tx">유의수준 결정·가설 설정 → 검정통계량 설정 → 기각역 설정 → 검정통계량 계산 → 통계적 의사결정</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — 가설검정은 ④ 유의수준 결정, 귀무·대립가설 설정 → ② 검정통계량의 설정 → ③ 기각역의 설정 → ① 검정통계량 계산 → ⑤ 통계적인 의사결정 순으로 진행한다.<span class="ex-ref ">근거 · 책 1-351</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-351쪽</summary><div class="cbody"><aside class="note">
+  <b class="star-b">기적의 TIP</b><br>분석 모델들에 대한 자세한 설명은 PART 03 – CHAPTER 02 분석기법 적용을 참고한다.
+  <hr><b>귀무가설</b><br>'영가설'이라고도 하며 대립가설에 상반되는 가설로서 기각되는 것이 예상되어 세워진 가설
+</aside>
+
+<div class="boxlist">
+<p>모든 분석 모형에서는 반드시 검증 및 테스트를 거친다.</p>
+<ul class="dash">
+  <li>분석용 데이터를 훈련용과 테스트용으로 분리한 다음, 분석용 데이터를 이용해 자체 검증한다.</li>
+  <li>실제 테스트에서는 신규 데이터에 모델을 적용하여 결과를 도출한다.</li>
+  <li>테스트 데이터의 비율은 분석용 데이터셋의 30% 정도를 이용하는 것이 일반적이나, 전체 데이터가 충분할 경우 6:4 또는 5:5로 분리하여 테스트 집단을 선정할 수 있다.</li>
+  <li>실제로 테스트하여 분석과 운영 간 연계를 검증할 수 있으며, 정상적으로 모델을 적용할 수 있는지에 대해 전체적인 분석 과정을 통합적으로 시험한다.</li>
+</ul>
+</div>
+
+<p class="ct"><b>3) 분석 모델링 설계와 검정 – 분석 목적에 기반한 가설검정 방법</b></p>
+
+<div class="tip tip-more">
+  <div class="tip-head tip-head-more">더 알기 TIP</div>
+  <p class="tip-title">통계적 가설검정</p>
+  <p>통계적 가설검정이란 통계적 추측의 하나로서, 모집단의 실제 값이 얼마가 된다는 주장에 대해 표본의 정보를 사용해서 가설의 합당성 여부를 판정하는 과정을 의미한다. 간단히 가설검정이라 부르는 경우가 많다.</p>
+  <p>통계적 가설은 통계학에서 사용하는 용어로, 하나의 특정 주장을 모수를 이용해 나타낸 형태를 지칭한다. 예를 들어 '미국 성인 여자는 키가 크다'는 통계적 가설이 될 수 없지만 '미국 성인여자의 평균 신장은 180이다'라는 것은 통계적 가설이 될 수 있다. 여기서 평균 신장은 모집단 특성을 나타내는 모수의 역할을 수행한다.</p>
+  <p>통계적 가설은 귀무가설과 이와 반대에 있는 대립가설로 나타난다.</p>
+</div>
+
+<p>가설검정은 다음과 같은 총 5단계의 절차를 거치게 된다.</p>
+
+<p class="ct"><b>① 유의수준 결정, 귀무가설과 대립가설 설정</b></p>
+<ul class="dash">
+  <li>귀무가설은 직접 검정 대상이 되는 가설이라고 할 수 있다. 다시 말해 '표본의 관찰을 통해 모집단은 ※※할 것이다'라고 내린 가설이다.</li>
+  <li>가설검정을 시행할 때는 귀무가설이 옳다는 가정하에 시작한다. 이것을 반대로 생각하면 진실일 가능성이 적어 처음부터 기각될 것이 예상되는 가설이다.</li>
+  <li>대립가설은 귀무가설이 기각이 될 때 받아들여지는 가설로 정의한다.</li>
+</ul>
+<p class="ct"><b>② 검정통계량의 설정</b></p>
+<ul class="dash">
+  <li>검정통계량은 가설을 검정하기 위한 기준으로 사용하는 값을 의미한다.</li>
+  <li>검정통계량이 확률분포 상에 어디에 위치하는지에 따라 귀무가설을 기각하거나 기각하지 않는다.</li>
+</ul>
+<p class="ct"><b>③ 기각역의 설정</b></p>
+<ul class="dash">
+  <li>기각역은 확률분포에서 귀무가설을 기각하는 영역을 말한다.</li>
+  <li>기각역에 검정통계량이 위치하면 귀무가설을 기각한다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q9" data-ans="1" data-area="분석 절차 수립"><div class="ex-qh"><span class="ex-no">9.</span><span class="ex-tags"><span>분석 절차 수립</span><span class="lv-쉬움">쉬움</span><span>사례적용</span></span></div><div class="ex-body">"지난 분기에 이탈 고객이 왜 늘었고, 현재 고객 상태는 어떠한가?"를 다루는 분석 모형은?</div><ul class="ex-opts"><li><label><input type="radio" name="q9" value="0"><span class="mk">①</span><span class="tx">예측 분석 모형</span></label></li><li><label><input type="radio" name="q9" value="1"><span class="mk">②</span><span class="tx">현황 진단 모형</span></label></li><li><label><input type="radio" name="q9" value="2"><span class="mk">③</span><span class="tx">최적화 분석 모형</span></label></li><li><label><input type="radio" name="q9" value="3"><span class="mk">④</span><span class="tx">표본추출 모형</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — 과거 상황의 원인과 현재 상태를 묻는 것은 <b>현황 진단 모형</b>("과거에 어떠한 상황이 왜 어떻게 일어났는가? 그리고 현재 어떠한 상태인가?")이다.<span class="ex-ref ">근거 · 책 1-348</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-348쪽</summary><div class="cbody"><aside class="note"><b>분석 모형</b>
+<ul class="dash"><li>예측 분석 모형</li><li>현황 진단 모형</li><li>최적화 분석 모형</li></ul>
+</aside>
+
+<p class="ct"><b><span class="num">02</span> 분석 모형 정의</b></p>
+
+<p class="ct"><b>1) 분석 모형 정의와 종류</b></p>
+<p>분석 모형은 분석 목표에 따라 데이터 특성을 도출하고, 가설 수립에 따라 전체적인 분석 방향을 정의하는 모형으로 예측 분석 모형, 현황 진단 모형, 최적화 분석 모형 등으로 구분한다.</p>
+<p class="ct"><b>① 예측 분석 모형 : "어떤 일들이 발생할 것인가?"</b></p>
+<p>적조 예측, 날씨 예측, 주가 예측, 범죄/위험 예측, 쇼핑아이템 추천 등 과거, 현재까지의 데이터와 상황에 따른 가설을 기반하여 미래에 대한 현상을 사전에 분류하고 예측하는 모형이다.</p>
+<p class="ct"><b>② 현황 진단 모형 : "과거에 어떠한 상황이 왜 어떻게 일어났는가? 그리고 현재 어떠한 상태인가?"</b></p>
+<p>과거 데이터를 통해 현재 상황을 객관적으로 진단하는 모형으로 미래 예측이 아닌 현재를 이해함에 활용한다.</p>
+<p class="ct"><b>③ 최적화 분석 모형 : "어떻게 하면 원하는 결과가 일어날 수 있을까?"</b></p>
+<p>제한된 자원, 환경 내에서 최대의 효용성, 이익과 같은 결과를 생성하기 위해 분석 모델을 최적화하는 데에 중점을 둔다.</p>
+
+<p class="ct"><b>2) 분석 모형 정의를 위한 사전 고려사항</b></p>
+<p>분석 모형을 정의하기 전에 분석이 실제 추진될 수 있을지 가능성을 타진하는 것이 중요하다.</p>
+<ul class="dash">
+  <li>분석을 진행하기 이전 상황에 맞는 평가 기준표, 테이블을 작성하여 항목별로 점수를 부여하고 총점을 매긴 후 분석 모형 정의의 가능성을 판별할 수 있다.</li>
+  <li>추진시급성과 구현가능성만으로 분석 모형 정의를 위한 사전 판별 기준 활용이 가능하다.</li>
+</ul>
+
+<div class="tbl-cap">분석 모형 정의와 판별을 위한 평가기준표 예시</div>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:180px">기준</th><th>판단 근거</th></tr>
+  <tr><td class="h">필요성</td><td>개인이나 기관 관점에서 분석 과제가 필요한지 판단</td></tr>
+  <tr><td class="h">파급효과</td><td>정성적, 정량적 기대효과의 정도 판단</td></tr>
+  <tr><td class="h">추진 시급성</td><td>당장 해소되어야 할 사회현안 여부 판단, 장기과제 성격 분리</td></tr>
+  <tr><td class="h">구현 가능성</td><td>과제를 구현함에 있어서 어려움이 없는지 현실성 판단</td></tr>
+  <tr><td class="h">데이터 수집 가능성</td><td>공공기관 협조나 데이터 확보, 데이터 구매 등 제약사항 판단</td></tr>
+  <tr><td class="h">모델 확장성</td><td>과제가 시범과제로 끝나지 않고 전체 데이터 모델로 확장 가능한지 판단</td></tr>
+</table>
+</div>
+
+<ul class="dash">
+  <li>분석 모형 정의에 필요한 데이터가 충분히 확보되어 있는지를 판단하여 <mark>관련 과거 분석 사례 또는 솔루션을 최대한 활용할 수 있는지</mark> 검토한다면 보다 효율적인 분석 모형 설계를 진행할 수 있다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q10" data-ans="2" data-area="분석 절차 수립"><div class="ex-qh"><span class="ex-no">10.</span><span class="ex-tags"><span>분석 절차 수립</span><span class="lv-보통">보통</span><span>사례적용</span></span></div><div class="ex-body">"광고 예산을 어떻게 배분하면 매출이 최대가 될까?"를 다루는 분석 모형은?</div><ul class="ex-opts"><li><label><input type="radio" name="q10" value="0"><span class="mk">①</span><span class="tx">예측 분석 모형</span></label></li><li><label><input type="radio" name="q10" value="1"><span class="mk">②</span><span class="tx">현황 진단 모형</span></label></li><li><label><input type="radio" name="q10" value="2"><span class="mk">③</span><span class="tx">최적화 분석 모형</span></label></li><li><label><input type="radio" name="q10" value="3"><span class="mk">④</span><span class="tx">기술 통계 모형</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — "어떻게 하면 원하는 결과가 일어날 수 있을까?"를 묻는 것은 <b>최적화 분석 모형</b>이다. 예측 모형은 앞으로 어떤 일이 발생할지, 진단 모형은 과거·현재 상태를 다룬다.<span class="ex-ref ">근거 · 책 1-348</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-348쪽</summary><div class="cbody"><aside class="note"><b>분석 모형</b>
+<ul class="dash"><li>예측 분석 모형</li><li>현황 진단 모형</li><li>최적화 분석 모형</li></ul>
+</aside>
+
+<p class="ct"><b><span class="num">02</span> 분석 모형 정의</b></p>
+
+<p class="ct"><b>1) 분석 모형 정의와 종류</b></p>
+<p>분석 모형은 분석 목표에 따라 데이터 특성을 도출하고, 가설 수립에 따라 전체적인 분석 방향을 정의하는 모형으로 예측 분석 모형, 현황 진단 모형, 최적화 분석 모형 등으로 구분한다.</p>
+<p class="ct"><b>① 예측 분석 모형 : "어떤 일들이 발생할 것인가?"</b></p>
+<p>적조 예측, 날씨 예측, 주가 예측, 범죄/위험 예측, 쇼핑아이템 추천 등 과거, 현재까지의 데이터와 상황에 따른 가설을 기반하여 미래에 대한 현상을 사전에 분류하고 예측하는 모형이다.</p>
+<p class="ct"><b>② 현황 진단 모형 : "과거에 어떠한 상황이 왜 어떻게 일어났는가? 그리고 현재 어떠한 상태인가?"</b></p>
+<p>과거 데이터를 통해 현재 상황을 객관적으로 진단하는 모형으로 미래 예측이 아닌 현재를 이해함에 활용한다.</p>
+<p class="ct"><b>③ 최적화 분석 모형 : "어떻게 하면 원하는 결과가 일어날 수 있을까?"</b></p>
+<p>제한된 자원, 환경 내에서 최대의 효용성, 이익과 같은 결과를 생성하기 위해 분석 모델을 최적화하는 데에 중점을 둔다.</p>
+
+<p class="ct"><b>2) 분석 모형 정의를 위한 사전 고려사항</b></p>
+<p>분석 모형을 정의하기 전에 분석이 실제 추진될 수 있을지 가능성을 타진하는 것이 중요하다.</p>
+<ul class="dash">
+  <li>분석을 진행하기 이전 상황에 맞는 평가 기준표, 테이블을 작성하여 항목별로 점수를 부여하고 총점을 매긴 후 분석 모형 정의의 가능성을 판별할 수 있다.</li>
+  <li>추진시급성과 구현가능성만으로 분석 모형 정의를 위한 사전 판별 기준 활용이 가능하다.</li>
+</ul>
+
+<div class="tbl-cap">분석 모형 정의와 판별을 위한 평가기준표 예시</div>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:180px">기준</th><th>판단 근거</th></tr>
+  <tr><td class="h">필요성</td><td>개인이나 기관 관점에서 분석 과제가 필요한지 판단</td></tr>
+  <tr><td class="h">파급효과</td><td>정성적, 정량적 기대효과의 정도 판단</td></tr>
+  <tr><td class="h">추진 시급성</td><td>당장 해소되어야 할 사회현안 여부 판단, 장기과제 성격 분리</td></tr>
+  <tr><td class="h">구현 가능성</td><td>과제를 구현함에 있어서 어려움이 없는지 현실성 판단</td></tr>
+  <tr><td class="h">데이터 수집 가능성</td><td>공공기관 협조나 데이터 확보, 데이터 구매 등 제약사항 판단</td></tr>
+  <tr><td class="h">모델 확장성</td><td>과제가 시범과제로 끝나지 않고 전체 데이터 모델로 확장 가능한지 판단</td></tr>
+</table>
+</div>
+
+<ul class="dash">
+  <li>분석 모형 정의에 필요한 데이터가 충분히 확보되어 있는지를 판단하여 <mark>관련 과거 분석 사례 또는 솔루션을 최대한 활용할 수 있는지</mark> 검토한다면 보다 효율적인 분석 모형 설계를 진행할 수 있다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q11" data-ans="3" data-area="분석 절차 수립"><div class="ex-qh"><span class="ex-no">11.</span><span class="ex-tags"><span>분석 절차 수립</span><span class="lv-보통">보통</span><span>사례적용</span></span></div><div class="ex-body">하향식 접근에서 동종 업계의 우수 사례를 벤치마킹하여 분석 테마 후보 Pool을 구축·선택하는 발굴 방식은?</div><ul class="ex-opts"><li><label><input type="radio" name="q11" value="0"><span class="mk">①</span><span class="tx">프로토타이핑</span></label></li><li><label><input type="radio" name="q11" value="1"><span class="mk">②</span><span class="tx">비즈니스 모델</span></label></li><li><label><input type="radio" name="q11" value="2"><span class="mk">③</span><span class="tx">분석 유스 케이스</span></label></li><li><label><input type="radio" name="q11" value="3"><span class="mk">④</span><span class="tx">외부 참조 모델</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — <b>외부 참조 모델</b>은 벤치마킹으로 분석 테마 후보 Pool을 구축·선택한다. 비즈니스 모델은 수익 창출 검증 관점의 발굴, 분석 유스 케이스는 문제 상세 설명과 해결 효과를 명시하는 방식이다.<span class="ex-ref ">근거 · 책 1-349</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-349쪽</summary><div class="cbody"><p class="ct"><b>① 상향식(Bottom-up) 접근</b></p>
+<ul class="dash">
+  <li>문제 정의가 어려울 경우 많은 양의 데이터 분석을 통해 인사이트를 도출한다.</li>
+  <li>특정 영역을 지정하여 의사결정 지점으로 진행하는 과정에서 분석 과제를 발굴하는 방식이다.</li>
+</ul>
+<p class="ct"><b>② 하향식(Top-down) 접근</b></p>
+<ul class="dash">
+  <li>문제 정의가 가능할 시 문제 탐색과 연관되어 비즈니스 모델, 외부 참조 모델, 분석 유스 케이스 기반 모델로 발굴하는 방식을 적용할 수 있다.</li>
+  <li>비즈니스 모델은 어떻게 수익을 창출할 것인가에 대한 검증으로 문제해결 위한 분석 과제를 발굴하며 외부 참조 모델은 벤치마킹으로 분석 테마 후보 Pool을 구축, 선택하는 것이다.</li>
+  <li>또한 분석 유스케이스는 문제에 대한 상세 설명과 해결 시 효과에 대해 명시함으로써 구체적인 분석 과제들을 도출한다.</li>
+</ul>
+
+<div class="cchk">
+<div class="cchk-head">개념 체크</div>
+
+<p class="cchk-q"><span class="n">1</span> 분석 모형 종류에서 가장 적합한 결과가 예상되는 분석 모델이 무엇인지 찾는 분석 모형을 설명하는 것은?</p>
+<ol class="circled q-opt">
+  <li>현황 진단 모형</li>
+  <li>최적화 분석 모형</li>
+  <li>예측 분석 모형</li>
+  <li>유스케이스 분석 모형</li>
+</ol>
+<div class="cchk-a"><span class="ans">정답 ②</span>
+<p>최적화 분석 모형은 분석 모델을 실제로 수행 시에 가장 바람직한 결과가 예상되는 모델이 어떤 것인지를 알아내는 분석 모형이다.</p></div>
+
+<p class="cchk-q"><span class="n">2</span> 현황 분석을 통해 인식된 문제를 해결하기 위해 과거 유사한 분석 테마 후보에서 분석 과제를 도출하는 접근법은?</p>
+<ol class="circled q-opt">
+  <li>상향식 접근</li>
+  <li>비즈니스 모델 기반 접근</li>
+  <li>외부 참조 모델 기반 접근</li>
+  <li>분석 유스케이스 기반 접근</li>
+</ol>
+<div class="cchk-a"><span class="ans">정답 ③</span>
+<p>하향식 접근은 현황 분석 또는 인식된 문제점에서 분석 과제를 도출한 후 해결 방안 탐색하는 접근법으로 이 중 외부 참조모델은 분석기회에 대한 아이디어를 참조모델들(벤치마킹)을 통해 얻어 분석 과제를 도출한다.</p></div>
+</div></div></details></section>
+<section class="ex-q" id="q12" data-ans="1" data-area="분석 절차 수립"><div class="ex-qh"><span class="ex-no">12.</span><span class="ex-tags"><span>분석 절차 수립</span><span class="lv-쉬움">쉬움</span><span>사례적용</span></span></div><div class="ex-body">레이블(정답)이 없는 고객 구매 데이터로 비슷한 고객끼리 집단을 나누려 한다. 적합한 학습 유형과 알고리즘은?</div><ul class="ex-opts"><li><label><input type="radio" name="q12" value="0"><span class="mk">①</span><span class="tx">지도학습 — 회귀분석</span></label></li><li><label><input type="radio" name="q12" value="1"><span class="mk">②</span><span class="tx">비지도학습 — 군집분석</span></label></li><li><label><input type="radio" name="q12" value="2"><span class="mk">③</span><span class="tx">강화학습 — Q-Learning</span></label></li><li><label><input type="radio" name="q12" value="3"><span class="mk">④</span><span class="tx">지도학습 — 의사결정트리</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — 정답 레이블 없이 유사한 집단을 나누는 것은 <b>비지도학습의 군집분석</b>이다. 회귀분석·의사결정트리는 지도학습, Q-Learning은 강화학습에 해당한다.<span class="ex-ref ">근거 · 책 1-350</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-350쪽</summary><div class="cbody"><aside class="note">데이터 분석에 대한 절차와 방법을 체계적으로 구성하는 것이 중요하다.
+  <hr><b>비지도학습</b><br>입력값에 대한 목표치가 주어지지 않음
+  <hr><b>강화학습</b><br>선택 가능한 것 중 보상을 최대화하는 행동을 선택
+</aside>
+
+<p class="ct"><b><span class="num">03</span> 분석 모형 구축 절차</b></p>
+
+<p class="ct"><b>1) 분석 시나리오 작성</b></p>
+<p>분석 시나리오 작성을 통해 분석 과정과 결과가 어떻게 활용되는지 명확하게 이해할 수 있다.</p>
+<ul class="dash">
+  <li>데이터 분석 대상 및 범위를 요구사항에 맞게 정의하며 분석을 통해 해결할 수 있는 문제와 목표 그리고 분석 목표별 구현 모델과 예상 결과를 작성한다.</li>
+  <li>분석 과정에 필요한 데이터, 절차, 분석기법 등의 세부사항들을 정의한다. 데이터의 경우 사전 확보 및 유형 분석이 필요하며 기존에 잘 구현되어 활용되고 있는 유사 분석 시나리오 및 솔루션을 고려할 수 있다.</li>
+</ul>
+
+<p class="ct"><b>2) 분석 모형 설계</b></p>
+<p>분석 모형 설계는 분석 대상 및 범위를 정하여 분석 목적을 구현하기 위한 분석 방법론을 설계하는 단계이다.</p>
+<p class="ct"><b>① 분석 모형 설계 시 사전 확인 사항</b></p>
+<ul class="dash">
+  <li>필요한 데이터 항목이 정해졌는가?</li>
+  <li>데이터 단위를 고려, 항목에 따른 표준화 방법을 정하였는가?</li>
+  <li>데이터를 수집한 항목에 따라, 단계별로 모델이 설계되었는가?</li>
+  <li>분석 검증 통계 기법을 선정하였는가?</li>
+</ul>
+<p class="ct"><b>② 분석 모델링 설계와 검정</b></p>
+<ul class="dash">
+  <li>분석 목적에 기반한 가설검정 방법을 수립한다.</li>
+  <li>추정방법에 대한 기술을 검토한다.</li>
+  <li>분석 모델링 설계와 검정 방법을 수립한다.</li>
+</ul>
+<p class="ct"><b>③ 분석 모델링에 적합한 알고리즘 적용</b></p>
+<ul class="dash">
+  <li>비지도학습 : 군집분석, 연관성분석, 오토인코더 등</li>
+  <li>지도학습 : 의사결정트리, 랜덤 포레스트, 서포트벡터머신, 회귀분석 등</li>
+  <li>준지도학습 : 셀프 트레이닝, 적대적 생성 모델 등</li>
+  <li>강화학습 : Q-Learning, 정책경사(Policy Gradient, PG) 등</li>
+</ul>
+<p class="ct"><b>④ 분석 모형 개발 및 테스트</b></p>
+<ul class="dash">
+  <li>모듈 기능을 정의한다.</li>
+  <li>모듈을 설계한다.</li>
+  <li>모듈 개발 결과물과 모델 설계 일치를 확인한다.</li>
+  <li>모듈의 정상 동작 여부를 검증한다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q13" data-ans="2" data-area="분석 환경 구축"><div class="ex-qh"><span class="ex-no">13.</span><span class="ex-tags"><span>분석 환경 구축</span><span class="lv-쉬움">쉬움</span><span>계산</span></span></div><div class="ex-body">전체 10,000건의 데이터를 훈련·평가·검증용 테스트 데이터로 5:3:2 비율로 분할하면 각각 몇 건인가?</div><ul class="ex-opts"><li><label><input type="radio" name="q13" value="0"><span class="mk">①</span><span class="tx">7,000건 / 2,000건 / 1,000건</span></label></li><li><label><input type="radio" name="q13" value="1"><span class="mk">②</span><span class="tx">2,000건 / 3,000건 / 5,000건</span></label></li><li><label><input type="radio" name="q13" value="2"><span class="mk">③</span><span class="tx">5,000건 / 3,000건 / 2,000건</span></label></li><li><label><input type="radio" name="q13" value="3"><span class="mk">④</span><span class="tx">5,000건 / 2,500건 / 2,500건</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — 10,000 × 5/10 = <b>5,000건</b>(훈련), 10,000 × 3/10 = <b>3,000건</b>(평가), 10,000 × 2/10 = <b>2,000건</b>(테스트). 교재는 4:3:3 또는 5:3:2 비율을 제시한다.<span class="ex-ref ">근거 · 책 1-358</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-358쪽</summary><div class="cbody"><aside class="note">학습(훈련) 데이터는 모델 성능에 큰 영향을 미치므로 충분한 양과 다양성, 고품질 등의 특징을 반영해야 한다.</aside>
+
+<p class="ct"><b><span class="num">02</span> 데이터 분할</b></p>
+
+<p class="ct"><b>1) 데이터 분할 정의</b></p>
+<p>분석용 데이터로 모형을 구축하여 평가 및 검증하기 위해서 전체 데이터를 학습 데이터, 평가 데이터, 검증용 테스트 데이터로 분할한다.</p>
+<p class="ct"><b>① 학습(training) 데이터</b></p>
+<p>데이터를 학습하여 분석 모형을 만드는 데에 직접 사용되는 데이터이다.</p>
+<p class="ct"><b>② 평가(validation) 데이터</b></p>
+<p>추정한 분석 모델이 과대/과소적합인지 모형의 성능을 평가하기 위한 데이터이다.</p>
+<p class="ct"><b>③ 검증용 테스트(test) 데이터</b></p>
+<p>최종적으로 일반화된 분석 모형을 검증하는 테스트를 위한 데이터이다.</p>
+<ul class="dash">
+  <li>보통 학습과 검증을 위해서는 7:3 또는 8:2 비율로 진행되며 전체적인 훈련, 평가, 검증용 테스트 데이터 비율은 일반적으로 4:3:3 또는 5:3:2로 정한다.</li>
+</ul>
+
+<p class="ct"><b>2) 과대적합(Overfitting)과 과소적합(Underfitting)</b></p>
+<p class="ct"><b>① 과대적합(과적합)</b></p>
+<p>일반적으로 학습 데이터는 실제 데이터의 부분 집합이므로 학습 데이터에 최적화된 분석 모델이 만들어지게 되면 실제 데이터에서 오차가 발생할 확률이 크다.</p>
+<ul class="dash">
+  <li>학습(훈련) 데이터에 대해서는 높은 정확도를 나타내지만 테스트 데이터나 새로운 데이터에 대해서는 예측을 잘 하지 못하는 것을 과대적합이라고 한다.</li>
+  <li>과대적합 방지를 위한 것으로 데이터 분할 외에 K-fold 교차검증, 정규화 등의 방법이 있다.</li>
+</ul>
+<p class="ct"><b>② 과소적합</b></p>
+<ul class="dash">
+  <li>모형이 단순하여 데이터 내부의 패턴 또는 규칙을 잘 학습하지 못하는 것을 과소적합이라 한다. 이것은 학습 데이터에서도 정확한 결과를 도출하지 못한다.</li>
+</ul>
+<p class="ct"><b>③ 일반화</b></p>
+<ul class="dash">
+  <li>학습 데이터를 통해 생성된 모델이 평가 데이터를 통한 성능 평가 외에도 검증용 테스트 데이터를 통해 정확하게 예측하는 모델을 일반화된 모형이라고 한다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q14" data-ans="3" data-area="분석 환경 구축"><div class="ex-qh"><span class="ex-no">14.</span><span class="ex-tags"><span>분석 환경 구축</span><span class="lv-보통">보통</span><span>개념</span></span></div><div class="ex-body">과대적합을 방지하기 위한 방법으로 교재가 제시하는 것을 모두 고른 것은? (가) 데이터 분할 (나) K-fold 교차검증 (다) 정규화 (라) 학습 데이터에만 최적화</div><ul class="ex-opts"><li><label><input type="radio" name="q14" value="0"><span class="mk">①</span><span class="tx">(다), (라)</span></label></li><li><label><input type="radio" name="q14" value="1"><span class="mk">②</span><span class="tx">(가), (라)</span></label></li><li><label><input type="radio" name="q14" value="2"><span class="mk">③</span><span class="tx">(나), (라)</span></label></li><li><label><input type="radio" name="q14" value="3"><span class="mk">④</span><span class="tx">(가), (나), (다)</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — 과대적합 방지에는 <b>데이터 분할 외에 K-fold 교차검증, 정규화</b> 등의 방법이 있다. (라)처럼 학습 데이터에만 최적화하는 것은 과대적합을 일으키는 원인이다.<span class="ex-ref ">근거 · 책 1-358</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-358쪽</summary><div class="cbody"><aside class="note">학습(훈련) 데이터는 모델 성능에 큰 영향을 미치므로 충분한 양과 다양성, 고품질 등의 특징을 반영해야 한다.</aside>
+
+<p class="ct"><b><span class="num">02</span> 데이터 분할</b></p>
+
+<p class="ct"><b>1) 데이터 분할 정의</b></p>
+<p>분석용 데이터로 모형을 구축하여 평가 및 검증하기 위해서 전체 데이터를 학습 데이터, 평가 데이터, 검증용 테스트 데이터로 분할한다.</p>
+<p class="ct"><b>① 학습(training) 데이터</b></p>
+<p>데이터를 학습하여 분석 모형을 만드는 데에 직접 사용되는 데이터이다.</p>
+<p class="ct"><b>② 평가(validation) 데이터</b></p>
+<p>추정한 분석 모델이 과대/과소적합인지 모형의 성능을 평가하기 위한 데이터이다.</p>
+<p class="ct"><b>③ 검증용 테스트(test) 데이터</b></p>
+<p>최종적으로 일반화된 분석 모형을 검증하는 테스트를 위한 데이터이다.</p>
+<ul class="dash">
+  <li>보통 학습과 검증을 위해서는 7:3 또는 8:2 비율로 진행되며 전체적인 훈련, 평가, 검증용 테스트 데이터 비율은 일반적으로 4:3:3 또는 5:3:2로 정한다.</li>
+</ul>
+
+<p class="ct"><b>2) 과대적합(Overfitting)과 과소적합(Underfitting)</b></p>
+<p class="ct"><b>① 과대적합(과적합)</b></p>
+<p>일반적으로 학습 데이터는 실제 데이터의 부분 집합이므로 학습 데이터에 최적화된 분석 모델이 만들어지게 되면 실제 데이터에서 오차가 발생할 확률이 크다.</p>
+<ul class="dash">
+  <li>학습(훈련) 데이터에 대해서는 높은 정확도를 나타내지만 테스트 데이터나 새로운 데이터에 대해서는 예측을 잘 하지 못하는 것을 과대적합이라고 한다.</li>
+  <li>과대적합 방지를 위한 것으로 데이터 분할 외에 K-fold 교차검증, 정규화 등의 방법이 있다.</li>
+</ul>
+<p class="ct"><b>② 과소적합</b></p>
+<ul class="dash">
+  <li>모형이 단순하여 데이터 내부의 패턴 또는 규칙을 잘 학습하지 못하는 것을 과소적합이라 한다. 이것은 학습 데이터에서도 정확한 결과를 도출하지 못한다.</li>
+</ul>
+<p class="ct"><b>③ 일반화</b></p>
+<ul class="dash">
+  <li>학습 데이터를 통해 생성된 모델이 평가 데이터를 통한 성능 평가 외에도 검증용 테스트 데이터를 통해 정확하게 예측하는 모델을 일반화된 모형이라고 한다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q15" data-ans="1" data-area="분석 환경 구축"><div class="ex-qh"><span class="ex-no">15.</span><span class="ex-tags"><span>분석 환경 구축</span><span class="lv-보통">보통</span><span>사례적용</span></span></div><div class="ex-body">학습 곡선을 그렸더니 훈련 오차는 매우 낮은데 검증 오차는 높게 유지되고 두 곡선의 간격이 크다. 진단과 개선 방향으로 옳은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q15" value="0"><span class="mk">①</span><span class="tx">과소적합 — 모델 복잡도를 높인다.</span></label></li><li><label><input type="radio" name="q15" value="1"><span class="mk">②</span><span class="tx">과대적합 — 데이터 추가나 모델 단순화 등으로 개선한다.</span></label></li><li><label><input type="radio" name="q15" value="2"><span class="mk">③</span><span class="tx">일반화가 잘된 상태 — 그대로 둔다.</span></label></li><li><label><input type="radio" name="q15" value="3"><span class="mk">④</span><span class="tx">과소적합 — 학습을 중단한다.</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — 훈련 오차가 매우 낮고 검증 오차가 높으면 <b>과대적합</b>이다. 훈련·검증 오차가 모두 높고 곡선이 가까우면 과소적합으로, 이때는 모델 복잡도를 높이는 방향으로 개선한다.<span class="ex-ref ">근거 · 책 1-359</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-359쪽</summary><div class="cbody"><p class="ct"><b>3) 학습 곡선(Learning Curves)</b></p>
+<p>머신러닝에서 학습 곡선은 모델의 성능이 학습 데이터의 크기 따라 어떻게 변하는지를 보여주는 그래프이다. 일반적으로 데이터 크기는 x축에 표시되고 훈련 오차(Training Score)와 검증 오차(Validation Score)를 y축에 표시한다.</p>
+<p>훈련 오차과 검증 오차를 비교해 과대적합 · 과소적합을 직관적으로 진단하고 데이터 추가나 모델 변경 등의 결정에 사용한다.</p>
+
+<div class="tbl-cap">학습 곡선 패턴</div>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:170px">진단 유형</th><th>그래프 형태와 개선 방향</th></tr>
+  <tr><td class="h">과소적합</td><td>훈련 오차와 검증 오차가 모두 높고 두 곡선이 가까운 경우로 모델 복잡도를 높이는 방향으로 성능을 개선</td></tr>
+  <tr><td class="h">과대적합</td><td>훈련 오차는 매우 낮고, 검증 오차는 높은 경우로 데이터를 추가하고 모델을 단순화하는 방향으로 성능을 개선</td></tr>
+  <tr><td class="h">데이터 한계<br>(수평 수렴)</td><td>곡선이 일정 수준에서 수평으로 수렴하는 경우 데이터를 추가해도 효과가 없기 때문에 모델 변경을 고려</td></tr>
+  <tr><td class="h">적정 학습<br>(일반화)</td><td>두 곡선이 모두 낮은 오차로 수렴하는 경우로 좋은 일반화 상태이므로 추가 조치 불필요</td></tr>
+</table>
+</div></div></details></section>
+<section class="ex-q" id="q16" data-ans="2" data-area="분석 환경 구축"><div class="ex-qh"><span class="ex-no">16.</span><span class="ex-tags"><span>분석 환경 구축</span><span class="lv-어려움">어려움</span><span>사례적용</span></span></div><div class="ex-body">학습 곡선에서 훈련 오차와 검증 오차가 모두 높고 두 곡선이 가깝게 붙어 있다. 진단과 개선 방향으로 옳은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q16" value="0"><span class="mk">①</span><span class="tx">일반화 완료 — 배포한다.</span></label></li><li><label><input type="radio" name="q16" value="1"><span class="mk">②</span><span class="tx">과대적합 — 모델 복잡도를 낮춘다.</span></label></li><li><label><input type="radio" name="q16" value="2"><span class="mk">③</span><span class="tx">과소적합 — 모델 복잡도를 높이는 방향으로 개선한다.</span></label></li><li><label><input type="radio" name="q16" value="3"><span class="mk">④</span><span class="tx">과대적합 — 데이터를 줄인다.</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — 두 오차가 모두 높고 곡선이 가까우면 모형이 패턴을 충분히 학습하지 못한 <b>과소적합</b>이다. 모델 복잡도를 높이는 방향으로 성능을 개선한다.<span class="ex-ref ">근거 · 책 1-359</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-359쪽</summary><div class="cbody"><p class="ct"><b>3) 학습 곡선(Learning Curves)</b></p>
+<p>머신러닝에서 학습 곡선은 모델의 성능이 학습 데이터의 크기 따라 어떻게 변하는지를 보여주는 그래프이다. 일반적으로 데이터 크기는 x축에 표시되고 훈련 오차(Training Score)와 검증 오차(Validation Score)를 y축에 표시한다.</p>
+<p>훈련 오차과 검증 오차를 비교해 과대적합 · 과소적합을 직관적으로 진단하고 데이터 추가나 모델 변경 등의 결정에 사용한다.</p>
+
+<div class="tbl-cap">학습 곡선 패턴</div>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:170px">진단 유형</th><th>그래프 형태와 개선 방향</th></tr>
+  <tr><td class="h">과소적합</td><td>훈련 오차와 검증 오차가 모두 높고 두 곡선이 가까운 경우로 모델 복잡도를 높이는 방향으로 성능을 개선</td></tr>
+  <tr><td class="h">과대적합</td><td>훈련 오차는 매우 낮고, 검증 오차는 높은 경우로 데이터를 추가하고 모델을 단순화하는 방향으로 성능을 개선</td></tr>
+  <tr><td class="h">데이터 한계<br>(수평 수렴)</td><td>곡선이 일정 수준에서 수평으로 수렴하는 경우 데이터를 추가해도 효과가 없기 때문에 모델 변경을 고려</td></tr>
+  <tr><td class="h">적정 학습<br>(일반화)</td><td>두 곡선이 모두 낮은 오차로 수렴하는 경우로 좋은 일반화 상태이므로 추가 조치 불필요</td></tr>
+</table>
+</div></div></details></section>
+<section class="ex-q" id="q17" data-ans="3" data-area="분석 환경 구축"><div class="ex-qh"><span class="ex-no">17.</span><span class="ex-tags"><span>분석 환경 구축</span><span class="lv-쉬움">쉬움</span><span>사례적용</span></span></div><div class="ex-body">통계분석과 자료 시각화가 주목적이고, CRAN 사이트를 통해 최신 분석 패키지를 받아 쓰려는 연구자에게 적합한 도구는?</div><ul class="ex-opts"><li><label><input type="radio" name="q17" value="0"><span class="mk">①</span><span class="tx">OLAP</span></label></li><li><label><input type="radio" name="q17" value="1"><span class="mk">②</span><span class="tx">FTP</span></label></li><li><label><input type="radio" name="q17" value="2"><span class="mk">③</span><span class="tx">HDFS</span></label></li><li><label><input type="radio" name="q17" value="3"><span class="mk">④</span><span class="tx">R</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — <b>R</b>는 통계분석과 자료의 시각화를 위해 개발된 오픈소스 언어로, CRAN 사이트를 통해 데이터 분석에 필요한 최신 패키지를 제공받을 수 있다.<span class="ex-ref ">근거 · 책 1-356</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-356쪽</summary><div class="cbody"><p class="ct"><b>SECTION 02 분석 환경 구축</b></p>
+<p class="sec-meta"><span class="freq-tag">출제빈도 상 | 중 | <b>하</b></span></p>
+<p class="tagline"><span class="tagbox">빈출 태그</span> R · 파이썬 · 데이터 분할 · 과대적합 · 과소적합</p>
+
+<aside class="note">
+  <b>R 언어</b><br>통계 및 그래프 작업을 위한 인터프리터 프로그래밍 언어
+  <hr><b>인터프리터</b>
+  <ul class="dash">
+    <li>프로그래밍 언어의 소스 코드를 바로 실행하는 환경</li>
+    <li>원시 코드를 기계어로 번역하는 컴파일러와 대비</li>
+  </ul>
+  <hr><b>객체지향</b><br>데이터와 절차를 하나의 덩어리로 묶어서 생각하는 프로그래밍 방법
+</aside>
+
+<p class="ct"><b><span class="num">01</span> 분석 도구 선정</b></p>
+
+<p class="ct"><b>1) R</b></p>
+<p>1993년 뉴질랜드 오클랜드 대학교 통계학과 교수들이 통계분석과 자료의 시각화를 위해 개발한 오픈소스 분석용 프로그래밍 언어로 다음과 같은 특징을 가지고 있다.</p>
+<ul class="dash">
+  <li><b>① 객체지향 언어</b> : 일반 데이터, 함수, 차트 등 모든 데이터가 객체 형태로 관리되어 효율적인 조작과 저장방법을 제공한다.</li>
+  <li><b>② 고속메모리 처리</b> : 모든 객체는 메모리로 로딩되어 고속으로 처리되고 재사용 가능하다.</li>
+  <li><b>③ 다양한 자료 구조</b> : 벡터, 배열, 행렬, 데이터프레임, 리스트 등 다양한 자료구조와 연산기능을 제공한다.</li>
+  <li><b>④ 최신 패키지 제공</b> : 오픈소스 커뮤니티(www.r-project.org) CRAN 사이트를 통해 데이터 분석에 필요한 최신의 알고리즘과 방법론을 제공한다.</li>
+  <li><b>⑤ 시각화</b> : 데이터 분석과 표현을 위한 다양한 그래픽 도구를 제공한다.</li>
+</ul>
+
+<div class="tbl-cap">R의 장 · 단점</div>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:150px">장점</td>
+      <td><ul class="dash"><li>지속적으로 업데이트되는 다양한 패키지</li><li>그래프 및 도표, 시각화 기능에 특화</li></ul></td></tr>
+  <tr><td class="h">단점</td>
+      <td><ul class="dash"><li>대용량 메모리 처리가 어려우며 보안 기능이 취약</li><li>별도의 모듈 연동이 아니면 웹 브라우저에서 사용할 수 없음</li></ul></td></tr>
+</table>
+</div>
+
+<ul class="dash">
+  <li>R Studio는 R을 위한 오픈소스 통합개발환경(IDE)으로 편리한 분석 개발 인터페이스를 제공한다.</li>
+</ul>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:170px">Rstudio Desktop</td><td>프로그램이 일반 데스크톱 애플리케이션으로 실행</td></tr>
+  <tr><td class="h">Rstudio Server</td><td>원격 리눅스 서버에서 실행되는 동안 웹 브라우저를 사용하여 Rstudio에 접근을 허용</td></tr>
+</table>
+</div></div></details></section>
+<section class="ex-q" id="q18" data-ans="1" data-area="분석 환경 구축"><div class="ex-qh"><span class="ex-no">18.</span><span class="ex-tags"><span>분석 환경 구축</span><span class="lv-보통">보통</span><span>개념</span></span></div><div class="ex-body">파이썬이 지원하는 내장 객체 자료형으로 묶인 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q18" value="0"><span class="mk">①</span><span class="tx">벡터, 행렬, 데이터프레임</span></label></li><li><label><input type="radio" name="q18" value="1"><span class="mk">②</span><span class="tx">리스트, 사전, 튜플</span></label></li><li><label><input type="radio" name="q18" value="2"><span class="mk">③</span><span class="tx">테이블, 뷰, 인덱스</span></label></li><li><label><input type="radio" name="q18" value="3"><span class="mk">④</span><span class="tx">스택 포인터, 레지스터, 힙</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — 파이썬은 <b>리스트, 사전, 튜플</b> 등 유연한 내장 객체 자료형을 지원하며 메모리를 자동 관리한다. 벡터·행렬·데이터프레임은 R의 대표 자료구조다.<span class="ex-ref ">근거 · 책 1-357</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-357쪽</summary><div class="cbody"><p class="ct"><b>2) 파이썬(Python)</b></p>
+<p>1991년에 프로그래머 귀도 반 로섬(Guido van Rossum)이 발표한 오픈소스 분석용 프로그래밍 언어로, 플랫폼 독립적이며 인터프리터식, 객체지향적 대화형 언어이다.</p>
+<ul class="dash">
+  <li><b>① 배우기 쉬운 대화 기능의 인터프리터 언어</b> : 간결하고 쉬운 문법으로 컴파일, 실행, 테스트가 용이하다.</li>
+  <li><b>② 동적인 데이터타입 결정 지원</b> : 동적으로 데이터타입을 결정하므로 데이터타입에 무관하게 코드 작성이 가능하다.</li>
+  <li><b>③ 플랫폼 독립적 언어</b> : 운영체제에 독립적으로 컴파일 없이 동작을 실행한다.</li>
+  <li><b>④ 내장 객체 자료형과 자동 메모리 관리</b> : 리스트, 사전, 튜플 등 유연한 내장 객체자료형을 지원하며 메모리 자동할당 뒤 종료 시 자동 해지하는 메모리 청소(Garbage Collection) 기능을 제공한다.</li>
+</ul>
+
+<div class="tbl-cap">파이썬의 장 · 단점</div>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:150px">장점</td>
+      <td><ul class="dash"><li>영어 문장 형식으로 구현된 빠른 개발 속도</li><li>재사용 가능한 모듈 제공</li><li>C언어를 포함한 다른 언어 프로그램들과 연동성이 높음</li></ul></td></tr>
+  <tr><td class="h">단점</td>
+      <td><ul class="dash"><li>컴파일 없이 인터프리터가 한 줄씩 실행하는 방식으로 실행속도가 느림
+        <ul class="dash2"><li>바이트 코드를 일부 생산하거나 JIT(Just-In-Time) 컴파일러를 사용하여 보완</li></ul></li></ul></td></tr>
+</table>
+</div>
+
+<ul class="dash">
+  <li>파이썬 아나콘다(Anaconda)는 파이썬 기반의 데이터 분석에 필요한 오픈소스들의 통합 개발 플랫폼으로 가상환경과 패키지를 관리, 개별 프로젝트 개발 환경을 효율적으로 구성할 수 있다.</li>
+</ul>
+
+<div class="cchk">
+<div class="cchk-head">개념 체크</div>
+
+<p class="cchk-q">다음 중 오픈소스 분석 도구인 R과 Python에 대해 잘못 설명하는 것은?</p>
+<ol class="circled q-opt">
+  <li>R은 모든 데이터가 객체 형태로 관리되는 객체지향 언어이며, R Studio Server를 이용하면 웹 브라우저를 통해 원격 서버의 R Studio에 접근할 수 있다.</li>
+  <li>R은 대용량 메모리 처리가 수월하고 보안 기능이 뛰어나 대기업의 핵심 금융 시스템 구축에 주로 사용된다.</li>
+  <li>파이썬은 실행 시점에 동적으로 데이터타입이 결정되므로, 데이터타입 지정에 얽매이지 않고 유연하게 코드를 작성할 수 있다.</li>
+  <li>파이썬은 인터프리터 방식으로 인해 실행 속도가 느릴 수 있으나, 이를 보완하기 위해 JIT(Just-In-Time) 컴파일러 등을 활용하기도 한다.</li>
+</ol>
+<div class="cchk-a"><span class="ans">정답 ②</span>
+<p>R은 모든 객체를 메모리에 로딩하여 처리하는(in-memory) 방식이므로 데이터 분석 속도는 빠르지만, 매우 큰 데이터를 처리할 때는 메모리 용량의 제약을 받을 수 있다. 또한 보안 기능이 뛰어난 언어로 평가되지는 않아 대기업의 핵심 시스템 구축보다는 통계 분석과 데이터 분석에 주로 활용된다.</p></div>
+</div></div></details></section>
+<section class="ex-q" id="q19" data-ans="2" data-area="분석 환경 구축"><div class="ex-qh"><span class="ex-no">19.</span><span class="ex-tags"><span>분석 환경 구축</span><span class="lv-보통">보통</span><span>사례적용</span></span></div><div class="ex-body">모형을 학습시킨 뒤 "이 모형이 과대적합인지 과소적합인지" 성능을 평가해 보려고 한다. 이때 사용해야 하는 데이터는?</div><ul class="ex-opts"><li><label><input type="radio" name="q19" value="0"><span class="mk">①</span><span class="tx">원천(raw) 데이터 전체</span></label></li><li><label><input type="radio" name="q19" value="1"><span class="mk">②</span><span class="tx">학습(training) 데이터</span></label></li><li><label><input type="radio" name="q19" value="2"><span class="mk">③</span><span class="tx">평가(validation) 데이터</span></label></li><li><label><input type="radio" name="q19" value="3"><span class="mk">④</span><span class="tx">수집 전 메타데이터</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — 추정한 분석 모델이 과대/과소적합인지 모형의 성능을 평가하기 위한 데이터는 <b>평가(validation) 데이터</b>다. 학습 데이터는 모형을 만드는 데 직접 사용되고, 검증용 테스트 데이터는 일반화된 모형의 최종 검증에 쓴다.<span class="ex-ref ">근거 · 책 1-358</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-358쪽</summary><div class="cbody"><aside class="note">학습(훈련) 데이터는 모델 성능에 큰 영향을 미치므로 충분한 양과 다양성, 고품질 등의 특징을 반영해야 한다.</aside>
+
+<p class="ct"><b><span class="num">02</span> 데이터 분할</b></p>
+
+<p class="ct"><b>1) 데이터 분할 정의</b></p>
+<p>분석용 데이터로 모형을 구축하여 평가 및 검증하기 위해서 전체 데이터를 학습 데이터, 평가 데이터, 검증용 테스트 데이터로 분할한다.</p>
+<p class="ct"><b>① 학습(training) 데이터</b></p>
+<p>데이터를 학습하여 분석 모형을 만드는 데에 직접 사용되는 데이터이다.</p>
+<p class="ct"><b>② 평가(validation) 데이터</b></p>
+<p>추정한 분석 모델이 과대/과소적합인지 모형의 성능을 평가하기 위한 데이터이다.</p>
+<p class="ct"><b>③ 검증용 테스트(test) 데이터</b></p>
+<p>최종적으로 일반화된 분석 모형을 검증하는 테스트를 위한 데이터이다.</p>
+<ul class="dash">
+  <li>보통 학습과 검증을 위해서는 7:3 또는 8:2 비율로 진행되며 전체적인 훈련, 평가, 검증용 테스트 데이터 비율은 일반적으로 4:3:3 또는 5:3:2로 정한다.</li>
+</ul>
+
+<p class="ct"><b>2) 과대적합(Overfitting)과 과소적합(Underfitting)</b></p>
+<p class="ct"><b>① 과대적합(과적합)</b></p>
+<p>일반적으로 학습 데이터는 실제 데이터의 부분 집합이므로 학습 데이터에 최적화된 분석 모델이 만들어지게 되면 실제 데이터에서 오차가 발생할 확률이 크다.</p>
+<ul class="dash">
+  <li>학습(훈련) 데이터에 대해서는 높은 정확도를 나타내지만 테스트 데이터나 새로운 데이터에 대해서는 예측을 잘 하지 못하는 것을 과대적합이라고 한다.</li>
+  <li>과대적합 방지를 위한 것으로 데이터 분할 외에 K-fold 교차검증, 정규화 등의 방법이 있다.</li>
+</ul>
+<p class="ct"><b>② 과소적합</b></p>
+<ul class="dash">
+  <li>모형이 단순하여 데이터 내부의 패턴 또는 규칙을 잘 학습하지 못하는 것을 과소적합이라 한다. 이것은 학습 데이터에서도 정확한 결과를 도출하지 못한다.</li>
+</ul>
+<p class="ct"><b>③ 일반화</b></p>
+<ul class="dash">
+  <li>학습 데이터를 통해 생성된 모델이 평가 데이터를 통한 성능 평가 외에도 검증용 테스트 데이터를 통해 정확하게 예측하는 모델을 일반화된 모형이라고 한다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q20" data-ans="3" data-area="분석 환경 구축"><div class="ex-qh"><span class="ex-no">20.</span><span class="ex-tags"><span>분석 환경 구축</span><span class="lv-보통">보통</span><span>개념</span></span></div><div class="ex-body">학습 데이터에서의 성능과 새로운 데이터에서의 성능이 모두 안정적으로 좋게 나오는 모형을 무엇이라 하는가?</div><ul class="ex-opts"><li><label><input type="radio" name="q20" value="0"><span class="mk">①</span><span class="tx">단순 암기 모형</span></label></li><li><label><input type="radio" name="q20" value="1"><span class="mk">②</span><span class="tx">과대적합된 모형</span></label></li><li><label><input type="radio" name="q20" value="2"><span class="mk">③</span><span class="tx">과소적합된 모형</span></label></li><li><label><input type="radio" name="q20" value="3"><span class="mk">④</span><span class="tx">일반화가 잘된 모형</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — <b>일반화</b>는 학습 데이터로 생성된 모델이 평가 데이터·새로운 데이터에서도 안정적인 성능을 보이는 것이다. 과대적합은 학습 데이터에서만, 과소적합은 어디서도 성능이 낮다.<span class="ex-ref ">근거 · 책 1-359</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-359쪽</summary><div class="cbody"><p class="ct"><b>3) 학습 곡선(Learning Curves)</b></p>
+<p>머신러닝에서 학습 곡선은 모델의 성능이 학습 데이터의 크기 따라 어떻게 변하는지를 보여주는 그래프이다. 일반적으로 데이터 크기는 x축에 표시되고 훈련 오차(Training Score)와 검증 오차(Validation Score)를 y축에 표시한다.</p>
+<p>훈련 오차과 검증 오차를 비교해 과대적합 · 과소적합을 직관적으로 진단하고 데이터 추가나 모델 변경 등의 결정에 사용한다.</p>
+
+<div class="tbl-cap">학습 곡선 패턴</div>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:170px">진단 유형</th><th>그래프 형태와 개선 방향</th></tr>
+  <tr><td class="h">과소적합</td><td>훈련 오차와 검증 오차가 모두 높고 두 곡선이 가까운 경우로 모델 복잡도를 높이는 방향으로 성능을 개선</td></tr>
+  <tr><td class="h">과대적합</td><td>훈련 오차는 매우 낮고, 검증 오차는 높은 경우로 데이터를 추가하고 모델을 단순화하는 방향으로 성능을 개선</td></tr>
+  <tr><td class="h">데이터 한계<br>(수평 수렴)</td><td>곡선이 일정 수준에서 수평으로 수렴하는 경우 데이터를 추가해도 효과가 없기 때문에 모델 변경을 고려</td></tr>
+  <tr><td class="h">적정 학습<br>(일반화)</td><td>두 곡선이 모두 낮은 오차로 수렴하는 경우로 좋은 일반화 상태이므로 추가 조치 불필요</td></tr>
+</table>
+</div></div></details></section>
+</div></main>
+</div>
+<script>/* ================= 모의고사 =================
+   세 가지 모드로 쓴다.
+     실전 — 타이머를 걸고 끝까지 푼 뒤 한 번에 채점한다. 과락(40%)까지 판정한다.
+     실전(내용 포함) — 같은 시험지를 정답과 요약 개념까지 펼쳐 놓고 훑어보는 열람용.
+                       정답 보기에 체크가 미리 들어가 있고, 문항 아래 ▽ 관련 요약 개념을 펼칠 수 있다.
+                       점수가 의미 없으므로 타이머와 채점하기는 쉰다. 다른 모드로 돌아가면
+                       들어오기 전에 고른 답이 그대로 되살아난다.
+     학습 — 보기를 고르는 즉시 정답과 해설을 보여 준다.
+   응시 이력은 펜 모드와 같은 자리에 저장한다(서버가 있으면 디스크, 없으면 브라우저).
+--------------------------------------------------------------------------- */
+(function(){
+  var root = document.getElementById('exam');
+  if(!root) return;
+
+  var PASS_SUBJECT = 0.4;              // 과락 기준 — 과목당 40%
+  var FILE  = decodeURIComponent((location.pathname.split('/').pop() || 'exam'))
+                .replace(/\.html?$/i, '');
+  var KEY   = 'bdnote:exam:' + FILE;
+  var LIMIT = parseInt(root.getAttribute('data-minutes'), 10) || 30;
+  var FULL  = root.getAttribute('data-full') === '1';   // 4과목 통합 시험지
+  var PASS_TOTAL = 0.6;                // 합격 기준 — 전 과목 평균 60%
+  var SUBJ = (root.getAttribute('data-subjects') || '').split('|');
+  var PART = root.getAttribute('data-partlabel') || '과목';   // 통합 시험지의 구획 단위(과목/회차)
+  function partName(k, keys){                                // 구획 번호 → 표시 이름
+    if(PART === '과목') return k + '과목 · ' + (SUBJ[k - 1] || '');
+    return SUBJ[keys.indexOf(k)] || (k + PART);
+  }
+
+  var qs     = [].slice.call(document.querySelectorAll('.ex-q'));
+  var navBox = document.getElementById('ex-nav');
+  var navs   = navBox ? [].slice.call(navBox.querySelectorAll('a')) : [];
+  var elTimer= document.getElementById('ex-timer');
+  var elRes  = document.getElementById('ex-result');
+  var elHist = document.getElementById('ex-hist');
+
+  /* 'real'  실전 — 타이머 + 일괄 채점, 개념·해설 모두 감춤
+     'realc' 실전(내용 포함) — 실전과 똑같이 풀되 문항 아래 요약 개념만 열어 볼 수 있다
+     'study' 학습 — 보기를 고르면 즉시 채점·해설 */
+  var mode = 'real';
+  function isReal(){ return mode === 'real'; }    // 타이머·채점하기를 쓰는 모드
+  var savedPicks = null;                          // 실전(내용 포함)에 들어가기 전 고른 답
+  var graded = false, reviewing = false;
+  var left = LIMIT * 60, tick = null, started = false;
+
+  /* ---------- 저장 : 응시 이력 + 누적 오답 ----------
+     오답은 문항 번호로 저장해 두었다가 다음 방문에도 '틀린 문항만'으로 다시 풀 수 있다.
+     맞히면 목록에서 빠진다(오답 정복). 서버가 있으면 디스크에도 함께 저장된다. */
+  var API = null, hist = [], wrong = {};
+
+  function qNum(q){ return parseInt((q.id || '').replace(/^q/, ''), 10) || 0; }
+
+  function setWrongList(arr){
+    wrong = {};
+    (arr || []).forEach(function(n){ if(n > 0) wrong[n] = 1; });
+  }
+
+  function loadHist(){
+    try{
+      var s = localStorage.getItem(KEY);
+      if(s){
+        var o = JSON.parse(s);
+        if(o && o.hist instanceof Array) hist = o.hist;
+        if(o && o.wrong instanceof Array) setWrongList(o.wrong);
+      }
+    }catch(e){}
+    if(/^https?:$/.test(location.protocol) && window.fetch){
+      var url = 'api/state/' + encodeURIComponent(FILE) + '.exam';
+      fetch(url, {cache:'no-store'})
+        .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+        .then(function(o){
+          API = url;
+          if(o && o.hist instanceof Array) hist = o.hist;
+          if(o && o.wrong instanceof Array) setWrongList(o.wrong);
+          renderHist(); renderWrongBtn();
+        })
+        .catch(function(){ API = null; });
+    }
+    renderHist(); renderWrongBtn();
+  }
+
+  function saveHist(){
+    var body = {v:1, hist:hist.slice(-20),        // 최근 20회만 남긴다
+                wrong:Object.keys(wrong).map(Number).sort(function(a,b){return a-b;})};
+    try{ localStorage.setItem(KEY, JSON.stringify(body)); }catch(e){}
+    if(API){
+      fetch(API, {method:'PUT', headers:{'Content-Type':'application/json'},
+                  body:JSON.stringify(body)}).catch(function(){});
+    }
+  }
+
+  function wrongCount(){ return Object.keys(wrong).length; }
+
+  function renderWrongBtn(){
+    var b = document.getElementById('ex-review');
+    if(b){
+      var n = wrongCount();
+      b.textContent = '틀린 문항만' + (n ? ' (' + n + ')' : '');
+    }
+    var c = document.getElementById('ex-wclear');
+    if(c) c.style.display = wrongCount() ? '' : 'none';
+  }
+
+  function renderHist(){
+    if(!elHist) return;
+    if(!hist.length){ elHist.textContent = '아직 응시 기록이 없습니다.'; return; }
+    var last = hist.slice(-5).reverse().map(function(h){
+      return h.date + ' <b>' + h.right + '/' + h.total + '</b>';
+    }).join('  ·  ');
+    var best = hist.reduce(function(a, b){ return b.right > a.right ? b : a; });
+    elHist.innerHTML = '최근 기록 — ' + last + '   (최고 <b>' + best.right + '/' + best.total + '</b>)';
+  }
+
+  /* ---------- 타이머 ---------- */
+  function fmt(s){
+    var m = Math.floor(Math.abs(s) / 60), x = Math.abs(s) % 60;
+    return (s < 0 ? '+' : '') + m + ':' + (x < 10 ? '0' : '') + x;
+  }
+  function paintTimer(){
+    if(!elTimer) return;
+    if(mode === 'realc'){                 // 열람용 — 시간을 재지 않는다
+      elTimer.textContent = '열람 모드 — 정답·개념 표시';
+      elTimer.classList.remove('warn');
+      return;
+    }
+    elTimer.textContent = (isReal() ? '남은 시간 ' : '경과 ') + fmt(left);
+    elTimer.classList.toggle('warn', left <= 300);
+  }
+  function startTimer(){
+    if(started || !isReal() || graded) return;
+    started = true;
+    tick = setInterval(function(){
+      left--;
+      paintTimer();
+      if(left === 0) toast('시간이 다 됐습니다 — 지금까지 고른 답으로 채점할 수 있습니다');
+    }, 1000);
+  }
+  function stopTimer(){ clearInterval(tick); tick = null; }
+
+  /* ---------- 진행 상황 ---------- */
+  function pickedOf(q){
+    var ins = q.querySelectorAll('input[type=radio]');
+    for(var i = 0; i < ins.length; i++) if(ins[i].checked) return i;
+    return -1;
+  }
+  function refreshNav(){
+    qs.forEach(function(q, i){
+      var a = navs[i]; if(!a) return;
+      a.className = '';
+      if(graded) a.classList.add(q.classList.contains('ok') ? 'ok' : 'ng');
+      else if(pickedOf(q) >= 0) a.classList.add('done');
+    });
+    var n = qs.filter(function(q){ return pickedOf(q) >= 0; }).length;
+    var el = document.getElementById('ex-progress');
+    if(el) el.textContent = n + ' / ' + qs.length + ' 문항 응답';
+  }
+
+  /* ---------- 채점 ---------- */
+  function markOne(q){
+    var ans = parseInt(q.getAttribute('data-ans'), 10);
+    var labels = [].slice.call(q.querySelectorAll('label'));
+    var picked = pickedOf(q);
+    labels.forEach(function(l){ l.classList.remove('correct', 'wrong', 'picked'); });
+    q.classList.remove('ok', 'ng', 'na');
+    if(labels[ans]) labels[ans].classList.add('correct');
+    if(picked < 0) q.classList.add('na');
+    else if(picked === ans) q.classList.add('ok');
+    else { labels[picked].classList.add('wrong'); q.classList.add('ng'); }
+    q.classList.add('show');
+    return picked === ans;
+  }
+
+  function grade(){
+    if(graded) return;
+    graded = true;
+    stopTimer();
+    exitStoredReview();                     // 저장 오답 필터가 켜져 있었다면 풀고 채점한다
+    var right = 0, byArea = {}, bySubj = {};
+    qs.forEach(function(q){
+      var ok = markOne(q);
+      // 오답 정복 — 틀리거나 못 푼 문항은 목록에 넣고, 맞힌 문항은 뺀다
+      var n = qNum(q);
+      if(n){ if(ok) delete wrong[n]; else wrong[n] = 1; }
+      if(ok) right++;
+      var a = q.getAttribute('data-area') || '기타';
+      byArea[a] = byArea[a] || {n:0, r:0};
+      byArea[a].n++;
+      if(ok) byArea[a].r++;
+      var s = q.getAttribute('data-subj');
+      if(s){
+        bySubj[s] = bySubj[s] || {n:0, r:0};
+        bySubj[s].n++;
+        if(ok) bySubj[s].r++;
+      }
+    });
+    refreshNav();
+    showResult(right, byArea, bySubj);
+
+    var d = new Date();
+    hist.push({date: (d.getMonth() + 1) + '/' + d.getDate(),
+               right: right, total: qs.length,
+               sec: LIMIT * 60 - left, mode: mode});
+    saveHist(); renderHist(); renderWrongBtn();
+    document.body.classList.add('ex-graded');
+  }
+
+  function showResult(right, byArea, bySubj){
+    var total = qs.length;
+    var pct = Math.round(right / total * 100);
+    var pass = right >= Math.ceil(total * PASS_SUBJECT);
+    var used = LIMIT * 60 - left;
+    var rows = Object.keys(byArea).map(function(a){
+      var v = byArea[a];
+      return '<tr><td>' + a + '</td><td class="n">' + v.r + ' / ' + v.n + '</td>' +
+             '<td class="n">' + Math.round(v.r / v.n * 100) + '%</td></tr>';
+    }).join('');
+    var head, lines, subjTable = '';
+    if(FULL){
+      // 실제 시험과 같은 판정 — 과목마다 40% 이상이면서 전체 60% 이상이어야 합격
+      var keys = Object.keys(bySubj).sort(function(a, b){ return a - b; });
+      var under = keys.filter(function(k){
+        var v = bySubj[k];
+        return v.r < Math.ceil(v.n * PASS_SUBJECT);
+      });
+      var avgOk = right >= Math.ceil(total * PASS_TOTAL);
+      pass = !under.length && avgOk;
+      head = pass ? '합격' : '불합격';
+      var why = [];
+      if(under.length) why.push('과락 ' + under.map(function(k){
+        return partName(k, keys);
+      }).join(' · '));
+      if(!avgOk) why.push('평균 60% 미달');
+      lines = '합격 기준은 <b>' + PART + '마다 40% 이상</b> 이면서 ' +
+              '<b>전체 평균 60%(' + Math.ceil(total * PASS_TOTAL) + '문항) 이상</b> 입니다.' +
+              (why.length ? '<br><b class="ng">' + why.join(' / ') + '</b>' : '') +
+              '<br>걸린 시간 ' + fmt(used) + ' / 제한 ' + LIMIT + '분';
+      subjTable =
+        '<table class="ex-subj"><thead><tr><th>' + PART + '</th><th>맞힘</th><th>정답률</th>' +
+        '<th>과락(40%)</th></tr></thead><tbody>' +
+        keys.map(function(k){
+          var v = bySubj[k], ok = v.r >= Math.ceil(v.n * PASS_SUBJECT);
+          return '<tr><td>' + partName(k, keys) + '</td>' +
+                 '<td class="n">' + v.r + ' / ' + v.n + '</td>' +
+                 '<td class="n">' + Math.round(v.r / v.n * 100) + '%</td>' +
+                 '<td class="n ' + (ok ? 'okc' : 'ngc') + '">' +
+                 (ok ? '통과' : '과락') + '</td></tr>';
+        }).join('') + '</tbody></table>';
+    }else{
+      head = pass ? '과락 통과' : '과락';
+      lines = '이 과목의 과락 기준은 <b>40% (' + Math.ceil(total * PASS_SUBJECT) + '문항)</b> 입니다. ' +
+              '실제 합격은 여기에 더해 <b>4과목 평균 60%</b> 를 넘어야 합니다.<br>' +
+              '걸린 시간 ' + fmt(used) + ' / 제한 ' + LIMIT + '분';
+    }
+    elRes.innerHTML =
+      '<h2>채점 결과</h2>' +
+      '<div><span class="ex-score">' + right + '<small> / ' + total + '  (' + pct + '점)</small></span>' +
+      '<span class="ex-verdict ' + (pass ? 'pass' : 'fail') + '">' + head + '</span></div>' +
+      '<div class="ex-lines">' + lines + '</div>' + subjTable +
+      '<table><thead><tr><th>주요항목</th><th>맞힘</th><th>정답률</th></tr></thead>' +
+      '<tbody>' + rows + '</tbody></table>';
+    elRes.classList.add('show');
+    elRes.scrollIntoView({block:'start', behavior:'smooth'});
+  }
+
+  /* ---------- 다시 풀기 ---------- */
+  function reset(){
+    graded = false; reviewing = false; started = false;
+    savedPicks = null;                            // 실전(내용 포함)에서 담아 둔 답도 버린다
+    left = LIMIT * 60;
+    stopTimer(); paintTimer();
+    document.body.classList.remove('ex-graded', 'ex-review');
+    var rv = document.getElementById('ex-review');
+    if(rv) rv.classList.remove('on');
+    qs.forEach(function(q){
+      q.classList.remove('ok', 'ng', 'na', 'show', 'rv-hide');
+      q.querySelectorAll('input[type=radio]').forEach(function(r){ r.checked = false; });
+      q.querySelectorAll('label').forEach(function(l){
+        l.classList.remove('correct', 'wrong', 'picked');
+      });
+    });
+    elRes.classList.remove('show');
+    refreshNav();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  /* ---------- 알림 ---------- */
+  var toastEl = document.createElement('div');
+  toastEl.id = 'an-toast';                      // 펜 모드의 알림 상자를 같이 쓴다
+  document.body.appendChild(toastEl);
+  var tt = null;
+  function toast(m){
+    toastEl.textContent = m;
+    toastEl.classList.add('show');
+    clearTimeout(tt);
+    tt = setTimeout(function(){ toastEl.classList.remove('show'); }, 2400);
+  }
+
+  /* ---------- 이벤트 ---------- */
+  // 문항은 #exam(상단 바) 바깥에 있으므로 document 에서 받는다
+  document.addEventListener('change', function(ev){
+    if(ev.target.type !== 'radio') return;
+    var q = ev.target.closest('.ex-q');
+    if(!q) return;
+    q.querySelectorAll('label').forEach(function(l){ l.classList.remove('picked'); });
+    ev.target.closest('label').classList.add('picked');
+    if(mode === 'realc') return;                  // 열람용 — 진행 상황·오답에 넣지 않는다
+    startTimer();
+    if(mode === 'study' && !graded){              // 학습 모드는 즉시 채점 + 오답 즉시 반영
+      var ok = markOne(q), n = qNum(q);
+      if(n){ if(ok) delete wrong[n]; else wrong[n] = 1; }
+      saveHist(); renderWrongBtn();
+    }
+    refreshNav();
+  });
+
+  /* 실전(내용 포함) — 정답 보기에 체크를 넣고 정답 줄을 펼친다.
+     들어오기 전 상태를 savedPicks 에 담아 두었다가 모드를 벗어날 때 그대로 되돌린다. */
+  function fillAnswers(){
+    if(savedPicks === null) savedPicks = qs.map(pickedOf);
+    qs.forEach(function(q){
+      var ans = parseInt(q.getAttribute('data-ans'), 10);
+      var ins = [].slice.call(q.querySelectorAll('input[type=radio]'));
+      var labels = [].slice.call(q.querySelectorAll('label'));
+      labels.forEach(function(l){ l.classList.remove('correct', 'wrong', 'picked'); });
+      if(ins[ans]) ins[ans].checked = true;
+      if(labels[ans]) labels[ans].classList.add('correct', 'picked');
+      q.classList.add('show');                    // 정답 줄(.ex-exp) 열기
+    });
+  }
+
+  function restorePicks(){
+    if(savedPicks === null) return;
+    qs.forEach(function(q, i){
+      var ins = [].slice.call(q.querySelectorAll('input[type=radio]'));
+      var labels = [].slice.call(q.querySelectorAll('label'));
+      ins.forEach(function(r){ r.checked = false; });
+      labels.forEach(function(l){ l.classList.remove('correct', 'wrong', 'picked'); });
+      var p = savedPicks[i];
+      if(p >= 0 && ins[p]){ ins[p].checked = true; labels[p].classList.add('picked'); }
+      q.classList.remove('show', 'ok', 'ng', 'na');
+    });
+    savedPicks = null;
+  }
+
+  var MODES = ['real', 'realc', 'study'];
+  var MODE_TIP = {
+    real:  '실전 모드 — 다 푼 뒤 채점하기 를 누르세요',
+    realc: '실전 모드(내용 포함) — 정답에 체크를 해 두었습니다. 문항 아래 ▽ 관련 요약 개념도 펼쳐 보세요',
+    study: '학습 모드 — 보기를 고르면 바로 해설이 열립니다'
+  };
+
+  function setMode(m){
+    if(graded){ toast('채점을 마쳤습니다 — 다시 풀기 를 누른 뒤 바꿔 주세요'); return; }
+    var was = mode;
+    mode = m;
+    if(was === 'realc' && m !== 'realc') restorePicks();          // 채워 넣었던 정답을 걷는다
+    document.body.classList.toggle('ex-study', m === 'study');    // 학습 모드: 문항 아래 ▽ 개념 노출
+    document.body.classList.toggle('ex-concepts', m === 'realc'); // 실전(내용 포함): ▽ 개념 노출
+    MODES.forEach(function(k){
+      var b = document.getElementById('ex-' + k);
+      if(b) b.classList.toggle('on', m === k);
+    });
+    document.getElementById('ex-submit').style.display = isReal() ? '' : 'none';
+    if(m !== 'realc') qs.forEach(function(q){ q.classList.remove('show', 'ok', 'ng', 'na'); });
+    if(m === 'study'){
+      stopTimer(); started = false;
+      qs.forEach(function(q){ if(pickedOf(q) >= 0) markOne(q); });
+    }
+    if(m === 'realc'){
+      stopTimer(); started = false;
+      fillAnswers();
+    }
+    refreshNav();
+    paintTimer();
+    toast(MODE_TIP[m]);
+  }
+
+  MODES.forEach(function(k){
+    var b = document.getElementById('ex-' + k);
+    if(b) b.addEventListener('click', function(){ setMode(k); });
+  });
+  document.getElementById('ex-submit').addEventListener('click', function(){
+    var n = qs.filter(function(q){ return pickedOf(q) >= 0; }).length;
+    if(n < qs.length && !window.confirm((qs.length - n) + '문항이 비어 있습니다. 그대로 채점할까요?')) return;
+    grade();
+  });
+  document.getElementById('ex-reset').addEventListener('click', function(){
+    if(!window.confirm('고른 답과 채점 결과를 모두 지우고 처음부터 다시 풉니다. 계속할까요?')) return;
+    reset();
+  });
+  /* 저장 오답 필터(채점 전) 해제 — rv-hide 표시를 걷어낸다 */
+  function exitStoredReview(){
+    reviewing = false;
+    document.body.classList.remove('ex-review');
+    var b = document.getElementById('ex-review');
+    if(b) b.classList.remove('on');
+    qs.forEach(function(q){ q.classList.remove('rv-hide'); });
+  }
+
+  document.getElementById('ex-review').addEventListener('click', function(){
+    if(graded){                                   // 방금 채점한 결과 기준 필터
+      reviewing = !reviewing;
+      document.body.classList.toggle('ex-review', reviewing);
+      this.classList.toggle('on', reviewing);
+      toast(reviewing ? '틀린 문항만 보여 줍니다' : '전체 문항을 보여 줍니다');
+      return;
+    }
+    // 채점 전 — 지난 응시에서 저장된 오답으로 필터
+    var n = wrongCount();
+    if(!n){ toast('저장된 오답이 없습니다 — 채점하면 틀린 문항이 자동으로 저장됩니다'); return; }
+    if(reviewing){ exitStoredReview(); toast('전체 문항을 보여 줍니다'); return; }
+    reviewing = true;
+    qs.forEach(function(q){ q.classList.toggle('rv-hide', !wrong[qNum(q)]); });
+    document.body.classList.add('ex-review');
+    this.classList.add('on');
+    toast('지난 오답 ' + n + '문항만 보여 줍니다 — 풀고 채점하면 맞힌 문항은 목록에서 빠집니다');
+  });
+
+  /* 오답 초기화 단추 — 저장된 오답이 있을 때만 보인다 */
+  (function(){
+    var rv = document.getElementById('ex-review');
+    if(!rv || document.getElementById('ex-wclear')) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.id = 'ex-wclear';
+    b.textContent = '오답 초기화';
+    b.style.display = 'none';
+    rv.parentNode.insertBefore(b, rv.nextSibling);
+    b.addEventListener('click', function(){
+      var n = wrongCount();
+      if(!n){ toast('저장된 오답이 없습니다'); return; }
+      if(!window.confirm('저장된 오답 ' + n + '문항을 모두 지웁니다. 계속할까요?')) return;
+      wrong = {};
+      if(!graded) exitStoredReview();
+      saveHist(); renderWrongBtn();
+      toast('오답 기록을 초기화했습니다');
+    });
+  })();
+
+  /* ---------- 관련 요약 개념 ▽ : 펼치면 해설도 함께 연다 ---------- */
+  document.addEventListener('toggle', function(ev){
+    var d = ev.target;
+    if(!d || !d.classList || !d.classList.contains('ex-concept') || !d.open) return;
+    var q = d.closest('.ex-q');
+    if(q) q.classList.add('show');
+  }, true);
+
+  /* ---------- 좁은 화면 : 사이드바 서랍 토글 ---------- */
+  (function(){
+    var sb = document.getElementById('sidebar');
+    if(!sb || document.getElementById('sb-toggle')) return;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = 'sb-toggle';
+    btn.textContent = '☰ 문항';
+    document.body.appendChild(btn);
+    var bg = document.createElement('div');
+    bg.id = 'sb-backdrop';
+    document.body.appendChild(bg);
+    function close(){ document.body.classList.remove('sb-open'); }
+    btn.addEventListener('click', function(){
+      document.body.classList.toggle('sb-open');
+    });
+    bg.addEventListener('click', close);
+    sb.addEventListener('click', function(ev){        // 문항으로 이동하면 서랍을 닫는다
+      var a = ev.target.closest && ev.target.closest('a[href]');
+      if(a) close();
+    });
+  })();
+
+  /* 인쇄·PDF 로 뽑을 때는 해설을 모두 펼친다 */
+  window.addEventListener('beforeprint', function(){
+    qs.forEach(function(q){ q.classList.add('show'); });
+  });
+
+  paintTimer();
+  refreshNav();
+  loadHist();
+})();
+</script>
+</body></html>

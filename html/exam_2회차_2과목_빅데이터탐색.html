@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2회차 2과목 모의고사 · 빅데이터분석기사 필기 교재</title>
+<style>:root{
+  --accent:#2E8B7A; --accent-soft:#BBDDD5; --accent-pale:#EAF4F1;
+  --navy:#1F3A63; --ink:#222; --line:#DDD; --side-bg:#FAFAF9; --sidebar-w:270px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;color:var(--ink);
+  font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",system-ui,sans-serif;
+  font-size:15px;line-height:1.75;word-break:keep-all}
+
+#layout{display:flex;align-items:flex-start}
+#sidebar{width:var(--sidebar-w);flex:0 0 var(--sidebar-w);position:sticky;top:0;
+  height:100vh;overflow-y:auto;background:var(--side-bg);
+  border-right:1px solid var(--line);padding:16px 0 60px}
+.side-head{padding:0 16px 12px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.side-head a{display:block;font-size:14px;font-weight:700;color:var(--accent);text-decoration:none}
+.side-head span{display:block;font-size:11.5px;color:#777;margin-top:2px}
+ul.parts,#toc{list-style:none;margin:0;padding:0;font-size:13px}
+ul.parts li.grp{padding:12px 16px 4px;font-size:11.5px;font-weight:700;
+  color:#999;letter-spacing:.03em}
+ul.parts a{display:flex;justify-content:space-between;gap:8px;
+  padding:5px 16px;color:#444;text-decoration:none;border-left:3px solid transparent}
+ul.parts a span{color:#aaa;font-size:11.5px;flex:0 0 auto}
+ul.parts a:hover{background:#F0F0EE;color:var(--accent)}
+ul.parts a.on{background:var(--accent-pale);color:var(--accent);
+  border-left-color:var(--accent);font-weight:700}
+.toc-head{padding:16px 16px 6px;margin-top:8px;border-top:1px solid var(--line);
+  font-size:11.5px;font-weight:700;color:#999}
+#toc a{display:block;padding:4px 16px;color:#555;text-decoration:none;
+  border-left:3px solid transparent;line-height:1.4}
+#toc a:hover{background:#F0F0EE;color:var(--accent)}
+#toc a.active{background:var(--accent-pale);color:var(--accent);
+  border-left-color:var(--accent);font-weight:700}
+#toc .l2 a{padding-left:28px;font-size:12.5px}
+#toc .l3 a{padding-left:40px;font-size:12px;color:#777}
+
+#main{flex:1 1 auto;min-width:0;padding:34px 40px 120px}
+.wrap{max-width:880px;margin:0 auto}
+
+.crumb{font-size:12.5px;color:#888;margin:0 0 4px;letter-spacing:.02em}
+h1{font-size:26px;margin:0 0 6px;color:var(--accent)}
+.src{font-size:12.5px;color:#888;margin:0 0 28px}
+
+.page-mark{margin:30px 0 10px;padding:1px 0 1px 9px;border-left:3px solid var(--accent-soft);
+  font-size:11.5px;color:#bbb;letter-spacing:.04em}
+h3{font-size:19px;margin:34px 0 14px;padding:9px 14px;background:var(--accent);
+  color:#fff;border-radius:4px;border-left:7px solid var(--navy)}
+h4{font-size:16.5px;margin:26px 0 10px;padding-bottom:6px;
+  border-bottom:2px solid var(--accent-soft)}
+h5{font-size:15px;margin:20px 0 8px;color:var(--accent)}
+h5::before{content:"● ";font-size:10px;vertical-align:2px}
+
+p{margin:0 0 9px}
+ul{list-style:none;margin:0 0 12px;padding:0}
+ul.dash>li{position:relative;padding-left:14px;margin:3px 0}
+ul.dash>li::before{content:"·";position:absolute;left:3px;color:var(--accent)}
+ul.numlist>li{margin:3px 0;padding-left:4px}
+
+p.note{background:#F6F6F4;border-left:3px solid #D6D6D2;border-radius:0 4px 4px 0;
+  padding:9px 13px;margin:10px 0;font-size:13.5px;color:#4A4A4A}
+p.mnemo{display:inline-block;background:#FFF6D9;border:1px solid #EBD9A0;border-radius:14px;
+  padding:3px 14px;margin:8px 0;font-size:13.5px;font-weight:700;color:#7A5E12}
+p.mnemo::before{content:"☞ "}
+
+figure{margin:16px 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid #EEE;border-radius:4px}
+
+/* index */
+.index{padding:44px 24px 100px}
+.index h2{font-size:17px;margin:34px 0 12px;padding:8px 14px;background:var(--accent-pale);
+  color:#26705F;border-radius:4px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.card{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:8px;
+  text-decoration:none;color:var(--ink);background:#fff;transition:.15s}
+.card:hover{border-color:var(--accent);box-shadow:0 2px 10px rgba(46,139,122,.13)}
+.card b{display:block;font-size:15px;margin-bottom:4px}
+.card span{font-size:12px;color:#999}
+
+@media(max-width:900px){
+  #layout{display:block}
+  #sidebar{position:static;width:auto;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+  #main{padding:22px 16px 70px}
+}
+
+details.ov{margin:0 0 14px;border:1px solid var(--line);border-radius:6px;padding:10px 14px;background:#fff}
+details.ov summary{cursor:pointer;font-size:13px;color:var(--accent);font-weight:700;user-select:none}
+details.ov img{display:block;max-width:100%;margin-top:12px;border:1px solid #EEE;border-radius:4px}
+
+/* 수식 — 원문 이미지 그대로 */
+img.eq{display:inline-block;vertical-align:middle;max-width:100%;
+  height:auto;margin:2px 0 2px 4px}
+p.eqline{margin:6px 0 6px 14px}
+
+/* ---------- 확인 문제 ---------- */
+.quiz{margin:26px 0;border:1px solid var(--accent-soft);border-radius:8px;
+  background:#FCFEFD;overflow:hidden}
+.qtoggle{display:flex;align-items:center;gap:8px;width:100%;
+  padding:12px 16px;border:0;background:var(--accent-pale);color:#26705F;
+  font:700 14px/1.4 inherit;text-align:left;cursor:pointer}
+.qtoggle:hover{background:#DDEDE8}
+.qtoggle .arw{display:inline-block;transition:transform .18s;font-size:12px}
+.qtoggle[aria-expanded="true"] .arw{transform:rotate(180deg)}
+.qtoggle .score{margin-left:auto;font-size:12.5px;font-weight:700}
+.qbody{padding:6px 18px 18px}
+ol.qlist{list-style:none;margin:0;padding:0;counter-reset:none}
+li.q{padding:16px 0;border-bottom:1px dashed #DDE7E4}
+li.q:last-child{border-bottom:0}
+.qt{margin:0 0 9px;font-size:14.8px;line-height:1.6}
+.qt b{color:var(--accent);margin-right:4px}
+.opts{display:flex;flex-direction:column;gap:2px}
+label.opt{display:flex;gap:7px;align-items:flex-start;padding:5px 9px;
+  border-radius:5px;cursor:pointer;font-size:14.2px;line-height:1.55}
+label.opt:hover{background:#F1F7F5}
+label.opt input{margin:5px 0 0;flex:0 0 auto}
+label.opt .mk{flex:0 0 auto;color:#666}
+/* 채점 결과 표시 */
+.quiz.graded label.opt{cursor:default}
+.quiz.graded label.opt input{pointer-events:none}
+label.opt.correct{background:#E8F6EC;box-shadow:inset 0 0 0 1px #9FD3AE}
+label.opt.wrong{background:#FDECEC;box-shadow:inset 0 0 0 1px #E3A6A6}
+label.opt.correct .mk::after{content:" ✔";color:#1E7A3C;font-weight:700}
+label.opt.wrong .mk::after{content:" ✘";color:#C0392B;font-weight:700}
+li.q.ok  > .qt::after{content:" 정답";color:#1E7A3C;font-size:12px;font-weight:700;margin-left:6px}
+li.q.ng  > .qt::after{content:" 오답";color:#C0392B;font-size:12px;font-weight:700;margin-left:6px}
+li.q.na  > .qt::after{content:" 미응답";color:#999;font-size:12px;font-weight:700;margin-left:6px}
+.exp{display:none;margin:9px 0 0;padding:10px 13px;background:#F6F6F4;
+  border-left:3px solid var(--accent-soft);border-radius:0 4px 4px 0;
+  font-size:13.4px;color:#444;line-height:1.65}
+.quiz.graded .exp{display:block}
+.exp b{color:var(--accent)}
+.qbar{display:flex;align-items:center;gap:8px;margin-top:16px;
+  padding-top:14px;border-top:1px solid #E6EFEC}
+.btn{padding:7px 16px;border-radius:5px;border:1px solid var(--accent);
+  background:var(--accent);color:#fff;font:700 13px inherit;cursor:pointer}
+.btn.reset{background:#fff;color:var(--accent)}
+.btn:hover{opacity:.88}
+.qbar .result{font-size:13.5px;font-weight:700;color:#26705F}
+
+/* ---------- 수식 (원문을 직접 옮겨 적은 텍스트) ---------- */
+.eqbox{margin:12px 0 12px 14px;padding:10px 16px;
+  background:#FAFBFB;border-left:3px solid var(--accent-soft);border-radius:0 4px 4px 0;
+  font-size:15.5px;line-height:2.4;overflow-x:auto}
+.eqbox i,.eqtext i{font-family:"Cambria Math","Cambria","Times New Roman",serif;
+  font-style:italic}
+.eqtext{margin:8px 0 10px 14px;line-height:1.95}
+.eqline{margin:4px 0}
+/* 분수 */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;
+  text-align:center;margin:0 3px;line-height:1.25}
+.fr>.nu{padding:0 5px 1px;border-bottom:1.3px solid currentColor}
+.fr>.de{padding:1px 5px 0}
+/* 제곱근 */
+.sq{border-top:1.3px solid currentColor;padding:1px 3px 0 2px;margin-left:1px}
+.sq::before{content:"√";border-top:0;margin-left:-11px;padding-right:1px;
+  display:inline-block;transform:translateY(-1px)}
+.eqbox sup,.eqtext sup,.eqbox sub,.eqtext sub{font-size:.72em}
+
+/* ---------- 인쇄 / PDF ---------- */
+@media print{
+  @page{size:A4;margin:14mm 12mm}
+  body{font-size:10.6pt;line-height:1.62}
+  #sidebar{display:none !important}
+  #layout{display:block}
+  #main{padding:0}
+  .wrap{max-width:none}
+  .crumb{font-size:9pt}
+  h1{font-size:19pt;margin-bottom:2mm}
+  .src{font-size:9pt;margin-bottom:6mm}
+  h3{font-size:13.5pt;margin:7mm 0 3mm;-webkit-print-color-adjust:exact;
+     print-color-adjust:exact;break-after:avoid}
+  h4{font-size:12pt;margin:5mm 0 2mm;break-after:avoid}
+  h5{font-size:11pt;margin:4mm 0 1.5mm;break-after:avoid}
+  ul,figure,table,.eqbox,.eqtext{break-inside:avoid}
+  figure img{max-height:88mm}
+  .page-mark{font-size:8pt;color:#bbb}
+  p.note,p.mnemo,.eqbox{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  /* 문제는 펼친 상태로, 해설까지 함께 인쇄 */
+  .quiz{break-inside:auto;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .qtoggle{cursor:default}
+  .qtoggle .arw,.qtoggle .score{display:none}
+  .qbody{display:block !important}
+  .qbar{display:none}
+  li.q{break-inside:avoid}
+  .exp{display:block !important}
+  label.opt input{display:none}
+  label.opt{padding:2px 6px}
+  a{color:inherit;text-decoration:none}
+}
+
+/* ================= 모의고사 전용 ================= */
+
+.ex-head{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:0 0 18px;
+  background:var(--side-bg)}
+.ex-head .ex-meta{font-size:13px;color:#777;margin:0 0 10px}
+.ex-head .ex-meta b{color:var(--accent)}
+
+/* 실전 / 학습 모드 */
+.ex-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ex-bar button{font:inherit;font-size:13px;cursor:pointer;border:1px solid var(--line);
+  background:#fff;color:#444;border-radius:8px;padding:7px 12px}
+.ex-bar button:hover{border-color:var(--accent);color:var(--accent)}
+.ex-bar button.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.ex-bar .ex-primary{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:700}
+.ex-bar .ex-primary:hover{background:#16305a;color:#fff}
+.ex-sep{flex:1 1 auto}
+#ex-timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:15px;color:var(--navy);
+  padding:6px 10px;border-radius:8px;background:#fff;border:1px solid var(--line)}
+#ex-timer.warn{color:#C0392B;border-color:#E8B4AA;background:#FDF2F0}
+
+/* 문항 바로가기 */
+.ex-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:6px;
+  margin:12px 0 0}
+.ex-nav a{display:block;text-align:center;padding:6px 0;font-size:12.5px;text-decoration:none;
+  border:1px solid var(--line);border-radius:6px;color:#888;background:#fff}
+.ex-nav a.done{border-color:var(--accent);color:var(--accent);background:var(--accent-pale);
+  font-weight:700}
+.ex-nav a.ok{border-color:#7BC49A;background:#E9F6EE;color:#2E7D4F;font-weight:700}
+.ex-nav a.ng{border-color:#E5A9A0;background:#FDEEEB;color:#C0392B;font-weight:700}
+
+/* 문항 */
+.ex-q{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:0 0 14px;
+  scroll-margin-top:14px}
+.ex-q > .ex-qh{display:flex;gap:8px;align-items:baseline;margin:0 0 4px}
+.ex-q .ex-no{flex:0 0 auto;font-weight:700;color:var(--accent);font-size:15px}
+.ex-q .ex-tags{margin-left:auto;display:flex;gap:5px;flex-wrap:wrap}
+.ex-q .ex-tags span{font-size:10.5px;color:#999;border:1px solid var(--line);
+  border-radius:10px;padding:1px 7px;white-space:nowrap}
+.ex-q .ex-tags .lv-어려움{color:#C0392B;border-color:#E8C4BE}
+.ex-q .ex-tags .lv-보통{color:#B07A18;border-color:#EBD9A0}
+.ex-q .ex-tags .lv-쉬움{color:#2E7D4F;border-color:#B6DCC4}
+.ex-q .ex-body{margin:0 0 10px;line-height:1.75}
+
+.ex-opts{list-style:none;margin:0;padding:0}
+.ex-opts li{margin:0 0 5px}
+.ex-opts label{display:flex;gap:8px;align-items:flex-start;cursor:pointer;
+  padding:6px 9px;border:1px solid transparent;border-radius:7px;line-height:1.6}
+.ex-opts label:hover{background:#F4F7F6}
+.ex-opts input{display:none}
+.ex-opts .mk{flex:0 0 auto;color:#aaa;font-size:14px}
+.ex-opts input:checked + .mk{color:var(--accent);font-weight:700}
+.ex-opts label.picked{border-color:var(--accent-soft);background:var(--accent-pale)}
+.ex-opts label.correct{border-color:#7BC49A;background:#E9F6EE}
+.ex-opts label.correct .mk{color:#2E7D4F}
+.ex-opts label.wrong{border-color:#E5A9A0;background:#FDEEEB}
+.ex-opts label.wrong .mk{color:#C0392B}
+.ex-opts label.correct .tx::after{content:" ✔";color:#2E7D4F;font-weight:700}
+.ex-opts label.wrong .tx::after{content:" ✘";color:#C0392B;font-weight:700}
+
+.ex-exp{display:none;margin:10px 0 0;padding:10px 13px;border-radius:0 6px 6px 0;
+  border-left:3px solid var(--accent-soft);background:#F6F8F7;font-size:13.5px;line-height:1.7}
+.ex-q.show .ex-exp{display:block}
+.ex-exp .ex-ref{display:block;margin-top:8px;padding-top:6px;font-size:12px;color:#888;
+  border-top:1px dashed var(--line)}
+.ex-exp .ex-ref.out{color:#C0392B}     /* 요약노트에 없는 항목 — 따로 공부해야 함 */
+
+.ex-q.ok{border-color:#B6DCC4}
+.ex-q.ng{border-color:#E8C4BE}
+.ex-q.na{border-color:#DDD;background:#FAFAFA}
+.ex-q.ok .ex-no::after{content:" 정답";font-size:12px;color:#2E7D4F}
+.ex-q.ng .ex-no::after{content:" 오답";font-size:12px;color:#C0392B}
+.ex-q.na .ex-no::after{content:" 미응답";font-size:12px;color:#999}
+body.ex-review .ex-q.ok{display:none}          /* 오답만 다시 풀기 */
+body.ex-review .ex-q.rv-hide{display:none}     /* 저장된 오답만 다시 풀기(채점 전) */
+
+/* ---------- 좁은 화면 : 사이드바 서랍 ----------
+   900px 이하에서는 summary.css 가 사이드바를 본문 위에 쌓아 두는데(스크롤하면 사라짐),
+   시험지에서는 문항 바로가기를 계속 써야 하므로 왼쪽 서랍으로 바꾸고
+   플로팅 '☰ 문항' 단추로 여닫는다. */
+#sb-toggle{display:none;position:fixed;left:12px;bottom:14px;z-index:930;
+  border:1px solid var(--line);background:#fff;color:#444;border-radius:22px;
+  padding:9px 15px;font:700 13px/1.2 inherit;cursor:pointer;
+  box-shadow:0 4px 14px rgba(0,0,0,.16)}
+body.sb-open #sb-toggle{background:var(--accent);border-color:var(--accent);color:#fff}
+#sb-backdrop{display:none;position:fixed;inset:0;z-index:915;background:rgba(0,0,0,.28)}
+@media(max-width:900px){
+  #sb-toggle{display:inline-flex}
+  #sidebar{position:fixed;left:0;top:0;bottom:0;width:280px;max-width:82vw;
+    height:100vh;z-index:920;background:var(--side-bg);
+    border-right:1px solid var(--line);border-bottom:0;overflow-y:auto;
+    transform:translateX(-102%);transition:transform .18s ease;
+    padding:16px 0 70px}
+  body.sb-open #sidebar{transform:none;box-shadow:6px 0 22px rgba(0,0,0,.22)}
+  body.sb-open #sb-backdrop{display:block}
+}
+@media print{ #sb-toggle,#sb-backdrop{display:none !important} }
+
+/* ---------- 관련 요약 개념 (문항 밑 접이식 패널) ----------
+   학습 모드에서는 답을 고르기 전에도 문항 아래에 ▽ 로 보이고, 펼치면 해설도 함께 열린다.
+   실전 모드에서는 채점 뒤(문항이 .show 가 된 뒤)에만 보인다. */
+details.ex-concept{display:none;margin:6px 0 0;padding:8px 0 0;border-top:1px dashed #CFE0DA}
+body.ex-study .ex-q details.ex-concept,
+body.ex-concepts .ex-q details.ex-concept,
+.ex-q.show details.ex-concept{display:block}
+.ex-concept summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--accent);
+  -webkit-user-select:none;user-select:none;list-style:none;display:inline-block}
+.ex-concept summary::-webkit-details-marker{display:none}
+.ex-concept summary::before{content:"▽ ";font-size:10px;vertical-align:1px}
+.ex-concept[open]>summary::before{content:"△ "}
+.ex-concept summary:hover{text-decoration:underline}
+.ex-concept .cbody{margin-top:8px;padding:11px 14px;background:#F7FAF9;
+  border-left:3px solid var(--accent-soft);border-radius:0 6px 6px 0;
+  font-size:13.2px;line-height:1.72;color:#3E3E3E;overflow-x:auto}
+.ex-concept .cbody p{margin:0 0 7px}
+.ex-concept .cbody p.ct{margin:10px 0 6px;color:#26705F}
+.ex-concept .cbody p.ct:first-child{margin-top:0}
+.ex-concept .cbody ul,.ex-concept .cbody ol{margin:0 0 8px;padding-left:4px}
+.ex-concept .cbody table{border-collapse:collapse;margin:8px 0;font-size:12.6px}
+.ex-concept .cbody td,.ex-concept .cbody th{border:1px solid var(--line);padding:4px 8px}
+.ex-concept .cbody aside{background:#FFFDF2;border:1px solid #EBE3C2;border-radius:6px;
+  padding:8px 11px;margin:8px 0;font-size:12.6px}
+.ex-concept .cbody .ct-more{color:#999;font-size:12px;margin-top:8px}
+@media print{ .ex-concept{display:none} }
+
+/* 결과 */
+#ex-result{display:none;border:2px solid var(--accent);border-radius:12px;padding:18px;
+  margin:0 0 18px;background:#fff}
+#ex-result.show{display:block}
+#ex-result h2{margin:0 0 4px;font-size:20px;color:var(--navy)}
+#ex-result .ex-score{font-size:34px;font-weight:700;color:var(--accent);
+  font-variant-numeric:tabular-nums}
+#ex-result .ex-score small{font-size:15px;color:#999;font-weight:400}
+#ex-result .ex-verdict{display:inline-block;margin-left:10px;padding:4px 12px;border-radius:14px;
+  font-size:13px;font-weight:700}
+#ex-result .ex-verdict.pass{background:#E9F6EE;color:#2E7D4F;border:1px solid #7BC49A}
+#ex-result .ex-verdict.fail{background:#FDEEEB;color:#C0392B;border:1px solid #E5A9A0}
+#ex-result .ex-lines{margin:12px 0 0;font-size:13.5px;color:#555;line-height:1.9}
+#ex-result table{border-collapse:collapse;margin:10px 0 0;font-size:13px;width:100%}
+#ex-result th,#ex-result td{border:1px solid var(--line);padding:5px 9px;text-align:left}
+#ex-result th{background:var(--side-bg);color:#666;font-weight:700}
+#ex-result td.n{text-align:right;font-variant-numeric:tabular-nums}
+
+#ex-hist{margin:12px 0 0;font-size:12.5px;color:#888}
+#ex-hist b{color:var(--accent)}
+
+@media print{
+  .ex-bar,#ex-timer,.ex-nav,#ex-hist{display:none !important}
+  .ex-q{break-inside:avoid}
+  .ex-q .ex-exp{display:block}
+}
+@media(max-width:900px){
+  /* 좁은 화면에서는 사이드바가 본문 위로 오므로, 20칸 그리드를 한 줄로 눕혀
+     가로로 넘긴다. 안 그러면 문항에 닿기까지 한참을 내려야 한다. */
+  .ex-nav{display:flex;flex-wrap:nowrap;overflow-x:auto;padding:0 16px 6px;
+    -webkit-overflow-scrolling:touch}
+  .ex-nav a{flex:0 0 36px}
+  /* 가로 줄에서는 과목 이름표가 눌리지 않게 제 너비를 지킨다 */
+  .ex-navgrp{flex:0 0 auto;align-self:center;margin:0 4px 0 0}
+  #ex-result .ex-score{font-size:28px}
+  #sidebar ul.parts a{padding:4px 16px}
+}
+
+/* 아직 만들지 않은 과목 — 목차 카드와 사이드바 모두 흐리게 */
+.card.soon{opacity:.5;cursor:default;border-style:dashed}
+.card.soon:hover{border-color:var(--line);box-shadow:none}
+#sidebar ul.parts a.soon{color:#bbb;cursor:default}
+#sidebar ul.parts a.soon:hover{background:none;color:#bbb}
+/* ===== 4과목 통합 실전 모의고사 ===== */
+.ex-part{margin:26px 0 12px;padding:9px 14px;border-radius:8px;font-size:16px;
+  background:var(--accent-pale);color:var(--navy);border:1px solid var(--accent-soft)}
+.ex-part:first-of-type{margin-top:4px}
+.ex-part small{float:right;font-weight:400;color:#888;font-size:12.5px;padding-top:3px}
+.ex-navgrp{grid-column:1/-1;margin:8px 0 1px;font-size:11.5px;color:#999;font-weight:700}
+.ex-navgrp:first-child{margin-top:0}
+#ex-result table.ex-subj{margin-bottom:14px}
+#ex-result table.ex-subj td.okc{color:#2E7D4F;font-weight:700}
+#ex-result table.ex-subj td.ngc{color:#C0392B;font-weight:700}
+#ex-result .ex-lines b.ng{color:#C0392B}
+@media print{ .ex-part{break-before:page} .ex-part:first-of-type{break-before:auto} }
+
+/* 문제 안 〈보기〉 상자 (기출 사례형 지문) */
+.q-spec{margin:10px 0 4px;padding:10px 14px;background:#F7F9F8;border:1px solid #DDE7E4;
+  border-radius:8px;font-size:14.2px}
+.q-spec__label{display:inline-block;font-size:11.5px;font-weight:700;color:#26705F;
+  background:var(--accent-pale);border-radius:10px;padding:1px 10px;margin-bottom:6px}
+.ex-body table{border-collapse:collapse;margin:8px 0;font-size:13.5px}
+.ex-body td,.ex-body th{border:1px solid var(--line);padding:4px 9px}
+
+/* 과목별 전 회차 한번에 풀기 — 회차 구분선 */
+.ex-part.rd{margin-top:44px;border-top:3px solid var(--accent);border-radius:0 0 8px 8px;
+  padding-top:12px;font-size:17px}
+.ex-part.rd:first-of-type{margin-top:4px}
+</style></head><body>
+<div id="layout">
+<nav id="sidebar">
+  <div class="side-head"><a href="index.html">빅데이터분석기사 필기 교재</a><span>모의고사 2회차</span></div>
+  <ul class="parts"><li class="grp">2회차 · 과목</li>
+<li><a href="exam_2회차_1과목_빅데이터분석기획.html">1과목 빅데이터 분석 기획 <span>20문항</span></a></li>
+<li><a href="exam_2회차_2과목_빅데이터탐색.html" class="on">2과목 빅데이터 탐색 <span>20문항</span></a></li>
+<li><a href="exam_2회차_3과목_빅데이터모델링.html">3과목 빅데이터 모델링 <span>20문항</span></a></li>
+<li><a href="exam_2회차_4과목_빅데이터결과해석.html">4과목 빅데이터 결과해석 <span>20문항</span></a></li>
+<li><a href="exam_2회차_실전모의고사.html">실전 모의고사 <span>80문항</span></a></li>
+<li class="grp">다른 회차</li>
+<li><a href="exam_1회차_1과목_빅데이터분석기획.html">1회차 <span>기본</span></a></li>
+<li class="grp">한번에 풀기 · 과목별 전 회차</li>
+<li><a href="exam_1과목_전회차_빅데이터분석기획.html">1과목 빅데이터 분석 기획 <span>40문항</span></a></li>
+<li><a href="exam_2과목_전회차_빅데이터탐색.html">2과목 빅데이터 탐색 <span>40문항</span></a></li>
+<li><a href="exam_3과목_전회차_빅데이터모델링.html">3과목 빅데이터 모델링 <span>40문항</span></a></li>
+<li><a href="exam_4과목_전회차_빅데이터결과해석.html">4과목 빅데이터 결과해석 <span>40문항</span></a></li>
+<li class="grp">교재 전사</li>
+<li><a href="index.html">전체 목차</a></li></ul>
+  <div class="toc-head">문항 바로가기</div>
+  <div class="ex-nav" id="ex-nav"><a href="#q1">1</a><a href="#q2">2</a><a href="#q3">3</a><a href="#q4">4</a><a href="#q5">5</a><a href="#q6">6</a><a href="#q7">7</a><a href="#q8">8</a><a href="#q9">9</a><a href="#q10">10</a><a href="#q11">11</a><a href="#q12">12</a><a href="#q13">13</a><a href="#q14">14</a><a href="#q15">15</a><a href="#q16">16</a><a href="#q17">17</a><a href="#q18">18</a><a href="#q19">19</a><a href="#q20">20</a></div>
+</nav>
+<main id="main"><div class="wrap">
+<p class="crumb">교재 모의고사 2회차 · 계산·응용 강화 — 공식 적용과 사례 판단</p>
+<h1>2과목 · 빅데이터 탐색</h1>
+<p class="src">출제 범위 · 교재 PART 02 (책 1-202 ~ 1-341)</p>
+<div class="ex-head" id="exam" data-minutes="30">
+  <p class="ex-meta">객관식 <b>20문항</b> · 제한 시간 <b>30분</b> ·
+     과락 기준 <b>40%</b> — <span id="ex-progress">0 / 20 문항 응답</span></p>
+  <div class="ex-bar">
+    <button type="button" id="ex-real" class="on">실전 모드</button>
+    <button type="button" id="ex-realc">실전 모드(내용 포함)</button>
+    <button type="button" id="ex-study">학습 모드</button>
+    <button type="button" id="ex-review">틀린 문항만</button>
+    <button type="button" id="ex-reset">다시 풀기</button>
+    <span class="ex-sep"></span>
+    <span id="ex-timer">남은 시간 30:00</span>
+    <button type="button" id="ex-submit" class="ex-primary">채점하기</button>
+  </div>
+  <p id="ex-hist"></p>
+</div>
+
+<div id="ex-result"></div>
+
+<section class="ex-q" id="q1" data-ans="0" data-area="데이터 전처리"><div class="ex-qh"><span class="ex-no">1.</span><span class="ex-tags"><span>데이터 전처리</span><span class="lv-보통">보통</span><span>계산</span></span></div><div class="ex-body">시험 점수의 최솟값이 50점, 최댓값이 100점이다. 70점을 최소-최대 정규화하면?</div><ul class="ex-opts"><li><label><input type="radio" name="q1" value="0"><span class="mk">①</span><span class="tx">0.4</span></label></li><li><label><input type="radio" name="q1" value="1"><span class="mk">②</span><span class="tx">0.6</span></label></li><li><label><input type="radio" name="q1" value="2"><span class="mk">③</span><span class="tx">0.2</span></label></li><li><label><input type="radio" name="q1" value="3"><span class="mk">④</span><span class="tx">0.7</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — 최소-최대 정규화 = (X − Min) / (Max − Min) = (70 − 50) / (100 − 50) = 20/50 = <b>0.4</b>. 모든 값이 0과 1 사이로 변환된다.<span class="ex-ref ">근거 · 책 1-224</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-224쪽</summary><div class="cbody"><aside class="note"><b>변수 변환</b><br>어떤 변수로 나타낸 식을 다른 변수로 바꿔 나타내는 기법<hr>어떤 특성의 최소값이 20이고 최대값이 40인 경우, 30은 딱 중간이므로 0.5로 변환된다.</aside>
+
+<p class="ct"><b><span class="num">04</span> 변수 변환</b></p>
+
+<p class="ct"><b>1) 변수 변환의 개념</b></p>
+<ul class="dash">
+  <li><mark>데이터를 분석하기 좋은 형태로 바꾸는 작업</mark>을 말한다. 수학적 의미로 변환(transformation)은 기존의 변수공간에서는 해결하거나 관찰할 수 없는 사실을 영역을 달리 하는 것으로(변환) 해석이 용이해지거나 취급이 단순해지는 장점이 있다.</li>
+  <li>데이터의 전처리 과정(Data Preprocessing) 중 하나로 간주된다.</li>
+</ul>
+
+<p class="ct"><b>2) 변수 변환의 방법</b></p>
+
+<p class="ct"><b>① 범주형 변환</b></p>
+<p>연속형 변수 중에서 변수자체로의 분석보다는 분석결과의 명료성 및 정확성을 배가시키기 위해 범주형으로 바꾸는 것이 좋은 경우가 있다.</p>
+
+<div class="boxlist">
+&lsquo;소득이 100만 원 늘 때마다 사교육비의 지출이 10만 원 증가한다.&rsquo; 보다는 &lsquo;상위 10% 소득가정의 사교육비 지출이 하위 10%보다 10배 많다.&rsquo; 식의 설명이 이해가 쉽다.
+<ul class="dash">
+  <li>이 경우 소득의 연속적 데이터를 그대로 사용하기 보다는 순위형(rank) 데이터로 범주를 나누어 상대 비교를 하는 방법, 즉 연속형 데이터를 범주형 데이터로 나누는 설명이 효과적임을 알 수 있다.</li>
+</ul>
+</div>
+
+<p class="ct"><b>② <mark>정규화</mark></b></p>
+<p>분석을 정확히 하려면 원래 주어진 연속형(이산형) 데이터 값을 바로 사용하기보다는 정규화를 이용하는 경우가 타당할 수 있다.<br>특히, 데이터가 가진 스케일이 심하게 차이나는 경우 그 차이를 그대로 반영하기보다는 <mark>상대적 특성이 반영된 데이터로 변환하는 것이 필요하다.</mark></p>
+<ul class="dash">
+  <li>일반 정규화 : 수치로 된 값들을 여러 개 사용할 때 각 수치의 범위가 다르면 이를 같은 범위로 변환해서 사용하는데 이를 일반 정규화라고 한다.</li>
+</ul>
+
+<div class="boxlist">
+두 과목의 시험을 가지고 평가하는데 과목 A의 시험은 10점 만점이고, 다른 과목 B는 50점 만점이라고 하자.
+<ul class="dash">
+  <li>만약 A에서는 8점, B에서는 20점을 받았을 때, 이것을 정규화하면 8/10=0.8점, 20/50=0.4점이 되고 평점은 0.60이 된다.</li>
+</ul>
+</div>
+
+<ul class="dash">
+  <li>최소-최대 정규화(Min-Max Normalization) : 데이터를 정규화하는 가장 일반적인 방법이다.
+    <ul class="dash2">
+      <li>모든 feature에 대해 최소값 0, 최대값 1로, 그리고 다른 값들은 0과 1 사이의 값으로 변환하는 것이다.</li>
+      <li>만약 X라는 값에 대해 최소-최대 정규화를 한다면 다음과 같은 수식을 사용할 수 있다.</li>
+    </ul></li>
+</ul>
+
+<div class="procbox">Min-Max Normalization = (X&#8722;Min) / (Max&#8722;Min)</div></div></details></section>
+<section class="ex-q" id="q2" data-ans="0" data-area="데이터 전처리"><div class="ex-qh"><span class="ex-no">2.</span><span class="ex-tags"><span>데이터 전처리</span><span class="lv-보통">보통</span><span>계산</span></span></div><div class="ex-body">평균 60, 표준편차 10인 데이터에서 관측값 90의 z-score와, 임계값을 ±2.5로 둘 때의 이상치 판단으로 옳은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q2" value="0"><span class="mk">①</span><span class="tx">z = 3.0 이므로 이상치다.</span></label></li><li><label><input type="radio" name="q2" value="1"><span class="mk">②</span><span class="tx">z = 0.3 이므로 이상치가 아니다.</span></label></li><li><label><input type="radio" name="q2" value="2"><span class="mk">③</span><span class="tx">z = 3.0 이지만 이상치가 아니다.</span></label></li><li><label><input type="radio" name="q2" value="3"><span class="mk">④</span><span class="tx">z = 9.0 이므로 이상치다.</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — z = (90 − 60) / 10 = <b>3.0</b>. 임계값 ±2.5를 벗어나므로 이상치로 판단한다. z-score는 평균과 표준편차를 이용하므로 모수적 방법이다.<span class="ex-ref ">근거 · 책 1-211</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-211쪽</summary><div class="cbody"><aside class="note">z-score는 평균과 표준편차를 이용하므로 모수적 방법이다.<hr><b>임계값</b><br>어떤 현상이나 조건이 달라지는 경계가 되는 수치<hr>이상치 탐지는 데이터의 특성과 분석 목적에 따라 적절한 임계값 설정이 필요하며, 추가적인 검토와 판단이 필요할 수 있다.</aside>
+
+<div class="tip-more"><span class="tip-head-more">더 알기 TIP</span>
+<b>줄기-잎 그림 생성과 이상치 판단</b><br>
+줄기는 데이터의 정수 부분을 나타내고, 잎은 소수 부분이나 가장 오른쪽 자리수로 사용된다.<br>
+예를 들어 16, 19, 23, 24, 25, 34, 35, 42, 100을 줄기-잎 그림으로 나타낸다면 다음과 같다.
+<div class="procbox" style="text-align:left; font-family:monospace">
+1 | 6 9<br>
+2 | 3 4 5<br>
+3 | 4 5<br>
+4 | 2<br>
+10 | 0
+</div>
+줄기-잎 그림에서 이상치는 100과 같이 일반적인 패턴에서 크게 벗어난 값, 주로 특정 줄기 또는 잎에서 큰 차이를 보이는 값으로 확인할 수 있다.
+</div>
+
+<ul class="dash">
+  <li>산점도 그림(Scatter Plot)
+    <ul class="dash2">
+      <li>두 변수로 이루어진 데이터를 2차원 평면 상에 점으로 표현하는 시각화 방법으로, 데이터 포인트들이 그래프 상에서 너무 멀리 떨어져 있는 값을 이상치로 판단한다.</li>
+    </ul></li>
+</ul>
+
+<p class="ct"><b>② z-score를 이용한 이상치 탐지 방법(모수적 단변량 또는 저변량의 경우)</b></p>
+<ul class="dash">
+  <li>z-score는 데이터 포인트가 평균으로부터 얼마나 떨어져 있는지를 표준편차의 단위로 나타내는 통계적 지표이다.</li>
+  <li>먼저 데이터를 정규화하여 평균이 0이고 표준편차가 1인 표준정규분포로 변환한다. 이를 위해 각 데이터 포인트에서 평균을 빼고, 표준편차로 나누어준다.</li>
+  <li>정규화된 데이터 포인트(x)의 z-score를 계산한다.</li>
+</ul>
+
+<div class="procbox">
+  <i>z<sub>i</sub></i> = ( <i>x<sub>i</sub></i> &#8722; <i>&mu;</i> ) / <i>&sigma;</i> &nbsp;&nbsp;&nbsp; <i>&mu;</i>: 평균 &nbsp;&nbsp; <i>&sigma;</i>: 표준편차<br>
+  | <i>z<sub>i</sub></i> | &gt; <i>z</i><sub>thr</sub>
+</div>
+
+<ul class="dash">
+  <li>통상적 임계값(threshold)은 1&sigma; 사이(전체의 68.27%), 2&sigma; 사이(전체의 95.45%) 3&sigma; 사이(전체의 99.73%) 등을 사용한다.<br>(4&sigma;, 5&sigma;, 6&sigma; 등 용도에 따라 정밀도를 높여 제거)</li>
+  <li>보통 z-score의 절댓값이 일정한 임계값보다 큰 데이터는 이상치로 간주된다. 일반적으로, 임계값은 1&sigma; 사이(전체의 68.27%), 2&sigma; 사이(전체의 95.45%) 3&sigma; 사이(전체의 99.73%) 등을 사용한다.</li>
+  <li>z-score를 이용한 이상치 탐지 방법은 데이터가 정규분포를 따른다고 가정할 때 효과적으로 작동할 수 있으며, 비정규분포를 따르는 경우에는 잘못된 결과를 도출할 수 있으므로 주의가 필요하다.</li>
+</ul>
+
+<p class="ct"><b>③ 밀도기반 클러스터링 방법(Density Based Spatial Clustering of Application with Noise, DBSCAN)</b></p>
+<ul class="dash">
+  <li>비모수적 다변량의 경우 군집간의 밀도를 이용하여 특정 거리 내의 데이터 수가 지정 개수 이상이면 군집으로 정의하는 방법이다. 정의된 군집에서 먼거리에 있는 데이터는 이상치로 간주한다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q3" data-ans="0" data-area="데이터 전처리"><div class="ex-qh"><span class="ex-no">3.</span><span class="ex-tags"><span>데이터 전처리</span><span class="lv-쉬움">쉬움</span><span>계산</span></span></div><div class="ex-body">데이터 16, 19, 23, 24, 25 를 줄기-잎 그림으로 나타낼 때, 줄기 2에 달리는 잎을 모두 고른 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q3" value="0"><span class="mk">①</span><span class="tx">3, 4, 5</span></label></li><li><label><input type="radio" name="q3" value="1"><span class="mk">②</span><span class="tx">6, 9</span></label></li><li><label><input type="radio" name="q3" value="2"><span class="mk">③</span><span class="tx">1, 2</span></label></li><li><label><input type="radio" name="q3" value="3"><span class="mk">④</span><span class="tx">16, 19</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — 줄기는 정수 부분(십의 자리), 잎은 가장 오른쪽 자리수다. 23, 24, 25가 줄기 2에 해당하므로 잎은 <b>3, 4, 5</b>다. (16, 19는 줄기 1에 잎 6, 9)<span class="ex-ref ">근거 · 책 1-211</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-211쪽</summary><div class="cbody"><aside class="note">z-score는 평균과 표준편차를 이용하므로 모수적 방법이다.<hr><b>임계값</b><br>어떤 현상이나 조건이 달라지는 경계가 되는 수치<hr>이상치 탐지는 데이터의 특성과 분석 목적에 따라 적절한 임계값 설정이 필요하며, 추가적인 검토와 판단이 필요할 수 있다.</aside>
+
+<div class="tip-more"><span class="tip-head-more">더 알기 TIP</span>
+<b>줄기-잎 그림 생성과 이상치 판단</b><br>
+줄기는 데이터의 정수 부분을 나타내고, 잎은 소수 부분이나 가장 오른쪽 자리수로 사용된다.<br>
+예를 들어 16, 19, 23, 24, 25, 34, 35, 42, 100을 줄기-잎 그림으로 나타낸다면 다음과 같다.
+<div class="procbox" style="text-align:left; font-family:monospace">
+1 | 6 9<br>
+2 | 3 4 5<br>
+3 | 4 5<br>
+4 | 2<br>
+10 | 0
+</div>
+줄기-잎 그림에서 이상치는 100과 같이 일반적인 패턴에서 크게 벗어난 값, 주로 특정 줄기 또는 잎에서 큰 차이를 보이는 값으로 확인할 수 있다.
+</div>
+
+<ul class="dash">
+  <li>산점도 그림(Scatter Plot)
+    <ul class="dash2">
+      <li>두 변수로 이루어진 데이터를 2차원 평면 상에 점으로 표현하는 시각화 방법으로, 데이터 포인트들이 그래프 상에서 너무 멀리 떨어져 있는 값을 이상치로 판단한다.</li>
+    </ul></li>
+</ul>
+
+<p class="ct"><b>② z-score를 이용한 이상치 탐지 방법(모수적 단변량 또는 저변량의 경우)</b></p>
+<ul class="dash">
+  <li>z-score는 데이터 포인트가 평균으로부터 얼마나 떨어져 있는지를 표준편차의 단위로 나타내는 통계적 지표이다.</li>
+  <li>먼저 데이터를 정규화하여 평균이 0이고 표준편차가 1인 표준정규분포로 변환한다. 이를 위해 각 데이터 포인트에서 평균을 빼고, 표준편차로 나누어준다.</li>
+  <li>정규화된 데이터 포인트(x)의 z-score를 계산한다.</li>
+</ul>
+
+<div class="procbox">
+  <i>z<sub>i</sub></i> = ( <i>x<sub>i</sub></i> &#8722; <i>&mu;</i> ) / <i>&sigma;</i> &nbsp;&nbsp;&nbsp; <i>&mu;</i>: 평균 &nbsp;&nbsp; <i>&sigma;</i>: 표준편차<br>
+  | <i>z<sub>i</sub></i> | &gt; <i>z</i><sub>thr</sub>
+</div>
+
+<ul class="dash">
+  <li>통상적 임계값(threshold)은 1&sigma; 사이(전체의 68.27%), 2&sigma; 사이(전체의 95.45%) 3&sigma; 사이(전체의 99.73%) 등을 사용한다.<br>(4&sigma;, 5&sigma;, 6&sigma; 등 용도에 따라 정밀도를 높여 제거)</li>
+  <li>보통 z-score의 절댓값이 일정한 임계값보다 큰 데이터는 이상치로 간주된다. 일반적으로, 임계값은 1&sigma; 사이(전체의 68.27%), 2&sigma; 사이(전체의 95.45%) 3&sigma; 사이(전체의 99.73%) 등을 사용한다.</li>
+  <li>z-score를 이용한 이상치 탐지 방법은 데이터가 정규분포를 따른다고 가정할 때 효과적으로 작동할 수 있으며, 비정규분포를 따르는 경우에는 잘못된 결과를 도출할 수 있으므로 주의가 필요하다.</li>
+</ul>
+
+<p class="ct"><b>③ 밀도기반 클러스터링 방법(Density Based Spatial Clustering of Application with Noise, DBSCAN)</b></p>
+<ul class="dash">
+  <li>비모수적 다변량의 경우 군집간의 밀도를 이용하여 특정 거리 내의 데이터 수가 지정 개수 이상이면 군집으로 정의하는 방법이다. 정의된 군집에서 먼거리에 있는 데이터는 이상치로 간주한다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q4" data-ans="0" data-area="데이터 전처리"><div class="ex-qh"><span class="ex-no">4.</span><span class="ex-tags"><span>데이터 전처리</span><span class="lv-보통">보통</span><span>사례적용</span></span></div><div class="ex-body">"부서 코드 A=1, B=2, C=3"으로 레이블 인코딩한 뒤 회귀 모델에 넣었더니 C 부서가 A 부서의 3배 크기라는 의미로 잘못 학습되었다. 적절한 해결 방법은?</div><ul class="ex-opts"><li><label><input type="radio" name="q4" value="0"><span class="mk">①</span><span class="tx">숫자 크기가 의미를 갖지 않도록 원-핫 인코딩으로 바꾼다.</span></label></li><li><label><input type="radio" name="q4" value="1"><span class="mk">②</span><span class="tx">값을 10배씩 키워 A=10, B=20, C=30 으로 인코딩한다.</span></label></li><li><label><input type="radio" name="q4" value="2"><span class="mk">③</span><span class="tx">부서 변수를 제거하고 분석한다.</span></label></li><li><label><input type="radio" name="q4" value="3"><span class="mk">④</span><span class="tx">레이블 순서를 C=1, B=2, A=3 으로 뒤집는다.</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — 레이블 인코딩은 범주에 정수를 부여하므로 크기가 의미 있는 것처럼 오해될 수 있다. 이 경우 각 범주를 이진 벡터로 바꾸는 <b>원-핫 인코딩</b>을 고려해야 한다.<span class="ex-ref ">근거 · 책 1-235</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-235쪽</summary><div class="cbody"><ul class="dash">
+  <li>언더샘플링
+    <ul class="dash2">
+      <li>언더샘플링은 대표클래스(Majority Class)의 일부만을 선택하고, 소수클래스(Minority Class)는 최대한 많은 데이터를 사용하는 방법이다. 이때 언더샘플링된 대표클래스 데이터가 원본 데이터와 비교해 대표성이 있어야 한다.</li>
+    </ul></li>
+  <li>오버샘플링
+    <ul class="dash2">
+      <li>소수클래스의 복사본을 만들어, 대표클래스의 수만큼 데이터를 만들어 주는 것이다. 똑같은 데이터를 그대로 복사하는 것이기 때문에 새로운 데이터는 기존 데이터와 같은 성질을 갖게 된다.</li>
+    </ul></li>
+</ul>
+
+<div class="check">
+<div class="check-head">개념 체크</div>
+<div class="q">
+  <div class="q-title">다음 중 클래스 불균형 데이터를 처리하기 위한 방안과 내용으로 옳지 않은 것은?</div>
+  <ol class="circled q-opt">
+    <li>다수 클래스의 샘플을 제거한다.</li>
+    <li>소수 클래스의 샘플을 복제하거나 새로운 샘플을 추가한다.</li>
+    <li>모델 학습 시 소수 클래스에 높은 가중치를 부여한다.</li>
+    <li>불균형 데이터에서는 정확도가 높게 나타난다.</li>
+  </ol>
+  <div class="ans"><span class="ans-tag">정답</span> ④</div>
+  <ul class="dash sol">
+    <li>①은 언더샘플링, ②는 오버샘플링, ③은 가중치 균형방법</li>
+    <li>클래스 불균형 데이터에서 정확도(Accuracy)는 일반적으로 사용하기에 적절한 평가 지표는 아니다. 불균형한 클래스 분포로 인해 많은 데이터가 다수 클래스에 속하는 경우, 모델이 모든 샘플을 다수 클래스로 예측하는 경향을 보일 수 있기 때문이다. 예를 들어, 100개의 샘플 중 95개가 다수, 5개가 소수 클래스에 속한다고 가정하면, 만약 모든 샘플을 다수 클래스로 예측하면 정확도가 95%가 되나 이것은 소수 클래스를 잘 예측하지 못함을 의미한다.</li>
+  </ul>
+</div>
+</div>
+
+<p class="ct"><b><span class="num">07</span> 인코딩</b></p>
+<p>범주형 데이터를 수치형으로 변환하여 머신러닝 모델에 적용 가능하게 하는 기법이다.</p>
+
+<p class="ct"><b>1) 레이블 인코딩(Label Encoding)</b></p>
+<ul class="dash">
+  <li>레이블 인코딩은 각 범주에 순차적인 정수 레이블을 할당하여 데이터를 변환하며, 주로 순서나 크기에 의미가 없는 범주형 데이터를 변환할 때 사용된다. 예를 들어, 옷의 크기를 표현하는 &quot;S&quot;, &quot;M&quot;, &quot;L&quot;과 같은 데이터를 레이블 인코딩으로 변환할 수 있다.</li>
+  <li>주의할 점은 숫자 값에 의도적으로 순서나 크기를 부여하게 될 수 있다는 점이다. 이는 명목형 데이터에서는 문제가 없지만, 순서형 데이터에서는 잘못된 결과를 초래할 수 있다. 따라서, 순서나 계층 구조가 없는 데이터에 주로 사용되며, 순서나 계층 구조가 있는 데이터에는 다른 인코딩 기법을 고려해야 한다.
+    <ul class="dash2">
+      <li>또한, 일부 머신러닝 알고리즘에서는 숫자 값의 크기가 결과에 영향을 미칠 수 있다. 이 경우에는 숫자 값의 크기가 중요하지 않도록 원-핫 인코딩과 같은 다른 인코딩 기법을 고려해야 한다.</li>
+    </ul></li>
+</ul></div></details></section>
+<section class="ex-q" id="q5" data-ans="0" data-area="데이터 전처리"><div class="ex-qh"><span class="ex-no">5.</span><span class="ex-tags"><span>데이터 전처리</span><span class="lv-쉬움">쉬움</span><span>개념</span></span></div><div class="ex-body">Box-Cox 변환에서 λ=0 일 때 수행되는 변환은?</div><ul class="ex-opts"><li><label><input type="radio" name="q5" value="0"><span class="mk">①</span><span class="tx">로그 변환 (ln y)</span></label></li><li><label><input type="radio" name="q5" value="1"><span class="mk">②</span><span class="tx">제곱 변환 (y²)</span></label></li><li><label><input type="radio" name="q5" value="2"><span class="mk">③</span><span class="tx">역수 변환 (1/y)</span></label></li><li><label><input type="radio" name="q5" value="3"><span class="mk">④</span><span class="tx">변환 없음 (y 그대로)</span></label></li></ul><div class="ex-exp"><b>정답 ①</b> — Box-Cox 변환은 λ≠0 이면 (y<sup>λ</sup> − 1)/λ, <b>λ=0 이면 ln(y)</b> 로 정의된다. λ=1 이면 변환이 없는 경우와 같다.<span class="ex-ref ">근거 · 책 1-227</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-227쪽</summary><div class="cbody"><aside class="note"><b>우도(가능도)</b><br>특정 파라미터 값을 가졌을 때, 수집한 실제 데이터들이 관측될 확률이 얼마나 높은가를 나타내는 척도</aside>
+
+<ul class="dash">
+  <li><i>y</i>는 원래 데이터이며, 반드시 양수여야 한다.</li>
+  <li>&lambda;(람다)는 변환의 정도를 결정하는 파라미터이며, &lambda;=1이면 변환이 없는 경우, &lambda;=0이면 로그 변환과 동일하다.</li>
+</ul>
+
+<div class="tbl-cap">&lambda; 값에 따른 변환 형태</div>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:130px">&lambda; 값</td><td class="h" style="width:180px">변환 형태</td><td class="h">특징</td></tr>
+  <tr><td>&lambda; = 1</td><td>변환 없음</td><td>원래 데이터를 유지</td></tr>
+  <tr><td>&lambda; = 0.5</td><td>제곱근 변환</td><td>가볍게 꼬리가 오른쪽으로 긴 왜도 완화</td></tr>
+  <tr><td>&lambda; = 0</td><td>로그 변환</td><td>강하게 꼬리가 오른쪽으로 긴 왜도 완화</td></tr>
+  <tr><td>&lambda; = &#8722;1</td><td>역수 변환</td><td>극단적으로 꼬리가 오른쪽으로 긴 왜도 완화</td></tr>
+</table>
+</div>
+
+<p class="ct"><b>2) &lambda; 값 선택 방법</b></p>
+<p>Box-Cox 변환을 적용할 때 최적의 &lambda; 값을 선택하는 실무적인 기법은 크게 두 가지로 분류된다. 두 방법은 일반적으로 유사한 결과를 제공하지만, 데이터의 특성에 따라 차이가 발생할 수 있다.</p>
+
+<p class="ct"><b>① 최대우도추정(MLE, Maximum Likelihood Estimation)</b></p>
+<p>전통적으로 Box-Cox 변환의 &lambda; 값은 로그 우도(Log-Likelihood)를 최대화하는 값으로 선택된다. 이는 변환된 데이터가 정규분포를 따른다는 가정하에 가장 적합한 값을 찾는 방법이다.</p>
+
+<p class="ct"><b>② Shapiro-Wilk 검정 활용</b></p>
+<p>실무에서는 정규성 검정의 p-value가 최대가 되는 &lambda; 값을 선택하기도 한다. 이는 변환된 데이터가 정규분포에 가장 가깝도록 만드는 직관적인 방법이다.</p>
+
+<div class="tbl-cap">&lambda; 값 선택 기준 및 통계적 의미 대조표</div>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:150px">분류</td><td class="h" style="width:35%">최적 &lambda; 결정의 통계적 기준</td><td class="h">특징</td></tr>
+  <tr><td>MLE 기준 선택</td><td>로그 우도 최대화</td><td>변환 데이터가 정규분포를 따른다는 가정하에 가장 적합한 모수 값을 탐색</td></tr>
+  <tr><td>정규성 기준 선택</td><td>Shapiro-Wilk 검정의 p-value 최대화</td><td>변환된 데이터의 분포가 정규분포에 가장 가깝도록 만드는 직관적인 방법</td></tr>
+</table>
+</div>
+
+<div class="tip-more"><span class="tip-head-more">더 알기 TIP</span>
+<b>우도에 로그를 취하는 이유</b><br>
+우도는 보통 0과 1 사이의 확률들을 계속 곱하는데, 데이터가 많아지면 값이 매우 작아지고 계산이 불안정해진다.<br>
+우도 함수에 로그를 취하면 복잡한 곱셈이 덧셈 연산으로 변환되므로 연산이 안정된다.
+</div></div></details></section>
+<section class="ex-q" id="q6" data-ans="1" data-area="데이터 전처리"><div class="ex-qh"><span class="ex-no">6.</span><span class="ex-tags"><span>데이터 전처리</span><span class="lv-보통">보통</span><span>계산</span></span></div><div class="ex-body">불균형 분류 모델의 결과가 TP=40, FN=10, FP=20, TN=30 이었다. 재현율(Recall)은?</div><ul class="ex-opts"><li><label><input type="radio" name="q6" value="0"><span class="mk">①</span><span class="tx">0.4</span></label></li><li><label><input type="radio" name="q6" value="1"><span class="mk">②</span><span class="tx">0.8</span></label></li><li><label><input type="radio" name="q6" value="2"><span class="mk">③</span><span class="tx">0.67</span></label></li><li><label><input type="radio" name="q6" value="3"><span class="mk">④</span><span class="tx">0.57</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — 재현율 = TP / (TP + FN) = 40 / (40 + 10) = <b>0.8</b>. 실제 양성 중 모델이 양성으로 맞힌 비율로, 불균형 데이터에서 정확도 대신 살펴보는 대표 지표다.<span class="ex-ref ">근거 · 책 1-234</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-234쪽</summary><div class="cbody"><div class="tip"><span class="tip-head">기적의 TIP</span>정확도, 재현율은 PART 04 &#8211; CHAPTER 01 &#8211; SECTION 01을 참고한다.</div>
+
+<aside class="note">클래스 균형은 소수의 클래스에 특별히 더 큰 관심이 있는 경우에 필요하다.<hr><b>언더샘플링</b><br>다수 클래스 데이터에서 일부만 사용<hr><b>오버샘플링</b><br>소수 클래스 데이터를 증가시킴</aside>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" rowspan="2" style="width:130px">실험 결과</td><td class="h" style="width:150px"></td><td class="h" colspan="2">사실</td></tr>
+  <tr><td class="h">참(Positive)</td><td class="h">거짓(Negative)</td></tr>
+  <tr><td class="h">참(Positive)</td><td>TP (True Positive)</td><td>FP(False Positive)</td></tr>
+  <tr><td class="h">거짓(Negative)</td><td>FN(False Negative)</td><td>TN(True Negative)</td></tr>
+</table>
+</div>
+
+<div class="procbox">
+  정확도(Accuracy) = (TP + TN) / (TP + TN + FP + FN)<br>
+  재현율(Recall) = TP / (TP + FN)
+</div>
+
+<p class="ct"><b>2) 불균형 데이터의 처리 방법</b></p>
+
+<p class="ct"><b>① 가중치 균형방법(Weighted Balancing)</b></p>
+<p>데이터에서 손실(loss)을 계산할 때 특정 클래스의 데이터에 더 큰 loss 값을 갖도록 하는 방법이다. 즉 데이터 클래스의 균형이 필요한 경우로 각 클래스별 특정 비율로 가중치를 주어서 분석하거나 결과를 도출하는 것으로 정의한다.</p>
+<ul class="dash">
+  <li>고정 비율 이용
+    <ul class="dash2">
+      <li>클래스의 비율에 따라 가중치를 두는 방법이다. 예를 들어, 클래스의 비율이 1:5라면 가중치를 5:1로 줌으로써 적은 샘플 수를 가진 클래스를 전체 손실에 동일하게 기여하도록 할 수 있다.</li>
+    </ul></li>
+  <li>최적 비율 이용
+    <ul class="dash2">
+      <li>분야와 최종 성능을 고려해 가중치 비율의 최적 세팅을 찾으면서 가중치를 찾아가는 방법이다.</li>
+    </ul></li>
+</ul>
+
+<p class="ct"><b>② 언더샘플링(Undersampling)과 오버샘플링(Oversampling)</b></p>
+<p>비대칭 데이터는 다수 클래스 데이터에서 일부만 사용하는 언더샘플링이나, 소수 클래스 데이터를 증가시키는 오버샘플링을 사용하여 데이터 비율을 맞추면 정밀도(precision)가 향상된다.</p></div></details></section>
+<section class="ex-q" id="q7" data-ans="2" data-area="데이터 전처리"><div class="ex-qh"><span class="ex-no">7.</span><span class="ex-tags"><span>데이터 전처리</span><span class="lv-쉬움">쉬움</span><span>개념</span></span></div><div class="ex-body">모든 변수가 포함된 모형에서 출발하여 설명력이 떨어지는 변수를 하나씩 제거해 나가는 변수 선택 방법은?</div><ul class="ex-opts"><li><label><input type="radio" name="q7" value="0"><span class="mk">①</span><span class="tx">원-핫 인코딩</span></label></li><li><label><input type="radio" name="q7" value="1"><span class="mk">②</span><span class="tx">전진 선택법(Forward Selection)</span></label></li><li><label><input type="radio" name="q7" value="2"><span class="mk">③</span><span class="tx">후진 소거법(Backward Elimination)</span></label></li><li><label><input type="radio" name="q7" value="3"><span class="mk">④</span><span class="tx">최소-최대 정규화</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — <b>후진 소거법</b>은 전진 선택법과 반대로 모든 변수가 포함된 모형에서 설명력이 떨어지는 변수를 차례로 제거해 나간다.<span class="ex-ref ">근거 · 책 1-217</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-217쪽</summary><div class="cbody"><p class="ct"><b>SECTION 02 분석 변수 처리</b></p>
+<p class="sec-meta"><span class="freq-tag">출제빈도 <b>상</b> | 중 | 하</span></p>
+<p class="tagline"><span class="tagbox">빈출 태그</span> 변수 선택 · 차원 축소 · 파생 변수 · 불균형 데이터</p>
+
+<p class="ct"><b><span class="num">01</span> 변수 선택</b></p>
+
+<aside class="note"><b>회귀(regression)</b><br>변수 x와 y의 관계를 함수식으로 설명하는 통계적 방법<hr><b>상관계수</b><br>두 변수 간 연관성, 상관관계의 정도를 나타내는 수치</aside>
+
+<p>통계적 분석 결과의 신뢰성을 위해서 기본적으로 데이터와 이를 특정 짓는 변수는 많으면 좋다. 하지만 분석모형을 구성하고 사용하는 데 지속적으로 필요 이상의 많은 데이터를 요구할 수 있다.<br>예를 들어, 회귀모형에 의한 분석의 경우 최종 결과를 도출해 내기 위해서 사용된 독립 변수가 m개이고 이를 통해서 얻어진 설명력이 R<sup>2</sup>=89%라고 했을 때, m보다 작은 n개만을 사용 시 동일한 설명력이 나온다면 변수의 효율적 선택의 필요성이 증가한다.</p>
+
+<p class="ct"><b>1) 변수별 모형의 분류</b></p>
+<ul class="dash">
+  <li>전체 모형(Full Model, FM) : 모든 독립변수를 사용한 모형으로 정의한다.</li>
+  <li>축소 모형(Reduced Model, RM) : 전체 모형에서 사용된 변수의 개수를 줄여서 얻은 모형이다.</li>
+  <li>영 모형(Null Model, NM) : 독립변수가 하나도 없는 모형을 의미한다.</li>
+</ul>
+
+<p class="ct"><b>2) 변수의 선택 방법(래퍼 기법)</b></p>
+
+<aside class="note"><b>전진 선택법</b><br>가장 단순한 회귀모형에서 출발하여 가장 중요한 변수들을 고르며 차례대로 모형에 포함시켜 나감<hr><b>후진 소거법</b><br>전진 선택법과 반대로 모든 변수가 포함된 모형에서 설명력이 떨어지는 변수를 제거해 나감<hr><b>유의성 검증</b><br>통계적 추정값의 신뢰도를 확인하기 위해 통계적 이론에 근거하여 추론<hr>변수 선택에 의해 구성된 축소모형이 데이터분석에 사용하는 최적의 모형후보로 선택 될 수 있다.</aside>
+
+<p class="ct"><b>① 전진 선택법(Forward Selection)</b></p>
+<ul class="dash">
+  <li>영 모형에서 시작, 모든 독립변수 중 종속변수와 단순상관계수의 절댓값이 가장 큰 변수를 분석모형에 포함시키는 것을 말한다.</li>
+  <li>부분 F 검정(F test)을 통해 유의성 검증을 시행하여, 유의한 경우는 가장 큰 F 통계량을 가지는 모형을 선택하고 유의하지 않은 경우는 변수선택 없이 과정을 중단한다.</li>
+  <li>한번 추가된 변수는 제거하지 않는 것이 원칙이다.</li>
+</ul>
+
+<p class="ct"><b>② 후진 선택법(Backward Selection), 후진 소거법(Backward Elimination)</b></p>
+<ul class="dash">
+  <li>전체모델에서 시작, 모든 독립변수 중 종속변수와 단순상관계수의 절댓값이 가장 작은 변수를 분석모형에서 제외시킨다.</li>
+  <li>부분 F 검정을 통해 유의성 검증을 시행, 유의하지 않은 경우는 변수를 제거하고 유의한 경우는 변수제거 없이 과정을 중단한다.</li>
+  <li>한번 제거된 변수는 추가하지 않는다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q8" data-ans="1" data-area="데이터 탐색"><div class="ex-qh"><span class="ex-no">8.</span><span class="ex-tags"><span>데이터 탐색</span><span class="lv-어려움">어려움</span><span>계산</span></span></div><div class="ex-body">자료집단 A는 평균 50, 표준편차 5이고 자료집단 B는 평균 200, 표준편차 10이다. 변동계수(CV)로 상대적 산포를 비교한 것으로 옳은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q8" value="0"><span class="mk">①</span><span class="tx">B의 표준편차가 더 크므로 B의 상대적 산포가 더 크다.</span></label></li><li><label><input type="radio" name="q8" value="1"><span class="mk">②</span><span class="tx">A의 CV는 10%, B의 CV는 5% 이므로 A의 상대적 산포가 더 크다.</span></label></li><li><label><input type="radio" name="q8" value="2"><span class="mk">③</span><span class="tx">A의 CV는 5%, B의 CV는 10% 이므로 B의 상대적 산포가 더 크다.</span></label></li><li><label><input type="radio" name="q8" value="3"><span class="mk">④</span><span class="tx">평균이 다르면 산포는 비교할 수 없다.</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — CV = (σ/μ)×100 이므로 A = 5/50 = <b>10%</b>, B = 10/200 = <b>5%</b>. 변동계수는 평균이 크게 다르거나 측정 단위가 다른 두 자료집단의 산포를 비교할 때 사용하며, A의 상대적 산포가 더 크다.<span class="ex-ref ">근거 · 책 1-250</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-250쪽</summary><div class="cbody"><aside class="note">변동계수 = 표준편차/평균<hr>왜도의 부호는 분포의 비대칭성 방향을 나타낸다</aside>
+
+<div class="tip"><span class="tip-head">기적의 TIP</span>분포 모양에 따른 평균, 중앙값, 최빈값의 성질을 확실히 이해해야 한다.</div>
+
+<p class="ct"><b>⑤ 변동계수(Coefficient of Variance, CV)</b></p>
+<ul class="dash">
+  <li>평균을 중심으로 한 상대적인 산포의 척도를 나타내는 수치이다.</li>
+  <li>측정 단위가 동일하지만 평균이 큰 차이를 보이는 두 자료집단 또는 측정단위가 서로 다른 두 자료집단에 대한 산포의 척도를 비교할 때 많이 사용한다.</li>
+</ul>
+
+<div class="procbox">CV = (&sigma; / &mu;) &times; 100(%) (모집단의 변동계수)</div>
+
+<ul class="dash">
+  <li>변동계수가 클수록 상대적으로 넓게 분포를 이룬다.<br><span class="ex-tag">예</span> 신생아의 몸무게와 산모의 몸무게(단위는 같으나, 평균의 차가 큰 경우)</li>
+</ul>
+
+<div class="boxlist">
+포트폴리오A 평균 수익률은 30% 표준편차는 4%이며, 포트폴리오B 평균 수익률은 15% 표준편차는 3%라고 한다. 포트폴리오A, B의 변동계수를 구하여 보면
+<div class="procbox">
+포트폴리오A의 CV = 4% / 30% = 13.3%<br>
+포트폴리오B의 CV = 3% / 15% = 20%
+</div>
+포트폴리오A, B 중 포트폴리오 B의 수익의 변동이 더 크다고 판단할 수 있다.
+</div>
+
+<p class="ct"><b>3) 자료의 분포형태(Shape of Distribution)</b></p>
+
+<p class="ct"><b>① <mark>왜도(Skewness)</mark></b></p>
+<ul class="dash">
+  <li>왜도는 분포의 비대칭(asymmetry) 정도를 나타내는 통계적 측도이다. 데이터 분포의 대칭성과 비대칭성을 정량화하여 평가하는 데 사용된다.</li>
+  <li>분포가 대칭이면 왜도는 0이다. 왼쪽으로 치우친 경우 왜도는 양수, 오른쪽으로 치우친 경우 왜도는 음수이다.</li>
+</ul>
+
+<ul class="dash">
+  <li>왜도는 분포의 모양 뿐만 아니라 이상치의 존재 여부를 파악하는 데에도 도움을 줄 수 있다. 이상치는 분포의 비대칭성을 높이고, 왜도의 크기를 변화시킨다.</li>
+  <li>왜도는 다음과 같은 공식으로 계산된다.</li>
+</ul>
+
+<div class="procbox">
+Skewness = [ (1/n) &sum;<sup>n</sup><sub>i=1</sub> (x<sub>i</sub>&#8722;x̄)<sup>3</sup> ] / [ (1/n) &sum;<sup>n</sup><sub>i=1</sub> (x<sub>i</sub>&#8722;x̄)<sup>2</sup> ]<sup>3/2</sup><br><br>
+n은 데이터의 총 개수, x<sub>i</sub>는 개별 데이터 값, x̄는 데이터의 평균
+</div>
+
+<ul class="dash">
+  <li>왜도의 값은 일반적으로 &#8722;3과 +3 사이의 범위에 있으며, 보통 왜도의 절대값이 1.96보다 크면 비대칭성이 있다고 판단할 수 있다. 하지만 이것은 규칙적 기준은 아니며, 데이터 분포의 특성과 분석 목적에 따라 다르다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q9" data-ans="2" data-area="데이터 탐색"><div class="ex-qh"><span class="ex-no">9.</span><span class="ex-tags"><span>데이터 탐색</span><span class="lv-보통">보통</span><span>계산</span></span></div><div class="ex-body">어느 자료의 1사분위수(Q1)가 20, 3사분위수(Q3)가 40이다. 1.5×IQR 규칙으로 이상치 여부를 판단할 때 옳은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q9" value="0"><span class="mk">①</span><span class="tx">하한은 Q1 − IQR = 0 이다.</span></label></li><li><label><input type="radio" name="q9" value="1"><span class="mk">②</span><span class="tx">IQR은 60이므로 관측값 75는 정상 범위다.</span></label></li><li><label><input type="radio" name="q9" value="2"><span class="mk">③</span><span class="tx">관측값 75는 상한 70을 초과하므로 이상치다.</span></label></li><li><label><input type="radio" name="q9" value="3"><span class="mk">④</span><span class="tx">관측값 65는 이상치다.</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — IQR = Q3 − Q1 = 20. 상한 = Q3 + 1.5×IQR = 40 + 30 = <b>70</b>, 하한 = Q1 − 1.5×IQR = 20 − 30 = −10. 75는 상한 70을 초과하므로 이상치, 65는 정상 범위다.<span class="ex-ref ">근거 · 책 1-256</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-256쪽</summary><div class="cbody"><aside class="note"><b>3사분위수(Q3)</b><br>데이터를 정렬했을 때 75%에 위치한 수<hr><b>1사분위수(Q1)</b><br>데이터를 정렬했을 때 25%에 위치한 수<hr><b>사분위범위(IQR)</b><br>3사분위수&#8722;1사분위수<hr><b>최댓값</b><br>3사분위수 + (1.5*IQR)<hr><b>최솟값</b><br>1사분위수 &#8722; (1.5*IQR)</aside>
+
+<p class="ct"><b>⑦ 상자 수염 그림(Box Plot)</b></p>
+<p>수치적 자료를 표현하는 그래프이다. 이 그래프는 가공하지 않은 자료 그대로를 이용하여 그린 것이 아니라, 자료로부터 얻어 낸 통계량인 5가지 요약 수치(다섯 숫자 요약, Five-number Summary)를 가지고 그린다.</p>
+
+<ul class="dash">
+  <li>5가지 요약 수치 : 최솟값, 제 1사분위(Q1), 제2사분위(Q2, 중앙값), 제3사분위(Q3), 최댓값을 일컫는 말이다.</li>
+  <li>작성 방법</li>
+</ul>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:90px">(Step1)</td><td>주어진 데이터에서 각 사분위수를 계산한다.</td></tr>
+  <tr><td class="h">(Step2)</td><td>그래프에서 제1사분위와 제3사분위를 밑변으로 하는 직사각형을 그리고, 제2사분위에 해당하는 위치에 선분을 긋는다.</td></tr>
+  <tr><td class="h">(Step3)</td><td>사분위범위(IQR: Interquartile Range, Q3&#8722;Q1)를 계산한다.</td></tr>
+  <tr><td class="h">(Step4)</td><td>Q3과 차이가 1.5IQR 이내인 값 중에서 최댓값을 Q3과 직선으로 연결하고, 마찬가지로 Q1과 차이가 1.5IQR 이내인 값 중에서 최솟값을 Q1과 연결한다.</td></tr>
+  <tr><td class="h">(Step5)</td><td>Q3보다 1.5IQR 이상 초과하는 값과 Q1보다 1.5IQR 이상 미달하는 값은 점이나, 원, 별표 등으로 따로 표시한다(이상치 점).</td></tr>
+</table>
+</div></div></details></section>
+<section class="ex-q" id="q10" data-ans="3" data-area="데이터 탐색"><div class="ex-qh"><span class="ex-no">10.</span><span class="ex-tags"><span>데이터 탐색</span><span class="lv-쉬움">쉬움</span><span>개념</span></span></div><div class="ex-body">상자 수염 그림(Box Plot)을 그리는 데 사용하는 5가지 요약 수치가 아닌 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q10" value="0"><span class="mk">①</span><span class="tx">최솟값</span></label></li><li><label><input type="radio" name="q10" value="1"><span class="mk">②</span><span class="tx">제2사분위수(중앙값)</span></label></li><li><label><input type="radio" name="q10" value="2"><span class="mk">③</span><span class="tx">최댓값</span></label></li><li><label><input type="radio" name="q10" value="3"><span class="mk">④</span><span class="tx">평균</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — 5가지 요약 수치는 <b>최솟값, 제1사분위수(Q1), 제2사분위수(Q2, 중앙값), 제3사분위수(Q3), 최댓값</b>이다. 평균은 포함되지 않는다.<span class="ex-ref ">근거 · 책 1-256</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-256쪽</summary><div class="cbody"><aside class="note"><b>3사분위수(Q3)</b><br>데이터를 정렬했을 때 75%에 위치한 수<hr><b>1사분위수(Q1)</b><br>데이터를 정렬했을 때 25%에 위치한 수<hr><b>사분위범위(IQR)</b><br>3사분위수&#8722;1사분위수<hr><b>최댓값</b><br>3사분위수 + (1.5*IQR)<hr><b>최솟값</b><br>1사분위수 &#8722; (1.5*IQR)</aside>
+
+<p class="ct"><b>⑦ 상자 수염 그림(Box Plot)</b></p>
+<p>수치적 자료를 표현하는 그래프이다. 이 그래프는 가공하지 않은 자료 그대로를 이용하여 그린 것이 아니라, 자료로부터 얻어 낸 통계량인 5가지 요약 수치(다섯 숫자 요약, Five-number Summary)를 가지고 그린다.</p>
+
+<ul class="dash">
+  <li>5가지 요약 수치 : 최솟값, 제 1사분위(Q1), 제2사분위(Q2, 중앙값), 제3사분위(Q3), 최댓값을 일컫는 말이다.</li>
+  <li>작성 방법</li>
+</ul>
+
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:90px">(Step1)</td><td>주어진 데이터에서 각 사분위수를 계산한다.</td></tr>
+  <tr><td class="h">(Step2)</td><td>그래프에서 제1사분위와 제3사분위를 밑변으로 하는 직사각형을 그리고, 제2사분위에 해당하는 위치에 선분을 긋는다.</td></tr>
+  <tr><td class="h">(Step3)</td><td>사분위범위(IQR: Interquartile Range, Q3&#8722;Q1)를 계산한다.</td></tr>
+  <tr><td class="h">(Step4)</td><td>Q3과 차이가 1.5IQR 이내인 값 중에서 최댓값을 Q3과 직선으로 연결하고, 마찬가지로 Q1과 차이가 1.5IQR 이내인 값 중에서 최솟값을 Q1과 연결한다.</td></tr>
+  <tr><td class="h">(Step5)</td><td>Q3보다 1.5IQR 이상 초과하는 값과 Q1보다 1.5IQR 이상 미달하는 값은 점이나, 원, 별표 등으로 따로 표시한다(이상치 점).</td></tr>
+</table>
+</div></div></details></section>
+<section class="ex-q" id="q11" data-ans="3" data-area="데이터 탐색"><div class="ex-qh"><span class="ex-no">11.</span><span class="ex-tags"><span>데이터 탐색</span><span class="lv-쉬움">쉬움</span><span>사례적용</span></span></div><div class="ex-body">두 변수의 피어슨 상관계수가 r = −0.9 로 계산되었다. 해석으로 가장 적절한 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q11" value="0"><span class="mk">①</span><span class="tx">한 변수가 다른 변수의 원인임이 증명된다.</span></label></li><li><label><input type="radio" name="q11" value="1"><span class="mk">②</span><span class="tx">거의 관계가 없다.</span></label></li><li><label><input type="radio" name="q11" value="2"><span class="mk">③</span><span class="tx">강한 양(+)의 선형 관계가 있다.</span></label></li><li><label><input type="radio" name="q11" value="3"><span class="mk">④</span><span class="tx">강한 음(−)의 선형 관계가 있다.</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — r 은 −1 ~ +1 사이의 값으로 −1에 가까울수록 <b>강한 음의 선형 관계</b>다. 상관관계가 인과관계를 증명하는 것은 아니다.<span class="ex-ref ">근거 · 책 1-245</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-245쪽</summary><div class="cbody"><aside class="note"><b>상관계수</b><br>두 변량 x, y 사이의 상관관계의 정도를 나타내는 수치<hr><b>단조 관계</b><br>한 변수가 커질수록 다른 변수가 한쪽 방향으로만 변하는 관계</aside>
+
+<ol class="circled" start="3">
+  <li><b>두 변인의 정규분포성</b> : 두 변인의 측정치 분포가 모집단에서 모두 정규분포를 이루는 것이다.</li>
+  <li><b>무선독립표본</b> : 모집단에서 표본을 뽑을 때 표본대상이 확률적으로 선정된다는 것이다.</li>
+</ol>
+
+<p class="ct"><b>3) 상관분석 방법</b></p>
+
+<p class="ct"><b>① 피어슨 상관계수(Pearson Correlation Coefficient 또는 Pearson&rsquo;s r)</b></p>
+<ul class="dash">
+  <li>두 변수 X 와 Y 간의 선형 상관관계를 계량화한 수치이다.</li>
+  <li>피어슨 상관계수는 +1과 &#8722;1 사이의 값을 가지며, <mark>+1은 완벽한 양의 선형 상관관계, 0은 선형 상관관계 없음, &#8722;1은 완벽한 음의 선형 상관관계를 의미한다.</mark></li>
+</ul>
+
+<div class="procbox">
+  &rho; = C(c, y) / (&sigma;<sub>x</sub>&sigma;<sub>y</sub>)<br><br>
+  C(x, y) = Cov(x, y) = 1/(n&#8722;1) &sum;<sup>n</sup><sub>i=1</sub> (x<sub>i</sub>&#8722;x̄)(y<sub>i</sub>&#8722;ȳ) : 표본 간의 공분산<br>
+  &sigma;<sub>x</sub>: 표본 x의 표준편차, &sigma;<sub>y</sub>: 표본 y의 표준편차, x̄, ȳ: 각각의 평균
+</div>
+
+<p class="ct"><b>② 스피어만 상관계수(Spearman Correlation Coefficient)</b></p>
+<ul class="dash">
+  <li>데이터가 서열자료인 경우, 즉 자료의 값 대신 순위(rank)를 이용하는 경우의 상관계수로서, 데이터를 작은 것부터 차례로 순위를 매겨 서열 순서로 바꾼 뒤 순위를 이용해 상관계수를 구한다.</li>
+  <li>두 변수 간의 연관 관계가 있는지 없는지를 밝혀 주며 자료에 이상점이 있거나 표본크기가 작을 때 유용하다.</li>
+</ul>
+
+<div class="procbox">&rho; = 1 &#8722; 6&sum;d<sub>i</sub><sup>2</sup> / n(n<sup>2</sup>&#8722;1)</div>
+
+<ul class="dash">
+  <li>d<sub>i</sub><sup>2</sup> : x<sub>i</sub>의 순위(x<sub>i</sub>의 관측치를 크기 순으로 정렬하였을 때 순위)와 y<sub>i</sub>의 순위 차이를 나타낸다. n은 표본의 개수이다.</li>
+  <li>즉, 스피어만 상관계수(&rho;)는 값의 크기보다 순위가 얼마나 일치하는지를 측정한다. 순위 차이가 작을수록(거의 일치할수록) &rho;는 1에 가까워지고, 순위 차이가 클수록 &rho;는 작아지며, 순위 차이가 충분히 크면 0을 지나 음수가 될 수도 있다. 따라서 &rho;는 두 변수 간의 단조 관계를 파악하는데 쓰인다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q12" data-ans="1" data-area="데이터 탐색"><div class="ex-qh"><span class="ex-no">12.</span><span class="ex-tags"><span>데이터 탐색</span><span class="lv-보통">보통</span><span>사례적용</span></span></div><div class="ex-body">어느 소득 자료의 분포가 평균 > 중앙값 > 최빈값 순으로 나타났다. 분포 형태에 대한 판단으로 옳은 것은?</div><ul class="ex-opts"><li><label><input type="radio" name="q12" value="0"><span class="mk">①</span><span class="tx">왼쪽으로 꼬리가 긴 음(−)의 왜도 분포다.</span></label></li><li><label><input type="radio" name="q12" value="1"><span class="mk">②</span><span class="tx">오른쪽으로 꼬리가 긴 양(+)의 왜도 분포다.</span></label></li><li><label><input type="radio" name="q12" value="2"><span class="mk">③</span><span class="tx">완전한 좌우대칭 분포다.</span></label></li><li><label><input type="radio" name="q12" value="3"><span class="mk">④</span><span class="tx">왜도가 0인 정규분포다.</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — 평균이 최빈값보다 큰 쪽(오른쪽)으로 끌려가 있으면 <b>오른쪽 꼬리가 긴 양의 왜도</b> 분포다. 왜도의 부호는 분포의 비대칭성 방향을 나타낸다.<span class="ex-ref ">근거 · 책 1-250</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-250쪽</summary><div class="cbody"><aside class="note">변동계수 = 표준편차/평균<hr>왜도의 부호는 분포의 비대칭성 방향을 나타낸다</aside>
+
+<div class="tip"><span class="tip-head">기적의 TIP</span>분포 모양에 따른 평균, 중앙값, 최빈값의 성질을 확실히 이해해야 한다.</div>
+
+<p class="ct"><b>⑤ 변동계수(Coefficient of Variance, CV)</b></p>
+<ul class="dash">
+  <li>평균을 중심으로 한 상대적인 산포의 척도를 나타내는 수치이다.</li>
+  <li>측정 단위가 동일하지만 평균이 큰 차이를 보이는 두 자료집단 또는 측정단위가 서로 다른 두 자료집단에 대한 산포의 척도를 비교할 때 많이 사용한다.</li>
+</ul>
+
+<div class="procbox">CV = (&sigma; / &mu;) &times; 100(%) (모집단의 변동계수)</div>
+
+<ul class="dash">
+  <li>변동계수가 클수록 상대적으로 넓게 분포를 이룬다.<br><span class="ex-tag">예</span> 신생아의 몸무게와 산모의 몸무게(단위는 같으나, 평균의 차가 큰 경우)</li>
+</ul>
+
+<div class="boxlist">
+포트폴리오A 평균 수익률은 30% 표준편차는 4%이며, 포트폴리오B 평균 수익률은 15% 표준편차는 3%라고 한다. 포트폴리오A, B의 변동계수를 구하여 보면
+<div class="procbox">
+포트폴리오A의 CV = 4% / 30% = 13.3%<br>
+포트폴리오B의 CV = 3% / 15% = 20%
+</div>
+포트폴리오A, B 중 포트폴리오 B의 수익의 변동이 더 크다고 판단할 수 있다.
+</div>
+
+<p class="ct"><b>3) 자료의 분포형태(Shape of Distribution)</b></p>
+
+<p class="ct"><b>① <mark>왜도(Skewness)</mark></b></p>
+<ul class="dash">
+  <li>왜도는 분포의 비대칭(asymmetry) 정도를 나타내는 통계적 측도이다. 데이터 분포의 대칭성과 비대칭성을 정량화하여 평가하는 데 사용된다.</li>
+  <li>분포가 대칭이면 왜도는 0이다. 왼쪽으로 치우친 경우 왜도는 양수, 오른쪽으로 치우친 경우 왜도는 음수이다.</li>
+</ul>
+
+<ul class="dash">
+  <li>왜도는 분포의 모양 뿐만 아니라 이상치의 존재 여부를 파악하는 데에도 도움을 줄 수 있다. 이상치는 분포의 비대칭성을 높이고, 왜도의 크기를 변화시킨다.</li>
+  <li>왜도는 다음과 같은 공식으로 계산된다.</li>
+</ul>
+
+<div class="procbox">
+Skewness = [ (1/n) &sum;<sup>n</sup><sub>i=1</sub> (x<sub>i</sub>&#8722;x̄)<sup>3</sup> ] / [ (1/n) &sum;<sup>n</sup><sub>i=1</sub> (x<sub>i</sub>&#8722;x̄)<sup>2</sup> ]<sup>3/2</sup><br><br>
+n은 데이터의 총 개수, x<sub>i</sub>는 개별 데이터 값, x̄는 데이터의 평균
+</div>
+
+<ul class="dash">
+  <li>왜도의 값은 일반적으로 &#8722;3과 +3 사이의 범위에 있으며, 보통 왜도의 절대값이 1.96보다 크면 비대칭성이 있다고 판단할 수 있다. 하지만 이것은 규칙적 기준은 아니며, 데이터 분포의 특성과 분석 목적에 따라 다르다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q13" data-ans="2" data-area="데이터 탐색"><div class="ex-qh"><span class="ex-no">13.</span><span class="ex-tags"><span>데이터 탐색</span><span class="lv-어려움">어려움</span><span>계산</span></span></div><div class="ex-body">5쌍의 순위 자료에서 순위 차이 제곱의 합 Σd² = 2 일 때 스피어만 상관계수는? (ρ = 1 − 6Σd²/n(n²−1))</div><ul class="ex-opts"><li><label><input type="radio" name="q13" value="0"><span class="mk">①</span><span class="tx">0.83</span></label></li><li><label><input type="radio" name="q13" value="1"><span class="mk">②</span><span class="tx">0.1</span></label></li><li><label><input type="radio" name="q13" value="2"><span class="mk">③</span><span class="tx">0.9</span></label></li><li><label><input type="radio" name="q13" value="3"><span class="mk">④</span><span class="tx">−0.9</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — ρ = 1 − 6×2 / (5×(25−1)) = 1 − 12/120 = 1 − 0.1 = <b>0.9</b>. 순위가 거의 일치하므로 강한 양의 순위 상관이다.<span class="ex-ref ">근거 · 책 1-245</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-245쪽</summary><div class="cbody"><aside class="note"><b>상관계수</b><br>두 변량 x, y 사이의 상관관계의 정도를 나타내는 수치<hr><b>단조 관계</b><br>한 변수가 커질수록 다른 변수가 한쪽 방향으로만 변하는 관계</aside>
+
+<ol class="circled" start="3">
+  <li><b>두 변인의 정규분포성</b> : 두 변인의 측정치 분포가 모집단에서 모두 정규분포를 이루는 것이다.</li>
+  <li><b>무선독립표본</b> : 모집단에서 표본을 뽑을 때 표본대상이 확률적으로 선정된다는 것이다.</li>
+</ol>
+
+<p class="ct"><b>3) 상관분석 방법</b></p>
+
+<p class="ct"><b>① 피어슨 상관계수(Pearson Correlation Coefficient 또는 Pearson&rsquo;s r)</b></p>
+<ul class="dash">
+  <li>두 변수 X 와 Y 간의 선형 상관관계를 계량화한 수치이다.</li>
+  <li>피어슨 상관계수는 +1과 &#8722;1 사이의 값을 가지며, <mark>+1은 완벽한 양의 선형 상관관계, 0은 선형 상관관계 없음, &#8722;1은 완벽한 음의 선형 상관관계를 의미한다.</mark></li>
+</ul>
+
+<div class="procbox">
+  &rho; = C(c, y) / (&sigma;<sub>x</sub>&sigma;<sub>y</sub>)<br><br>
+  C(x, y) = Cov(x, y) = 1/(n&#8722;1) &sum;<sup>n</sup><sub>i=1</sub> (x<sub>i</sub>&#8722;x̄)(y<sub>i</sub>&#8722;ȳ) : 표본 간의 공분산<br>
+  &sigma;<sub>x</sub>: 표본 x의 표준편차, &sigma;<sub>y</sub>: 표본 y의 표준편차, x̄, ȳ: 각각의 평균
+</div>
+
+<p class="ct"><b>② 스피어만 상관계수(Spearman Correlation Coefficient)</b></p>
+<ul class="dash">
+  <li>데이터가 서열자료인 경우, 즉 자료의 값 대신 순위(rank)를 이용하는 경우의 상관계수로서, 데이터를 작은 것부터 차례로 순위를 매겨 서열 순서로 바꾼 뒤 순위를 이용해 상관계수를 구한다.</li>
+  <li>두 변수 간의 연관 관계가 있는지 없는지를 밝혀 주며 자료에 이상점이 있거나 표본크기가 작을 때 유용하다.</li>
+</ul>
+
+<div class="procbox">&rho; = 1 &#8722; 6&sum;d<sub>i</sub><sup>2</sup> / n(n<sup>2</sup>&#8722;1)</div>
+
+<ul class="dash">
+  <li>d<sub>i</sub><sup>2</sup> : x<sub>i</sub>의 순위(x<sub>i</sub>의 관측치를 크기 순으로 정렬하였을 때 순위)와 y<sub>i</sub>의 순위 차이를 나타낸다. n은 표본의 개수이다.</li>
+  <li>즉, 스피어만 상관계수(&rho;)는 값의 크기보다 순위가 얼마나 일치하는지를 측정한다. 순위 차이가 작을수록(거의 일치할수록) &rho;는 1에 가까워지고, 순위 차이가 클수록 &rho;는 작아지며, 순위 차이가 충분히 크면 0을 지나 음수가 될 수도 있다. 따라서 &rho;는 두 변수 간의 단조 관계를 파악하는데 쓰인다.</li>
+</ul></div></details></section>
+<section class="ex-q" id="q14" data-ans="3" data-area="통계기법 이해"><div class="ex-qh"><span class="ex-no">14.</span><span class="ex-tags"><span>통계기법 이해</span><span class="lv-보통">보통</span><span>계산</span></span></div><div class="ex-body">성공확률 p=0.2 인 베르누이 시행을 독립적으로 100번 반복할 때, 성공횟수 X의 기댓값과 분산은?</div><ul class="ex-opts"><li><label><input type="radio" name="q14" value="0"><span class="mk">①</span><span class="tx">E(X)=80, Var(X)=16</span></label></li><li><label><input type="radio" name="q14" value="1"><span class="mk">②</span><span class="tx">E(X)=20, Var(X)=20</span></label></li><li><label><input type="radio" name="q14" value="2"><span class="mk">③</span><span class="tx">E(X)=16, Var(X)=20</span></label></li><li><label><input type="radio" name="q14" value="3"><span class="mk">④</span><span class="tx">E(X)=20, Var(X)=16</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — 이항분포 X~B(n, p)에서 E(X) = np = 100×0.2 = <b>20</b>, Var(X) = npq = 100×0.2×0.8 = <b>16</b> 이다.<span class="ex-ref ">근거 · 책 1-291</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-291쪽</summary><div class="cbody"><aside class="note">
+  <b>포아송분포 응용</b><br>· 일정 시간 동안 톨게이트를 통과하는 차량의 수<br>· 주어진 생산시간 동안 발생하는 불량품 수
+  <hr>포아송분포 확률변수의 기댓값과 분산은 모두 λ이다.
+  <hr><b class="star-b">기적의 TIP</b><br>계산기가 필요한 문제는 출제되지 않으므로 공식의 유도 과정에 집중한다.
+  <hr><i>e</i> ≈ 2.71828<br><i>e</i><sup>−5</sup> = 1/<i>e</i><sup>5</sup> ≈ 0.006737
+</aside>
+
+<p class="ct"><b>④ 포아송분포(Poisson Distribution, <i>X</i>∼<i>Pois</i>(<i>λ</i>))</b></p>
+<p><mark>단위 시간 안에 어떤 사건이 몇 번 발생할 것인지를 표현</mark>하는 이산확률분포이다. 이것은 단위공간이나 면적 등에도 적용될 수 있다. 예를 들면 특정 시간대에 은행창구에 도착한 고객의 수, 책 한 페이지당 오탈자의 수, 하루 동안 걸려오는 전화의 수 등이 될 수 있다.</p>
+<p><i>X</i>를 단위시간당 발생건수라고 하면 포아송분포는 평균 사건 발생수 λ에 의해 유도된다. 그러므로 포아송분포는 기댓값과 분산이 동일하게 정의된다.</p>
+<ul class="dash">
+  <li>확률질량함수 <i>f</i>(<i>x</i>) = <span class="fr"><span class="nu"><i>λ<sup>x</sup>e</i><sup>−<i>k</i></sup></span><span class="de"><i>x</i>!</span></span></li>
+  <li>기댓값 <i>E</i>(<i>X</i>) = <i>λ</i></li>
+  <li>분산 <i>Var</i>(<i>X</i>) = <i>λ</i></li>
+  <li>포아송분포의 근사 : 이항분포는 <i>n</i>과 <i>p</i>라는 두개의 모수에 유도되지만 포아송분포는 λ(평균 사건 발생수) 하나로 정의되므로 이항분포를 포아송분포로 근사시켜 확률을 구하는 경우도 있다. 경험적으로 이항확률변수 <i>X</i>는 <i>n</i>이 무한히 커지고 성공확률 <i>p</i>가 매우 작다면(<i>n</i> ≥ 30, <i>p</i> ≤ 0.05) λ=<i>np</i>(이항분포의 기댓값)으로 될 수 있고 포아송분포를 따른다.</li>
+</ul>
+
+<div class="boxlist">
+<p>대형 호텔의 자료에 따르면 통상적으로 호텔을 예약한 사람의 5% 정도는 당일 호텔을 이용 안하고 예약을 취소한다고 알려져 있다. 그래서 통상적으로 실제 호텔 객실수 보다 다소 많은 예약을 받는 경우가 있다고 한다. 한 지역의 호텔 객실수가 95개인 한 지점에서 예약건수가 100이라고 할 때, 당일 호텔에 도착한 사람들이 모두 호텔에 들어갈 확률은?</p>
+<p>당일 도착한 예약건수가 95이하이면 모두 투숙을 할 수 있다. 즉 예약 건수 100건이면 5건 이상 취소를 하면 된다. 즉 n=100, p=0.05라고 하면 이항분포의 포아송근사에 의해 λ=np=100×0.05가 되고 확률변수 X를 호텔 취소수라고 하면 P(X≥5)이다. 이는</p>
+<div class="eqbox">
+  <div class="eqline"><i>P</i>(<i>X</i> ≥ 5) = 1 − [<i>P</i>(<i>X</i>=4) + <i>P</i>(<i>X</i>=3) + <i>P</i>(<i>X</i>=2) + <i>P</i>(<i>X</i>=1) + <i>P</i>(<i>X</i>=0)]</div>
+  <div class="eqline">= 1 − ( <span class="fr"><span class="nu">5<sup>4</sup><i>e</i><sup>−5</sup></span><span class="de">4!</span></span> + <span class="fr"><span class="nu">5<sup>3</sup><i>e</i><sup>−5</sup></span><span class="de">3!</span></span> + <span class="fr"><span class="nu">5<sup>2</sup><i>e</i><sup>−5</sup></span><span class="de">2!</span></span> + <span class="fr"><span class="nu">5<sup>1</sup><i>e</i><sup>−5</sup></span><span class="de">1!</span></span> + <span class="fr"><span class="nu">5<sup>0</sup><i>e</i><sup>−5</sup></span><span class="de">0!</span></span> )</div>
+  <div class="eqline">= 1 − (0.1755 + 0.1404 + 0.0842 + 0.0337 + 0.0067)</div>
+  <div class="eqline">= 1 − 0.4405 = 0.5595</div>
+</div>
+<p>로 나타낼 수 있다(여기서 분포값의 경우는 포아송확률 분포표를 활용).</p>
+</div></div></details></section>
+<section class="ex-q" id="q15" data-ans="1" data-area="통계기법 이해"><div class="ex-qh"><span class="ex-no">15.</span><span class="ex-tags"><span>통계기법 이해</span><span class="lv-보통">보통</span><span>계산</span></span></div><div class="ex-body">공정한 동전을 4번 던질 때 앞면이 정확히 1번 나올 확률은?</div><ul class="ex-opts"><li><label><input type="radio" name="q15" value="0"><span class="mk">①</span><span class="tx">1/8</span></label></li><li><label><input type="radio" name="q15" value="1"><span class="mk">②</span><span class="tx">1/4</span></label></li><li><label><input type="radio" name="q15" value="2"><span class="mk">③</span><span class="tx">1/16</span></label></li><li><label><input type="radio" name="q15" value="3"><span class="mk">④</span><span class="tx">3/8</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — f(1) = C(4,1)×(1/2)¹×(1/2)³ = 4 × 1/16 = 4/16 = <b>1/4</b>. 이항분포의 확률질량함수를 적용한다.<span class="ex-ref ">근거 · 책 1-291</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-291쪽</summary><div class="cbody"><aside class="note">
+  <b>포아송분포 응용</b><br>· 일정 시간 동안 톨게이트를 통과하는 차량의 수<br>· 주어진 생산시간 동안 발생하는 불량품 수
+  <hr>포아송분포 확률변수의 기댓값과 분산은 모두 λ이다.
+  <hr><b class="star-b">기적의 TIP</b><br>계산기가 필요한 문제는 출제되지 않으므로 공식의 유도 과정에 집중한다.
+  <hr><i>e</i> ≈ 2.71828<br><i>e</i><sup>−5</sup> = 1/<i>e</i><sup>5</sup> ≈ 0.006737
+</aside>
+
+<p class="ct"><b>④ 포아송분포(Poisson Distribution, <i>X</i>∼<i>Pois</i>(<i>λ</i>))</b></p>
+<p><mark>단위 시간 안에 어떤 사건이 몇 번 발생할 것인지를 표현</mark>하는 이산확률분포이다. 이것은 단위공간이나 면적 등에도 적용될 수 있다. 예를 들면 특정 시간대에 은행창구에 도착한 고객의 수, 책 한 페이지당 오탈자의 수, 하루 동안 걸려오는 전화의 수 등이 될 수 있다.</p>
+<p><i>X</i>를 단위시간당 발생건수라고 하면 포아송분포는 평균 사건 발생수 λ에 의해 유도된다. 그러므로 포아송분포는 기댓값과 분산이 동일하게 정의된다.</p>
+<ul class="dash">
+  <li>확률질량함수 <i>f</i>(<i>x</i>) = <span class="fr"><span class="nu"><i>λ<sup>x</sup>e</i><sup>−<i>k</i></sup></span><span class="de"><i>x</i>!</span></span></li>
+  <li>기댓값 <i>E</i>(<i>X</i>) = <i>λ</i></li>
+  <li>분산 <i>Var</i>(<i>X</i>) = <i>λ</i></li>
+  <li>포아송분포의 근사 : 이항분포는 <i>n</i>과 <i>p</i>라는 두개의 모수에 유도되지만 포아송분포는 λ(평균 사건 발생수) 하나로 정의되므로 이항분포를 포아송분포로 근사시켜 확률을 구하는 경우도 있다. 경험적으로 이항확률변수 <i>X</i>는 <i>n</i>이 무한히 커지고 성공확률 <i>p</i>가 매우 작다면(<i>n</i> ≥ 30, <i>p</i> ≤ 0.05) λ=<i>np</i>(이항분포의 기댓값)으로 될 수 있고 포아송분포를 따른다.</li>
+</ul>
+
+<div class="boxlist">
+<p>대형 호텔의 자료에 따르면 통상적으로 호텔을 예약한 사람의 5% 정도는 당일 호텔을 이용 안하고 예약을 취소한다고 알려져 있다. 그래서 통상적으로 실제 호텔 객실수 보다 다소 많은 예약을 받는 경우가 있다고 한다. 한 지역의 호텔 객실수가 95개인 한 지점에서 예약건수가 100이라고 할 때, 당일 호텔에 도착한 사람들이 모두 호텔에 들어갈 확률은?</p>
+<p>당일 도착한 예약건수가 95이하이면 모두 투숙을 할 수 있다. 즉 예약 건수 100건이면 5건 이상 취소를 하면 된다. 즉 n=100, p=0.05라고 하면 이항분포의 포아송근사에 의해 λ=np=100×0.05가 되고 확률변수 X를 호텔 취소수라고 하면 P(X≥5)이다. 이는</p>
+<div class="eqbox">
+  <div class="eqline"><i>P</i>(<i>X</i> ≥ 5) = 1 − [<i>P</i>(<i>X</i>=4) + <i>P</i>(<i>X</i>=3) + <i>P</i>(<i>X</i>=2) + <i>P</i>(<i>X</i>=1) + <i>P</i>(<i>X</i>=0)]</div>
+  <div class="eqline">= 1 − ( <span class="fr"><span class="nu">5<sup>4</sup><i>e</i><sup>−5</sup></span><span class="de">4!</span></span> + <span class="fr"><span class="nu">5<sup>3</sup><i>e</i><sup>−5</sup></span><span class="de">3!</span></span> + <span class="fr"><span class="nu">5<sup>2</sup><i>e</i><sup>−5</sup></span><span class="de">2!</span></span> + <span class="fr"><span class="nu">5<sup>1</sup><i>e</i><sup>−5</sup></span><span class="de">1!</span></span> + <span class="fr"><span class="nu">5<sup>0</sup><i>e</i><sup>−5</sup></span><span class="de">0!</span></span> )</div>
+  <div class="eqline">= 1 − (0.1755 + 0.1404 + 0.0842 + 0.0337 + 0.0067)</div>
+  <div class="eqline">= 1 − 0.4405 = 0.5595</div>
+</div>
+<p>로 나타낼 수 있다(여기서 분포값의 경우는 포아송확률 분포표를 활용).</p>
+</div></div></details></section>
+<section class="ex-q" id="q16" data-ans="2" data-area="통계기법 이해"><div class="ex-qh"><span class="ex-no">16.</span><span class="ex-tags"><span>통계기법 이해</span><span class="lv-보통">보통</span><span>계산</span></span></div><div class="ex-body">모평균 100, 모표준편차 12인 모집단에서 크기 36인 표본을 뽑았다. 표본평균이 103일 때 표준화한 Z 값은?</div><ul class="ex-opts"><li><label><input type="radio" name="q16" value="0"><span class="mk">①</span><span class="tx">3.0</span></label></li><li><label><input type="radio" name="q16" value="1"><span class="mk">②</span><span class="tx">0.25</span></label></li><li><label><input type="radio" name="q16" value="2"><span class="mk">③</span><span class="tx">1.5</span></label></li><li><label><input type="radio" name="q16" value="3"><span class="mk">④</span><span class="tx">9.0</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — Z = (X̄ − μ) / (σ/√n) = (103 − 100) / (12/√36) = 3 / 2 = <b>1.5</b>. 표본평균의 표준화는 표준오차(σ/√n)로 나눈다.<span class="ex-ref ">근거 · 책 1-304</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-304쪽</summary><div class="cbody"><aside class="note"><b>모평균</b><br>원래 모집단(전체집단)의 평균</aside>
+
+<p class="ct"><b>5) 표본평균의 표준화</b></p>
+<ul class="dash">
+  <li>표본평균 <span style="text-decoration:overline"><i>X</i></span>는 정규분포의 확률변수로서 평균이 <i>μ</i>, 표준오차 <i>σ</i>/<span class="sq"><i>n</i></span>이므로 표준화는</li>
+</ul>
+<div class="eqbox"><i>Z</i> = <span class="fr"><span class="nu"><span style="text-decoration:overline"><i>X</i></span> − <i>μ</i></span><span class="de"><i>σ</i><sub><span style="text-decoration:overline"><i>X</i></span></sub></span></span> = <span class="fr"><span class="nu"><span style="text-decoration:overline"><i>X</i></span> − <i>μ</i></span><span class="de"><i>σ</i>/<span class="sq"><i>n</i></span></span></span> (단, <i>Z</i> ∼ <i>N</i>(0, 1))이 된다.</div>
+<p>표준화 <i>z</i>는 확률변수인 표본평균 <span style="text-decoration:overline"><i>X</i></span>가 모평균인 <i>μ</i>로부터 표본평균들의 표준편차인 표준오차의 몇 배만큼 떨어져 있는가를 표시하는 것이다. 따라서 다음과 같은 확률관계를 나타낼 수 있다.</p>
+<div class="eqbox"><i>P</i>( <i>μ</i>−<i>k</i> <span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ≤ <span style="text-decoration:overline"><i>X</i></span> ≤ <i>μ</i>+<i>k</i> <span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ) = <i>P</i>( −<i>k</i> ≤ <span class="fr"><span class="nu"><span style="text-decoration:overline"><i>X</i></span> − <i>μ</i></span><span class="de"><span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span></span></span> ≤ <i>k</i> )</div>
+
+<div class="table-scroll">
+<table>
+  <tr><th style="width:150px">대표적 <i>k</i> 값</th><th><i>k</i>에 해당되는 표준정규분포상의 확률값</th></tr>
+  <tr><td class="h">1</td><td><i>P</i>( <i>μ</i> − <span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ≤ <span style="text-decoration:overline"><i>X</i></span> ≤ <i>μ</i> + <span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ) = <i>P</i>( −1 ≤ <span class="fr"><span class="nu"><span style="text-decoration:overline"><i>X</i></span> − <i>μ</i></span><span class="de"><span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span></span></span> ≤ 1 ) = 0.68</td></tr>
+  <tr><td class="h">2</td><td><i>P</i>( <i>μ</i> − 2<span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ≤ <span style="text-decoration:overline"><i>X</i></span> ≤ <i>μ</i> + 2<span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ) = <i>P</i>( −2 ≤ <span class="fr"><span class="nu"><span style="text-decoration:overline"><i>X</i></span> − <i>μ</i></span><span class="de"><span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span></span></span> ≤ 2 ) = 0.95</td></tr>
+  <tr><td class="h">3</td><td><i>P</i>( <i>μ</i> − 3<span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ≤ <span style="text-decoration:overline"><i>X</i></span> ≤ <i>μ</i> + 3<span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ) = <i>P</i>( −3 ≤ <span class="fr"><span class="nu"><span style="text-decoration:overline"><i>X</i></span> − <i>μ</i></span><span class="de"><span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span></span></span> ≤ 3 ) = 0.997</td></tr>
+</table>
+</div>
+
+<ul class="dash">
+  <li>표본평균의 구간확률
+    <ul class="dash2"><li>표준화 <i>z</i>를 통해서 표본 평균을 표준화한 후 표준정규분포표를 이용하여 확률을 찾으면 된다.</li></ul></li>
+</ul>
+
+<div class="boxlist">
+<p>어떤 공장이 생산하는 제품의 평균 길이는 1m이며 표준편차는 1cm인 정규분포로 따른다고 한다.<br>
+16개의 표본을 조사하여 길이를 측정한 결과 표본 평균이 모평균과 의 차이가 0.3cm 이내일 확률을 구해보면 <i>P</i>(|<span style="text-decoration:overline"><i>X</i><sub>16</sub></span>−<i>μ</i>| ≤ 0.3) = <i>P</i>(−0.3 ≤ <span style="text-decoration:overline"><i>X</i><sub>16</sub></span>−<i>μ</i> ≤ 0.3)을 구하는 것이므로</p>
+<div class="eqbox">
+<p class="ct-more">… (이후 내용은 원문 쪽에서)</p></div></div></div></details></section>
+<section class="ex-q" id="q17" data-ans="3" data-area="통계기법 이해"><div class="ex-qh"><span class="ex-no">17.</span><span class="ex-tags"><span>통계기법 이해</span><span class="lv-쉬움">쉬움</span><span>계산</span></span></div><div class="ex-body">모표준편차가 20인 모집단에서 크기 25인 표본을 뽑을 때 표본평균의 표준오차는?</div><ul class="ex-opts"><li><label><input type="radio" name="q17" value="0"><span class="mk">①</span><span class="tx">20</span></label></li><li><label><input type="radio" name="q17" value="1"><span class="mk">②</span><span class="tx">0.8</span></label></li><li><label><input type="radio" name="q17" value="2"><span class="mk">③</span><span class="tx">5</span></label></li><li><label><input type="radio" name="q17" value="3"><span class="mk">④</span><span class="tx">4</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — 표준오차 = σ/√n = 20/√25 = 20/5 = <b>4</b>. 표본크기가 커질수록 표준오차는 작아진다.<span class="ex-ref ">근거 · 책 1-304</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-304쪽</summary><div class="cbody"><aside class="note"><b>모평균</b><br>원래 모집단(전체집단)의 평균</aside>
+
+<p class="ct"><b>5) 표본평균의 표준화</b></p>
+<ul class="dash">
+  <li>표본평균 <span style="text-decoration:overline"><i>X</i></span>는 정규분포의 확률변수로서 평균이 <i>μ</i>, 표준오차 <i>σ</i>/<span class="sq"><i>n</i></span>이므로 표준화는</li>
+</ul>
+<div class="eqbox"><i>Z</i> = <span class="fr"><span class="nu"><span style="text-decoration:overline"><i>X</i></span> − <i>μ</i></span><span class="de"><i>σ</i><sub><span style="text-decoration:overline"><i>X</i></span></sub></span></span> = <span class="fr"><span class="nu"><span style="text-decoration:overline"><i>X</i></span> − <i>μ</i></span><span class="de"><i>σ</i>/<span class="sq"><i>n</i></span></span></span> (단, <i>Z</i> ∼ <i>N</i>(0, 1))이 된다.</div>
+<p>표준화 <i>z</i>는 확률변수인 표본평균 <span style="text-decoration:overline"><i>X</i></span>가 모평균인 <i>μ</i>로부터 표본평균들의 표준편차인 표준오차의 몇 배만큼 떨어져 있는가를 표시하는 것이다. 따라서 다음과 같은 확률관계를 나타낼 수 있다.</p>
+<div class="eqbox"><i>P</i>( <i>μ</i>−<i>k</i> <span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ≤ <span style="text-decoration:overline"><i>X</i></span> ≤ <i>μ</i>+<i>k</i> <span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ) = <i>P</i>( −<i>k</i> ≤ <span class="fr"><span class="nu"><span style="text-decoration:overline"><i>X</i></span> − <i>μ</i></span><span class="de"><span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span></span></span> ≤ <i>k</i> )</div>
+
+<div class="table-scroll">
+<table>
+  <tr><th style="width:150px">대표적 <i>k</i> 값</th><th><i>k</i>에 해당되는 표준정규분포상의 확률값</th></tr>
+  <tr><td class="h">1</td><td><i>P</i>( <i>μ</i> − <span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ≤ <span style="text-decoration:overline"><i>X</i></span> ≤ <i>μ</i> + <span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ) = <i>P</i>( −1 ≤ <span class="fr"><span class="nu"><span style="text-decoration:overline"><i>X</i></span> − <i>μ</i></span><span class="de"><span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span></span></span> ≤ 1 ) = 0.68</td></tr>
+  <tr><td class="h">2</td><td><i>P</i>( <i>μ</i> − 2<span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ≤ <span style="text-decoration:overline"><i>X</i></span> ≤ <i>μ</i> + 2<span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ) = <i>P</i>( −2 ≤ <span class="fr"><span class="nu"><span style="text-decoration:overline"><i>X</i></span> − <i>μ</i></span><span class="de"><span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span></span></span> ≤ 2 ) = 0.95</td></tr>
+  <tr><td class="h">3</td><td><i>P</i>( <i>μ</i> − 3<span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ≤ <span style="text-decoration:overline"><i>X</i></span> ≤ <i>μ</i> + 3<span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ) = <i>P</i>( −3 ≤ <span class="fr"><span class="nu"><span style="text-decoration:overline"><i>X</i></span> − <i>μ</i></span><span class="de"><span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span></span></span> ≤ 3 ) = 0.997</td></tr>
+</table>
+</div>
+
+<ul class="dash">
+  <li>표본평균의 구간확률
+    <ul class="dash2"><li>표준화 <i>z</i>를 통해서 표본 평균을 표준화한 후 표준정규분포표를 이용하여 확률을 찾으면 된다.</li></ul></li>
+</ul>
+
+<div class="boxlist">
+<p>어떤 공장이 생산하는 제품의 평균 길이는 1m이며 표준편차는 1cm인 정규분포로 따른다고 한다.<br>
+16개의 표본을 조사하여 길이를 측정한 결과 표본 평균이 모평균과 의 차이가 0.3cm 이내일 확률을 구해보면 <i>P</i>(|<span style="text-decoration:overline"><i>X</i><sub>16</sub></span>−<i>μ</i>| ≤ 0.3) = <i>P</i>(−0.3 ≤ <span style="text-decoration:overline"><i>X</i><sub>16</sub></span>−<i>μ</i> ≤ 0.3)을 구하는 것이므로</p>
+<div class="eqbox">
+<p class="ct-more">… (이후 내용은 원문 쪽에서)</p></div></div></div></details></section>
+<section class="ex-q" id="q18" data-ans="1" data-area="통계기법 이해"><div class="ex-qh"><span class="ex-no">18.</span><span class="ex-tags"><span>통계기법 이해</span><span class="lv-보통">보통</span><span>계산</span></span></div><div class="ex-body">표본평균 50, 모표준편차 10, 표본크기 100일 때 모평균의 95% 신뢰구간은? (Z(0.025)=1.96)</div><ul class="ex-opts"><li><label><input type="radio" name="q18" value="0"><span class="mk">①</span><span class="tx">(40.2, 59.8)</span></label></li><li><label><input type="radio" name="q18" value="1"><span class="mk">②</span><span class="tx">(48.04, 51.96)</span></label></li><li><label><input type="radio" name="q18" value="2"><span class="mk">③</span><span class="tx">(49.0, 51.0)</span></label></li><li><label><input type="radio" name="q18" value="3"><span class="mk">④</span><span class="tx">(48.355, 51.645)</span></label></li></ul><div class="ex-exp"><b>정답 ②</b> — 신뢰구간 = X̄ ± 1.96×(σ/√n) = 50 ± 1.96×(10/10) = 50 ± 1.96 = <b>(48.04, 51.96)</b>.<span class="ex-ref ">근거 · 책 1-323</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-323쪽</summary><div class="cbody"><aside class="note">일반적으로 표본표준편차를 S로 나타내므로 표본분산은 S<sup>2</sup>이다.</aside>
+
+<div class="boxlist">
+<p>어느 초등학교 1학년 여자아이들의 혈압자료에서 5명을 랜덤하게 택한 결과가 다음과 같다고 할 때</p>
+<div class="eqbox">102 &nbsp; 92 &nbsp; 98 &nbsp; 88 &nbsp; 104</div>
+<p>이를 이용하여 초등학교 여학생 혈압의 대표 값에 대한 95% 신뢰구간을 구해보자.</p>
+<p>이 표본으로부터 계산된 표본평균과 표본표준편차 S는 각각 다음과 같다.</p>
+<div class="eqbox">표본평균 = 96.80, S = 6.72</div>
+<p>이 표본의 경우 자유도는 5−1=4이다. 표로부터 자유도가 4인 t<sub>0.025</sub>경우는 2.780이므로 공식에 대입하면 다음이 성립한다.</p>
+<div class="eqbox">
+  <div class="eqline">목표값 = 96.8 ± 2.78(6.72/2.24)</div>
+  <div class="eqline">= 목표값 = 96.8 ± 8.32</div>
+</div>
+<p>여기서 2.24는 표본크기 5의 제곱근이다. 따라서 이 표본결과 초등학교 여자아이들의 혈압은 88에서 105 사이에 있다고 할 수 있다.</p>
+</div>
+
+<p class="ct"><b>③ 모평균 신뢰구간 정리</b></p>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:230px">구분</th><th>신뢰구간 100(1−α%)</th></tr>
+  <tr><td class="h">모집단의 분산을 아는 경우</td>
+      <td><span style="text-decoration:overline"><i>X</i></span> − <i>z</i><sub><span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span></sub> · <span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ≤ <i>μ</i> ≤ <span style="text-decoration:overline"><i>X</i></span> + <i>z</i><sub><span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span></sub> · <span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span></td></tr>
+  <tr><td class="h">모집단의 분산을 모르는 경우<br>(표본크기가 작은 경우)</td>
+      <td><span style="text-decoration:overline"><i>X</i></span> − <i>t</i><sub><span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span>, <i>n</i>−1</sub> · <span class="fr"><span class="nu"><i>S</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ≤ <i>μ</i> ≤ <span style="text-decoration:overline"><i>X</i></span> + <i>t</i><sub><span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span>, <i>n</i>−1</sub> · <span class="fr"><span class="nu"><i>S</i></span><span class="de"><span class="sq"><i>n</i></span></span></span></td></tr>
+  <tr><td class="h">모집단의 분산을 모르는 경우<br>(표본크기가 큰 경우)</td>
+      <td><span style="text-decoration:overline"><i>X</i></span> − <i>z</i><sub><span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span></sub> · <span class="fr"><span class="nu"><i>S</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ≤ <i>μ</i> ≤ <span style="text-decoration:overline"><i>X</i></span> + <i>z</i><sub><span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span></sub> · <span class="fr"><span class="nu"><i>S</i></span><span class="de"><span class="sq"><i>n</i></span></span></span></td></tr>
+</table>
+</div>
+
+<p class="ct"><b>4) 모분산의 신뢰구간</b></p>
+<p>모집단 <i>X</i>가 정규분포를 따른다고 할 때, 모집단으로부터 <i>n</i>개의 표본을 추출하여 표본공간의 표본분산을 <i>S</i><sup>2</sup>이라고 하면 모분산 <i>σ</i><sup>2</sup>에 대해서</p>
+<div class="eqbox"><span class="fr"><span class="nu">(<i>n</i>−1)<i>S</i><sup>2</sup></span><span class="de"><i>σ</i><sup>2</sup></span></span> ∼ <i>χ</i><sup>2</sup>(<i>n</i>−1), &nbsp; <i>χ</i><sup>2</sup>(<i>n</i>−1)은 자유도가 (<i>n</i>−1)인 <i>χ</i><sup>2</sup>분포</div>
+<p>그러면 100(1−<i>α</i>)%인 신뢰 구간은</p>
+<div class="eqbox"><i>χ</i><sup>2</sup><sub>1−<span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span></sub> &lt; <span class="fr"><span class="nu">(<i>n</i>−1)<i>S</i><sup>2</sup></span><span class="de"><i>σ</i><sup>2</sup></span></span> ≤ <i>χ</i><sup>2</sup><sub><span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span></sub></div>
+<p>이다.<br>상기의 관계식을 정리하면</p>
+<div class="eqbox"><span class="fr"><span class="nu">(<i>n</i>−1)<i>S</i><sup>2</sup></span><span class="de"><i>χ</i><sup>2</sup><sub><span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span></sub></span></span> &lt; <i>σ</i><sup>2</sup> &lt; <span class="fr"><span class="nu">(<i>n</i>−1)<i>S</i><sup>2</sup></span><span class="de"><i>χ</i><sup>2</sup><sub>1−<span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span></sub></span></span></div>
+<p>이 신뢰구간이 된다.</p></div></details></section>
+<section class="ex-q" id="q19" data-ans="2" data-area="통계기법 이해"><div class="ex-qh"><span class="ex-no">19.</span><span class="ex-tags"><span>통계기법 이해</span><span class="lv-어려움">어려움</span><span>계산</span></span></div><div class="ex-body">모표준편차가 10이고 95% 신뢰수준(Z=1.96)에서 허용오차를 2 이내로 하려면 필요한 최소 표본 크기는? (n = (Zσ/d)²)</div><ul class="ex-opts"><li><label><input type="radio" name="q19" value="0"><span class="mk">①</span><span class="tx">10</span></label></li><li><label><input type="radio" name="q19" value="1"><span class="mk">②</span><span class="tx">25</span></label></li><li><label><input type="radio" name="q19" value="2"><span class="mk">③</span><span class="tx">97</span></label></li><li><label><input type="radio" name="q19" value="3"><span class="mk">④</span><span class="tx">385</span></label></li></ul><div class="ex-exp"><b>정답 ③</b> — n = (1.96×10/2)² = (9.8)² = 96.04 → 올림하여 <b>97</b>. 허용오차를 절반으로 줄이려면 표본은 약 4배 필요하다.<span class="ex-ref ">근거 · 책 1-325</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-325쪽</summary><div class="cbody"><p class="ct"><b>6) 신뢰구간 표본 크기의 결정</b></p>
+<ul class="dash">
+  <li>모평균에 의한 신뢰구간을 이용한 표본의 크기<br>신뢰구간 100(1−α)%에 대한 신뢰구간은 다음과 같다.</li>
+</ul>
+<div class="eqbox"><span style="text-decoration:overline"><i>X</i></span> − <i>z</i><sub><span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span></sub> · <span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> ≤ <i>μ</i> ≤ <span style="text-decoration:overline"><i>X</i></span> + <i>z</i><sub><span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span></sub> · <span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span></div>
+<p>상기식을 정리해서 보면 신뢰구간상의 허용오차 범위는</p>
+<div class="eqbox">( −<i>z</i><sub><span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span></sub> · <span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span>, &nbsp; <i>z</i><sub><span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span></sub> · <span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span> )</div>
+
+<p>그러므로 허용오차 <i>d</i>에 대해서</p>
+<div class="eqbox"><i>d</i> = <i>z</i><sub><span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span></sub> · <span class="fr"><span class="nu"><i>σ</i></span><span class="de"><span class="sq"><i>n</i></span></span></span></div>
+<p><i>n</i>에 대해서 정리하면</p>
+<div class="eqbox"><i>n</i> = ( <i>z</i><sub><span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span></sub> · <span class="fr"><span class="nu"><i>σ</i></span><span class="de"><i>d</i></span></span> )<sup>2</sup> 이 된다.</div>
+<ul class="dash">
+  <li>모비율에 의한 신뢰구간을 이용한 표본의 크기</li>
+</ul>
+<div class="eqbox"><i>n</i> = ( <i>z</i><sub><span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span></sub> · <span class="fr"><span class="nu"><span class="sq"><i>pq</i></span></span><span class="de"><i>d</i></span></span> )<sup>2</sup>, &nbsp; <i>q</i> = 1 − <i>p</i></div>
+<p>＊＊ 모비율에 대한 정보가 주어지지 않은 경우 p=1/2로 놓고 표본의 크기를 결정한다. 따라서</p>
+<div class="eqbox"><i>n</i> = <span class="fr"><span class="nu">1</span><span class="de">4</span></span>( <i>z</i><sub><span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span></sub> · <span class="fr"><span class="nu">1</span><span class="de"><i>d</i></span></span> )<sup>2</sup> 가 된다.</div>
+
+<div class="boxlist">
+<p>어느 도시에서 시민들의 여당후보지지율을 조사하고자 한다. 여당후보지지율의 95% 추정오차한계가 5% 이내가 되기 위한 표본크기를 구하여라.</p>
+<p>α=0.05일 때, z<sub>α/2</sub>= 1.960 d=0.05 이고 지지율에 대한 모비율정보가 없으므로</p>
+<div class="eqbox"><i>n</i> = <span class="fr"><span class="nu">1</span><span class="de">4</span></span>( <i>z</i><sub><span class="fr"><span class="nu"><i>α</i></span><span class="de">2</span></span></sub>·<span class="fr"><span class="nu">1</span><span class="de"><i>d</i></span></span> )<sup>2</sup> = <span class="fr"><span class="nu">1</span><span class="de">4</span></span>( 1.960 · <span class="fr"><span class="nu">1</span><span class="de">0.05</span></span> )<sup>2</sup> = 384.16이 된다.</div>
+</div></div></details></section>
+<section class="ex-q" id="q20" data-ans="3" data-area="통계기법 이해"><div class="ex-qh"><span class="ex-no">20.</span><span class="ex-tags"><span>통계기법 이해</span><span class="lv-어려움">어려움</span><span>개념</span></span></div><div class="ex-body">같은 실험단위를 동질적인 쌍으로 묶어 두 처리를 적용하고, 각 쌍에서 관측값의 차 D=X−Y 를 이용해 두 모평균의 차를 추론하는 방법은?</div><ul class="ex-opts"><li><label><input type="radio" name="q20" value="0"><span class="mk">①</span><span class="tx">단일표본 모분산에 대한 χ² 검정</span></label></li><li><label><input type="radio" name="q20" value="1"><span class="mk">②</span><span class="tx">두 독립표본의 평균차이 검정</span></label></li><li><label><input type="radio" name="q20" value="2"><span class="mk">③</span><span class="tx">모분산비에 대한 F 검정</span></label></li><li><label><input type="radio" name="q20" value="3"><span class="mk">④</span><span class="tx">대응비교(쌍체비교)</span></label></li></ul><div class="ex-exp"><b>정답 ④</b> — <b>대응비교(paired comparison, 쌍체비교)</b>에 대한 설명이다. 각 쌍의 차이 D<sub>i</sub> = X<sub>i</sub> − Y<sub>i</sub> 를 하나의 표본처럼 다뤄 추론한다.<span class="ex-ref ">근거 · 책 1-331</span></div><details class="ex-concept"><summary>관련 요약 개념 · 교재 1-331쪽</summary><div class="cbody"><aside class="note"><b>확률표본(임의표본)</b><br>유한한 모집단에서 동등한 확률로 추출되거나 모분포로부터 독립적으로 생성된 개체들의 집합</aside>
+
+<div class="boxlist">
+<p>두 종류의 사료가 젖소의 우유 생산량에 미치는 영향의 차이를 조사하고자 한다.<br>
+젖소들 가운데 랜덤하게 8마리씩 두 그룹을 뽑아 한 그룹에는 사료 1을, 다른 그룹에는 사료 2를 주면서 3주간 우유 생산량을 조사한 결과 다음과 같은 자료를 얻었다. 두 종류의 사료가 우유 생산량에 차이를 준다고 할 수 있는지를 유의수준 5%에서 검정해 보면 다음과 같다.</p>
+<div class="table-scroll">
+<table>
+  <tr><td class="h" style="width:80px">사료1</td><td>54</td><td>60</td><td>66</td><td>53</td><td>62</td><td>61</td><td>42</td><td>50</td></tr>
+  <tr><td class="h">사료2</td><td>65</td><td>70</td><td>62</td><td>67</td><td>59</td><td>45</td><td>60</td><td>52</td></tr>
+</table>
+</div>
+<p>먼저 두 사료에 대한 평균과 표준편차를 구하면</p>
+<div class="table-scroll">
+<table>
+  <tr><th style="width:110px"></th><th>표본의 크기</th><th>평균</th><th>표준편차</th></tr>
+  <tr><td class="h">사료1</td><td>8</td><td>56</td><td>7.76</td></tr>
+  <tr><td class="h">사료2</td><td>8</td><td>60</td><td>8.18</td></tr>
+</table>
+</div>
+<p>귀무가설 H<sub>0</sub> : μ<sub>1</sub>−μ<sub>2</sub>=0<br>
+대립가설 H<sub>1</sub> : μ<sub>1</sub>−μ<sub>2</sub>≠0이고 유의수준 α는 0.05이다.</p>
+<p>검정통계량은 <i>T</i> = <span class="fr"><span class="nu"><span style="text-decoration:overline"><i>X</i></span>−<span style="text-decoration:overline"><i>Y</i></span></span><span class="de"><i>S<sub>p</sub></i><span class="sq"><span class="fr"><span class="nu">1</span><span class="de"><i>n</i></span></span> + <span class="fr"><span class="nu">1</span><span class="de"><i>m</i></span></span></span></span></span> 이고 기각역은 |T|≥t<sub>0.025</sub>(8+8−2)=t<sub>0.025</sub>(14)=2.145</p>
+<div class="eqbox"><i>S<sub>p</sub></i><sup>2</sup> = <span class="fr"><span class="nu">(<i>n</i>−1)<i>S</i><sub>1</sub><sup>2</sup> + (<i>m</i>−1)<i>S</i><sub>2</sub><sup>2</sup></span><span class="de"><i>n</i>+<i>m</i>−2</span></span> = 63.57, &nbsp; |<i>T</i>| = | <span class="fr"><span class="nu">56 − 60</span><span class="de"><span class="sq">63.57</span> × <span class="sq"><span class="fr"><span class="nu">1</span><span class="de">8</span></span> + <span class="fr"><span class="nu">1</span><span class="de">8</span></span></span></span></span> | = 1.0 &lt; 2.145</div>
+<p>이므로 H<sub>0</sub>를 기각할 수 없다. 즉, 두 사료에 대한 우유 생산량이 특별히 다르다고 볼 수 없다.</p>
+</div>
+
+<p class="ct"><b>7) 대응표본의 평균차이 검정</b></p>
+<p>실험단위를 동질적인 쌍으로 묶은 다음, 각 쌍의 실험단위에서 랜덤하게 선택하여 두 처리를 적용하고, 각 쌍에서 관측값의 차를 이용하여 두 모평균의 차에 관한 추론 문제를 다룰 수 있다. 이와 같은 방법을 대응비교(paired comparison) 또는 쌍체비교라고 한다.</p>
+
+<p class="ct"><b>① 통계량의 설정</b></p>
+<p><i>n</i>쌍의 독립적인 표본쌍(쌍체 표본) (<i>X</i><sub>1</sub>,<i>Y</i><sub>1</sub>), (<i>X</i><sub>2</sub>,<i>Y</i><sub>2</sub>),⋯,(<i>X<sub>n</sub></i>,<i>Y<sub>n</sub></i>)이 주어지고, 각 쌍의 차이를 <i>D<sub>i</sub></i>=<i>X<sub>i</sub></i>−<i>Y<sub>i</sub></i> (<i>i</i>=1,2,⋯,<i>n</i>)로 정의할 때, <i>D<sub>i</sub></i>는 <i>N</i>(<i>μ<sub>D</sub></i>, <i>σ</i><sub>D</sub><sup>2</sup>)로부터의 확률표본으로 가정한다.</p>
+
+<p class="ct"><b>② 가설의 설정</b></p>
+<ul class="dash">
+  <li>귀무가설 <i>H</i><sub>0</sub> : <i>μ<sub>D</sub></i> = 0</li>
+  <li>대립가설 <i>H</i><sub>1</sub> : <i>μ<sub>D</sub></i> ≠ 0, <i>H</i><sub>1</sub> : <i>μ<sub>D</sub></i>〉0 또는 <i>H</i><sub>1</sub> : <i>μ<sub>D</sub></i>〈0</li>
+</ul>
+
+<p class="ct"><b>③ 검정통계량 및 표본분포</b></p>
+<p>위의 가설을 검정하는 데 사용되는 검정통계량은 차이의 평균에 근거하여 다음과 같이 구성한다.</p></div></details></section>
+</div></main>
+</div>
+<script>/* ================= 모의고사 =================
+   세 가지 모드로 쓴다.
+     실전 — 타이머를 걸고 끝까지 푼 뒤 한 번에 채점한다. 과락(40%)까지 판정한다.
+     실전(내용 포함) — 같은 시험지를 정답과 요약 개념까지 펼쳐 놓고 훑어보는 열람용.
+                       정답 보기에 체크가 미리 들어가 있고, 문항 아래 ▽ 관련 요약 개념을 펼칠 수 있다.
+                       점수가 의미 없으므로 타이머와 채점하기는 쉰다. 다른 모드로 돌아가면
+                       들어오기 전에 고른 답이 그대로 되살아난다.
+     학습 — 보기를 고르는 즉시 정답과 해설을 보여 준다.
+   응시 이력은 펜 모드와 같은 자리에 저장한다(서버가 있으면 디스크, 없으면 브라우저).
+--------------------------------------------------------------------------- */
+(function(){
+  var root = document.getElementById('exam');
+  if(!root) return;
+
+  var PASS_SUBJECT = 0.4;              // 과락 기준 — 과목당 40%
+  var FILE  = decodeURIComponent((location.pathname.split('/').pop() || 'exam'))
+                .replace(/\.html?$/i, '');
+  var KEY   = 'bdnote:exam:' + FILE;
+  var LIMIT = parseInt(root.getAttribute('data-minutes'), 10) || 30;
+  var FULL  = root.getAttribute('data-full') === '1';   // 4과목 통합 시험지
+  var PASS_TOTAL = 0.6;                // 합격 기준 — 전 과목 평균 60%
+  var SUBJ = (root.getAttribute('data-subjects') || '').split('|');
+  var PART = root.getAttribute('data-partlabel') || '과목';   // 통합 시험지의 구획 단위(과목/회차)
+  function partName(k, keys){                                // 구획 번호 → 표시 이름
+    if(PART === '과목') return k + '과목 · ' + (SUBJ[k - 1] || '');
+    return SUBJ[keys.indexOf(k)] || (k + PART);
+  }
+
+  var qs     = [].slice.call(document.querySelectorAll('.ex-q'));
+  var navBox = document.getElementById('ex-nav');
+  var navs   = navBox ? [].slice.call(navBox.querySelectorAll('a')) : [];
+  var elTimer= document.getElementById('ex-timer');
+  var elRes  = document.getElementById('ex-result');
+  var elHist = document.getElementById('ex-hist');
+
+  /* 'real'  실전 — 타이머 + 일괄 채점, 개념·해설 모두 감춤
+     'realc' 실전(내용 포함) — 실전과 똑같이 풀되 문항 아래 요약 개념만 열어 볼 수 있다
+     'study' 학습 — 보기를 고르면 즉시 채점·해설 */
+  var mode = 'real';
+  function isReal(){ return mode === 'real'; }    // 타이머·채점하기를 쓰는 모드
+  var savedPicks = null;                          // 실전(내용 포함)에 들어가기 전 고른 답
+  var graded = false, reviewing = false;
+  var left = LIMIT * 60, tick = null, started = false;
+
+  /* ---------- 저장 : 응시 이력 + 누적 오답 ----------
+     오답은 문항 번호로 저장해 두었다가 다음 방문에도 '틀린 문항만'으로 다시 풀 수 있다.
+     맞히면 목록에서 빠진다(오답 정복). 서버가 있으면 디스크에도 함께 저장된다. */
+  var API = null, hist = [], wrong = {};
+
+  function qNum(q){ return parseInt((q.id || '').replace(/^q/, ''), 10) || 0; }
+
+  function setWrongList(arr){
+    wrong = {};
+    (arr || []).forEach(function(n){ if(n > 0) wrong[n] = 1; });
+  }
+
+  function loadHist(){
+    try{
+      var s = localStorage.getItem(KEY);
+      if(s){
+        var o = JSON.parse(s);
+        if(o && o.hist instanceof Array) hist = o.hist;
+        if(o && o.wrong instanceof Array) setWrongList(o.wrong);
+      }
+    }catch(e){}
+    if(/^https?:$/.test(location.protocol) && window.fetch){
+      var url = 'api/state/' + encodeURIComponent(FILE) + '.exam';
+      fetch(url, {cache:'no-store'})
+        .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+        .then(function(o){
+          API = url;
+          if(o && o.hist instanceof Array) hist = o.hist;
+          if(o && o.wrong instanceof Array) setWrongList(o.wrong);
+          renderHist(); renderWrongBtn();
+        })
+        .catch(function(){ API = null; });
+    }
+    renderHist(); renderWrongBtn();
+  }
+
+  function saveHist(){
+    var body = {v:1, hist:hist.slice(-20),        // 최근 20회만 남긴다
+                wrong:Object.keys(wrong).map(Number).sort(function(a,b){return a-b;})};
+    try{ localStorage.setItem(KEY, JSON.stringify(body)); }catch(e){}
+    if(API){
+      fetch(API, {method:'PUT', headers:{'Content-Type':'application/json'},
+                  body:JSON.stringify(body)}).catch(function(){});
+    }
+  }
+
+  function wrongCount(){ return Object.keys(wrong).length; }
+
+  function renderWrongBtn(){
+    var b = document.getElementById('ex-review');
+    if(b){
+      var n = wrongCount();
+      b.textContent = '틀린 문항만' + (n ? ' (' + n + ')' : '');
+    }
+    var c = document.getElementById('ex-wclear');
+    if(c) c.style.display = wrongCount() ? '' : 'none';
+  }
+
+  function renderHist(){
+    if(!elHist) return;
+    if(!hist.length){ elHist.textContent = '아직 응시 기록이 없습니다.'; return; }
+    var last = hist.slice(-5).reverse().map(function(h){
+      return h.date + ' <b>' + h.right + '/' + h.total + '</b>';
+    }).join('  ·  ');
+    var best = hist.reduce(function(a, b){ return b.right > a.right ? b : a; });
+    elHist.innerHTML = '최근 기록 — ' + last + '   (최고 <b>' + best.right + '/' + best.total + '</b>)';
+  }
+
+  /* ---------- 타이머 ---------- */
+  function fmt(s){
+    var m = Math.floor(Math.abs(s) / 60), x = Math.abs(s) % 60;
+    return (s < 0 ? '+' : '') + m + ':' + (x < 10 ? '0' : '') + x;
+  }
+  function paintTimer(){
+    if(!elTimer) return;
+    if(mode === 'realc'){                 // 열람용 — 시간을 재지 않는다
+      elTimer.textContent = '열람 모드 — 정답·개념 표시';
+      elTimer.classList.remove('warn');
+      return;
+    }
+    elTimer.textContent = (isReal() ? '남은 시간 ' : '경과 ') + fmt(left);
+    elTimer.classList.toggle('warn', left <= 300);
+  }
+  function startTimer(){
+    if(started || !isReal() || graded) return;
+    started = true;
+    tick = setInterval(function(){
+      left--;
+      paintTimer();
+      if(left === 0) toast('시간이 다 됐습니다 — 지금까지 고른 답으로 채점할 수 있습니다');
+    }, 1000);
+  }
+  function stopTimer(){ clearInterval(tick); tick = null; }
+
+  /* ---------- 진행 상황 ---------- */
+  function pickedOf(q){
+    var ins = q.querySelectorAll('input[type=radio]');
+    for(var i = 0; i < ins.length; i++) if(ins[i].checked) return i;
+    return -1;
+  }
+  function refreshNav(){
+    qs.forEach(function(q, i){
+      var a = navs[i]; if(!a) return;
+      a.className = '';
+      if(graded) a.classList.add(q.classList.contains('ok') ? 'ok' : 'ng');
+      else if(pickedOf(q) >= 0) a.classList.add('done');
+    });
+    var n = qs.filter(function(q){ return pickedOf(q) >= 0; }).length;
+    var el = document.getElementById('ex-progress');
+    if(el) el.textContent = n + ' / ' + qs.length + ' 문항 응답';
+  }
+
+  /* ---------- 채점 ---------- */
+  function markOne(q){
+    var ans = parseInt(q.getAttribute('data-ans'), 10);
+    var labels = [].slice.call(q.querySelectorAll('label'));
+    var picked = pickedOf(q);
+    labels.forEach(function(l){ l.classList.remove('correct', 'wrong', 'picked'); });
+    q.classList.remove('ok', 'ng', 'na');
+    if(labels[ans]) labels[ans].classList.add('correct');
+    if(picked < 0) q.classList.add('na');
+    else if(picked === ans) q.classList.add('ok');
+    else { labels[picked].classList.add('wrong'); q.classList.add('ng'); }
+    q.classList.add('show');
+    return picked === ans;
+  }
+
+  function grade(){
+    if(graded) return;
+    graded = true;
+    stopTimer();
+    exitStoredReview();                     // 저장 오답 필터가 켜져 있었다면 풀고 채점한다
+    var right = 0, byArea = {}, bySubj = {};
+    qs.forEach(function(q){
+      var ok = markOne(q);
+      // 오답 정복 — 틀리거나 못 푼 문항은 목록에 넣고, 맞힌 문항은 뺀다
+      var n = qNum(q);
+      if(n){ if(ok) delete wrong[n]; else wrong[n] = 1; }
+      if(ok) right++;
+      var a = q.getAttribute('data-area') || '기타';
+      byArea[a] = byArea[a] || {n:0, r:0};
+      byArea[a].n++;
+      if(ok) byArea[a].r++;
+      var s = q.getAttribute('data-subj');
+      if(s){
+        bySubj[s] = bySubj[s] || {n:0, r:0};
+        bySubj[s].n++;
+        if(ok) bySubj[s].r++;
+      }
+    });
+    refreshNav();
+    showResult(right, byArea, bySubj);
+
+    var d = new Date();
+    hist.push({date: (d.getMonth() + 1) + '/' + d.getDate(),
+               right: right, total: qs.length,
+               sec: LIMIT * 60 - left, mode: mode});
+    saveHist(); renderHist(); renderWrongBtn();
+    document.body.classList.add('ex-graded');
+  }
+
+  function showResult(right, byArea, bySubj){
+    var total = qs.length;
+    var pct = Math.round(right / total * 100);
+    var pass = right >= Math.ceil(total * PASS_SUBJECT);
+    var used = LIMIT * 60 - left;
+    var rows = Object.keys(byArea).map(function(a){
+      var v = byArea[a];
+      return '<tr><td>' + a + '</td><td class="n">' + v.r + ' / ' + v.n + '</td>' +
+             '<td class="n">' + Math.round(v.r / v.n * 100) + '%</td></tr>';
+    }).join('');
+    var head, lines, subjTable = '';
+    if(FULL){
+      // 실제 시험과 같은 판정 — 과목마다 40% 이상이면서 전체 60% 이상이어야 합격
+      var keys = Object.keys(bySubj).sort(function(a, b){ return a - b; });
+      var under = keys.filter(function(k){
+        var v = bySubj[k];
+        return v.r < Math.ceil(v.n * PASS_SUBJECT);
+      });
+      var avgOk = right >= Math.ceil(total * PASS_TOTAL);
+      pass = !under.length && avgOk;
+      head = pass ? '합격' : '불합격';
+      var why = [];
+      if(under.length) why.push('과락 ' + under.map(function(k){
+        return partName(k, keys);
+      }).join(' · '));
+      if(!avgOk) why.push('평균 60% 미달');
+      lines = '합격 기준은 <b>' + PART + '마다 40% 이상</b> 이면서 ' +
+              '<b>전체 평균 60%(' + Math.ceil(total * PASS_TOTAL) + '문항) 이상</b> 입니다.' +
+              (why.length ? '<br><b class="ng">' + why.join(' / ') + '</b>' : '') +
+              '<br>걸린 시간 ' + fmt(used) + ' / 제한 ' + LIMIT + '분';
+      subjTable =
+        '<table class="ex-subj"><thead><tr><th>' + PART + '</th><th>맞힘</th><th>정답률</th>' +
+        '<th>과락(40%)</th></tr></thead><tbody>' +
+        keys.map(function(k){
+          var v = bySubj[k], ok = v.r >= Math.ceil(v.n * PASS_SUBJECT);
+          return '<tr><td>' + partName(k, keys) + '</td>' +
+                 '<td class="n">' + v.r + ' / ' + v.n + '</td>' +
+                 '<td class="n">' + Math.round(v.r / v.n * 100) + '%</td>' +
+                 '<td class="n ' + (ok ? 'okc' : 'ngc') + '">' +
+                 (ok ? '통과' : '과락') + '</td></tr>';
+        }).join('') + '</tbody></table>';
+    }else{
+      head = pass ? '과락 통과' : '과락';
+      lines = '이 과목의 과락 기준은 <b>40% (' + Math.ceil(total * PASS_SUBJECT) + '문항)</b> 입니다. ' +
+              '실제 합격은 여기에 더해 <b>4과목 평균 60%</b> 를 넘어야 합니다.<br>' +
+              '걸린 시간 ' + fmt(used) + ' / 제한 ' + LIMIT + '분';
+    }
+    elRes.innerHTML =
+      '<h2>채점 결과</h2>' +
+      '<div><span class="ex-score">' + right + '<small> / ' + total + '  (' + pct + '점)</small></span>' +
+      '<span class="ex-verdict ' + (pass ? 'pass' : 'fail') + '">' + head + '</span></div>' +
+      '<div class="ex-lines">' + lines + '</div>' + subjTable +
+      '<table><thead><tr><th>주요항목</th><th>맞힘</th><th>정답률</th></tr></thead>' +
+      '<tbody>' + rows + '</tbody></table>';
+    elRes.classList.add('show');
+    elRes.scrollIntoView({block:'start', behavior:'smooth'});
+  }
+
+  /* ---------- 다시 풀기 ---------- */
+  function reset(){
+    graded = false; reviewing = false; started = false;
+    savedPicks = null;                            // 실전(내용 포함)에서 담아 둔 답도 버린다
+    left = LIMIT * 60;
+    stopTimer(); paintTimer();
+    document.body.classList.remove('ex-graded', 'ex-review');
+    var rv = document.getElementById('ex-review');
+    if(rv) rv.classList.remove('on');
+    qs.forEach(function(q){
+      q.classList.remove('ok', 'ng', 'na', 'show', 'rv-hide');
+      q.querySelectorAll('input[type=radio]').forEach(function(r){ r.checked = false; });
+      q.querySelectorAll('label').forEach(function(l){
+        l.classList.remove('correct', 'wrong', 'picked');
+      });
+    });
+    elRes.classList.remove('show');
+    refreshNav();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  /* ---------- 알림 ---------- */
+  var toastEl = document.createElement('div');
+  toastEl.id = 'an-toast';                      // 펜 모드의 알림 상자를 같이 쓴다
+  document.body.appendChild(toastEl);
+  var tt = null;
+  function toast(m){
+    toastEl.textContent = m;
+    toastEl.classList.add('show');
+    clearTimeout(tt);
+    tt = setTimeout(function(){ toastEl.classList.remove('show'); }, 2400);
+  }
+
+  /* ---------- 이벤트 ---------- */
+  // 문항은 #exam(상단 바) 바깥에 있으므로 document 에서 받는다
+  document.addEventListener('change', function(ev){
+    if(ev.target.type !== 'radio') return;
+    var q = ev.target.closest('.ex-q');
+    if(!q) return;
+    q.querySelectorAll('label').forEach(function(l){ l.classList.remove('picked'); });
+    ev.target.closest('label').classList.add('picked');
+    if(mode === 'realc') return;                  // 열람용 — 진행 상황·오답에 넣지 않는다
+    startTimer();
+    if(mode === 'study' && !graded){              // 학습 모드는 즉시 채점 + 오답 즉시 반영
+      var ok = markOne(q), n = qNum(q);
+      if(n){ if(ok) delete wrong[n]; else wrong[n] = 1; }
+      saveHist(); renderWrongBtn();
+    }
+    refreshNav();
+  });
+
+  /* 실전(내용 포함) — 정답 보기에 체크를 넣고 정답 줄을 펼친다.
+     들어오기 전 상태를 savedPicks 에 담아 두었다가 모드를 벗어날 때 그대로 되돌린다. */
+  function fillAnswers(){
+    if(savedPicks === null) savedPicks = qs.map(pickedOf);
+    qs.forEach(function(q){
+      var ans = parseInt(q.getAttribute('data-ans'), 10);
+      var ins = [].slice.call(q.querySelectorAll('input[type=radio]'));
+      var labels = [].slice.call(q.querySelectorAll('label'));
+      labels.forEach(function(l){ l.classList.remove('correct', 'wrong', 'picked'); });
+      if(ins[ans]) ins[ans].checked = true;
+      if(labels[ans]) labels[ans].classList.add('correct', 'picked');
+      q.classList.add('show');                    // 정답 줄(.ex-exp) 열기
+    });
+  }
+
+  function restorePicks(){
+    if(savedPicks === null) return;
+    qs.forEach(function(q, i){
+      var ins = [].slice.call(q.querySelectorAll('input[type=radio]'));
+      var labels = [].slice.call(q.querySelectorAll('label'));
+      ins.forEach(function(r){ r.checked = false; });
+      labels.forEach(function(l){ l.classList.remove('correct', 'wrong', 'picked'); });
+      var p = savedPicks[i];
+      if(p >= 0 && ins[p]){ ins[p].checked = true; labels[p].classList.add('picked'); }
+      q.classList.remove('show', 'ok', 'ng', 'na');
+    });
+    savedPicks = null;
+  }
+
+  var MODES = ['real', 'realc', 'study'];
+  var MODE_TIP = {
+    real:  '실전 모드 — 다 푼 뒤 채점하기 를 누르세요',
+    realc: '실전 모드(내용 포함) — 정답에 체크를 해 두었습니다. 문항 아래 ▽ 관련 요약 개념도 펼쳐 보세요',
+    study: '학습 모드 — 보기를 고르면 바로 해설이 열립니다'
+  };
+
+  function setMode(m){
+    if(graded){ toast('채점을 마쳤습니다 — 다시 풀기 를 누른 뒤 바꿔 주세요'); return; }
+    var was = mode;
+    mode = m;
+    if(was === 'realc' && m !== 'realc') restorePicks();          // 채워 넣었던 정답을 걷는다
+    document.body.classList.toggle('ex-study', m === 'study');    // 학습 모드: 문항 아래 ▽ 개념 노출
+    document.body.classList.toggle('ex-concepts', m === 'realc'); // 실전(내용 포함): ▽ 개념 노출
+    MODES.forEach(function(k){
+      var b = document.getElementById('ex-' + k);
+      if(b) b.classList.toggle('on', m === k);
+    });
+    document.getElementById('ex-submit').style.display = isReal() ? '' : 'none';
+    if(m !== 'realc') qs.forEach(function(q){ q.classList.remove('show', 'ok', 'ng', 'na'); });
+    if(m === 'study'){
+      stopTimer(); started = false;
+      qs.forEach(function(q){ if(pickedOf(q) >= 0) markOne(q); });
+    }
+    if(m === 'realc'){
+      stopTimer(); started = false;
+      fillAnswers();
+    }
+    refreshNav();
+    paintTimer();
+    toast(MODE_TIP[m]);
+  }
+
+  MODES.forEach(function(k){
+    var b = document.getElementById('ex-' + k);
+    if(b) b.addEventListener('click', function(){ setMode(k); });
+  });
+  document.getElementById('ex-submit').addEventListener('click', function(){
+    var n = qs.filter(function(q){ return pickedOf(q) >= 0; }).length;
+    if(n < qs.length && !window.confirm((qs.length - n) + '문항이 비어 있습니다. 그대로 채점할까요?')) return;
+    grade();
+  });
+  document.getElementById('ex-reset').addEventListener('click', function(){
+    if(!window.confirm('고른 답과 채점 결과를 모두 지우고 처음부터 다시 풉니다. 계속할까요?')) return;
+    reset();
+  });
+  /* 저장 오답 필터(채점 전) 해제 — rv-hide 표시를 걷어낸다 */
+  function exitStoredReview(){
+    reviewing = false;
+    document.body.classList.remove('ex-review');
+    var b = document.getElementById('ex-review');
+    if(b) b.classList.remove('on');
+    qs.forEach(function(q){ q.classList.remove('rv-hide'); });
+  }
+
+  document.getElementById('ex-review').addEventListener('click', function(){
+    if(graded){                                   // 방금 채점한 결과 기준 필터
+      reviewing = !reviewing;
+      document.body.classList.toggle('ex-review', reviewing);
+      this.classList.toggle('on', reviewing);
+      toast(reviewing ? '틀린 문항만 보여 줍니다' : '전체 문항을 보여 줍니다');
+      return;
+    }
+    // 채점 전 — 지난 응시에서 저장된 오답으로 필터
+    var n = wrongCount();
+    if(!n){ toast('저장된 오답이 없습니다 — 채점하면 틀린 문항이 자동으로 저장됩니다'); return; }
+    if(reviewing){ exitStoredReview(); toast('전체 문항을 보여 줍니다'); return; }
+    reviewing = true;
+    qs.forEach(function(q){ q.classList.toggle('rv-hide', !wrong[qNum(q)]); });
+    document.body.classList.add('ex-review');
+    this.classList.add('on');
+    toast('지난 오답 ' + n + '문항만 보여 줍니다 — 풀고 채점하면 맞힌 문항은 목록에서 빠집니다');
+  });
+
+  /* 오답 초기화 단추 — 저장된 오답이 있을 때만 보인다 */
+  (function(){
+    var rv = document.getElementById('ex-review');
+    if(!rv || document.getElementById('ex-wclear')) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.id = 'ex-wclear';
+    b.textContent = '오답 초기화';
+    b.style.display = 'none';
+    rv.parentNode.insertBefore(b, rv.nextSibling);
+    b.addEventListener('click', function(){
+      var n = wrongCount();
+      if(!n){ toast('저장된 오답이 없습니다'); return; }
+      if(!window.confirm('저장된 오답 ' + n + '문항을 모두 지웁니다. 계속할까요?')) return;
+      wrong = {};
+      if(!graded) exitStoredReview();
+      saveHist(); renderWrongBtn();
+      toast('오답 기록을 초기화했습니다');
+    });
+  })();
+
+  /* ---------- 관련 요약 개념 ▽ : 펼치면 해설도 함께 연다 ---------- */
+  document.addEventListener('toggle', function(ev){
+    var d = ev.target;
+    if(!d || !d.classList || !d.classList.contains('ex-concept') || !d.open) return;
+    var q = d.closest('.ex-q');
+    if(q) q.classList.add('show');
+  }, true);
+
+  /* ---------- 좁은 화면 : 사이드바 서랍 토글 ---------- */
+  (function(){
+    var sb = document.getElementById('sidebar');
+    if(!sb || document.getElementById('sb-toggle')) return;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = 'sb-toggle';
+    btn.textContent = '☰ 문항';
+    document.body.appendChild(btn);
+    var bg = document.createElement('div');
+    bg.id = 'sb-backdrop';
+    document.body.appendChild(bg);
+    function close(){ document.body.classList.remove('sb-open'); }
+    btn.addEventListener('click', function(){
+      document.body.classList.toggle('sb-open');
+    });
+    bg.addEventListener('click', close);
+    sb.addEventListener('click', function(ev){        // 문항으로 이동하면 서랍을 닫는다
+      var a = ev.target.closest && ev.target.closest('a[href]');
+      if(a) close();
+    });
+  })();
+
+  /* 인쇄·PDF 로 뽑을 때는 해설을 모두 펼친다 */
+  window.addEventListener('beforeprint', function(){
+    qs.forEach(function(q){ q.classList.add('show'); });
+  });
+
+  paintTimer();
+  refreshNav();
+  loadHist();
+})();
+</script>
+</body></html>
