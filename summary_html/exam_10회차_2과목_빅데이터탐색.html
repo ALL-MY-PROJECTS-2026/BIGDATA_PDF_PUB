@@ -437,6 +437,111 @@ body.ex-concepts .ex-q details.ex-concept,
 @media (max-width:640px){
   #sc-pad{left:8px !important;right:8px !important;width:auto !important}
 }
+/* ================= 휴대폰 대응 (시험지) =================
+   900px 이하에서는 사이드바가 이미 서랍으로 바뀐다. 여기서는 그보다 좁은
+   실제 휴대폰(≤640px)에서 문제를 끝까지 풀 수 있게 다듬는다.
+
+     1) 가로 스크롤을 없앤다 — 표가 화면 밖으로 밀려 나가 문서 전체가 옆으로 흔들렸다
+     2) 채점하기·남은 시간을 화면 아래 고정 — 80문항을 다 풀고 맨 위로 올라갈 필요가 없다
+     3) 손가락으로 눌리는 크기(44px)로 보기와 단추를 키운다
+     4) 머리말·모드 바가 첫 화면을 다 먹지 않게 줄인다
+     5) 연습장은 아래에서 올라오는 시트로 바꾼다
+--------------------------------------------------------------------------- */
+
+@media(max-width:640px){
+
+  /* ── 1) 가로 넘침 차단 ──
+     문제 안의 표는 폭이 고정이라 좁은 화면에서 본문 밖으로 밀려 나간다.
+     표만 따로 옆으로 밀어 볼 수 있게 하고, 문서 자체는 흔들리지 않게 한다. */
+  html, body{overflow-x:hidden}
+  .ex-body, .ex-exp, .q-spec, .ex-concept .cbody, #ex-result{
+    overflow-x:auto; -webkit-overflow-scrolling:touch}
+  .ex-body table, .q-spec table, .ex-concept .cbody table, #ex-result table{
+    max-width:none}
+  .ex-body img, .ex-body svg, .ex-concept .cbody img{max-width:100%;height:auto}
+
+  /* ── 2) 머리말 줄이기 ── */
+  #main{padding:16px 12px 96px}          /* 아래 고정 막대에 가리지 않게 여백 */
+  h1{font-size:20px;line-height:1.35}
+  h1 small{display:block;margin-top:3px;font-size:12.5px;font-weight:400;color:#888}
+  .crumb, .src{font-size:11.5px;line-height:1.55;margin-bottom:10px}
+  .ex-head{padding:11px 12px;margin-bottom:12px;border-radius:8px}
+  .ex-head .ex-meta{font-size:12px;line-height:1.6;margin-bottom:8px}
+  #ex-hist{font-size:11.5px;margin-top:8px}
+
+  /* 모드 바 — 두 줄 안에 들어가게 */
+  .ex-bar{gap:6px}
+  .ex-bar button{font-size:12.5px;padding:0 10px;min-height:40px;border-radius:8px}
+  .ex-sep{display:none}
+
+  /* ── 3) 아래 고정 : 남은 시간 · 채점하기 ──
+     둘 다 모드 바 안에 있어 맨 위에서만 눌렸다. 화면 아래로 내려 항상 닿게 한다.
+     화면 아래에는 이미 '☰ 문항'(왼쪽)과 펜 바(오른쪽)가 있으므로 두 단으로 나눈다.
+
+       아래 단  ☰ 문항 ····························· ✎ 펜
+       위  단  남은 시간 ··························· 채점하기 */
+  #ex-timer{position:fixed;left:12px;bottom:64px;z-index:930;
+    font-size:13px;padding:8px 12px;border-radius:20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.14)}
+  .ex-bar #ex-submit{position:fixed;right:12px;bottom:64px;z-index:930;
+    min-height:42px;padding:0 18px;font-size:14px;border-radius:22px;
+    box-shadow:0 4px 14px rgba(31,58,99,.34)}
+
+  /* ── 4) 손가락 크기 ── */
+  .ex-q{padding:12px 13px;border-radius:9px}
+  .ex-q .ex-body{font-size:14.5px}
+  .ex-opts li{margin-bottom:7px}
+  .ex-opts label{min-height:44px;align-items:center;padding:9px 11px;
+    border:1px solid #ECEFEE;border-radius:9px;font-size:14.5px}
+  .ex-opts label:hover{background:#fff}          /* 손가락에는 hover 가 없다 */
+  .ex-opts label.picked{border-color:var(--accent-soft)}
+  .ex-opts .mk{font-size:15px}
+
+  .ex-nav{padding-bottom:8px}
+  .ex-nav a{flex:0 0 42px;padding:10px 0;font-size:13px}
+  #sb-toggle{min-height:42px;border-radius:22px;padding:0 15px}
+
+  .ex-exp{font-size:13px;padding:9px 11px}
+  .ex-concept summary{padding:6px 0;font-size:13.5px}
+
+  /* 채점 결과 */
+  #ex-result{padding:12px}
+  #ex-result table{width:100%;font-size:12.5px}
+
+  /* ── 5) 연습장은 아래에서 올라오는 시트로 ── */
+  #sc-pad{left:0 !important;right:0 !important;bottom:0 !important;
+    top:auto !important;width:auto !important;height:56vh !important;
+    border-radius:12px 12px 0 0;border-bottom:0;z-index:940}
+  #sc-pad.mini{height:auto !important}
+  .sc-head{cursor:default;padding:8px 10px}      /* 시트는 끌어 옮기지 않는다 */
+  .sc-head button{min-height:34px}
+  .sc-pen{width:26px;height:26px;min-height:0 !important}
+  .sc-grip{display:none}                          /* 크기는 시트가 정한다 */
+  .sc-foot button{min-height:32px}
+  /* 연습장을 펼치면 아래 고정 것들이 시트에 깔려 눌리지 않는다 — 잠시 감춘다 */
+  body.sc-open #sb-toggle,
+  body.sc-open #ex-timer,
+  body.sc-open #an-bar,
+  body.sc-open .ex-bar #ex-submit{display:none}
+}
+
+/* 아주 좁은 화면(360px 이하) — 모드 이름을 줄여 두 줄을 지킨다 */
+@media(max-width:360px){
+  .ex-bar button{font-size:12px;padding:0 8px}
+  .ex-opts label{font-size:14px}
+  h1{font-size:18.5px}
+}
+
+/* 손가락 입력 기기 — hover 로만 보이던 것을 항상 보이게 */
+@media(hover:none){
+  .ex-bar button:hover{border-color:var(--line);color:#444}
+  .ex-bar button.on:hover{border-color:var(--accent);color:#fff}
+  .ex-bar .ex-primary:hover{background:var(--navy);color:#fff}
+}
+
+@media print{
+  #ex-timer,#ex-submit{position:static !important;box-shadow:none !important}
+}
 /* ===ANNOT-CSS=== */
 /* ================= 펜 모드 : 형광펜 · 밑줄 · 영역 복사 ================= */
 
@@ -2417,6 +2522,9 @@ body.an-rectmode #main{-webkit-user-select:none;user-select:none}
   function setOpen(v){
     st.open = v;
     pad.classList.toggle('on', v);
+    // 휴대폰에서는 연습장이 아래에서 올라오는 시트라, 열려 있는 동안 화면 아래
+    // 고정 단추(☰ 문항 · 남은 시간 · 채점하기)를 잠시 감춘다 (mobile.css)
+    document.body.classList.toggle('sc-open', v);
     var b = document.getElementById('ex-scratch');
     if(b) b.classList.toggle('on', v);
     if(v){
@@ -3257,7 +3365,8 @@ body.an-rectmode #main{-webkit-user-select:none;user-select:none}
     if(!store.on || rectMode || stroke) return false;
     if(ev.button && ev.button !== 0 && !penErase(ev)) return false;
     if(bar && bar.contains(ev.target)) return false;
-    if(ev.target.closest && ev.target.closest('label,button,a,input,summary,.an-note-it'))
+    if(ev.target.closest &&
+       ev.target.closest('label,button,a,input,summary,.an-note-it,#sc-pad'))
       return false;
     // 자유 필기·지우개는 여백에서 시작해도 받는다(가장 가까운 문단에 붙는다).
     // 안 받으면 그 펜 끌기가 스크롤이 되어 화면이 덜컹인다. 형광펜·밑줄은 글자 위여야 한다.
@@ -3283,6 +3392,9 @@ body.an-rectmode #main{-webkit-user-select:none;user-select:none}
       if(stroke && ev.pointerId !== stroke.id) endStroke();
     }
     if(bar && bar.contains(ev.target)) return;
+    // 연습장(문제 옆 계산용 메모지)은 제 캔버스가 직접 받는다. 여기서 가로채면
+    // 계산하려고 그은 획이 본문 필기로 새어 들어간다.
+    if(ev.target.closest && ev.target.closest('#sc-pad')) return;
     if(rectMode) return;                               // 영역 복사는 아래 전용 처리로 간다
 
     if(placing){                                       // 메모를 놓을 자리를 고르는 중

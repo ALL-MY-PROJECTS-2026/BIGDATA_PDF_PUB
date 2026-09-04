@@ -2003,7 +2003,8 @@ body.an-rectmode #main{-webkit-user-select:none;user-select:none}
     if(!store.on || rectMode || stroke) return false;
     if(ev.button && ev.button !== 0 && !penErase(ev)) return false;
     if(bar && bar.contains(ev.target)) return false;
-    if(ev.target.closest && ev.target.closest('label,button,a,input,summary,.an-note-it'))
+    if(ev.target.closest &&
+       ev.target.closest('label,button,a,input,summary,.an-note-it,#sc-pad'))
       return false;
     // 자유 필기·지우개는 여백에서 시작해도 받는다(가장 가까운 문단에 붙는다).
     // 안 받으면 그 펜 끌기가 스크롤이 되어 화면이 덜컹인다. 형광펜·밑줄은 글자 위여야 한다.
@@ -2029,6 +2030,9 @@ body.an-rectmode #main{-webkit-user-select:none;user-select:none}
       if(stroke && ev.pointerId !== stroke.id) endStroke();
     }
     if(bar && bar.contains(ev.target)) return;
+    // 연습장(문제 옆 계산용 메모지)은 제 캔버스가 직접 받는다. 여기서 가로채면
+    // 계산하려고 그은 획이 본문 필기로 새어 들어간다.
+    if(ev.target.closest && ev.target.closest('#sc-pad')) return;
     if(rectMode) return;                               // 영역 복사는 아래 전용 처리로 간다
 
     if(placing){                                       // 메모를 놓을 자리를 고르는 중
